@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GameController">
+      <UniqueIdentifier>{91b0c839-2dbf-4c81-9ea9-6e614b85bd89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{33b9c8ce-fa5d-4df6-b856-e1d2695f7edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\INIManager">
+      <UniqueIdentifier>{4c7c3d76-cc79-4ed2-9247-f0f7b983c43b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\AssetManager">
+      <UniqueIdentifier>{86432623-01b8-4bc8-b80e-fa4f807b9408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\SceneManager">
+      <UniqueIdentifier>{ce341d48-f1b6-44df-986a-d145165eb4b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\TimeManager">
+      <UniqueIdentifier>{f5d1a8d8-21ee-49a3-aa77-021c781e3cdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{e454b0d6-3ff2-41bf-97a0-ddd25fcbb808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\FMODManager">
+      <UniqueIdentifier>{1fa1f5bd-7a9c-4d2a-9c55-6b93d159052c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\Input">
+      <UniqueIdentifier>{d19b77a0-a1d1-4896-b5c9-1ca059eb58c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{e6bdcec0-0453-4291-b34c-8937163ba2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default GameObject">
+      <UniqueIdentifier>{e1e911f8-291f-4818-b027-451a853af90f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default GameObject\Camera">
+      <UniqueIdentifier>{ea1a0e2c-b444-4f1c-b221-95950657dada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default GameObject\Lighting">
+      <UniqueIdentifier>{95ae2bb1-d1f9-47c0-af46-344fdc8f96f6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameController.h">
+      <Filter>GameController</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SceneManager.h">
+      <Filter>Manager\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TimeManager.h">
+      <Filter>Manager\TimeManager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AssetManager.h">
+      <Filter>Manager\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)INIManager.h">
+      <Filter>Manager\INIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FMODManager.h">
+      <Filter>Manager\FMODManager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Input.h">
+      <Filter>Manager\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\Base\GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ManagerDef.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EditorCamera.h">
+      <Filter>Default GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DirectionLight.h">
+      <Filter>Default GameObject\Lighting</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameController.cpp">
+      <Filter>GameController</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SceneManager.cpp">
+      <Filter>Manager\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TimeManager.cpp">
+      <Filter>Manager\TimeManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AssetManager.cpp">
+      <Filter>Manager\AssetManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)INIManager.cpp">
+      <Filter>Manager\INIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FMODManager.cpp">
+      <Filter>Manager\FMODManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Input.cpp">
+      <Filter>Manager\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\Base\GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EditorCamera.cpp">
+      <Filter>Default GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DirectionLight.cpp">
+      <Filter>Default GameObject\Lighting</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

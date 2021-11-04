@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{067c1003-9c41-4524-ac51-5eac5921d62e}</ItemsProjectGuid>
+    <ItemsRootNamespace>ce</ItemsRootNamespace>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Animation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Assertion.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Asset.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioAsset.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AutoDetectMemoryLeak.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ConstValues.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)INoncopyable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Log.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CEMath.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Matrix4x4.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MemoryPool.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Parser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerPrefs.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Registry.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SingletonBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextAsset.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextureAsset.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TypeDefine.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vector3.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vector4.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Animation.hpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioAsset.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CEMath.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Matrix4x4.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerPrefs.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Registry.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextAsset.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextureAsset.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vector3.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vector4.cpp" />
+  </ItemGroup>
+</Project>

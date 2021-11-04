@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Transform">
+      <UniqueIdentifier>{1a4741ac-6c02-4865-9ecb-53cc57c65df4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animator">
+      <UniqueIdentifier>{c5a0c075-8b9d-4af3-878d-6e1383291e2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{49d5f4da-9924-4938-a067-52826cfa68de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AudioListener">
+      <UniqueIdentifier>{7b1083e3-33e2-40b4-8400-3eb23e33a44b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{8a1c49f7-b8d1-4c10-89b5-d28df887f685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{f5394210-91bf-4dad-ad83-2dc8c1a1d985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\MeshRenderer">
+      <UniqueIdentifier>{09c8731c-48c3-4021-abaa-a1e05adbcf99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\SpriteRenderer">
+      <UniqueIdentifier>{9ef171f1-1583-4f5e-8a76-997f0024cacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Rigidbody">
+      <UniqueIdentifier>{4e78b191-3c9f-42ef-b7bf-2241bcd0863f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Collider">
+      <UniqueIdentifier>{e13300fa-3a3b-405c-93f3-a7e89c3200df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\PhysicsMaterial">
+      <UniqueIdentifier>{ec65d20c-e859-4100-a6d7-53fa7cea588f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AudioSource">
+      <UniqueIdentifier>{69bc0672-8077-4b2e-80d9-515103720476}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h">
+      <Filter>Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioSource.h">
+      <Filter>AudioSource</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioListener.h">
+      <Filter>AudioListener</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Renderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Animator.h">
+      <Filter>Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SpriteRenderer.h">
+      <Filter>Renderer\SpriteRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MeshRenderer.h">
+      <Filter>Renderer\MeshRenderer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
+      <Filter>Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioSource.cpp">
+      <Filter>AudioSource</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioListener.cpp">
+      <Filter>AudioListener</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Renderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Animator.cpp">
+      <Filter>Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SpriteRenderer.cpp">
+      <Filter>Renderer\SpriteRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MeshRenderer.cpp">
+      <Filter>Renderer\MeshRenderer</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

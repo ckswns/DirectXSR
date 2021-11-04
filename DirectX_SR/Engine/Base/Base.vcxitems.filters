@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="DesignPattern">
+      <UniqueIdentifier>{c3efd235-29eb-49d6-892e-f144e8fabd2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{7420db38-6242-47e9-94d4-c0df4dae1f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DetectedLeak">
+      <UniqueIdentifier>{38a025cd-b48b-4d47-8a55-1edb55c69f13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assert">
+      <UniqueIdentifier>{99ef53aa-c840-4017-81fd-9c58a3a31d60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{38aa25ca-2a13-4034-906c-3df9a0930243}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parser">
+      <UniqueIdentifier>{ce9945d1-b4d9-4416-8d4d-174af47480e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConstValues">
+      <UniqueIdentifier>{bd5846b7-4c64-4da8-a923-49cc7ea7f915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{e326902b-7f88-4ec3-a6b1-4969097bc564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{4bce6ca5-adc2-40ca-bf58-b035d0acb260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MemoryPool">
+      <UniqueIdentifier>{8b8e3b08-282c-43e6-b0eb-1628db5bd951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TypeDefines">
+      <UniqueIdentifier>{c9385928-73f0-44a1-9a63-f070f01b512f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Matrix4x4">
+      <UniqueIdentifier>{0dc5059f-1c3e-4dcb-b4df-6d2a1d36145d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset">
+      <UniqueIdentifier>{fa3107f4-1fc2-4c63-b4f8-cab35b0310c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Audio">
+      <UniqueIdentifier>{7b8d7cc6-09c4-43bb-a6ee-671438931d2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Texture">
+      <UniqueIdentifier>{65eedac1-61f2-422d-b24a-ae1177a3d887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Text">
+      <UniqueIdentifier>{3a02c562-d510-4cf1-920b-9f519c0d2229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Vector">
+      <UniqueIdentifier>{c091d08e-a388-4a37-be6d-0644bca830f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Vector\Vector3">
+      <UniqueIdentifier>{b5e0aaed-1767-4ec4-a04c-5bd23a597e3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Vector\Vector4">
+      <UniqueIdentifier>{e132c551-128e-4e49-8474-68b044860caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Registry">
+      <UniqueIdentifier>{868d7e66-7b74-4644-8cbc-b1800d9463e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayerPrefs">
+      <UniqueIdentifier>{c5fc9a10-b6b5-46f8-8859-73cabb62c000}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interpolation">
+      <UniqueIdentifier>{c82daefc-cffe-46bc-bc42-69e487675ec9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)INoncopyable.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SingletonBase.h">
+      <Filter>DesignPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AutoDetectMemoryLeak.h">
+      <Filter>DetectedLeak</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Assertion.h">
+      <Filter>Assert</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Log.h">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Parser.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ConstValues.h">
+      <Filter>ConstValues</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MemoryPool.h">
+      <Filter>MemoryPool</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Matrix4x4.h">
+      <Filter>Math\Matrix4x4</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vector4.h">
+      <Filter>Math\Vector\Vector4</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vector3.h">
+      <Filter>Math\Vector\Vector3</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TypeDefine.h">
+      <Filter>TypeDefines</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Asset.h">
+      <Filter>Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioAsset.h">
+      <Filter>Asset\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextureAsset.h">
+      <Filter>Asset\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextAsset.h">
+      <Filter>Asset\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CEMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Registry.h">
+      <Filter>Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerPrefs.h">
+      <Filter>PlayerPrefs</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Animation.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp">
+      <Filter>MemoryPool</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Matrix4x4.cpp">
+      <Filter>Math\Matrix4x4</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vector4.cpp">
+      <Filter>Math\Vector\Vector4</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Vector3.cpp">
+      <Filter>Math\Vector\Vector3</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioAsset.cpp">
+      <Filter>Asset\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextureAsset.cpp">
+      <Filter>Asset\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextAsset.cpp">
+      <Filter>Asset\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CEMath.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Registry.cpp">
+      <Filter>Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerPrefs.cpp">
+      <Filter>PlayerPrefs</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Animation.hpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

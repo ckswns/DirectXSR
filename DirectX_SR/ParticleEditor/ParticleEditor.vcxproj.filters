@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00. MainFrm">
+      <UniqueIdentifier>{06788cb9-0c34-4926-b611-c32a3f12dc44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Tool View">
+      <UniqueIdentifier>{6a385426-9fd2-4d4a-84e4-34b76accdef1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Tool Doc">
+      <UniqueIdentifier>{bc07aef0-26d0-410f-abfc-0101c2d3081a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene">
+      <UniqueIdentifier>{70af1e2c-9611-4d45-a911-17d4f6f89684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Include">
+      <UniqueIdentifier>{3570e466-97b6-4ae4-a46e-68d3b2087545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Default">
+      <UniqueIdentifier>{7b8dc9ef-dff2-4f88-b500-e78e61369ae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Default\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="99. Default\소스 파일">
+      <UniqueIdentifier>{96b6daa5-6877-4793-9cb4-d1dc244a2109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Default\헤더 파일">
+      <UniqueIdentifier>{221226b9-a183-4dee-b155-1566c1f4be49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Tool View\Particle Form">
+      <UniqueIdentifier>{bb12421d-16b6-4e26-8ca2-45820dcada75}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>99. Default\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>99. Default\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>99. Default\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>98. Include</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>00. MainFrm</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEditorView.h">
+      <Filter>01. Tool View</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEditorDoc.h">
+      <Filter>02. Tool Doc</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEditor.h">
+      <Filter>99. Default\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor_Define.h">
+      <Filter>98. Include</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleForm.h">
+      <Filter>01. Tool View\Particle Form</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>99. Default\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEditor.cpp">
+      <Filter>99. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEditorView.cpp">
+      <Filter>01. Tool View</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEditorDoc.cpp">
+      <Filter>02. Tool Doc</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>00. MainFrm</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleForm.cpp">
+      <Filter>01. Tool View\Particle Form</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ParticleEditor.rc">
+      <Filter>99. Default\리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\ParticleEditor.rc2">
+      <Filter>99. Default\리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\ParticleEditorDoc.ico">
+      <Filter>99. Default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ParticleEditor.ico">
+      <Filter>99. Default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>99. Default\리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

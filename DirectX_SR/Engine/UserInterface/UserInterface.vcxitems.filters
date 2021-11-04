@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Button">
+      <UniqueIdentifier>{8ac09300-2381-4d1d-b907-38d5c0e30314}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Slider">
+      <UniqueIdentifier>{a9eeac08-9dbb-4fec-a2da-fd287b50c063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Image">
+      <UniqueIdentifier>{53813d9a-d4a1-4670-b961-210521364961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text">
+      <UniqueIdentifier>{e0b4b140-12db-4655-8ee5-698d19258b4e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Button.h">
+      <Filter>Button</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Image.h">
+      <Filter>Image</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Image.cpp">
+      <Filter>Image</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

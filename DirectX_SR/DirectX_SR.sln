@@ -1,0 +1,107 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31321.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{7143FD9F-17E9-45E7-B014-81F2A4B909EE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Component", "Engine\Component\Component.vcxitems", "{A5DB4E61-E28B-4C47-83E7-19BF9B80F741}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderEngine", "Engine\RenderEngine\RenderEngine.vcxitems", "{EDCD1E12-B017-438E-B699-8256B7924533}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Product", "Product", "{6DD8AC77-DEEE-4739-8E73-EDB3B8F1A42C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameSystem", "Engine\GameSystem\GameSystem.vcxitems", "{BB59CA26-4FDD-4AFF-A2C5-77C5122891CE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UserInterface", "Engine\UserInterface\UserInterface.vcxitems", "{B6756E38-4E6A-42AB-B557-10A4C7478DA7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project1", "Project1\Project1.vcxproj", "{CAF7DD69-6A6D-4468-B04A-A19FB7317842}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Base", "Engine\Base\Base.vcxitems", "{067C1003-9C41-4524-AC51-5EAC5921D62E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{78E85D23-E35A-4BAF-B827-6D111C9C03F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{9299F781-E035-4E3D-8CEA-C4705759AFB1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MapTool", "MapTool", "{A66AB5E3-657E-470C-AEA0-ECEDCFC11CC4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapTool", "MapTool\MapTool.vcxproj", "{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}"
+EndProject
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ParticleEditor", "ParticleEditor", "{72F7062D-CCC8-44C7-888E-641E90AAF714}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleEditor", "ParticleEditor\ParticleEditor.vcxproj", "{C7066174-8323-4476-A48E-5D061F4A6EE3}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Engine\Base\Base.vcxitems*{067c1003-9c41-4524-ac51-5eac5921d62e}*SharedItemsImports = 9
+		Engine\Component\Component.vcxitems*{a5db4e61-e28b-4c47-83e7-19bf9b80f741}*SharedItemsImports = 9
+		Engine\UserInterface\UserInterface.vcxitems*{b6756e38-4e6a-42ab-b557-10a4c7478da7}*SharedItemsImports = 9
+		Engine\GameSystem\GameSystem.vcxitems*{bb59ca26-4fdd-4aff-a2c5-77c5122891ce}*SharedItemsImports = 9
+		Engine\Base\Base.vcxitems*{c7066174-8323-4476-a48e-5d061f4a6ee3}*SharedItemsImports = 4
+		Engine\Component\Component.vcxitems*{c7066174-8323-4476-a48e-5d061f4a6ee3}*SharedItemsImports = 4
+		Engine\GameSystem\GameSystem.vcxitems*{c7066174-8323-4476-a48e-5d061f4a6ee3}*SharedItemsImports = 4
+		Engine\RenderEngine\RenderEngine.vcxitems*{c7066174-8323-4476-a48e-5d061f4a6ee3}*SharedItemsImports = 4
+		Engine\Base\Base.vcxitems*{caf7dd69-6a6d-4468-b04a-a19fb7317842}*SharedItemsImports = 4
+		Engine\Component\Component.vcxitems*{caf7dd69-6a6d-4468-b04a-a19fb7317842}*SharedItemsImports = 4
+		Engine\GameSystem\GameSystem.vcxitems*{caf7dd69-6a6d-4468-b04a-a19fb7317842}*SharedItemsImports = 4
+		Engine\RenderEngine\RenderEngine.vcxitems*{caf7dd69-6a6d-4468-b04a-a19fb7317842}*SharedItemsImports = 4
+		Engine\UserInterface\UserInterface.vcxitems*{caf7dd69-6a6d-4468-b04a-a19fb7317842}*SharedItemsImports = 4
+		Engine\Base\Base.vcxitems*{d98a7372-9439-47f6-b3cf-eba4fd6cc6f3}*SharedItemsImports = 4
+		Engine\Component\Component.vcxitems*{d98a7372-9439-47f6-b3cf-eba4fd6cc6f3}*SharedItemsImports = 4
+		Engine\GameSystem\GameSystem.vcxitems*{d98a7372-9439-47f6-b3cf-eba4fd6cc6f3}*SharedItemsImports = 4
+		Engine\RenderEngine\RenderEngine.vcxitems*{d98a7372-9439-47f6-b3cf-eba4fd6cc6f3}*SharedItemsImports = 4
+		Engine\RenderEngine\RenderEngine.vcxitems*{edcd1e12-b017-438e-b699-8256b7924533}*SharedItemsImports = 9
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAF7DD69-6A6D-4468-B04A-A19FB7317842}.Debug|x64.ActiveCfg = Debug|x64
+		{CAF7DD69-6A6D-4468-B04A-A19FB7317842}.Debug|x64.Build.0 = Debug|x64
+		{CAF7DD69-6A6D-4468-B04A-A19FB7317842}.Debug|x86.ActiveCfg = Debug|Win32
+		{CAF7DD69-6A6D-4468-B04A-A19FB7317842}.Debug|x86.Build.0 = Debug|Win32
+		{CAF7DD69-6A6D-4468-B04A-A19FB7317842}.Release|x64.ActiveCfg = Release|x64
+		{CAF7DD69-6A6D-4468-B04A-A19FB7317842}.Release|x64.Build.0 = Release|x64
+		{CAF7DD69-6A6D-4468-B04A-A19FB7317842}.Release|x86.ActiveCfg = Release|Win32
+		{CAF7DD69-6A6D-4468-B04A-A19FB7317842}.Release|x86.Build.0 = Release|Win32
+		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Debug|x64.ActiveCfg = Debug|x64
+		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Debug|x64.Build.0 = Debug|x64
+		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Debug|x86.ActiveCfg = Debug|Win32
+		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Debug|x86.Build.0 = Debug|Win32
+		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Release|x64.ActiveCfg = Release|x64
+		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Release|x64.Build.0 = Release|x64
+		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Release|x86.ActiveCfg = Release|Win32
+		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Release|x86.Build.0 = Release|Win32
+		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Debug|x64.ActiveCfg = Debug|x64
+		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Debug|x86.ActiveCfg = Debug|Win32
+		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Debug|x64.Build.0 = Debug|x64
+		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Debug|x86.Build.0 = Debug|Win32
+		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Release|x64.ActiveCfg = Release|x64
+		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Release|x64.Build.0 = Release|x64
+		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Release|x86.ActiveCfg = Release|Win32
+		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A5DB4E61-E28B-4C47-83E7-19BF9B80F741} = {7143FD9F-17E9-45E7-B014-81F2A4B909EE}
+		{EDCD1E12-B017-438E-B699-8256B7924533} = {7143FD9F-17E9-45E7-B014-81F2A4B909EE}
+		{BB59CA26-4FDD-4AFF-A2C5-77C5122891CE} = {7143FD9F-17E9-45E7-B014-81F2A4B909EE}
+		{B6756E38-4E6A-42AB-B557-10A4C7478DA7} = {7143FD9F-17E9-45E7-B014-81F2A4B909EE}
+		{CAF7DD69-6A6D-4468-B04A-A19FB7317842} = {78E85D23-E35A-4BAF-B827-6D111C9C03F2}
+		{067C1003-9C41-4524-AC51-5EAC5921D62E} = {7143FD9F-17E9-45E7-B014-81F2A4B909EE}
+		{78E85D23-E35A-4BAF-B827-6D111C9C03F2} = {6DD8AC77-DEEE-4739-8E73-EDB3B8F1A42C}
+		{9299F781-E035-4E3D-8CEA-C4705759AFB1} = {6DD8AC77-DEEE-4739-8E73-EDB3B8F1A42C}
+		{A66AB5E3-657E-470C-AEA0-ECEDCFC11CC4} = {9299F781-E035-4E3D-8CEA-C4705759AFB1}
+		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3} = {A66AB5E3-657E-470C-AEA0-ECEDCFC11CC4}
+		{72F7062D-CCC8-44C7-888E-641E90AAF714} = {9299F781-E035-4E3D-8CEA-C4705759AFB1}
+		{C7066174-8323-4476-A48E-5D061F4A6EE3} = {72F7062D-CCC8-44C7-888E-641E90AAF714}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {24EA95B6-1733-40BC-B106-E9EB7E3182F4}
+	EndGlobalSection
+EndGlobal

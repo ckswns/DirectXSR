@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="D3D9Device">
+      <UniqueIdentifier>{dd7c2b71-027c-4837-b249-e698b4d19db7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Material">
+      <UniqueIdentifier>{dc6e4fe4-ab72-4dfe-a55c-348b67cc4802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{ba5d8d29-87d7-48f1-b1a5-5ec5769f9fbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain">
+      <UniqueIdentifier>{42d10eca-43a7-4d7a-ab6f-1b958141d2a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Font">
+      <UniqueIdentifier>{8f4feff4-e09f-438b-bf82-ebb945451629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{d1427d07-497b-45c5-a314-1cb326e2f0e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Grid">
+      <UniqueIdentifier>{510b4e19-b9b6-4555-9cca-e0af9dab6c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Texture">
+      <UniqueIdentifier>{f3f5a006-cec9-4ccd-bcd3-c4d1f0da1c95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{aa1e0fe5-5bb7-412c-b226-a1a45db671c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh\Cube">
+      <UniqueIdentifier>{78992777-0490-466e-9f02-dd542b95cd0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh\Quad">
+      <UniqueIdentifier>{008d2b7e-e433-452b-a05e-09580a21fa42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh\Plane">
+      <UniqueIdentifier>{5481d824-a207-4eff-845f-56bdf4cb04bb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)D3D9Device.h">
+      <Filter>D3D9Device</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Terrain.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Cube.h">
+      <Filter>Mesh\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Quad.h">
+      <Filter>Mesh\Quad</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Grid.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Texture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Material.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Light.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)D3D9Device.cpp">
+      <Filter>D3D9Device</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Terrain.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Cube.cpp">
+      <Filter>Mesh\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Quad.cpp">
+      <Filter>Mesh\Quad</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Grid.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Texture.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Material.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Light.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

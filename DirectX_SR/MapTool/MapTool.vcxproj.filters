@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00.MainFrame">
+      <UniqueIdentifier>{5c8dd5c8-7ebc-408c-b6e3-b9b76b72746b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Document">
+      <UniqueIdentifier>{67496fd2-67dc-487d-aa4b-b8168a05fd03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default">
+      <UniqueIdentifier>{32f46b13-d900-496a-9990-38648c239551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="99.Default\Cpp">
+      <UniqueIdentifier>{594df658-3ac7-4807-b3c7-b2aadc068374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default\Header">
+      <UniqueIdentifier>{f81b5b16-cdcf-4a4f-8acd-799e01841902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject">
+      <UniqueIdentifier>{69e1f871-71b5-4fb0-8234-5ba47ddcc05e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default\Header\Include">
+      <UniqueIdentifier>{f3a060e1-62f7-4145-a23b-337b5d771ed8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\00.Terrain">
+      <UniqueIdentifier>{c7957b1a-be59-41cd-a97a-8f23341b7f9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\01.MapTool_Cam">
+      <UniqueIdentifier>{8d12b9d3-aee5-4eb4-be6b-f0d63211d5e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.MainView">
+      <UniqueIdentifier>{5818b16e-c660-45bb-bc30-8133c302dd99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.MainView\Form">
+      <UniqueIdentifier>{4a7f726a-bd43-4b39-823f-432cb47bfcc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.MainView\Form\Map">
+      <UniqueIdentifier>{23134bf8-32d3-4160-8f1a-0a31015be856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.MainView\Form\Object">
+      <UniqueIdentifier>{b071e135-e60c-4fba-8ffd-eb8f45da9129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.MainView\Form\Cube">
+      <UniqueIdentifier>{c89d4802-ff06-4bba-98ba-ea77c862469a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.SubView">
+      <UniqueIdentifier>{db4bf9bd-536b-410a-828c-32f21814865e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\02.CubeTex">
+      <UniqueIdentifier>{8023d22e-3379-4892-bb73-1b37881091ff}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainFrm.h">
+      <Filter>00.MainFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="MapToolDoc.h">
+      <Filter>02.Document</Filter>
+    </ClInclude>
+    <ClInclude Include="MapToolView.h">
+      <Filter>01.MainView</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>99.Default\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool.h">
+      <Filter>99.Default\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>99.Default\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>99.Default\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>99.Default\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CForm.h">
+      <Filter>01.MainView\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainTex.h">
+      <Filter>03.GameObject\00.Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool_Define.h">
+      <Filter>99.Default\Header\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool_Struct.h">
+      <Filter>99.Default\Header\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool_Cam.h">
+      <Filter>03.GameObject\01.MapTool_Cam</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTab.h">
+      <Filter>01.MainView\Form\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTab.h">
+      <Filter>01.MainView\Form\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeTab.h">
+      <Filter>01.MainView\Form\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="CubTex.h">
+      <Filter>03.GameObject\02.CubeTex</Filter>
+    </ClInclude>
+    <ClInclude Include="MapToolSubView.h">
+      <Filter>04.SubView</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>00.MainFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolDoc.cpp">
+      <Filter>02.Document</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolView.cpp">
+      <Filter>01.MainView</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>99.Default\Cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool.cpp">
+      <Filter>99.Default\Cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CForm.cpp">
+      <Filter>01.MainView\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainTex.cpp">
+      <Filter>03.GameObject\00.Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool_Cam.cpp">
+      <Filter>03.GameObject\01.MapTool_Cam</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTab.cpp">
+      <Filter>01.MainView\Form\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTab.cpp">
+      <Filter>01.MainView\Form\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeTab.cpp">
+      <Filter>01.MainView\Form\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="CubTex.cpp">
+      <Filter>03.GameObject\02.CubeTex</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolSubView.cpp">
+      <Filter>04.SubView</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MapTool.rc">
+      <Filter>99.Default\리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\MapTool.rc2">
+      <Filter>99.Default\리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\MapToolDoc.ico">
+      <Filter>99.Default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\MapTool.ico">
+      <Filter>99.Default\리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>99.Default\리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

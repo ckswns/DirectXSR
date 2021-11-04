@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{bb59ca26-4fdd-4aff-a2c5-77c5122891ce}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\Base\GameObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AssetManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DirectionLight.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EditorCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FMODManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)INIManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ManagerDef.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Input.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SceneManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TimeManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\Base\GameObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AssetManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DirectionLight.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EditorCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FMODManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameController.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)INIManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Input.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SceneManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TimeManager.cpp" />
+  </ItemGroup>
+</Project>
