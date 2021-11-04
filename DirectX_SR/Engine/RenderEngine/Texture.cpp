@@ -6,16 +6,36 @@ namespace ce
 {
 	bool Texture::Init(LPDIRECT3DDEVICE9 pd3dDevice, LPCSTR filePath) noexcept
 	{
-		if (FAILED(D3DXCreateTextureFromFileA(pd3dDevice, filePath, &_pTexture)))
-		{
-			_pTexture = NULL;
-
-			CE_ASSERT("ckswns", "텍스쳐 생성에 실패하였습니다!");
-			return false;
-		}
-
-		_filePathA = filePath; 
+		_filePathA = filePath;
 		_filePathW.assign(_filePathA.begin(), _filePathA.end());
+
+		size_t split = _filePathA.find('.');
+		std::string fileExtension = _filePathA.substr(split);
+
+		if (fileExtension == ".dds")
+		{
+			if (FAILED(D3DXCreateCubeTextureFromFileA(pd3dDevice, filePath, (LPDIRECT3DCUBETEXTURE9*)&_pTexture)))
+			{
+				_pTexture = NULL;
+
+				CE_ASSERT("ckswns", "텍스쳐 생성에 실패하였습니다!");
+				return false;
+			}
+
+			_type = Texture::Type::CUBE;
+		}
+		else
+		{
+			if (FAILED(D3DXCreateTextureFromFileA(pd3dDevice, filePath, (LPDIRECT3DTEXTURE9*)&_pTexture)))
+			{
+				_pTexture = NULL;
+
+				CE_ASSERT("ckswns", "텍스쳐 생성에 실패하였습니다!");
+				return false;
+			}
+
+			_type = Texture::Type::DEFAULT;
+		}
 
 		return true;
 	}
@@ -33,7 +53,10 @@ namespace ce
 	{
 		D3DSURFACE_DESC desc;
 
-		_pTexture->GetLevelDesc(0, &desc);
+		if(_type == Type::DEFAULT)
+			static_cast<LPDIRECT3DTEXTURE9>(_pTexture)->GetLevelDesc(0, &desc);
+		else
+			static_cast<LPDIRECT3DCUBETEXTURE9>(_pTexture)->GetLevelDesc(0, &desc);
 		return desc.Width;
 	}
 
@@ -41,7 +64,11 @@ namespace ce
 	{
 		D3DSURFACE_DESC desc;
 
-		_pTexture->GetLevelDesc(0, &desc);
+		if (_type == Type::DEFAULT)
+			static_cast<LPDIRECT3DTEXTURE9>(_pTexture)->GetLevelDesc(0, &desc);
+		else
+			static_cast<LPDIRECT3DCUBETEXTURE9>(_pTexture)->GetLevelDesc(0, &desc);
+
 		return desc.Height;
 	}
 

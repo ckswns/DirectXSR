@@ -15,7 +15,7 @@ bool Cube_Object::Init(void) noexcept
 	MeshRenderer* meshRenderer = new MeshRenderer(this, D3D9DEVICE->GetDevice(), cube);
 	Texture* tex;
 	tex = new Texture();
-	tex->Init(D3D9DEVICE->GetDevice(), "test.jpg");
+	tex->Init(D3D9DEVICE->GetDevice(), "cubeTest.dds");
 	meshRenderer->GetMaterialPTR()->SetTexture(tex);
 
 	D3DCOLORVALUE v;

@@ -5,6 +5,12 @@ namespace ce
 {
 	class Texture
 	{
+	public:		enum class				Type
+										{
+											DEFAULT,
+											CUBE
+										};
+
 	public:		explicit				Texture(void) noexcept { __noop; }
 	public:		virtual					~Texture(void) noexcept;
 
@@ -19,11 +25,14 @@ namespace ce
 	public:		std::string				GetFilePathA(void) const noexcept { return _filePathA; }
 	public:		std::wstring			GetFilePathW(void) const noexcept { return _filePathW; }
 
-	public:		LPDIRECT3DTEXTURE9		GetTexturePTR(void) noexcept { return _pTexture; }
+	public:		IDirect3DBaseTexture9*	GetTexturePTR(void) noexcept { return _pTexture; }
+
+	public:		Texture::Type			GetType(void) const noexcept { return _type; }
 
 	private:	std::wstring			_filePathW;
 	private:	std::string				_filePathA;
 
-	private:	LPDIRECT3DTEXTURE9		_pTexture;
+	private:	IDirect3DBaseTexture9*	_pTexture;
+	private:	Texture::Type			_type;
 	};
 }
