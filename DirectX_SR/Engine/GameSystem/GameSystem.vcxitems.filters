@@ -40,6 +40,15 @@
     <Filter Include="Default GameObject\Lighting">
       <UniqueIdentifier>{95ae2bb1-d1f9-47c0-af46-344fdc8f96f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Default GameObject\Polygon">
+      <UniqueIdentifier>{37b313cb-122e-4e34-84fe-fe37faff6d99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default GameObject\SpriteObject">
+      <UniqueIdentifier>{6f3b2e90-e5f1-4e51-bf57-44ad2482bacf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default GameObject\Polygon\Cube">
+      <UniqueIdentifier>{0851d9f7-214f-4b20-876d-b990bd8f8664}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameController.h">
@@ -78,6 +87,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DirectionLight.h">
       <Filter>Default GameObject\Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CubeObject.h">
+      <Filter>Default GameObject\Polygon\Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameController.cpp">
@@ -112,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DirectionLight.cpp">
       <Filter>Default GameObject\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CubeObject.cpp">
+      <Filter>Default GameObject\Polygon\Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

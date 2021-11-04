@@ -34,9 +34,6 @@
     <Filter Include="Mesh\Quad">
       <UniqueIdentifier>{008d2b7e-e433-452b-a05e-09580a21fa42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mesh\Plane">
-      <UniqueIdentifier>{5481d824-a207-4eff-845f-56bdf4cb04bb}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)D3D9Device.h">

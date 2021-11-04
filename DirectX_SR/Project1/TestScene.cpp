@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "TestScene.h"
-#include "Cube_Object.h"
+#include "CubeObject.h"
 #include "EditorCamera.h"
 #include "DirectionLight.h"
 #include "Transform.h"
@@ -19,7 +19,7 @@ bool TestScene::Init(void) noexcept
 	//{
 	//	for (int j = 0; j < 10; j++)
 	//	{
-	GameObject* obj = GameObject::Instantiate(new Cube_Object());
+	GameObject* obj = GameObject::Instantiate(new CubeObject());
 	obj->GetTransform()->SetLocalScale(1, 1, 1);
 	//	}
 	//}

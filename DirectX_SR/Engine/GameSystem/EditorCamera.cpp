@@ -22,7 +22,7 @@ namespace ce
 		c.r = 1;
 		c.g = 1;
 		c.b = 1;
-		AddComponent(new Light(this, Light::Type::SPOT, D3D9DEVICE->GetDevice(), c, 1000, 0.01f, D3DX_PI / 16, D3DX_PI / 8, 12.0f));
+		AddComponent(new Light(this, Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 		GetCursorPos(&_ptPrevMousePos);
 		_pTransform = GetTransform();
 		return true;

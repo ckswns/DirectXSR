@@ -79,8 +79,8 @@ namespace ce
 
 	void GameController::Release(void) noexcept
 	{
-		D3D9DEVICE->Release();
 		SCENEMANAGER->Release();
+		D3D9DEVICE->Release();
 #ifdef __USE_FMOD__
 		FMODMANAGER->Release();
 #endif
