@@ -15,3 +15,6 @@ DirectX_SR/Project1/x64/Debug/Project1.pch
 DirectX_SR/Project1/x64/Debug/Project1.res
 DirectX_SR/Project1/x64/Debug
 DirectX_SR/Project1/x64/Release
+**/v16/
+**/x64/
+*.exe

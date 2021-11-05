@@ -13,6 +13,8 @@
 #include "ParticleEditorDoc.h"
 #include "ParticleEditorView.h"
 
+#include "ToolScene.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -39,6 +41,7 @@ CParticleEditorView::CParticleEditorView() noexcept
 
 CParticleEditorView::~CParticleEditorView()
 {
+	g_pGameCtrl->Release();
 }
 
 BOOL CParticleEditorView::PreCreateWindow(CREATESTRUCT& cs)
@@ -101,5 +104,20 @@ CParticleEditorDoc* CParticleEditorView::GetDocument() const // 디버그되지 
 }
 #endif //_DEBUG
 
-
 // CParticleEditorView 메시지 처리기
+
+HWND g_hWnd;
+GameController* g_pGameCtrl;
+void CParticleEditorView::OnInitialUpdate()
+{
+//	CView::OnInitialUpdate();
+
+	g_hWnd = m_hWnd;
+
+	g_pGameCtrl = new GameController();
+
+	std::vector<std::pair<std::string, Scene*>> scenes;
+	scenes.push_back(std::pair("Tool", new ToolScene()));
+
+	g_pGameCtrl->Init(g_hWnd, scenes, WINCX, WINCY);
+}

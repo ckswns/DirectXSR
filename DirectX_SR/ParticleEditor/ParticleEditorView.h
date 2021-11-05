@@ -29,6 +29,8 @@ public:				virtual							~CParticleEditorView();
 #endif
 
 protected:												DECLARE_MESSAGE_MAP()
+public:
+	virtual void OnInitialUpdate();
 };
 
 #ifndef _DEBUG  // ParticleEditorView.cpp의 디버그 버전
