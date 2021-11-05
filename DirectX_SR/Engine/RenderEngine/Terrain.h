@@ -1,9 +1,10 @@
 #pragma once
-#include "../Base/GameObject.h"
+#include "Component.h"
 
 namespace ce
 {
 	class Terrain 
 	{
+
 	};
 }
