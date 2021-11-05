@@ -71,14 +71,18 @@ void CubeTab::OnBnClickedDataSave()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
+	CString  strTest;
+
+	INIMANAGER->AddData(strTest, strTest, strTest);
+	//INIMANAGER->SaveIni("Cube");
 
 
-	//CString strNumber;
-	//strNumber.Format(_T("%d"), _CubeNumber);
-	//TCHAR	szName[MAX_PATH] = L"Cube";
-	//lstrcat(szName, strNumber);
-	//_SaveList.AddString(szName);
-	//_CubeNumber++;
+	CString strNumber;
+	strNumber.Format(_T("%d"), _CubeNumber);
+	TCHAR	szName[MAX_PATH] = L"Cube";
+	lstrcat(szName, strNumber);
+	_SaveList.AddString(szName);
+	_CubeNumber++;
 }
 
 
