@@ -7,9 +7,10 @@
 
 namespace ce
 {
-	EditorCamera::EditorCamera(HWND hWnd) noexcept :
+	EditorCamera::EditorCamera(HWND hWnd, float velocity) noexcept :
 		_ptPrevMousePos(),
-		_hWnd(hWnd)
+		_hWnd(hWnd),
+		_velocity(velocity)
 	{
 
 	}
@@ -78,7 +79,7 @@ namespace ce
 			int dx = pt.x - _ptPrevMousePos.x;
 			int dy = pt.y - _ptPrevMousePos.y;
 
-			transform->Rotate(dy * fElapsedTime * 0.5f, dx * fElapsedTime * 0.5f, 0);
+			transform->Rotate(dy * fElapsedTime * _velocity, dx * fElapsedTime * _velocity, 0);
 
 			_ptPrevMousePos = pt;
 		}
