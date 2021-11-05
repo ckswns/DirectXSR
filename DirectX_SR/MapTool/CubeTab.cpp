@@ -134,7 +134,7 @@ void CubeTab::OnBnClickedLoadTextureList()
 	GetCurrentDirectory(MAX_PATH, szFilePath);
 
 	PathRemoveFileSpec(szFilePath);
-	lstrcat(szFilePath, L"\\Resource");
+	lstrcat(szFilePath, L"\Resource");
 
 	Dlg.m_ofn.lpstrInitialDir = szFilePath;
 
