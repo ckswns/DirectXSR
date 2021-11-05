@@ -24,3 +24,4 @@ DirectX_SR/MapTool/x64/Debug/vc142.idb
 DirectX_SR/MapTool/x64/
 DirectX_SR/ParticleEditor/x64/
 **/x64/
+*.exe
