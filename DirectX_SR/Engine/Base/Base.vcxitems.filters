@@ -131,9 +131,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.hpp">
-      <Filter>MemoryPool</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Matrix4x4.cpp">
       <Filter>Math\Matrix4x4</Filter>
     </ClCompile>
