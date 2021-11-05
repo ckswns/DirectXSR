@@ -89,7 +89,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	m_tMainSplitter.CreateView(0, 1, RUNTIME_CLASS(CMapToolView), CSize(WINCX, WINCY), pContext);
 
 	m_MapToolview = (CMapToolView*)m_tMainSplitter.GetPane(0, 0);
-	m_Formview = (CForm*)m_tMainSplitter.GetPane(0, 1);
+	/*m_Formview = (CForm*)m_tMainSplitter.GetPane(0, 1);*/
 
 	return TRUE;
 }
@@ -100,6 +100,7 @@ BOOL CMainFrame::DestroyWindow()
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
 	g_pGameController->Release();
-
+	delete g_pGameController;
+	g_pGameController = nullptr;
 	return CFrameWnd::DestroyWindow();
 }

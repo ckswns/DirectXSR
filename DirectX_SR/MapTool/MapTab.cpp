@@ -50,19 +50,7 @@ END_MESSAGE_MAP()
 
 void MapTab::Release()
 {
-	for (DWORD i = 0; i < static_cast<int>(m_dwLastNumber); ++i)
-	{
-		for (auto iter = m_mapTerrain.begin(); iter != m_mapTerrain.end();)
-		{
-			if (iter->first == i)
-			{
-				m_mapTerrain.erase(iter++);
-			}
-			else
-				iter++;
-		}
-	}
-	m_mapTerrain.clear();
+
 }
 
 void MapTab::OnBnClickedCreateTerrain()
@@ -71,12 +59,11 @@ void MapTab::OnBnClickedCreateTerrain()
 	UpdateData(TRUE);
 
 	LPDIRECT3DDEVICE9 pDevice = D3D9DEVICE->GetDevice();
+
 	GameObject* pGameObject;
 	pGameObject = GameObject::Instantiate();
 	pGameObject->GetTransform()->SetLocalScale(1, 1, 1);
 	pGameObject->AddComponent(new CTerrain(pDevice, m_dwVtxX, m_dwVtxZ, m_dwIntvX, m_dwIntvZ, m_dwRoomNumber));
-	//m_mapTerrain[m_dwRoomNumber] = pGameObject;
-	/*GameObject::Instantiate(pGameObject);*/
 	m_dwLastNumber++;
 
 	CString strNumber;

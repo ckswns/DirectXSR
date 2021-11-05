@@ -31,8 +31,6 @@ public:
 	CListBox m_RoomList;
 	afx_msg void OnBnClickedCreateTerrain();
 	afx_msg void OnBnClickedDeleteTerrain();
-
-	std::unordered_map<DWORD, GameObject*>	m_mapTerrain;
 	
 	DWORD	m_dwLastNumber;
 	DWORD	m_dwSelectNumber;

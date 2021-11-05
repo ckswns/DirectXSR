@@ -41,7 +41,6 @@ CMapToolView::CMapToolView() noexcept
 
 CMapToolView::~CMapToolView()
 {
-
 }
 
 BOOL CMapToolView::PreCreateWindow(CREATESTRUCT& cs)
@@ -110,6 +109,8 @@ CMapToolDoc* CMapToolView::GetDocument() const // 디버그되지 않은 버전�
 
 void CMapToolView::OnInitialUpdate()
 {
+	//_CrtSetBreakAlloc(613);
+
 	CView::OnInitialUpdate();
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
@@ -137,13 +138,7 @@ void CMapToolView::OnInitialUpdate()
 	m_pGraphicDev = D3D9DEVICE->GetDevice();
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
-	/*m_pTerrain->GetTransform()->SetWorldPosition(0.f, -3.f, 0.f);*/
-	//m_pCamera = GameObject::Instantiate(new EditorCamera(g_hWnd));
-	/*m_pCamera = GameObject::Instantiate(new MapTool_Cam(m_pGraphicDev));*/
-	/*m_pCamera = GameObject::Instantiate();
-	m_pCamera->AddComponent(new EditorCamera(g_hWnd));*/
-
 	GameObject* pGameObject;
 	pGameObject = GameObject::Instantiate();
-	pGameObject->AddComponent(new EditorCamera(g_hWnd));
+	pGameObject->AddComponent(new EditorCamera(g_hWnd,10));
 }

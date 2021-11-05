@@ -28,10 +28,8 @@ public:
 
 private: LPDIRECT3DDEVICE9 m_pGraphicDev;
 
-private: Scene::KEY_VALUE_LIST m_vecKeyValue;
-
-private: GameObject* m_pTerrain;
-private: GameObject* m_pCamera;
+private: Scene::KEY_VALUE_LIST	m_vecKeyValue;
+private: GameObject*			m_pCamera;
 
 // 재정의입니다.
 public:
