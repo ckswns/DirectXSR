@@ -9,8 +9,8 @@ namespace ce
 {
 	uint16 Light::_lightIDBuff = 0;
 
-	Light::Light(GameObject* owner, Light::Type type, LPDIRECT3DDEVICE9 pDevice, IN const D3DCOLORVALUE& color, float range, float attenuation, float theta, float phi, float fallOff) :
-		Component(owner, COMPONENT_ID::LIGHT),
+	Light::Light(Light::Type type, LPDIRECT3DDEVICE9 pDevice, IN const D3DCOLORVALUE& color, float range, float attenuation, float theta, float phi, float fallOff) :
+		Component(COMPONENT_ID::LIGHT),
 		_type(type),
 		_color(color),
 		_pDevice(pDevice)
@@ -40,14 +40,17 @@ namespace ce
 		_light.Ambient = color;
 
 		_light.Range = range;
+	}
 
-		_dir = owner->GetTransform()->GetForward();
+	void Light::Init(void) noexcept
+	{
+		_dir = _owner->GetTransform()->GetForward();
 
 		D3DXVec3Normalize(&_dir, &_dir);
 
 		_light.Direction = _dir;
 
-		_light.Position = owner->GetTransform()->GetWorldPosition();
+		_light.Position = _owner->GetTransform()->GetWorldPosition();
 
 		int i = 0;
 
@@ -55,7 +58,7 @@ namespace ce
 		{
 			uint16 id = (1 << i);
 
-			if(_lightIDBuff & id)
+			if (_lightIDBuff & id)
 				continue;
 
 			_lightIDBuff |= id;
@@ -73,17 +76,9 @@ namespace ce
 		}
 	}
 
-	void Light::FixedUpdate(float) noexcept
-	{
-	}
-
 	void Light::Update(float) noexcept
 	{
-	}
-
-	void Light::LateUpdate(float) noexcept
-	{
-		D3DXVECTOR3 dir = _pOwner->GetTransform()->GetForward();
+		D3DXVECTOR3 dir = _owner->GetTransform()->GetForward();
 		D3DXVec3Normalize(&dir, &dir);
 
 		if (_type == Type::DIRECTIONAL)
@@ -103,7 +98,7 @@ namespace ce
 		{
 			_dir = dir;
 
-			_light.Position = _pOwner->GetTransform()->GetWorldPosition();
+			_light.Position = _owner->GetTransform()->GetWorldPosition();
 			_light.Direction = _dir;
 
 			_pDevice->SetLight(_lightID, &_light);

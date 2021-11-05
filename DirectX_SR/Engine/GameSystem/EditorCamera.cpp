@@ -11,49 +11,47 @@ namespace ce
 		_ptPrevMousePos(),
 		_hWnd(hWnd)
 	{
-		_eLayer = GameObjectLayer::OBJECT;
+
 	}
 
-	bool EditorCamera::Init(void) noexcept
+	void EditorCamera::Start(void) noexcept
 	{
-		AddComponent(new Camera(this, D3D9DEVICE->GetDevice()));
+		gameObject->AddComponent(new Camera(D3D9DEVICE->GetDevice()));
 		D3DCOLORVALUE c;
 		c.a = 1;
 		c.r = 1;
 		c.g = 1;
 		c.b = 1;
-		AddComponent(new Light(this, Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
+		gameObject->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 		GetCursorPos(&_ptPrevMousePos);
-		_pTransform = GetTransform();
-		return true;
 	}
 
 	void EditorCamera::Update(float fElapsedTime) noexcept
 	{
-		D3DXVECTOR3 foward = _pTransform->GetForward();
-		D3DXVECTOR3	right = _pTransform->GetRight();
+		D3DXVECTOR3 foward = transform->GetForward();
+		D3DXVECTOR3	right = transform->GetRight();
 
 		D3DXVec3Normalize(&foward, &foward);
 		D3DXVec3Normalize(&right, &right);
 
 		if (INPUT->GetKeyStay('A') || INPUT->GetKeyStay('a'))
 		{
-			_pTransform->SetWorldPosition(_pTransform->GetWorldPosition() + (right * -10 * fElapsedTime));
+			transform->SetWorldPosition(transform->GetWorldPosition() + (right * -10 * fElapsedTime));
 		}
 
 		if (INPUT->GetKeyStay('D') || INPUT->GetKeyStay('d'))
 		{
-			_pTransform->SetWorldPosition(_pTransform->GetWorldPosition() + (right * 10 * fElapsedTime));
+			transform->SetWorldPosition(transform->GetWorldPosition() + (right * 10 * fElapsedTime));
 		}
 
 		if (INPUT->GetKeyStay('W') || INPUT->GetKeyStay('w'))
 		{
-			_pTransform->SetWorldPosition(_pTransform->GetWorldPosition() + (foward * 10 * fElapsedTime));
+			transform->SetWorldPosition(transform->GetWorldPosition() + (foward * 10 * fElapsedTime));
 		}
 
 		if (INPUT->GetKeyStay('S') || INPUT->GetKeyStay('s'))
 		{
-			_pTransform->SetWorldPosition(_pTransform->GetWorldPosition() - (foward * 10 * fElapsedTime));
+			transform->SetWorldPosition(transform->GetWorldPosition() - (foward * 10 * fElapsedTime));
 		}
 
 		if (INPUT->GetKeyDown(VK_TAB))
@@ -80,19 +78,9 @@ namespace ce
 			int dx = pt.x - _ptPrevMousePos.x;
 			int dy = pt.y - _ptPrevMousePos.y;
 
-			_pTransform->Rotate(dy * fElapsedTime * 0.5f, dx * fElapsedTime * 0.5f, 0);
+			transform->Rotate(dy * fElapsedTime * 0.5f, dx * fElapsedTime * 0.5f, 0);
 
 			_ptPrevMousePos = pt;
 		}
-	}
-
-	void EditorCamera::Render(void) noexcept
-	{
-
-	}
-
-	void EditorCamera::Release(void) noexcept
-	{
-
 	}
 }

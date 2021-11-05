@@ -3,23 +3,25 @@
 #ifndef __MEMORY_POOL_H__
 #define __MEMORY_POOL_H__
 
+#include "Assertion.h"
 #include <mutex>
 #include "TypeDefine.h"
 
 namespace ce
 {
 	template <class T, int ALLOC_BLOCK_SIZE = 50>
-	class MemoryPool //: public MultiThreadSync<T>
+	class MemoryPool
 	{
 	protected:				MemoryPool(void) { __noop; }
 	protected:	virtual		~MemoryPool(void) { __noop; }
 
 	public:		static void* operator new(std::size_t allocLength)
 				{
-					std::lock_guard<std::mutex> guard(_mtx);
-
-					assert(sizeof(T) == allocLength);
-					assert(sizeof(T) >= sizeof(byte*));
+					//std::lock_guard<std::mutex> guard(_mtx);
+					if (sizeof(T) != allocLength)
+						CE_ASSERT("ckswns", "메모리풀에 예약된 크기와 다른 크기의 할당 요청입니다");
+					if (sizeof(T) < 1)
+						CE_ASSERT("ckswns", "잘못된 크기의 할당요청입니다");
 
 					if (!_pFreePtr)
 						AllocBlock();
@@ -32,7 +34,7 @@ namespace ce
 
 	public:		static void	operator delete(void* deletePointer)
 				{
-					std::lock_guard<std::mutex> guard(_mtx);
+					//std::lock_guard<std::mutex> guard(_mtx);
 
 					*reinterpret_cast<byte**>(deletePointer) = _pFreePtr;
 					_pFreePtr = static_cast<byte*>(deletePointer);

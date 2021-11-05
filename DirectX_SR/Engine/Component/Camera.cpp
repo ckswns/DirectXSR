@@ -10,9 +10,14 @@ namespace ce
 {
 	Camera* Camera::mainCamera = nullptr;
 
-	Camera::Camera(GameObject* owner, LPDIRECT3DDEVICE9 pDevice, ECAMERA_TYPE type) noexcept :
-		Component(owner, COMPONENT_ID::CAMERA),
+	Camera::Camera(LPDIRECT3DDEVICE9 pDevice, ECAMERA_TYPE type) noexcept :
+		Component(COMPONENT_ID::CAMERA),
 		_pDevice(pDevice)
+	{
+
+	}
+
+	void Camera::Init(void) noexcept
 	{
 		if (mainCamera == nullptr)
 			mainCamera = this;
@@ -22,7 +27,7 @@ namespace ce
 		if (_pDevice == nullptr)
 			CE_ASSERT("ckswns", "Device객체는 nullptr일 수 없습니다.");
 
-		Transform* transform = GetTransform();
+		Transform* transform = _owner->GetTransform();
 		POINT winSize = D3D9Device::Instance()->GetWindowSize();
 
 		const D3DXVECTOR3& world = transform->GetWorldPosition();
@@ -39,20 +44,10 @@ namespace ce
 
 		D3DXMatrixPerspectiveFovLH(&_matProj, CE_MATH::PI_4, winSize.x / float(winSize.y), 0.1f, 1000.0f);
 
-		pDevice->SetTransform(D3DTS_PROJECTION, &_matProj);
-	}
-
-	void Camera::FixedUpdate(float fElapsedTime) noexcept
-	{
-		__noop;
+		_pDevice->SetTransform(D3DTS_PROJECTION, &_matProj);
 	}
 
 	void Camera::Update(float fElapsedTime) noexcept
-	{
-		__noop;
-	}
-
-	void Camera::LateUpdate(float fElapsedTime) noexcept
 	{
 		Transform* transform = GetTransform();
 		const D3DXVECTOR3& pos = transform->GetWorldPosition();
@@ -76,6 +71,6 @@ namespace ce
 
 	Transform* Camera::GetTransform(void) noexcept
 	{
-		return _pOwner->GetTransform();
+		return _owner->GetTransform();
 	}
 }

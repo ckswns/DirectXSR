@@ -38,13 +38,11 @@ namespace ce
 				}
 
 				(*iter)->FixedUpdateXXX(fElapsedTime);
-				(*iter)->FixedUpdate(fElapsedTime);
 
 				if ((*iter)->GetWillDestroy())
 				{
 					(*iter)->ReleaseXXX();
-					(*iter)->Release();
-					
+
 					delete (*iter);
 
 					iter = _vGameObjs[i].erase(iter);
@@ -75,12 +73,11 @@ namespace ce
 				}
 
 				(*iter)->UpdateXXX(fElapsedTime);
-				(*iter)->Update(fElapsedTime);
 
 				if ((*iter)->GetWillDestroy())
 				{
 					(*iter)->ReleaseXXX();
-					(*iter)->Release();
+
 					delete (*iter);
 					iter = _vGameObjs[i].erase(iter);
 					continue;
@@ -110,12 +107,11 @@ namespace ce
 				}
 
 				(*iter)->LateUpdateXXX(fElapsedTime);
-				(*iter)->LateUpdate(fElapsedTime);
 
 				if ((*iter)->GetWillDestroy())
 				{
 					(*iter)->ReleaseXXX();
-					(*iter)->Release();
+
 					delete (*iter);
 					iter = _vGameObjs[i].erase(iter);
 					continue;
@@ -139,14 +135,13 @@ namespace ce
 					continue;
 
 				_vGameObjs[i][j]->RenderXXX();
-				_vGameObjs[i][j]->Render();
 			}
 		}
 
 		std::sort(_vGameObjs[static_cast<int>(GameObjectLayer::UI)].begin(), _vGameObjs[static_cast<int>(GameObjectLayer::UI)].end(),
 			[](GameObject* lhs, GameObject* rhs)
 			{
-				return lhs->GetSortOrder() < rhs->GetSortOrder();
+				return lhs->GetSortOrderXXX() < rhs->GetSortOrderXXX();
 			});
 
 		int i = static_cast<int>(GameObjectLayer::UI);
@@ -160,7 +155,6 @@ namespace ce
 				continue;
 
 			_vGameObjs[i][j]->RenderXXX();
-			_vGameObjs[i][j]->Render();
 		}
 	}
 
@@ -177,7 +171,7 @@ namespace ce
 				}
 
 				(*iter)->ReleaseXXX();
-				(*iter)->Release();
+
 				delete ((*iter));
 				iter = _vGameObjs[i].erase(iter);
 			}
@@ -186,11 +180,8 @@ namespace ce
 
 	GameObject* Scene::InsertGameObject(GameObject* obj) noexcept
 	{
-		if (obj->_bIsInit == false)
-			obj->Init();
-
 		if (obj->_eLayer == GameObjectLayer::END)
-			CE_ASSERT("ckswns", "GameObject의 레이어는 END일 수 없습니다");
+			obj->_eLayer = GameObjectLayer::OBJECT;
 
 		_vGameObjs[static_cast<int>(obj->_eLayer)].push_back(obj);
 

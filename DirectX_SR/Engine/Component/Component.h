@@ -15,13 +15,12 @@ namespace ce
 	class Component abstract
 	{
 	protected:							Component() = delete;
-	protected:							Component(GameObject* object, COMPONENT_ID::ID id, bool isUniq = false, bool bDependency = false, COMPONENT_ID::ID dependencyID = 0) noexcept
-											: _pOwner(object), _identification(id), _isUniq(isUniq), _bHasDependency(bDependency), _dependencyID(dependencyID) { __noop; }
+	protected:							Component(COMPONENT_ID::ID id, bool isUniq = false, bool bDependency = false, COMPONENT_ID::ID dependencyID = 0) noexcept
+											: _owner(nullptr), _identification(id), _isUniq(isUniq), _bHasDependency(bDependency), _dependencyID(dependencyID) { __noop; }
 	public:		virtual 				~Component() noexcept { __noop; }
 
-	public:		virtual void			FixedUpdate(float) noexcept PURE;
+	public:		virtual void			Init(void) noexcept PURE;
 	public:		virtual void			Update(float) noexcept PURE;
-	public:		virtual void			LateUpdate(float) noexcept PURE;
 	public:		virtual void			Render(void) noexcept PURE;
 	public:		virtual void			Release(void) noexcept PURE;
 
@@ -33,11 +32,12 @@ namespace ce
 	public:		bool					GetEnable(void) const noexcept { return _bEnable; }
 
 	public:		void					SetEnable(bool enable) noexcept { _bEnable = enable; }
-	public:		void					RemoveComponent(void) noexcept { _pOwner->RemoveComponent(this); }
+	public:		void					RemoveComponent(void) noexcept { if (_owner) { _owner->RemoveComponent(this); } }
 
-	public:		GameObject*				GetGameObject(void)	noexcept { return _pOwner; }
+	public:		void					SetGameObjectXXX(GameObject* obj) { _owner = obj; }
+	public:		GameObject*				GetGameObject(void)	noexcept { return _owner; }
 
-	protected:	GameObject*				_pOwner;
+	protected:	GameObject*				_owner;
 
 	private:	COMPONENT_ID::ID		_identification;
 	private:	COMPONENT_ID::ID		_dependencyID;

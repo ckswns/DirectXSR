@@ -6,6 +6,7 @@
 
 #include "TypeDefine.h"
 #include "ConstValues.h"
+#include "MemoryPool.h"
 
 namespace ce
 {
@@ -13,35 +14,15 @@ namespace ce
 	class Component;
 	class SceneManager;
 	class Scene;
+	class Behaviour;
 
-	class GameObject //: public MemoryPool<GameObject>
+	class GameObject final : public MemoryPool<GameObject>
 	{
 	public:		explicit 							GameObject() noexcept;
-	public:		virtual								~GameObject() noexcept;
+	public:											~GameObject() noexcept;
 
-	public:		virtual bool						Init(void) noexcept PURE;
-	public:		virtual void						FixedUpdate(float fElapsedTime) noexcept { __noop; }
-	public:		virtual void						Update(float fElapsedTime) noexcept PURE;
-	public:		virtual void						LateUpdate(float fElapsedTime) noexcept { __noop; }
-	public:		virtual void						Render(void) noexcept PURE;
-	public:		virtual void						Release(void) noexcept PURE;
-
-	public:		virtual void						OnEnable(void) noexcept { __noop; }
-	public:		virtual void						OnDisable(void) noexcept { __noop; }
-
-	//public:		virtual void						OnCollisionEnter2D(Collider2D* collider, Collider2D* mine) noexcept { __noop; }
-	//public:		virtual void						OnCollisionStay2D(Collider2D* collider, Collider2D* mine) noexcept { __noop; }
-	//public:		virtual void						OnCollisionExit2D(Collider2D* collider, Collider2D* mine) noexcept { __noop; }
-
-	public:		virtual	void						OnSceneChanged(void) noexcept { __noop; }
-	public:		virtual void						OnAnimationEnd(void) noexcept { __noop; }
-
-	public:		virtual	void						OnMouseEnter(void) noexcept { __noop; }
-	public:		virtual	void						OnMouseOver(void) noexcept { __noop; }
-	public:		virtual void						OnMouseLeave(void) noexcept { __noop; }
-	public:		virtual	void						OnMouseDown(void) noexcept { __noop; }
-	public:		virtual	void						OnMouseHeldDown(void) noexcept { __noop; }
-	public:		virtual void						OnMouseUp(void) noexcept { __noop; }
+	private:	void								OnEnable(void) noexcept;
+	private:	void								OnDisable(void) noexcept;
 
 	private:	void								FixedUpdateXXX(float fElapsedTime) noexcept;
 	private:	void								UpdateXXX(float fElapsedTime) noexcept;
@@ -53,10 +34,10 @@ namespace ce
 	public:		bool								GetDontDestroy(void) const noexcept { return _bDontDestroy; }
 
 	public:		GameObjectLayer						GetLayer(void) const noexcept { return _eLayer; }
-	public:		bool								GetIsInit(void) const noexcept { return _bIsInit; }
+
 	public:		void								SetLayer(GameObjectLayer _layer) { _eLayer = _layer; }
-	public:		virtual int32						GetSortOrder(void) const noexcept { return _nSortOrder; }
-	public:		void								SetSortOrder(int order) noexcept { _nSortOrder = order; }
+	public:		virtual int32						GetSortOrderXXX(void) const noexcept { return _nSortOrder; }
+	public:		void								SetSortOrderXXX(int order) noexcept { _nSortOrder = order; }
 
 	public:		std::string							GetName(void) const noexcept { return _strName; }
 	public:		const GameObjectTag&				GetTag(void) const noexcept { return _eTag; }
@@ -86,7 +67,7 @@ namespace ce
 	private:	bool								GetActiveChanged(void) noexcept { return _bActiveChanged; }
 	private:	void								SetActiveChanged(bool active) noexcept { _bActiveChanged = active; }
 
-	public:		static GameObject*					Instantiate(GameObject* obj) noexcept;
+	public:		static GameObject*					Instantiate() noexcept;
 	public:		static void							Destroy(GameObject* obj) noexcept;
 
 	public:		static GameObject*					FindObjectByName(std::string name) noexcept;
@@ -105,7 +86,7 @@ namespace ce
 	protected:	bool								_bWorldActive = true;
 	protected:	bool								_bLocalActive = true;
 	protected:	bool								_bActiveChanged = false;
-	protected:	bool								_bIsInit = false;
+
 	protected:	bool								_bDontDestroy = false;
 	protected:	bool								_bWillDestroy = false;
 
@@ -115,6 +96,7 @@ namespace ce
 
 	private:	Transform*							_pTransform;
 	private:	std::vector<Component*>				_pComponents;
+	private:	std::vector<Behaviour*>				_pBehaviours;
 	private:	COMPONENT_ID::ID					_hasComponentID;
 
 	private:	friend								SceneManager;

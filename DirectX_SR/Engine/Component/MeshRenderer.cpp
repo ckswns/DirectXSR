@@ -7,19 +7,21 @@
 
 namespace ce
 {
-	MeshRenderer::MeshRenderer(GameObject* owner, LPDIRECT3DDEVICE9 pDevice, Mesh* pMesh) noexcept :
-		Renderer(owner, pDevice),
+	MeshRenderer::MeshRenderer(LPDIRECT3DDEVICE9 pDevice, Mesh* pMesh) noexcept :
+		Renderer(pDevice),
 		_pMesh(pMesh)
 	{
-		if (owner == nullptr)
-			CE_ASSERT("ckswns", "Renderer의 owner는 nullptr일 수 없습니다");
 
-		_pTransform = owner->GetTransform();
 	}
 
 	void MeshRenderer::SetMesh(Mesh* pMesh) noexcept
 	{
 		_pMesh = pMesh;
+	}
+
+	void MeshRenderer::Init(void) noexcept
+	{
+		_pTransform = _owner->GetTransform();
 	}
 
 	void MeshRenderer::Render(void) noexcept
