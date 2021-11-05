@@ -1,4 +1,3 @@
-
 *.obj
 *.ipch
 DirectX_SR/.vs/DirectX_SR/v16/Browse.VC.db
@@ -24,3 +23,8 @@ DirectX_SR/MapTool/x64/Debug/vc142.idb
 DirectX_SR/MapTool/x64/
 DirectX_SR/ParticleEditor/x64/
 **/x64/
+DirectX_SR/Project1/x64/Debug
+DirectX_SR/Project1/x64/Release
+**/v16/
+**/x64/
+*.exe

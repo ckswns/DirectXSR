@@ -32,6 +32,9 @@
     <Filter Include="01. Tool View\Particle Form">
       <UniqueIdentifier>{bb12421d-16b6-4e26-8ca2-45820dcada75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Particle">
+      <UniqueIdentifier>{52f4a61f-dccb-463a-9dc5-22e653a9a1d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -64,6 +67,18 @@
     <ClInclude Include="ParticleForm.h">
       <Filter>01. Tool View\Particle Form</Filter>
     </ClInclude>
+    <ClInclude Include="ToolScene.h">
+      <Filter>03. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>04. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor_Struct.h">
+      <Filter>98. Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor_Function.h">
+      <Filter>98. Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -83,6 +98,12 @@
     </ClCompile>
     <ClCompile Include="ParticleForm.cpp">
       <Filter>01. Tool View\Particle Form</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolScene.cpp">
+      <Filter>03. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>04. Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

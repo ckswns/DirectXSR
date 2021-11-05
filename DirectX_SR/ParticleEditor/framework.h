@@ -39,6 +39,8 @@
 using namespace ce;
 
 #include "Editor_Define.h"
+#include "Editor_Struct.h"
+#include "Editor_Function.h"
 
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>           // Internet Explorer 4 공용 컨트롤에 대한 MFC 지원입니다.
