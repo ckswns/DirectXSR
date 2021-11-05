@@ -41,9 +41,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioAsset.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CEMath.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Matrix4x4.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.hpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerPrefs.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Registry.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextAsset.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureAsset.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Vector3.cpp" />

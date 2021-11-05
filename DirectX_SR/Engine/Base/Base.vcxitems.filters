@@ -131,7 +131,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.hpp">
       <Filter>MemoryPool</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Matrix4x4.cpp">
@@ -163,6 +163,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Animation.hpp">
       <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp">
+      <Filter>MemoryPool</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
