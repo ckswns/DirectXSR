@@ -29,9 +29,6 @@
     <Filter Include="03.GameObject\00.Terrain">
       <UniqueIdentifier>{c7957b1a-be59-41cd-a97a-8f23341b7f9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObject\01.MapTool_Cam">
-      <UniqueIdentifier>{8d12b9d3-aee5-4eb4-be6b-f0d63211d5e5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.MainView">
       <UniqueIdentifier>{5818b16e-c660-45bb-bc30-8133c302dd99}</UniqueIdentifier>
     </Filter>
@@ -49,9 +46,6 @@
     </Filter>
     <Filter Include="04.SubView">
       <UniqueIdentifier>{db4bf9bd-536b-410a-828c-32f21814865e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.GameObject\02.CubeTex">
-      <UniqueIdentifier>{8023d22e-3379-4892-bb73-1b37881091ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +85,6 @@
     <ClInclude Include="MapTool_Struct.h">
       <Filter>99.Default\Header\Include</Filter>
     </ClInclude>
-    <ClInclude Include="MapTool_Cam.h">
-      <Filter>03.GameObject\01.MapTool_Cam</Filter>
-    </ClInclude>
     <ClInclude Include="MapTab.h">
       <Filter>01.MainView\Form\Map</Filter>
     </ClInclude>
@@ -102,9 +93,6 @@
     </ClInclude>
     <ClInclude Include="CubeTab.h">
       <Filter>01.MainView\Form\Cube</Filter>
-    </ClInclude>
-    <ClInclude Include="CubTex.h">
-      <Filter>03.GameObject\02.CubeTex</Filter>
     </ClInclude>
     <ClInclude Include="MapToolSubView.h">
       <Filter>04.SubView</Filter>
@@ -132,9 +120,6 @@
     <ClCompile Include="TerrainTex.cpp">
       <Filter>03.GameObject\00.Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="MapTool_Cam.cpp">
-      <Filter>03.GameObject\01.MapTool_Cam</Filter>
-    </ClCompile>
     <ClCompile Include="MapTab.cpp">
       <Filter>01.MainView\Form\Map</Filter>
     </ClCompile>
@@ -143,9 +128,6 @@
     </ClCompile>
     <ClCompile Include="CubeTab.cpp">
       <Filter>01.MainView\Form\Cube</Filter>
-    </ClCompile>
-    <ClCompile Include="CubTex.cpp">
-      <Filter>03.GameObject\02.CubeTex</Filter>
     </ClCompile>
     <ClCompile Include="MapToolSubView.cpp">
       <Filter>04.SubView</Filter>

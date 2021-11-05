@@ -9,7 +9,6 @@
 #include "Scene.h"
 #include "Transform.h"
 #include "EditorCamera.h"
-#include "MapTool_Cam.h"
 
 class CMapToolDoc;
 

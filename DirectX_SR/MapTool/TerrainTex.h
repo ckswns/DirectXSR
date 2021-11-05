@@ -1,17 +1,15 @@
 #ifndef TerrainTex_h__
 #define TerrainTex_h__
 
-#include "GameObject.h"
+#include "Behaviour.h"
 
-class CTerrain final : public GameObject
+class CTerrain final : public Behaviour
 {
 public: explicit CTerrain(LPDIRECT3DDEVICE9& pGraphicDev, const DWORD& dwCntX, const DWORD& dwCntZ, const float& dwIntv, const float& dwIntvX, const DWORD& dwRoomNumber);
 public: virtual ~CTerrain(void);
 
-public: virtual bool Init(void) noexcept override;
-public: virtual void Update(float fElapsedTime) noexcept override;
-public: virtual void Render(void) noexcept override;
-public: virtual void Release(void) noexcept override;
+public:	virtual void Start(void) noexcept override;
+public: virtual void Update(float) noexcept;
 
 private: DWORD						m_dwVtxCntX;
 private: DWORD						m_dwVtxCntZ;

@@ -5,7 +5,7 @@
 #include "MapTool.h"
 #include "MapTab.h"
 #include "afxdialogex.h"
-
+#include "Transform.h"
 
 // MapTab 대화 상자
 
@@ -71,10 +71,12 @@ void MapTab::OnBnClickedCreateTerrain()
 	UpdateData(TRUE);
 
 	LPDIRECT3DDEVICE9 pDevice = D3D9DEVICE->GetDevice();
-	GameObject* pGameObject = new CTerrain(pDevice, m_dwVtxX, m_dwVtxZ, m_dwIntvX, m_dwIntvZ, m_dwRoomNumber);
-
-	m_mapTerrain[m_dwRoomNumber] = pGameObject;
-	GameObject::Instantiate(pGameObject);
+	GameObject* pGameObject;
+	pGameObject = GameObject::Instantiate();
+	pGameObject->GetTransform()->SetLocalScale(1, 1, 1);
+	pGameObject->AddComponent(new CTerrain(pDevice, m_dwVtxX, m_dwVtxZ, m_dwIntvX, m_dwIntvZ, m_dwRoomNumber));
+	//m_mapTerrain[m_dwRoomNumber] = pGameObject;
+	/*GameObject::Instantiate(pGameObject);*/
 	m_dwLastNumber++;
 
 	CString strNumber;
