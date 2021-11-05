@@ -19,12 +19,11 @@ namespace ce
 				};
 
 	public:		explicit				Light(void) = delete;
-	public:		explicit				Light(GameObject* owner, Light::Type type, LPDIRECT3DDEVICE9 pDevice, IN const D3DCOLORVALUE& color, float range, float attenuation = 0, float theta = 0, float phi = 0, float fallOff = 0);
+	public:		explicit				Light(Light::Type type, LPDIRECT3DDEVICE9 pDevice, IN const D3DCOLORVALUE& color, float range, float attenuation = 0, float theta = 0, float phi = 0, float fallOff = 0);
 	public:		virtual					~Light(void) noexcept { __noop; }
 
-	public:		void					FixedUpdate(float) noexcept override;
+	public:		void					Init(void) noexcept override;
 	public:		void					Update(float) noexcept override;
-	public:		void					LateUpdate(float) noexcept override;
 	public:		void					Render(void) noexcept override;
 	public:		void					Release(void) noexcept override;
 

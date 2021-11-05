@@ -15,9 +15,8 @@ namespace ce
 	public:		explicit						Transform(GameObject* const owner) noexcept;
 	public:		virtual							~Transform(void) noexcept { __noop; }
 
-	public:		virtual void					FixedUpdate(float) noexcept override final;
+	public:		virtual void					Init(void) noexcept override final { __noop; }
 	public:		virtual void					Update(float) noexcept override final;
-	public:		virtual void					LateUpdate(float) noexcept override final;
 	public:		virtual void					Render(void) noexcept override final { __noop; }
 	public:		virtual void					Release(void) noexcept override final;
 

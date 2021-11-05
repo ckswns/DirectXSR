@@ -37,6 +37,9 @@
     <Filter Include="AudioSource">
       <UniqueIdentifier>{69bc0672-8077-4b2e-80d9-515103720476}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Behaviour">
+      <UniqueIdentifier>{4a77d7a8-21bb-46b1-a734-e3f1f1831fe5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h">
@@ -64,6 +67,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MeshRenderer.h">
       <Filter>Renderer\MeshRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Behaviour.h">
+      <Filter>Behaviour</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
@@ -89,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MeshRenderer.cpp">
       <Filter>Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Behaviour.cpp">
+      <Filter>Behaviour</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

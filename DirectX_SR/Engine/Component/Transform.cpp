@@ -5,7 +5,7 @@
 namespace ce
 {
 	Transform::Transform(GameObject* const owner) noexcept
-		: Component(owner, COMPONENT_ID::TRANSFORM, true),
+		: Component(COMPONENT_ID::TRANSFORM, true),
 		_worldPosition(0, 0, 0),
 		_localPosition(0, 0, 0),
 		_localScale(1, 1, 1),
@@ -27,17 +27,7 @@ namespace ce
 		D3DXMatrixIdentity(&_matWorld);
 	}
 
-	void Transform::FixedUpdate(float) noexcept
-	{
-		__noop;
-	}
-
 	void Transform::Update(float) noexcept
-	{
-		__noop;
-	}
-
-	void Transform::LateUpdate(float) noexcept
 	{
 		if (nullptr != _pParent)
 		{
@@ -148,9 +138,9 @@ namespace ce
 		{
 			_pParent->SetChild(this);
 
-			bool b = _pOwner->GetActive();
-			_pOwner->SetActive(!b);
-			_pOwner->SetActive(b);
+			bool b = _owner->GetActive();
+			_owner->SetActive(!b);
+			_owner->SetActive(b);
 		}
 	}
 

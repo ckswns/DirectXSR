@@ -17,12 +17,11 @@ namespace ce
 	class Camera : public Component
 	{
 	public:		explicit			Camera() = delete;
-	public:		explicit			Camera(GameObject* owner, LPDIRECT3DDEVICE9 pDevice, ECAMERA_TYPE type = ECAMERA_TYPE::PERSPECTIVE) noexcept;
+	public:		explicit			Camera(LPDIRECT3DDEVICE9 pDevice, ECAMERA_TYPE type = ECAMERA_TYPE::PERSPECTIVE) noexcept;
 	public:		virtual				~Camera() noexcept { __noop; }
 
-	public:		void				FixedUpdate(float fElapsedTime) noexcept override;
+	public:		void				Init(void) noexcept override;
 	public:		void				Update(float fElapsedTime) noexcept override;
-	public:		void				LateUpdate(float fElapsedTime) noexcept override;
 	public:		void				Release(void) noexcept override;
 	public:		void				Render(void) noexcept override { __noop; }
 

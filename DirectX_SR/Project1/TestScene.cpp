@@ -15,15 +15,19 @@ TestScene::~TestScene(void) noexcept
 
 bool TestScene::Init(void) noexcept
 {
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	for (int j = 0; j < 10; j++)
-	//	{
-	GameObject* obj = GameObject::Instantiate(new CubeObject());
-	obj->GetTransform()->SetLocalScale(1, 1, 1);
-	//	}
-	//}
-	GameObject::Instantiate(new EditorCamera(g_hWnd));
+	GameObject* obj;
+
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			obj = GameObject::Instantiate();
+			obj->GetTransform()->SetLocalScale(i, j, 1);
+			obj->AddComponent(new CubeObject());
+		}
+	}
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new EditorCamera(g_hWnd));
 	//GameObject::Instantiate(new DirectionLight());
 
 	return true;

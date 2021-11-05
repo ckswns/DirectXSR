@@ -5,6 +5,7 @@
 #include "Assertion.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "Behaviour.h"
 
 namespace ce
 {
@@ -34,12 +35,28 @@ namespace ce
 		}
 	}
 
+	void GameObject::OnEnable(void) noexcept
+	{
+		for (int i = 0; i < _pBehaviours.size(); i++)
+		{
+			_pBehaviours[i]->OnEnable();
+		}
+	}
+
+	void GameObject::OnDisable(void) noexcept
+	{
+		for (int i = 0; i < _pBehaviours.size(); i++)
+		{
+			_pBehaviours[i]->OnDisable();
+		}
+	}
+
     void GameObject::FixedUpdateXXX(float fElapsedTime) noexcept
     {
-		for (size_t i = 0; i < _pComponents.size(); i++)
-		{
-			_pComponents[i]->FixedUpdate(fElapsedTime);
-		}
+		//for (size_t i = 0; i < _pComponents.size(); i++)
+		//{
+		//	_pComponents[i]->FixedUpdate(fElapsedTime);
+		//}
     }
 
     void GameObject::UpdateXXX(float fElapsedTime) noexcept
@@ -52,10 +69,10 @@ namespace ce
 
     void GameObject::LateUpdateXXX(float fElapsedTime) noexcept
     {
-		for (size_t i = 0; i < _pComponents.size(); i++)
-		{
-			_pComponents[i]->LateUpdate(fElapsedTime);
-		}
+		//for (size_t i = 0; i < _pComponents.size(); i++)
+		//{
+		//	_pComponents[i]->LateUpdate(fElapsedTime);
+		//}
     }
 
     void GameObject::RenderXXX(void) noexcept
@@ -114,6 +131,9 @@ namespace ce
 				return nullptr;
 			}
 		}
+
+		value->SetGameObjectXXX(this);
+		value->Init();
 
 		//if (value->GetType() == CONST_VALUES::COMPONENT_ID::COLLIDER2D)
 		//{
@@ -220,10 +240,10 @@ namespace ce
 		}
     }
 
-	GameObject* GameObject::Instantiate(GameObject* obj) noexcept
+	GameObject* GameObject::Instantiate() noexcept
 	{
 		if (SceneManager::Instance()->GetActiveScene() != nullptr)
-			return SceneManager::Instance()->GetActiveScene()->InsertGameObject(obj);
+			return SceneManager::Instance()->GetActiveScene()->InsertGameObject(new GameObject());
 		else
 			return nullptr;
 	}
