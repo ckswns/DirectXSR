@@ -29,3 +29,5 @@ DirectX_SR/Project1/x64/Release
 **/x64/
 *.exe
 *.exe
+DirectX_SR/MapTool/x64/Debug/vc142.idb
+*.exe

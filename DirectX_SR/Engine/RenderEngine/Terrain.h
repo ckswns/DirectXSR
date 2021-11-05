@@ -3,12 +3,8 @@
 
 namespace ce
 {
-	class Terrain : public Component
+	class Terrain 
 	{
-	public:		explicit	Terrain(void) noexcept;
-	public:		virtual		~Terrain(void) noexcept { __noop; }
-
-
 
 	};
 }
