@@ -5,6 +5,7 @@
 #include "DirectionLight.h"
 #include "Transform.h"
 #include "Texture.h"
+
 TestScene::TestScene(void) noexcept
 {
 }
@@ -15,19 +16,19 @@ TestScene::~TestScene(void) noexcept
 
 bool TestScene::Init(void) noexcept
 {
+	_texture = new ce::Texture();
+	_texture->Init(D3D9DEVICE->GetDevice(), "cubeTest.dds");
 	GameObject* obj;
-	Texture* tex = new Texture();
-	tex->Init(D3D9DEVICE->GetDevice(), "cubeTest.dds");
 
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	for (int j = 0; j < 10; j++)
-	//	{
+	for (int i = 0; i < 100; i++)
+	{
+		for (int j = 0; j < 100; j++)
+		{
 			obj = GameObject::Instantiate();
-			obj->GetTransform()->SetLocalScale(1, 1, 1);
-			obj->AddComponent(new CubeObject(tex));
-	//	}
-	//}
+			obj->GetTransform()->SetLocalScale(i, j, 1);
+			obj->AddComponent(new CubeObject(_texture));
+		}
+	}
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new EditorCamera(g_hWnd));
 	//GameObject::Instantiate(new DirectionLight());
@@ -57,5 +58,6 @@ void TestScene::Render(float fElapsedTime) noexcept
 
 void TestScene::Release(void) noexcept
 {
-
+	_texture->Release();
+	delete _texture;
 }
