@@ -16,7 +16,7 @@ namespace ce
 	class Scene;
 	class Behaviour;
 
-	class GameObject final : public MemoryPool<GameObject>
+	class GameObject final //: public MemoryPool<GameObject>
 	{
 	public:		explicit 							GameObject() noexcept;
 	public:											~GameObject() noexcept;

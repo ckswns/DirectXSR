@@ -163,6 +163,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	if (pGameController)
+		pGameController->GetWndMsg(message, wParam, lParam);
+
 	switch (message)
 	{
 	case WM_KEYDOWN:

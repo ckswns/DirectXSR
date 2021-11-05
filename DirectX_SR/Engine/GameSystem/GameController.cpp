@@ -2,6 +2,9 @@
 #include "GameController.h"
 #include "ManagerDef.h"
 #include "Assertion.h"
+#include "MemoryPool.h"
+#include "GameObject.h"
+
 
 namespace ce
 {
@@ -46,6 +49,11 @@ namespace ce
 		return true;
 	}
 
+	void GameController::GetWndMsg(UINT message, WPARAM wParam, LPARAM lParam) noexcept
+	{
+
+	}
+
 	void GameController::Update(void) noexcept
 	{
 		TIMEMANAGER->Update();
@@ -85,6 +93,8 @@ namespace ce
 		FMODMANAGER->Release();
 #endif
 		ASSETMANAGER->Release();
+
+		MemoryPool<GameObject>::Release();
 
 		D3D9DEVICE->ReleaseSingleton();
 		SCENEMANAGER->ReleaseSingleton();
