@@ -1,9 +1,14 @@
 #pragma once
-#include "../Base/GameObject.h"
+#include "Component.h"
 
 namespace ce
 {
-	class Terrain 
+	class Terrain : public Component
 	{
+	public:		explicit	Terrain(void) noexcept;
+	public:		virtual		~Terrain(void) noexcept { __noop; }
+
+
+
 	};
 }
