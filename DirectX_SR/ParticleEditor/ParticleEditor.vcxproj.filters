@@ -32,8 +32,14 @@
     <Filter Include="01. Tool View\Particle Form">
       <UniqueIdentifier>{bb12421d-16b6-4e26-8ca2-45820dcada75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Particle">
+    <Filter Include="04. ParticleSys">
       <UniqueIdentifier>{52f4a61f-dccb-463a-9dc5-22e653a9a1d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. ParticleSys\PointParticle">
+      <UniqueIdentifier>{1f49679d-90f9-448f-8be4-2824a430cbbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Tool View\ColorDlg">
+      <UniqueIdentifier>{6198eb01-e236-410a-b70b-25de3e96bca1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,14 +76,23 @@
     <ClInclude Include="ToolScene.h">
       <Filter>03. Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>04. Particle</Filter>
-    </ClInclude>
     <ClInclude Include="Editor_Struct.h">
       <Filter>98. Include</Filter>
     </ClInclude>
     <ClInclude Include="Editor_Function.h">
       <Filter>98. Include</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSys.h">
+      <Filter>04. ParticleSys</Filter>
+    </ClInclude>
+    <ClInclude Include="BillBordParticle.h">
+      <Filter>04. ParticleSys</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>04. ParticleSys\PointParticle</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorDlg.h">
+      <Filter>01. Tool View\ColorDlg</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -102,8 +117,17 @@
     <ClCompile Include="ToolScene.cpp">
       <Filter>03. Scene</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSys.cpp">
+      <Filter>04. ParticleSys</Filter>
+    </ClCompile>
+    <ClCompile Include="BillBordParticle.cpp">
+      <Filter>04. ParticleSys</Filter>
+    </ClCompile>
     <ClCompile Include="Particle.cpp">
-      <Filter>04. Particle</Filter>
+      <Filter>04. ParticleSys\PointParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorDlg.cpp">
+      <Filter>01. Tool View\ColorDlg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

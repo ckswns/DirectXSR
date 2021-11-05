@@ -5,10 +5,18 @@
 typedef struct tagParticle
 {
 	D3DXVECTOR3	 vPosition;
-	float	 fSize;
-	unsigned long	 dwColor;
+	float					 fSize;
+	unsigned long			 dwColor;
 }PARTICLE;
-const unsigned long FVF_PARTICLE = D3DFVF_XYZ | D3DFVF_PSIZE | D3DFVF_DIFFUSE;
+const unsigned long FVF_PARTICLE = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_PSIZE;
+
+typedef struct tagVertexTexture
+{
+	D3DXVECTOR3	 vPosition;
+	D3DCOLOR	 dwColor;
+	D3DXVECTOR2		vTexUV;
+}VTXCOLTEX;
+const unsigned long FVF_VTXCOLTEX = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0);
 
 typedef struct tagParticleAttribute
 {
@@ -17,11 +25,11 @@ typedef struct tagParticleAttribute
 		_vPosition = Vector3::zero;
 		_vVelocity = D3DXVECTOR3(0, 1, 0);
 		_vAcceleration = Vector3::zero;
-		_fLifeTime = 5.f;
+		_fLifeTime = 2.f;
 		_fAge = 0.f;
-		_dwColor = D3DXCOLOR(255, 0, 0, 255);
+		_fSize = 0.2f;
+		_dwColor = D3DXCOLOR(1.f, 0, 0,1.f);
 		_bIsAlive = true;
-		_bLoop = true;
 	}
 
 	tagParticleAttribute& operator=(const tagParticleAttribute& ref)
@@ -30,10 +38,10 @@ typedef struct tagParticleAttribute
 		_vVelocity		=	 ref._vVelocity;
 		_vAcceleration=	ref._vAcceleration;
 		_fLifeTime		=	 ref._fLifeTime;
-		_fAge				=	 ref._fAge;
+		_fAge = 0.f;
+		_fSize = ref._fSize;
 		_dwColor		=	ref._dwColor;
 		_bIsAlive		=	 ref._bIsAlive;
-		_bLoop			=	ref._bLoop;
 
 		return *this;
 	}
@@ -43,9 +51,9 @@ typedef struct tagParticleAttribute
 	D3DXVECTOR3			 _vAcceleration;
 	float							 _fLifeTime;     
 	float							 _fAge;        
-	unsigned long				 _dwColor;           
+	float							 _fSize;
+	D3DXCOLOR			 _dwColor;           
 	bool							 _bIsAlive;
-	bool							 _bLoop;
 
 }PARTICLE_ATRRI;
 

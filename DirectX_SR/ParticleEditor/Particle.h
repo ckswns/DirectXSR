@@ -1,12 +1,14 @@
 #pragma once
 
-#include "GameObject.h"
-class Particle : public GameObject
+#include "Component.h"
+#include "Transform.h"
+class Particle : public Component
 {
-public:		explicit 							Particle() noexcept;
-public:		virtual								~Particle() noexcept;
+private:							Particle() = delete;
+public:							Particle(LPDIRECT3DDEVICE9 pDev) noexcept;
+public:		virtual 			~Particle() noexcept { __noop; }
 
-public:		virtual bool						Init(void) noexcept override;
+public:		virtual void						Init(void) noexcept override;
 public:		virtual void						Update(float fElapsedTime) noexcept override;
 public:		virtual void						Render(void) noexcept override;
 public:		virtual void						Release(void) noexcept override;
@@ -16,11 +18,12 @@ public:		virtual void						Release(void) noexcept override;
 	  void AddParticle();
 
 private:
-
+	bool _bLoop;
 	float											_fEmitRate;
 	float											_fSize;
 	int												_iMaxParticles;
 
+	Transform*									_pTrans;
 	std::list<PARTICLE_ATRRI*>			_pParticles;
 	LPDIRECT3DDEVICE9					_pGraphicDev;
 	LPDIRECT3DTEXTURE9				_pTexture;
@@ -31,6 +34,9 @@ private:
 	DWORD										_dwVbBathSize;	//하나의 단계에 정의된 파티클의 수
 
 	PARTICLE_ATRRI						_tOrign;
+
+	float zero = 0.f;
+	float one = 1.f;
 
 };
 

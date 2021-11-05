@@ -36,6 +36,8 @@
 #include "GameController.h"
 #include "ManagerDef.h"
 #include "Vector3.h"
+#include "CEMath.h"
+
 using namespace ce;
 
 #include "Editor_Define.h"

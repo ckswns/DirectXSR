@@ -191,6 +191,8 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BillBordParticle.h" />
+    <ClInclude Include="ColorDlg.h" />
     <ClInclude Include="Editor_Define.h" />
     <ClInclude Include="Editor_Function.h" />
     <ClInclude Include="Editor_Struct.h" />
@@ -201,18 +203,22 @@
     <ClInclude Include="ParticleEditorDoc.h" />
     <ClInclude Include="ParticleEditorView.h" />
     <ClInclude Include="ParticleForm.h" />
+    <ClInclude Include="ParticleSys.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ToolScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BillBordParticle.cpp" />
+    <ClCompile Include="ColorDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleEditor.cpp" />
     <ClCompile Include="ParticleEditorDoc.cpp" />
     <ClCompile Include="ParticleEditorView.cpp" />
     <ClCompile Include="ParticleForm.cpp" />
+    <ClCompile Include="ParticleSys.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

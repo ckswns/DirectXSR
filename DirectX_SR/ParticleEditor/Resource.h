@@ -7,14 +7,44 @@
 #define IDR_MAINFRAME                   128
 #define IDR_ParticleEditorTYPE          130
 #define IDD_ParticleForm                310
+#define IDC_CHK_LOOP                    1000
+#define IDC_EDIT_DURATION               1001
+#define IDC_EDIT_LIFETIME               1002
+#define IDC_EDIT_SIZE                   1003
+#define IDC_STATIC_LIFETIME             1004
+#define IDC_STATIC_SIZE                 1005
+#define IDC_STATIC_SPEED                1006
+#define IDC_STATIC_GRAVITY              1007
+#define IDC_EDIT_SPEED                  1008
+#define IDC_STATIC__MAXPARTICLES        1009
+#define IDC_STATIC_EMITERATE            1010
+#define IDC_STATIC_COLOR                1011
+#define IDC_STATIC_R                    1012
+#define IDC_BTN_SELECTCOLOR             1014
+#define IDC_SHAPECOMBO                  1015
+#define IDC_STATIC_G                    1016
+#define IDC_STATIC_B                    1018
+#define IDC_STATIC_A                    1020
+#define IDC_STATIC_SHAPE                1022
+#define IDC_Play                        1023
+#define IDC_STATIC_DURATION             1025
+#define IDC_STOP                        1026
+#define IDC_EDIT_GRAVITY                1030
+#define IDC_EDIT_R                      1031
+#define IDC_EDIT_MAXPARTICLES           1032
+#define IDC_EDIT_EMITRATE               1033
+#define IDC_EDIT_A                      1036
+#define IDC_CHK_AWAKE                   1037
+#define IDC_EDIT_G                      1038
+#define IDC_EDIT_B                      1039
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        310
+#define _APS_NEXT_RESOURCE_VALUE        311
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1041
 #define _APS_NEXT_SYMED_VALUE           311
 #endif
 #endif
