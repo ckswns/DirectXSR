@@ -192,10 +192,8 @@
   <ItemGroup>
     <ClInclude Include="CForm.h" />
     <ClInclude Include="CubeTab.h" />
-    <ClInclude Include="CubTex.h" />
     <ClInclude Include="MapTab.h" />
     <ClInclude Include="MapToolSubView.h" />
-    <ClInclude Include="MapTool_Cam.h" />
     <ClInclude Include="MapTool_Define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
@@ -212,14 +210,12 @@
   <ItemGroup>
     <ClCompile Include="CForm.cpp" />
     <ClCompile Include="CubeTab.cpp" />
-    <ClCompile Include="CubTex.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapTab.cpp" />
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MapToolDoc.cpp" />
     <ClCompile Include="MapToolSubView.cpp" />
     <ClCompile Include="MapToolView.cpp" />
-    <ClCompile Include="MapTool_Cam.cpp" />
     <ClCompile Include="ObjectTab.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

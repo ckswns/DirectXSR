@@ -14,6 +14,7 @@
 #include "MapToolDoc.h"
 #include "MapToolView.h"
 #include "CForm.h"
+#include "EditorCamera.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -137,7 +138,12 @@ void CMapToolView::OnInitialUpdate()
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	/*m_pTerrain->GetTransform()->SetWorldPosition(0.f, -3.f, 0.f);*/
-
 	//m_pCamera = GameObject::Instantiate(new EditorCamera(g_hWnd));
-	m_pCamera = GameObject::Instantiate(new MapTool_Cam(m_pGraphicDev));
+	/*m_pCamera = GameObject::Instantiate(new MapTool_Cam(m_pGraphicDev));*/
+	/*m_pCamera = GameObject::Instantiate();
+	m_pCamera->AddComponent(new EditorCamera(g_hWnd));*/
+
+	GameObject* pGameObject;
+	pGameObject = GameObject::Instantiate();
+	pGameObject->AddComponent(new EditorCamera(g_hWnd));
 }
