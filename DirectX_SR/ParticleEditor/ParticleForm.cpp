@@ -55,6 +55,10 @@ BEGIN_MESSAGE_MAP(CParticleForm, CFormView)
 	ON_EN_CHANGE(IDC_EDIT_MAXPARTICLES, &CParticleForm::OnChangeEditCtrl)
 	ON_EN_CHANGE(IDC_EDIT_EMITRATE, &CParticleForm::OnChangeEditCtrl)
 
+	ON_EN_CHANGE(IDC_EDIT_R, &CParticleForm::OnEnChangeEditColor)
+	ON_EN_CHANGE(IDC_EDIT_G, &CParticleForm::OnEnChangeEditColor)
+	ON_EN_CHANGE(IDC_EDIT_B, &CParticleForm::OnEnChangeEditColor)
+	ON_EN_CHANGE(IDC_EDIT_A, &CParticleForm::OnEnChangeEditColor)
 END_MESSAGE_MAP()
 
 // CParticleForm 진단
@@ -85,7 +89,7 @@ void CParticleForm::OnBnClickedLoop()
 
 void CParticleForm::OnBnClickedPlay()
 {
-	_pParticle->Reset();
+	_pParticle->Play();
 }
 
 void CParticleForm::OnBnClickedStop()
@@ -148,8 +152,28 @@ void CParticleForm::OnBnClickedBtnSelectcolor()
 		_strB.Format(L"%u", GetBValue(color));
 		UpdateData(FALSE);
 
-		_pParticle->SetColor(D3DXCOLOR((float)_ttof(_strR), (float)_ttof(_strG), (float)_ttof(_strB), (float)_ttof(_strA)));
+		float value =(1.f / 255.f);
+		float a = (float)_ttof(_strA) * value;
+		float r = (float)_ttof(_strR)* value;
+		float g = (float)_ttof(_strG)* value;
+		float b = (float)_ttof(_strB)* value;
+
+	//	D3DXCOLOR d3dColor = (a, r,g , b);
+		_pParticle->SetColor(D3DXCOLOR( r, g, b,a));
 	}
 }
 
+void CParticleForm::OnEnChangeEditColor()
+{
+	UpdateData(TRUE);
+	float value = (1.f / 255.f);
+	float a = (float)_ttof(_strA)*value ;
+	float r = (float)_ttof(_strR);
+	float g = (float)_ttof(_strG);
+	float b = (float)_ttof(_strB);
 
+//	_ColorDlg->SetCurrentColor(color);
+	_ColorDlg->m_cc.rgbResult = RGB(r, g, b);
+
+	_pParticle->SetColor(D3DXCOLOR(r * value, g * value, b * value, a));
+}

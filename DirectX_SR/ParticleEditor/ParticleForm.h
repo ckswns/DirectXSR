@@ -52,6 +52,7 @@ public:
 	CString _strMax;
 	CString _strEmitRate;
 	afx_msg void OnBnClickedStop();
+	afx_msg void OnEnChangeEditColor();
 };
 
 

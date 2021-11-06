@@ -13,15 +13,18 @@ public:		virtual void						Update(float fElapsedTime) noexcept override;
 public:		virtual void						Render(void) noexcept override;
 public:		virtual void						Release(void) noexcept override;
 
-public:		void								 Stop();
-public:		void								 Reset();
+private:		void								InitBuffer();
 private:		void								 ResetParticle(PARTICLE_ATRRI* attribute);
 private:		void								 AddParticle();
+private:		void								 Reset();
+
+public:		void								 Play();
+public:		void								 Stop();
 
 public:		void								SetLoop(bool loop) { _bLoop = loop; }
 public:		void								SetDuration(float duration) { _fDuration = duration; }
 public:		void								SetSpeed(float speed) { _fSpeed = speed; }
-public:		void								SetGravity(float gravity) { _fGravity = gravity; }
+public:		void								SetGravity(float gravity) { _fGravity = gravity; _vGravity = Vector3(0, -(9.8f * gravity), 0); }
 public:		void								SetEmitRate(float emitRate) { _fEmitRate = emitRate; }
 public:		void								SetMaxParticles(float maxParticles) { _iMaxParticles = maxParticles; }
 
@@ -29,14 +32,16 @@ public:		void								SetLifeTime(float lifeTime) { _tOrign._fLifeTime = lifeTime
 public:		void								SetSize(float size) { _tOrign._fSize = size; }
 public:		void								SetColor(D3DXCOLOR color) { _tOrign._dwColor = color; }
 
+private:	bool											_bPlay;
 private:  bool											_bLoop;
 private:  float											_fDuration;			//파티클 전체 시간 
 private: float											_fTime;
 private:  float											_fSpeed;
 private:  float											_fGravity;
 private:	float											_fEmitRate;			//초당 새로 추가될 파티클 수 
-private:float	_fEmitTime;
-private:	int												_iMaxParticles;  //파티클 최대 수 
+private:  float											_fEmitTime;
+private:	int												_iMaxParticles;  //파티클 최대 수
+private:	Vector3										_vGravity;
 
 private:	Transform* _pTrans;
 private:	std::list<PARTICLE_ATRRI*>			_pParticles;

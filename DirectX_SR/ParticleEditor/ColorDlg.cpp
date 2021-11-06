@@ -12,14 +12,11 @@
 IMPLEMENT_DYNAMIC(ColorDlg, CColorDialog)
 
 ColorDlg::ColorDlg(CWnd* pParentWnd)
-	:CColorDialog(RGB(255, 255, 255), CC_FULLOPEN, pParentWnd)
+	:CColorDialog(RGB(255, 255, 255), CC_RGBINIT|CC_FULLOPEN, pParentWnd)
 {
 }
 
-ColorDlg::~ColorDlg()
-{
-}
-
+ColorDlg::~ColorDlg() {}
 
 BEGIN_MESSAGE_MAP(ColorDlg, CColorDialog)
 END_MESSAGE_MAP()

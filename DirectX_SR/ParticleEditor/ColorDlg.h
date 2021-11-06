@@ -7,12 +7,10 @@ class ColorDlg : public CColorDialog
 {
 	DECLARE_DYNAMIC(ColorDlg)
 
-public:
-	ColorDlg(CWnd* pParentWnd = nullptr);
-	virtual ~ColorDlg();
+public:				ColorDlg(CWnd* pParentWnd = nullptr);
+public:	virtual	~ColorDlg();
 
-protected:
-	DECLARE_MESSAGE_MAP()
+protected:			DECLARE_MESSAGE_MAP()
 };
 
 
