@@ -15,6 +15,8 @@ namespace ce
 	public:		void		Update(void) noexcept;
 	public:		void		Render(void) noexcept;
 	public:		void		Release(void) noexcept;
+
+	private:	HWND		_hWnd;
 	};
 }
 

@@ -49,6 +49,9 @@
     <Filter Include="Default GameObject\Polygon\Cube">
       <UniqueIdentifier>{0851d9f7-214f-4b20-876d-b990bd8f8664}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ray">
+      <UniqueIdentifier>{c958efde-4446-4f75-adac-2e79b1497e91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameController.h">
@@ -90,6 +93,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CubeObject.h">
       <Filter>Default GameObject\Polygon\Cube</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Ray.h">
+      <Filter>Ray</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameController.cpp">
@@ -127,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)CubeObject.cpp">
       <Filter>Default GameObject\Polygon\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Ray.cpp">
+      <Filter>Ray</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

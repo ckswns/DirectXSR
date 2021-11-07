@@ -14,9 +14,9 @@ namespace ce
 			static constexpr ID TRANSFORM		= (1 << 0);
 			static constexpr ID ANIMATOR		= (1 << 1);
 			static constexpr ID RENDERER		= (1 << 2);
-			static constexpr ID PHYSICS2D		= (1 << 3);
-			static constexpr ID COLLIDER2D		= (1 << 4);
-			static constexpr ID RIGIDBODY2D		= (1 << 5);
+			static constexpr ID PHYSICS			= (1 << 3);
+			static constexpr ID COLLIDER		= (1 << 4);
+			static constexpr ID RIGIDBODY		= (1 << 5);
 			static constexpr ID CAMERA			= (1 << 6);
 			static constexpr ID AUDIOSOURCE		= (1 << 7);
 			static constexpr ID AUDIOLISTENER	= (1 << 8);

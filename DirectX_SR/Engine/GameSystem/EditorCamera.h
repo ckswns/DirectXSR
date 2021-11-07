@@ -16,6 +16,7 @@ namespace ce
 
 	private:	float		_velocity;
 	private:	bool		_bMBRightDown = false;
+	private:	bool		_bMBMiddleDown = false;
 	private:	bool		_bWireFrame = false;
 	private:	POINT		_ptPrevMousePos;
 	private:	HWND		_hWnd;

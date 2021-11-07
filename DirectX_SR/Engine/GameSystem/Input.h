@@ -14,6 +14,8 @@ namespace ce
 	public:		bool			GetKeyDown(uint8 key) noexcept;
 	public:		bool			GetKeyStay(uint8 key) noexcept;
 
+	public:		void			GetWndMsgXXX(UINT message, WPARAM wParam, LPARAM lParam) noexcept;
+
 	private:	bool			_bState[255];
 
 	private:	friend			SingletonBase<Input>;

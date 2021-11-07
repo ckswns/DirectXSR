@@ -5,6 +5,8 @@
 #include "DirectionLight.h"
 #include "Transform.h"
 #include "Texture.h"
+#include "Terrain.h"
+#include "MeshRenderer.h"
 
 TestScene::TestScene(void) noexcept
 {
@@ -17,20 +19,26 @@ TestScene::~TestScene(void) noexcept
 bool TestScene::Init(void) noexcept
 {
 	_texture = new ce::Texture();
-	_texture->Init(D3D9DEVICE->GetDevice(), "cubeTest.dds");
-	GameObject* obj;
+	std::string str = "test.jpg";
+	_texture->Init(D3D9DEVICE->GetDevice(), str.c_str());
+	
+	Terrain* terrain = new Terrain(5, 5);
+	terrain->Open(D3D9DEVICE->GetDevice());
 
-	for (int i = 0; i < 100; i++)
-	{
-		for (int j = 0; j < 100; j++)
-		{
-			obj = GameObject::Instantiate();
-			obj->GetTransform()->SetLocalScale(i, j, 1);
-			obj->AddComponent(new CubeObject(_texture));
-		}
-	}
+	GameObject* obj;
+	obj = GameObject::Instantiate();
+	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), terrain);
+	mr->GetMaterialPTR()->SetTexture(_texture);
+
+	obj->AddComponent(mr);
+
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new CubeObject());
+
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new EditorCamera(g_hWnd));
+	obj->GetTransform()->SetLocalPosition(0, 1, 0);
+	obj->GetTransform()->SetLocalEulerAngle(0, 0, 0);
 	//GameObject::Instantiate(new DirectionLight());
 
 	return true;

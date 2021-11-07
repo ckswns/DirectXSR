@@ -47,4 +47,9 @@ namespace ce
 
 		return false;
 	}
+
+	void Input::GetWndMsgXXX(UINT message, WPARAM wParam, LPARAM lParam) noexcept
+	{
+
+	}
 }

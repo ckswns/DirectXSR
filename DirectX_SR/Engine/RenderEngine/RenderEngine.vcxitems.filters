@@ -10,9 +10,6 @@
     <Filter Include="Sprite">
       <UniqueIdentifier>{ba5d8d29-87d7-48f1-b1a5-5ec5769f9fbb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Terrain">
-      <UniqueIdentifier>{42d10eca-43a7-4d7a-ab6f-1b958141d2a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Font">
       <UniqueIdentifier>{8f4feff4-e09f-438b-bf82-ebb945451629}</UniqueIdentifier>
     </Filter>
@@ -34,13 +31,16 @@
     <Filter Include="Mesh\Quad">
       <UniqueIdentifier>{008d2b7e-e433-452b-a05e-09580a21fa42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mesh\Terrain">
+      <UniqueIdentifier>{42d10eca-43a7-4d7a-ab6f-1b958141d2a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)D3D9Device.h">
       <Filter>D3D9Device</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Terrain.h">
-      <Filter>Terrain</Filter>
+      <Filter>Mesh\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Cube.h">
       <Filter>Mesh\Cube</Filter>
@@ -72,7 +72,7 @@
       <Filter>D3D9Device</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Terrain.cpp">
-      <Filter>Terrain</Filter>
+      <Filter>Mesh\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Cube.cpp">
       <Filter>Mesh\Cube</Filter>

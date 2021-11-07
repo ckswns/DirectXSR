@@ -25,7 +25,7 @@
 #include "d3dx9.h"
 #pragma comment(lib, "d3dx9.lib")
 
-
+#include "AutoDetectMemoryLeak.h"
 #include "ManagerDef.h"
 #include "ConstValues.h"
 using namespace ce;

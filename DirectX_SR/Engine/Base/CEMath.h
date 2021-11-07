@@ -19,6 +19,6 @@ namespace ce
 
 		int		Random(int max) noexcept;
 		int		Random(int min, int max) noexcept;
-
+		float	GetAngle(float startX, float startY, float endX, float endY);
 	}
 }

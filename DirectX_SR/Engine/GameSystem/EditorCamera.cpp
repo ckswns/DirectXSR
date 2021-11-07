@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "ManagerDef.h"
 #include "Light.h"
+#include "CEMath.h"
 
 namespace ce
 {
@@ -31,9 +32,11 @@ namespace ce
 	{
 		D3DXVECTOR3 foward = transform->GetForward();
 		D3DXVECTOR3	right = transform->GetRight();
+		D3DXVECTOR3 up = transform->GetUp();
 
 		D3DXVec3Normalize(&foward, &foward);
 		D3DXVec3Normalize(&right, &right);
+		D3DXVec3Normalize(&up, &up);
 
 		if (INPUT->GetKeyStay('A') || INPUT->GetKeyStay('a'))
 		{
@@ -68,10 +71,18 @@ namespace ce
 		if (INPUT->GetKeyDown(VK_RBUTTON))
 		{
 			_bMBRightDown = true;
+			_bMBMiddleDown = false;
 			GetCursorPos(&_ptPrevMousePos);
 		}
 
-		else if (INPUT->GetKeyStay(VK_RBUTTON))
+		else if (INPUT->GetKeyDown(VK_MBUTTON))
+		{
+			_bMBMiddleDown = true;
+			_bMBRightDown = false;
+			GetCursorPos(&_ptPrevMousePos);
+		}
+
+		if (INPUT->GetKeyStay(VK_RBUTTON) && _bMBRightDown)
 		{
 			POINT pt;
 			GetCursorPos(&pt);
@@ -83,5 +94,33 @@ namespace ce
 
 			_ptPrevMousePos = pt;
 		}
+		else
+		{
+			_bMBRightDown = false;
+		}
+
+		//if (INPUT->GetKeyStay(VK_MBUTTON) && _bMBMiddleDown)
+		//{
+		//	POINT pt;
+		//	POINT prev = _ptPrevMousePos;
+		//	POINT diff;
+
+		//	GetCursorPos(&pt);
+
+		//	_ptPrevMousePos = pt;
+
+		//	//ScreenToClient(_hWnd, &pt);
+		//	//ScreenToClient(_hWnd, &prev);
+
+		//	diff.x = pt.x - prev.x;
+		//	diff.y = pt.y - prev.y;
+
+		//	transform->SetWorldPosition(transform->GetWorldPosition() + (right * -diff.x * fElapsedTime));
+		//	transform->SetWorldPosition(transform->GetWorldPosition() + (up * diff.y *  fElapsedTime));
+		//}
+		//else
+		//{
+		//	_bMBMiddleDown = false;
+		//}
 	}
 }

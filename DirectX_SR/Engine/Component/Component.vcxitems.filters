@@ -40,6 +40,12 @@
     <Filter Include="Behaviour">
       <UniqueIdentifier>{4a77d7a8-21bb-46b1-a734-e3f1f1831fe5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics\Collider\TerrainCollider">
+      <UniqueIdentifier>{84ae0d2d-e42b-46c3-8155-290265c3943a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Collider\SphereCollider">
+      <UniqueIdentifier>{cad0f37b-2365-4933-856a-6dd872870abd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h">
@@ -70,6 +76,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Behaviour.h">
       <Filter>Behaviour</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Collider.h">
+      <Filter>Physics\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SphereCollider.h">
+      <Filter>Physics\Collider\SphereCollider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
@@ -98,6 +110,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Behaviour.cpp">
       <Filter>Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Collider.cpp">
+      <Filter>Physics\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SphereCollider.cpp">
+      <Filter>Physics\Collider\SphereCollider</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

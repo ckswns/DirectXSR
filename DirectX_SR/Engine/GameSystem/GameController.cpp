@@ -5,15 +5,16 @@
 #include "MemoryPool.h"
 #include "GameObject.h"
 
-
 namespace ce
 {
 	GameController::GameController() noexcept
 	{
 	}
 
-	bool GameController::Init(HWND hWnd, const Scene::KEY_VALUE_LIST& scenes, uint32 winX, uint32 winY) noexcept
+	bool GameController::Init(HWND hWnd, const Scene::KEY_VALUE_LIST& scenes, uint32 winX, uint32 winY) noexcept	
 	{
+		_hWnd = hWnd;
+
 		if (D3D9DEVICE->Init(hWnd, winX, winY, D3DCOLOR_ARGB(255, 50, 50, 50)) == false)
 		{
 			CE_ASSERT("ckswns", "D3D9Device의 초기화에 실패하였습니다.");
@@ -58,10 +59,15 @@ namespace ce
 	{
 		TIMEMANAGER->Update();
 
+		if(_hWnd)
+			SetWindowTextA(_hWnd, std::to_string(TIMEMANAGER->GetFPSCount()).c_str());
+
 		if (TIMEMANAGER->FrameLock())
 			return;
 
 		float deltaTime = TIMEMANAGER->GetDeltaTime();
+
+		INPUT->Update();
 
 		SCENEMANAGER->FixedUpdate(deltaTime);
 		SCENEMANAGER->Update(deltaTime);
