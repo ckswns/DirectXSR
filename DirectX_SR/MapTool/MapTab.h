@@ -4,6 +4,7 @@
 // MapTab 대화 상자
 #include "GameObject.h"
 #include "TerrainTex.h"
+#include "Texture.h"
 
 class MapTab : public CDialog
 {
@@ -25,17 +26,38 @@ protected:
 public:
 	DWORD	m_dwVtxZ;
 	DWORD	m_dwVtxX;
-	float	m_dwIntvX;
-	float	m_dwIntvZ;
 	DWORD	m_dwRoomNumber;
 	CListBox m_RoomList;
 	afx_msg void OnBnClickedCreateTerrain();
 	afx_msg void OnBnClickedDeleteTerrain();
-
-	std::unordered_map<DWORD, GameObject*>	m_mapTerrain;
 	
 	DWORD	m_dwLastNumber;
 	DWORD	m_dwSelectNumber;
 
+	std::string _strfilepath;
+
 	void		Release();
+	afx_msg void OnBnClickedTerrainTextureLoad();
+	CListBox _TextureList;
+
+	std::map<std::wstring, std::pair<std::string, Texture*>> _mapTex;
+	afx_msg void OnLbnSelchangeSelectTexutrePath();
+
+	CEdit _EditMoveX;
+	CEdit _EditMoveZ;
+	CSpinButtonCtrl _SpinControlX;
+	CSpinButtonCtrl _SpinControlZ;
+	virtual BOOL OnInitDialog();
+	afx_msg void OnDeltaposMoveTerrainX(NMHDR* pNMHDR, LRESULT* pResult);
+
+	//std::vector<std::pair<Texture*,GameObject*>>	_vecTerrain;
+	std::vector<GameObject*>	_vecTerrain;
+	int	_iIndex;
+
+	int	_iMoveX;
+	int	_iMoveZ;
+	afx_msg void OnDeltaposTerrainMoveZ(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedSaveTerrain();
+	afx_msg void OnBnClickedLoadTerrain();
+	afx_msg void OnLbnSelchangeList1();
 };
