@@ -15,6 +15,8 @@
 #include "MapToolView.h"
 #include "CForm.h"
 #include "EditorCamera.h"
+#include "INIManager.h"
+#include "Terrain.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -30,6 +32,7 @@ BEGIN_MESSAGE_MAP(CMapToolView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CMapToolView 생성/소멸
@@ -41,7 +44,6 @@ CMapToolView::CMapToolView() noexcept
 
 CMapToolView::~CMapToolView()
 {
-
 }
 
 BOOL CMapToolView::PreCreateWindow(CREATESTRUCT& cs)
@@ -110,7 +112,13 @@ CMapToolDoc* CMapToolView::GetDocument() const // 디버그되지 않은 버전�
 
 void CMapToolView::OnInitialUpdate()
 {
+	//_CrtSetBreakAlloc(613);
+
 	CView::OnInitialUpdate();
+
+	//std::string strTest;
+	//strTest = INIMANAGER->LoadDataString("Data/Cube", "Cube0", "filePath");
+	//int i = 0;
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
@@ -137,13 +145,107 @@ void CMapToolView::OnInitialUpdate()
 	m_pGraphicDev = D3D9DEVICE->GetDevice();
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
-	/*m_pTerrain->GetTransform()->SetWorldPosition(0.f, -3.f, 0.f);*/
-	//m_pCamera = GameObject::Instantiate(new EditorCamera(g_hWnd));
-	/*m_pCamera = GameObject::Instantiate(new MapTool_Cam(m_pGraphicDev));*/
-	/*m_pCamera = GameObject::Instantiate();
-	m_pCamera->AddComponent(new EditorCamera(g_hWnd));*/
-
 	GameObject* pGameObject;
 	pGameObject = GameObject::Instantiate();
-	pGameObject->AddComponent(new EditorCamera(g_hWnd));
+	pGameObject->AddComponent(new EditorCamera(g_hWnd,10));
+}
+
+
+void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CForm* pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
+	int TerrainIndex = pFormView->m_pMapTab->_iIndex;
+	Component* pTerrainCom = pFormView->m_pMapTab->_vecTerrain[TerrainIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR);
+	Transform* pTransform = pTerrainCom->GetGameObject()->GetTransform();
+	D3DXVECTOR3 vPickingPos = Picking_OnTerrain(point, pTerrainCom, pTransform);
+
+	//pFormView->m_pCubeTab->_vecObject
+
+	CView::OnLButtonDown(nFlags, point);
+}
+
+D3DXVECTOR3 CMapToolView::Picking_OnTerrain(CPoint point, Component* pTerrainCom,Transform* pTransform)
+{
+	POINT ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(&ptMouse);
+
+	float x = ptMouse.x;
+	float y = ptMouse.y;
+
+	D3DVIEWPORT9		ViewPort;
+	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+
+	D3DXVECTOR3 vMousePose;
+	D3D9DEVICE->GetDevice()->GetViewport(&ViewPort);
+
+	vMousePose.x = ptMouse.x / ((ViewPort.Width) * 0.5f) - 1.f;
+	vMousePose.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
+	vMousePose.z = 0.f;
+
+	D3DXMATRIX	matPorj;
+	D3D9DEVICE->GetDevice()->GetTransform(D3DTS_PROJECTION, &matPorj);
+	D3DXMatrixInverse(&matPorj, NULL, &matPorj);
+	D3DXVec3TransformCoord(&vMousePose, &vMousePose, &matPorj);
+
+	D3DXVECTOR3 vRayPos, vRayDir;
+
+	vRayPos = D3DXVECTOR3(0.f, 0.f, 0.f);
+	vRayDir = vMousePose - vRayPos;
+
+	D3DXMATRIX	matView;
+	D3D9DEVICE->GetDevice()->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixInverse(&matView, NULL, &matView);
+
+	D3DXVec3TransformCoord(&vMousePose, &vMousePose, &matPorj);
+	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
+
+	D3DXMATRIX	matWorld;
+	matWorld = pTransform->GetWorldMatrix();
+	D3DXMatrixInverse(&matWorld, NULL, &matWorld);
+	
+	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matWorld);
+	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matWorld);
+
+	DWORD VtxX = static_cast<CTerrain*>(pTerrainCom)->Get_VtxCntX();
+	DWORD VtxZ = static_cast<CTerrain*>(pTerrainCom)->Get_VtxCntZ();
+	const D3DXVECTOR3* pTerrainVtxPos = static_cast<CTerrain*>(pTerrainCom)->Get_VtxPos();
+
+	DWORD dwVtxIndx[3];
+	float fU, fV, fDist;
+
+	for (DWORD z = 0; z < VtxZ - 1; ++z)
+	{
+		for (DWORD x = 0; x < VtxX - 1; ++x)
+		{
+			DWORD dwIndex = z * VtxX + x;
+
+			dwVtxIndx[0] = dwIndex + VtxX;
+			dwVtxIndx[1] = dwIndex + VtxX + 1;
+			dwVtxIndx[2] = dwIndex + 1;
+
+			if (D3DXIntersectTri(&pTerrainVtxPos[dwVtxIndx[1]], &pTerrainVtxPos[dwVtxIndx[0]], &pTerrainVtxPos[dwVtxIndx[2]]
+								, &vRayPos, &vRayDir, &fU, &fV, &fDist))
+			{
+				return D3DXVECTOR3(pTerrainVtxPos[dwVtxIndx[1]].x + (pTerrainVtxPos[dwVtxIndx[0]].x - pTerrainVtxPos[dwVtxIndx[1]].x) * fU
+									, 0.f
+									, pTerrainVtxPos[dwVtxIndx[1]].z + (pTerrainVtxPos[dwVtxIndx[2]].z - pTerrainVtxPos[dwVtxIndx[1]].z) * fV);
+			}
+
+			dwVtxIndx[0] = dwIndex + VtxX;
+			dwVtxIndx[1] = dwIndex + 1;
+			dwVtxIndx[2] = dwIndex;
+
+			if (D3DXIntersectTri(&pTerrainVtxPos[dwVtxIndx[2]], &pTerrainVtxPos[dwVtxIndx[1]], &pTerrainVtxPos[dwVtxIndx[0]]
+				, &vRayPos, &vRayDir, &fU, &fV, &fDist))
+			{
+				return D3DXVECTOR3(pTerrainVtxPos[dwVtxIndx[2]].x + (pTerrainVtxPos[dwVtxIndx[1]].x - pTerrainVtxPos[dwVtxIndx[2]].x) * fU
+									, 0.f
+									, pTerrainVtxPos[dwVtxIndx[2]].z + (pTerrainVtxPos[dwVtxIndx[0]].z - pTerrainVtxPos[dwVtxIndx[1]].z) * fV);
+			}
+		}
+	}
+	return D3DXVECTOR3(0.f,0.f,0.f);
 }

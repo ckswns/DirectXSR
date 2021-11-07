@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "Texture.h"
 
 // CubeTab 대화 상자
 
@@ -29,12 +30,19 @@ public:
 	float _fScaleZ;
 	afx_msg void OnBnClickedScaleApply();
 
-	GameObject* _pGameObject;
+	GameObject*					_pGameObject;
 	std::vector<GameObject*>	_vecObject;
 
 	afx_msg void OnBnClickedScaleReset();
 	CListBox _SaveList;
-	uint8	_CubeNumber;
+	CListBox _LoadList;
 	CListBox _TextureList;
+
+	uint8	_CubeNumber;
 	afx_msg void OnBnClickedLoadTextureList();
+	std::string		_strFilePath;
+	std::map<std::wstring, std::pair<std::string, Texture*>> _mapTex;
+	afx_msg void OnLbnSelchangeTextureSelect();
+	Texture* _pTexture;
+	afx_msg void OnLbnSelchangeSelectLoadObject();
 };
