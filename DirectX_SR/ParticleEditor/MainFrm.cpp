@@ -81,8 +81,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
 
 	_MainSplitter.CreateStatic(this, 1, 2);
-	_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CParticleEditorView), CSize(1100, WINCY), pContext);
-	_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CParticleForm), CSize(180, WINCY), pContext);
+	_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CParticleEditorView), CSize(WINCX*0.8f, WINCY), pContext);
+	_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CParticleForm), CSize(WINCX * 0.2f, WINCY), pContext);
 
 	return TRUE;
 }

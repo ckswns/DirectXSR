@@ -1,21 +1,17 @@
 #include "pch.h"
 #include "Particle.h"
 
-Particle::Particle() noexcept
-{
-	_eLayer = GameObjectLayer::EFFECT;
-}
-Particle::~Particle() noexcept
+Particle::Particle(LPDIRECT3DDEVICE9 pDev) noexcept
+	:Component(COMPONENT_ID::RENDERER), _pGraphicDev(pDev)
 {
 }
 
-bool Particle::Init(void) noexcept 
+void Particle::Init(void) noexcept
 {
-	_pGraphicDev = D3D9DEVICE->GetDevice();
+	_pTrans = GetGameObject()->GetTransform();
 
-	_fSize = 1.f;
+	_fSize = 50.f;
 	_dwVbSize = 2048;
-
 
 	if (FAILED(_pGraphicDev->CreateVertexBuffer(_dwVbSize * sizeof(PARTICLE),
 		D3DUSAGE_DYNAMIC | D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY,
@@ -24,7 +20,6 @@ bool Particle::Init(void) noexcept
 		&_pVB, 0)))
 	{
 		MessageBoxW(NULL, L"Failed", L"VertexBuffer Error", MB_OK);
-		return false;
 	}
 
 	_dwVbOffset = 0;
@@ -36,12 +31,9 @@ bool Particle::Init(void) noexcept
 	if (FAILED(D3DXCreateTextureFromFile(_pGraphicDev, L"D:/SR/GitHunSR/DirectXSR/DirectX_SR/ParticleEditor/res/SS.tga", &_pTexture)))
 	{
 		MessageBoxW(NULL, L"Failed", L"Texture Error", MB_OK);
-		return false;
 	}
-
-	return true;
-
 }
+
 void Particle::Update(float fElapsedTime) noexcept
 {
 	std::list<PARTICLE_ATRRI*>::iterator iter;
@@ -54,41 +46,63 @@ void Particle::Update(float fElapsedTime) noexcept
 
 			if ((*iter)->_fAge > (*iter)->_fLifeTime)
 			{
-				if((*iter)->_bLoop)
+				if(_bLoop)
 					ResetParticle((*iter));
 				else
 					(*iter)->_bIsAlive = false;
 			}
 		}
 	}
-
-
 }
 void Particle::Render(void) noexcept
 {
 	if (_pParticles.empty()) return;
 
+	//D3DCAPS9 d3dCaps;
+	//_pGraphicDev->GetDeviceCaps(&d3dCaps);
+	//_fSize = d3dCaps.MaxPointSize;
+
+	//if (d3dCaps.FVFCaps & D3DFVFCAPS_PSIZE)
+	//{
+	//	bChk = true;
+	//}
+	//else
+	//	bChk = false;
+
+	_pGraphicDev->SetRenderState(D3DRS_POINTSIZE, 2.5f);
+	_pGraphicDev->SetRenderState(D3DRS_POINTSIZE_MIN, 0.2f);
+
 	_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
 	_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, true);
-	_pGraphicDev->SetRenderState(D3DRS_POINTSIZE, _fSize);
-	_pGraphicDev->SetRenderState(D3DRS_POINTSIZE_MIN, 0.0f);
 
-	_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_A, 0.0f);
-	_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_B, 0.0f);
-	_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_C, 1.0f);
+//	_pGraphicDev->SetRenderState(D3DRS_POINTSIZE_MAX, 5.0f);
+
+
+	_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_A, zero);
+	_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_B, (zero));
+	_pGraphicDev->SetRenderState(D3DRS_POINTSCALE_C, (0.5f));
 
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+
+	_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, false);
 
 	_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	_pGraphicDev->SetTexture(0, _pTexture);
 
+	_pGraphicDev->SetTexture(0, _pTexture);
+	
 	_pGraphicDev->SetFVF(FVF_PARTICLE);
 	_pGraphicDev->SetStreamSource(0, _pVB, 0, sizeof(PARTICLE));
 
+	D3DXMATRIX matView, matIdentity;
+	D3DXMatrixIdentity(&matIdentity);
+
+	_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+//	_pGraphicDev->SetTransform(D3DTS_VIEW, &matIdentity);
+//	_pGraphicDev->SetTransform(D3DTS_WORLD, &matIdentity);
 	if (_dwVbOffset >= _dwVbSize)
 		_dwVbOffset = 0;
 
@@ -101,15 +115,15 @@ void Particle::Render(void) noexcept
 
 	DWORD numParticlesInBatch = 0;
 
+	//D3DDECLUSAGE_PSIZE
 	std::list<PARTICLE_ATRRI*>::iterator iter;
 	for (iter = _pParticles.begin(); iter != _pParticles.end(); ++iter)
 	{
 		if ((*iter)->_bIsAlive)
 		{
 			v->vPosition = (*iter)->_vPosition;
-			v->fSize = _fSize;
-			v->dwColor = (D3DCOLOR)((*iter)->_dwColor);
-		
+			v->dwColor = D3DXCOLOR(1, 0, 0, 1);//((*iter)->_dwColor);
+			//v->fSize = 0;//_fSize;
 			v++;
 			numParticlesInBatch++;
 
@@ -139,6 +153,10 @@ void Particle::Render(void) noexcept
 		_pGraphicDev->DrawPrimitive(D3DPT_POINTLIST, _dwVbOffset, numParticlesInBatch);
 	}
 	_dwVbOffset += _dwVbBathSize;
+
+//	_pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
+
+	_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, true);
 
 	_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
 	_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, false);

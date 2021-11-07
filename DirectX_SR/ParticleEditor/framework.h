@@ -36,11 +36,16 @@
 #include "GameController.h"
 #include "ManagerDef.h"
 #include "Vector3.h"
+#include "CEMath.h"
+
 using namespace ce;
+using namespace CE_MATH;
 
 #include "Editor_Define.h"
-#include "Editor_Struct.h"
+#include "Editor_Enum.h"
 #include "Editor_Function.h"
+#include "Editor_Struct.h"
+#include "Editor_Math.h"
 
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>           // Internet Explorer 4 공용 컨트롤에 대한 MFC 지원입니다.
