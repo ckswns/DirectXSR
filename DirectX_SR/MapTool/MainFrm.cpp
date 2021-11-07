@@ -56,6 +56,12 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
+	
+	if (NULL != cs.hMenu)
+	{
+		::DestroyMenu(cs.hMenu);
+		cs.hMenu = NULL;
+	}
 
 	return TRUE;
 }
@@ -88,8 +94,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	m_tMainSplitter.CreateView(0, 0, RUNTIME_CLASS(CForm), CSize(350, WINCY), pContext);
 	m_tMainSplitter.CreateView(0, 1, RUNTIME_CLASS(CMapToolView), CSize(WINCX, WINCY), pContext);
 
-	m_MapToolview = (CMapToolView*)m_tMainSplitter.GetPane(0, 0);
-	/*m_Formview = (CForm*)m_tMainSplitter.GetPane(0, 1);*/
+	//m_MapToolview = (CMapToolView*)m_tMainSplitter.GetPane(0, 0);
+	//m_Formview = (CForm*)m_tMainSplitter.GetPane(0, 1);
 
 	return TRUE;
 }

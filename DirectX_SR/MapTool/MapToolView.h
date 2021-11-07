@@ -55,6 +55,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual void OnInitialUpdate();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	D3DXVECTOR3				Picking_OnTerrain(CPoint point, Component* pTerrainCom, Transform* pTransform);
 };
 
 #ifndef _DEBUG  // MapToolView.cpp의 디버그 버전

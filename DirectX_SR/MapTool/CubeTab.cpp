@@ -9,10 +9,9 @@
 #include "Transform.h"
 #include "CubeObject.h"
 #include "INIManager.h"
-
+#include "MeshRenderer.h"
 
 // CubeTab 대화 상자
-
 IMPLEMENT_DYNAMIC(CubeTab, CDialog)
 
 CubeTab::CubeTab(CWnd* pParent /*=nullptr*/)
@@ -22,12 +21,19 @@ CubeTab::CubeTab(CWnd* pParent /*=nullptr*/)
 	, _fScaleZ(1.f)
 	, _CubeNumber(0)
 {
-
 }
 
 CubeTab::~CubeTab()
 {
-
+	if (_mapTex.empty() == false)
+	{
+		for (auto iter = _mapTex.begin(); iter != _mapTex.end(); iter++)
+		{
+			if ((iter->second).second != nullptr)
+				delete (iter->second).second;
+		}
+		_mapTex.clear();
+	}
 }
 
 void CubeTab::DoDataExchange(CDataExchange* pDX)
@@ -38,6 +44,7 @@ void CubeTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT3, _fScaleZ);
 	DDX_Control(pDX, IDC_LIST2, _SaveList);
 	DDX_Control(pDX, IDC_LIST3, _TextureList);
+	DDX_Control(pDX, IDC_LIST4, _LoadList);
 }
 
 BEGIN_MESSAGE_MAP(CubeTab, CDialog)
@@ -47,6 +54,8 @@ BEGIN_MESSAGE_MAP(CubeTab, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON3, &CubeTab::OnBnClickedScaleApply)
 	ON_BN_CLICKED(IDC_BUTTON5, &CubeTab::OnBnClickedScaleReset)
 	ON_BN_CLICKED(IDC_BUTTON6, &CubeTab::OnBnClickedLoadTextureList)
+	ON_LBN_SELCHANGE(IDC_LIST3, &CubeTab::OnLbnSelchangeTextureSelect)
+	ON_LBN_SELCHANGE(IDC_LIST4, &CubeTab::OnLbnSelchangeSelectLoadObject)
 END_MESSAGE_MAP()
 
 
@@ -57,47 +66,178 @@ void CubeTab::OnBnClickedCreateCube()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
+	if (_pTexture == nullptr)
+	{
+		MessageBoxA(nullptr, "텍스트가 없습니다.", "Create Cube Error", MB_OK);
+		return;
+	}
+
 	UpdateData(TRUE);
 
 	//GameObject* pGameObject;s
-	_pGameObject = GameObject::Instantiate();
-	_pGameObject->AddComponent(new CubeObject());
-
+	if (_pGameObject == nullptr)
+	{
+		_pGameObject = GameObject::Instantiate();
+		_pGameObject->AddComponent(new CubeObject(_pTexture));
+	}
+	else
+	{
+		MeshRenderer* renderer = static_cast<MeshRenderer*>(_pGameObject->GetComponent(COMPONENT_ID::RENDERER));
+		renderer->GetMaterialPTR()->SetTexture(_pTexture);
+	}
+	
 	UpdateData(FALSE);
 }
 
-
+//	저장하기
 void CubeTab::OnBnClickedDataSave()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// TODO: 큐브 ini 저장
 
-	CString  strTest;
+	int iIndex = _TextureList.GetCurSel();
 
-	INIMANAGER->AddData(strTest, strTest, strTest);
-	//INIMANAGER->SaveIni("Cube");
-
+	if (iIndex == -1)
+	{
+		MessageBoxA(nullptr, "목록이 비여있습니다.", "Save Error", MB_OK);
+		return; 
+	}
+	CString strObjectConun;
 
 	CString strNumber;
 	strNumber.Format(_T("%d"), _CubeNumber);
-	TCHAR	szName[MAX_PATH] = L"Cube";
-	lstrcat(szName, strNumber);
-	_SaveList.AddString(szName);
+
+	CString strName = L"Cube";
+	strName += strNumber;
+	_SaveList.AddString(strName);
 	_CubeNumber++;
+
+	std::string strSection;
+	strSection = CT2CA(strName);
+
+	std::string  strScaleX;
+	strScaleX = (std::to_string(_fScaleX));
+	std::string  strScaleY;
+	strScaleY = (std::to_string(_fScaleY));
+	std::string  strScaleZ;
+	strScaleZ = (std::to_string(_fScaleZ));
+
+
+	//	섹션 / 키값(고정된 값) / 넣고자 하는 데이터
+	INIMANAGER->AddData(/*섹션*/strSection, /*키값(고정값)*/"filePath", /*넣고 자 하는 데이터*/_strFilePath);
+	INIMANAGER->AddData(strSection, "scaleX", strScaleX);
+	INIMANAGER->AddData(strSection, "scaleY", strScaleY);
+	INIMANAGER->AddData(strSection, "scaleZ", strScaleZ);
+	INIMANAGER->SaveIni("Data/Cube");
 }
 
-
+//	불러오기
 void CubeTab::OnBnClickedDataLoad()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// TODO: 불러오기
+	if (_pGameObject)
+	{
+		MeshRenderer* renderer = static_cast<MeshRenderer*>(_pGameObject->GetComponent(COMPONENT_ID::RENDERER));
+		renderer->GetMaterialPTR()->SetTexture(nullptr);
+	}
+
+	if (_vecObject.empty() == false)
+	{
+		MessageBoxA(nullptr, "파일이 로드되어있습니다.", "Load Error", MB_OK);
+		return;
+	}
+
+	int iCount = 0;
+	while (true)
+	{
+		CString strNumber;
+		strNumber.Format(_T("%d"), iCount);
+
+		CString strName = L"Cube";
+		strName += strNumber;
+
+		std::string strSection;
+		strSection = CT2CA(strName);
+
+		std::string strLoadFilePath;
+		strLoadFilePath = INIMANAGER->LoadDataString("Data/Cube", strSection,"filepath");
+
+		if (strcmp("",strLoadFilePath.c_str()) == 0)
+			break;
+
+		std::string strLoadScaleX;
+		strLoadScaleX = INIMANAGER->LoadDataString("Data/Cube", strSection, "scaleX");
+
+		std::string strLoadScaleY;
+		strLoadScaleY = INIMANAGER->LoadDataString("Data/Cube", strSection, "scaleY");
+
+		std::string strLoadScaleZ;
+		strLoadScaleZ = INIMANAGER->LoadDataString("Data/Cube", strSection, "scaleZ");
+
+		_fScaleX = stof(strLoadScaleX);
+		_fScaleY = stof(strLoadScaleY);
+		_fScaleZ = stof(strLoadScaleZ);
+
+		size_t split;
+		split = strLoadFilePath.find('\\');
+
+		std::string strKey;
+		strKey = strLoadFilePath.substr(split);
+
+		std::wstring wstrKey;
+		wstrKey.assign(strKey.begin(), strKey.end());
+		_LoadList.AddString(wstrKey.c_str());
+
+		wstrKey.assign(strSection.begin(), strSection.end());
+
+		Texture* pTexture = new Texture();
+		pTexture->Init(D3D9DEVICE->GetDevice(), strLoadFilePath.c_str());
+
+		_mapTex.insert(std::make_pair(wstrKey, std::make_pair(strLoadFilePath, pTexture)));
+			
+		GameObject* pGameObject = GameObject::Instantiate();
+		pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
+		pGameObject->AddComponent(new CubeObject(pTexture));
+
+		pGameObject->SetActive(false);
+		_vecObject.push_back(pGameObject);
+
+		iCount++;
+	}
+
 }
 
+void CubeTab::OnLbnSelchangeSelectLoadObject()
+{
+	// TODO: Load Object Render Check
+
+	if (_vecObject.empty())
+	{
+		MessageBoxA(nullptr, "Object 목록이 비였습니다.", "Object List Error", MB_OK);
+		return;
+	}
+
+	int iIndex = _LoadList.GetCurSel();
+	size_t ObjectListSize = _vecObject.size();
+
+	for (size_t i = 0; i < ObjectListSize; i++)
+	{
+		_vecObject[i]->SetActive(false);
+	}
+
+	_vecObject[iIndex]->SetActive(true);
+}
 
 void CubeTab::OnBnClickedScaleApply()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// TODO: Scale 변화
 
 	UpdateData(TRUE);
 	
+	if (_pGameObject == nullptr)
+	{
+		MessageBoxA(nullptr, "오브젝트가 없습니다.", "Scale Apply Error", MB_OK);
+		return;
+	}
 	_pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
 
 	UpdateData(FALSE);
@@ -106,8 +246,14 @@ void CubeTab::OnBnClickedScaleApply()
 
 void CubeTab::OnBnClickedScaleReset()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// TODO: Scale 초기화
 	UpdateData(TRUE);
+
+	if (_pGameObject == nullptr)
+	{
+		MessageBoxA(nullptr, "오브젝트가 없습니다.", "Scale Reset Error", MB_OK);
+		return;
+	}
 
 	_fScaleX = 1.f;
 	_fScaleY = 1.f;
@@ -121,54 +267,88 @@ void CubeTab::OnBnClickedScaleReset()
 
 void CubeTab::OnBnClickedLoadTextureList()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// TODO: .dds 큐브 Texture 파일 정보
+
+	if (_pGameObject)
+	{
+		MeshRenderer* renderer = static_cast<MeshRenderer*>(_pGameObject->GetComponent(COMPONENT_ID::RENDERER));
+		renderer->GetMaterialPTR()->SetTexture(nullptr);
+	}
+
+	if (_mapTex.empty() == false)
+	{
+		for (auto iter = _mapTex.begin(); iter != _mapTex.end(); iter++)
+		{
+			if ((iter->second).second != nullptr)
+				delete (iter->second).second;
+		}
+
+		_mapTex.clear();
+	}
+	
+	_TextureList.ResetContent();
 
 	TCHAR szFilePath[MAX_PATH] = L"";
-	CFileDialog Dlg(true, L"dds", L"*.dds", OFN_ALLOWMULTISELECT);
+	CFileDialog Dlg(true, L".dds", L"*.dds", OFN_ALLOWMULTISELECT);
 
-	WCHAR    strFile[512] = {};
+	char szCurrentPath[MAX_PATH] = {};
+	GetCurrentDirectoryA(MAX_PATH, szCurrentPath);
+	std::string currPath = szCurrentPath;
+	currPath += "/Resource";
 
-	CString fileName;
-
-	Dlg.m_ofn.lpstrFile = strFile;
-	Dlg.m_ofn.lpstrFile = fileName.GetBuffer(512);
-	Dlg.m_ofn.nMaxFile = sizeof(strFile);
-	Dlg.m_ofn.nMaxFile = 512;
-
-	GetCurrentDirectory(MAX_PATH, szFilePath);
-
-	PathRemoveFileSpec(szFilePath);
-	lstrcat(szFilePath, L"\Resource");
-
-	Dlg.m_ofn.lpstrInitialDir = szFilePath;
-
-	CString test;
-
-	if (IDOK == Dlg.DoModal())
+	for (auto& entry : fs::directory_iterator(currPath))
 	{
-		POSITION pos(Dlg.GetStartPosition());
-		while (pos)
+		if (entry.is_directory())
+			continue;
+
+		std::string filePath = entry.path().u8string();
+		size_t split = filePath.find('.');
+		std::string fileExtension = filePath.substr(split);
+		
+		if (fileExtension == ".dds")
 		{
-			//CString filename = Dlg.GetNextPathName(pos);
-			CString strFilePath = Dlg.GetNextPathName(pos);
-			test += strFilePath;
+			split = filePath.find_last_of('\\');
+			std::string tempStr = filePath.substr(split);
 
-			lstrcpy(szFilePath, strFilePath);
+			std::wstring temp;
+			temp.assign(tempStr.begin(), tempStr.end());
 
-			HANDLE hFile = CreateFile(strFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+			_TextureList.AddString(temp.c_str());
 
-			if (INVALID_HANDLE_VALUE == hFile)
-				continue;
+			std::string RealFilePath;
+			split = filePath.find('/');
 
-			TCHAR szCurrentPath[MAX_PATH] = {};
-			GetCurrentDirectory(MAX_PATH, szCurrentPath);
-			TCHAR szRelativePath[MAX_PATH] = {};
+			RealFilePath = filePath.substr(split);
+			split = RealFilePath.find('R');
+			RealFilePath = RealFilePath.substr(split);
 
-			PathRelativePathTo(szRelativePath, szCurrentPath, FILE_ATTRIBUTE_DIRECTORY, strFilePath.GetString(), FILE_ATTRIBUTE_DIRECTORY);
+			Texture* tex = new Texture();
+			tex->Init(D3D9DEVICE->GetDevice(), RealFilePath.c_str());
 
-			CString wstrRelativePath = CString(szRelativePath);
-			_TextureList.AddString(wstrRelativePath);
+			_mapTex.insert(std::make_pair(temp, std::make_pair(RealFilePath, tex)));
 		}
-		//int a = 0;
 	}
 }
+
+
+void CubeTab::OnLbnSelchangeTextureSelect()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	int iIndex = _TextureList.GetCurSel();
+
+	CString cstrTextureName;
+	_TextureList.GetText(iIndex, cstrTextureName);
+
+	auto iter = _mapTex.find(cstrTextureName.GetString());
+
+	if (iter != _mapTex.end())
+	{
+		_pTexture = _mapTex[cstrTextureName.GetString()].second;
+		_strFilePath = _mapTex[cstrTextureName.GetString()].first;
+	}
+	else
+		_pTexture = nullptr;
+}
+
+
