@@ -7,6 +7,9 @@
 #define IDR_MAINFRAME                   128
 #define IDR_ParticleEditorTYPE          130
 #define IDD_ParticleForm                310
+#define IDD_BoxForm                     311
+#define IDD_SphereForm                  312
+#define IDD_ConeForm                    313
 #define IDC_CHK_LOOP                    1000
 #define IDC_EDIT_DURATION               1001
 #define IDC_EDIT_LIFETIME               1002
@@ -37,14 +40,25 @@
 #define IDC_CHK_AWAKE                   1037
 #define IDC_EDIT_G                      1038
 #define IDC_EDIT_B                      1039
+#define IDC_STATIC_RECT                 1041
+#define IDC_EDIT_X                      1042
+#define IDC_STATIC_X                    1043
+#define IDC_STATIC_Y                    1044
+#define IDC_STATIC_RADIUS               1044
+#define IDC_EDIT_Y                      1045
+#define IDC_EDIT_RADIUS                 1045
+#define IDC_STATIC_Z                    1046
+#define IDC_EDIT_ANGLE                  1046
+#define IDC_EDIT_Z                      1047
+#define IDC_STATIC_ANGLE                1047
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        311
+#define _APS_NEXT_RESOURCE_VALUE        314
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1041
-#define _APS_NEXT_SYMED_VALUE           311
+#define _APS_NEXT_CONTROL_VALUE         1047
+#define _APS_NEXT_SYMED_VALUE           314
 #endif
 #endif

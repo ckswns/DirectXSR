@@ -41,6 +41,15 @@
     <Filter Include="01. Tool View\ColorDlg">
       <UniqueIdentifier>{6198eb01-e236-410a-b70b-25de3e96bca1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Tool View\BoxForm">
+      <UniqueIdentifier>{97eb3976-655e-4365-8660-791ea3358c12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Tool View\SphereForm">
+      <UniqueIdentifier>{415e0472-11b5-47f0-b49b-060654c7be26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Tool View\ConeForm">
+      <UniqueIdentifier>{e9a498df-d2e4-438b-8ef8-cf24be07a6c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -94,6 +103,21 @@
     <ClInclude Include="ColorDlg.h">
       <Filter>01. Tool View\ColorDlg</Filter>
     </ClInclude>
+    <ClInclude Include="Editor_Enum.h">
+      <Filter>98. Include</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxForm.h">
+      <Filter>01. Tool View\BoxForm</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor_Math.h">
+      <Filter>98. Include</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereForm.h">
+      <Filter>01. Tool View\SphereForm</Filter>
+    </ClInclude>
+    <ClInclude Include="ConeForm.h">
+      <Filter>01. Tool View\ConeForm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -128,6 +152,15 @@
     </ClCompile>
     <ClCompile Include="ColorDlg.cpp">
       <Filter>01. Tool View\ColorDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxForm.cpp">
+      <Filter>01. Tool View\BoxForm</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereForm.cpp">
+      <Filter>01. Tool View\SphereForm</Filter>
+    </ClCompile>
+    <ClCompile Include="ConeForm.cpp">
+      <Filter>01. Tool View\ConeForm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

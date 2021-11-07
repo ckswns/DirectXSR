@@ -5,7 +5,7 @@
 BillBordParticle::BillBordParticle(LPDIRECT3DDEVICE9 pDev) noexcept
 	:Component(COMPONENT_ID::RENDERER), _pGraphicDev(pDev),
 	_bPlay(true), _bLoop(true), _fSpeed(1.f), _fEmitTime(0), _fTime(0),
-	_iMaxParticles(50), _fEmitRate(5), _fDuration(5.f), _vGravity(Vector3::zero)
+	_iMaxParticles(50), _fEmitRate(5), _fDuration(5.f), _vBox(Vector3::one), _fRadius(1), _fAngle(25.f), _fHeight(5.f)
 {
 }
 
@@ -60,6 +60,8 @@ void BillBordParticle::Update(float fElapsedTime) noexcept
 			AddParticle();
 		}
 	}
+
+	//파티클 이동
 	std::list<PARTICLE_ATRRI*>::iterator iter;
 	//while (iter != _pParticles.end())
 	for ( iter = _pParticles.begin(); iter != _pParticles.end(); iter++)
@@ -88,6 +90,7 @@ void BillBordParticle::Update(float fElapsedTime) noexcept
 		}
 	}
 
+	//빌보드
 	D3DXMATRIX	matWorld, matView, matBill;
 	D3DXMatrixIdentity(&matBill);
 
@@ -118,9 +121,6 @@ void BillBordParticle::Render(void) noexcept
 //	_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, false);
 
 	_pGraphicDev->SetTexture(0, _pTexture);
-//	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE); /// 첫번째 섞을 색은 텍스쳐 색
-//	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE); /// 두번째 섞을 색은 정점의 색
-
 
 	_pGraphicDev->SetFVF(FVF_VTXCOLTEX);
 	_pGraphicDev->SetStreamSource(0, _pVB, 0, sizeof(VTXCOLTEX));
@@ -217,6 +217,10 @@ void BillBordParticle::Render(void) noexcept
 		}
 		else
 		{
+			PARTICLE_ATRRI* pParticle = *iter;
+			delete pParticle;
+			pParticle = nullptr;
+
 			iter = _pParticles.erase(iter);
 		}
 	}
@@ -295,10 +299,68 @@ void BillBordParticle::InitBuffer()
 void BillBordParticle::ResetParticle(PARTICLE_ATRRI* attribute)
 {
 	*attribute = _tOrign;
-	attribute->_vPosition.x += ce::CE_MATH::Random(10);
-	attribute->_vPosition.y += ce::CE_MATH::Random(3);
-	attribute->_vPosition.z += ce::CE_MATH::Random(5);
-	attribute->_vVelocity.x += ce::CE_MATH::Random(1);
+	
+	switch ((SHAPE)_iShape)
+	{
+	case SHAPE_BOX:
+	/*	attribute->_vPosition.x += ce::CE_MATH::Random(_vBox._x);
+		attribute->_vPosition.y += ce::CE_MATH::Random(_vBox._y);
+		attribute->_vPosition.z += ce::CE_MATH::Random(_vBox._z);*/
+		attribute->_vPosition.x += UnsignedRandomf(_vBox._x);
+		attribute->_vPosition.y += UnsignedRandomf(_vBox._y);
+		attribute->_vPosition.z += UnsignedRandomf(_vBox._z);
+		attribute->_vVelocity = Vector3(0, 1, 0);
+		break;
+	case SHAPE_CONE:
+	{
+		float fX = SignedRandomf(_fRadius);
+		float fZ = SignedRandomf(_fRadius);
+		attribute->_vPosition.x = fX;
+		attribute->_vPosition.y = 0;
+		attribute->_vPosition.z = fZ;
+
+		float angleX = (_fAngle * (fabs(fX) / _fRadius)) * (PI / 180);
+		float addX = sinf(angleX) * (_fHeight / cosf(angleX));
+		if (fX > 0) fX += addX;
+		else	fX -= addX;
+
+		float angleZ = (_fAngle*(fabs(fZ) / _fRadius))* (PI / 180);
+		float addZ = sinf(angleZ) * (_fHeight / cosf(angleZ));
+		if (fZ > 0) fZ += addZ;
+		else	fZ -= addZ;
+
+		Vector3 vUpper(fX, _fHeight, fZ);
+		D3DXVECTOR3 vDir = vUpper - attribute->_vPosition;
+		//vDir.Nomalize();
+		D3DXVec3Normalize(&vDir, &vDir);
+		attribute->_vVelocity = vDir;
+
+	}break;
+	
+	case SHAPE_SPHERE:
+	{
+		float x = SignedRandomf(_fRadius);
+		float z = SignedRandomf(_fRadius);
+
+		attribute->_vPosition.x += x;
+		attribute->_vPosition.z += z;
+		/*
+		z = r * cos(theta) >> theta = acos(z/r)
+		x = sin(theta) * cos(phi)*r >> phi = acos(x / (sin(theta)*r))
+		y = r*cos(theta)
+		*/
+		float theta = acosf((z / _fRadius));
+
+		float maxY = _fRadius * cosf(theta);
+
+		if (maxY < 0) maxY = 1;
+		attribute->_vPosition.y += SignedRandomf(maxY);
+
+		Vector3 vDir = attribute->_vPosition - _pTrans->GetLocalPosition();
+		attribute->_vVelocity = vDir.Nomalized();
+	}	break;
+
+	}
 }
 
 void BillBordParticle::AddParticle()

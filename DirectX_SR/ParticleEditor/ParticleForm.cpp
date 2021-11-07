@@ -7,22 +7,32 @@
 
 #include "ParticleSys.h"
 #include "Transform.h"
-
+#include "BoxForm.h"
+#include "SphereForm.h"
+#include "ConeForm.h"
 // CParticleForm
 
 IMPLEMENT_DYNCREATE(CParticleForm, CFormView)
 
 CParticleForm::CParticleForm()
-	: CFormView(IDD_ParticleForm)
+	: CFormView(IDD_ParticleForm), _pBoxForm(nullptr)
 	, _strDuration(_T("5"))	, _strLifeTime(_T("5")), _strSpeed(_T("1"))	, _strSize(_T("0.2"))
 	, _strGravity(_T("0")), _strMax(_T("50")), _strEmitRate(_T("5"))
 	, _strR(_T("255")), _strG(_T("255")), _strB(_T("255")), _strA(_T("255"))
 {
-
+	__noop;
 }
 
 CParticleForm::~CParticleForm()
 {
+	//_pBoxForm->DestroyWindow();
+	_pBoxForm = nullptr;
+
+//	_pSphereForm->DestroyWindow();
+	_pSphereForm = nullptr;
+
+//	_pConeForm->DestroyWindow();
+	_pConeForm = nullptr;
 }
 
 void CParticleForm::DoDataExchange(CDataExchange* pDX)
@@ -39,6 +49,8 @@ void CParticleForm::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_A, _strA);
 	DDX_Text(pDX, IDC_EDIT_MAXPARTICLES, _strMax);
 	DDX_Text(pDX, IDC_EDIT_EMITRATE, _strEmitRate);
+	DDX_Control(pDX, IDC_SHAPECOMBO, _ComboBox);
+
 }
 
 BEGIN_MESSAGE_MAP(CParticleForm, CFormView)
@@ -59,6 +71,8 @@ BEGIN_MESSAGE_MAP(CParticleForm, CFormView)
 	ON_EN_CHANGE(IDC_EDIT_G, &CParticleForm::OnEnChangeEditColor)
 	ON_EN_CHANGE(IDC_EDIT_B, &CParticleForm::OnEnChangeEditColor)
 	ON_EN_CHANGE(IDC_EDIT_A, &CParticleForm::OnEnChangeEditColor)
+	ON_CBN_SELCHANGE(IDC_SHAPECOMBO, &CParticleForm::OnCbnSelchangeShapecombo)
+	ON_BN_CLICKED(IDC_CHK_AWAKE, &CParticleForm::OnBnClickedChkAwake)
 END_MESSAGE_MAP()
 
 // CParticleForm 진단
@@ -103,6 +117,7 @@ void CParticleForm::OnInitialUpdate()
 //	CFormView::OnInitialUpdate();
 
 	CheckDlgButton(IDC_CHK_LOOP, TRUE);
+	CheckDlgButton(IDC_CHK_AWAKE, TRUE);
 
 	_strDuration = "5";
 	_strLifeTime = "5";
@@ -115,6 +130,11 @@ void CParticleForm::OnInitialUpdate()
 	_strB = "255";
 	_strA = "255";
 	UpdateData(FALSE);
+
+	_ComboBox.AddString(L"Box");
+	_ComboBox.AddString(L"Cone");
+	_ComboBox.AddString(L"Sphere");
+	AllocForms();
 
 	_ColorDlg = new ColorDlg(this);
 
@@ -176,4 +196,69 @@ void CParticleForm::OnEnChangeEditColor()
 	_ColorDlg->m_cc.rgbResult = RGB(r, g, b);
 
 	_pParticle->SetColor(D3DXCOLOR(r * value, g * value, b * value, a));
+}
+
+void CParticleForm::OnCbnSelchangeShapecombo()
+{
+	int iCurSel = _ComboBox.GetCurSel();
+	_pParticle->SetShap(iCurSel);
+	ShowForm(iCurSel);
+}
+
+void CParticleForm::AllocForms()
+{
+	CCreateContext context;
+	ZeroMemory(&context, sizeof(context));
+
+	CRect rect;
+	GetDlgItem(IDC_STATIC_RECT)->GetWindowRect(&rect);
+	ScreenToClient(&rect);
+
+	_pBoxForm = new BoxForm();
+	_pBoxForm->Create(NULL, NULL, WS_CHILD, rect, this, IDD_BoxForm,&context);
+	_pBoxForm->OnInitialUpdate();
+	_pBoxForm->ShowWindow(SW_HIDE);
+
+	_pSphereForm = new SphereForm();
+	_pSphereForm->Create(NULL, NULL, WS_CHILD, rect, this, IDD_SphereForm, &context);
+	_pSphereForm->OnInitialUpdate();
+	_pSphereForm->ShowWindow(SW_HIDE);
+
+	_pConeForm = new ConeForm;
+	_pConeForm->Create(NULL, NULL, WS_CHILD, rect, this, IDD_ConeForm, &context);
+	_pConeForm->OnInitialUpdate();
+	_pConeForm->ShowWindow(SW_HIDE);
+
+	GetDlgItem(IDC_STATIC_RECT)->DestroyWindow();
+}
+
+void CParticleForm::ShowForm(int idx)
+{
+	switch (idx)
+	{
+	case 0:
+		_pBoxForm->ShowWindow(SW_SHOW);
+		_pSphereForm->ShowWindow(SW_HIDE);
+		_pConeForm->ShowWindow(SW_HIDE);
+		break;
+	case 1:
+		_pBoxForm->ShowWindow(SW_HIDE);
+		_pSphereForm->ShowWindow(SW_HIDE);
+		_pConeForm->ShowWindow(SW_SHOW);
+		break;
+	case 2:
+		_pBoxForm->ShowWindow(SW_HIDE);
+		_pSphereForm->ShowWindow(SW_SHOW);
+		_pConeForm->ShowWindow(SW_HIDE);
+		break;
+	}
+}
+
+
+void CParticleForm::OnBnClickedChkAwake()
+{
+	if (IsDlgButtonChecked(IDC_CHK_AWAKE))
+		_pParticle->SetPlayOnAWake(true);
+	else
+		_pParticle->SetPlayOnAWake(false);
 }
