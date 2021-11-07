@@ -34,6 +34,7 @@ private:	BillBordParticle* _pParticle;
 public:
 	CString _strRadius;
 	afx_msg void OnEnChangeEditRadius();
+	void SetRadius(float radius);
 };
 
 

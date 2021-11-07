@@ -62,14 +62,4 @@ typedef struct tagParticleAttribute
 
 }PARTICLE_ATRRI;
 
-typedef struct tagShapeOption
-{
-	tagShapeOption()
-	{
-		_fRadius = 1.f;
-		_fAngle	 = 0.f;
-	}
-	float _fRadius;
-	float _fAngle;
-}SHAPEOPTION;
 #endif

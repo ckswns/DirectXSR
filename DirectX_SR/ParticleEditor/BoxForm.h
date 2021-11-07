@@ -34,6 +34,7 @@ public:	afx_msg void OnEnChangeEdit();
 private:	CString _strX;
 private:	CString _strY;
 private:	CString _strZ;
+public:  void SetBoxSize(float x, float y, float z);
 
 
 private:	BillBordParticle* _pParticle;

@@ -21,7 +21,7 @@ private:		void								Reset();
 public:		void								Play();
 public:		void								Stop();
 
-public:		void								SetPlayOnAWake(bool b) { _bPlay = b; }
+public:		void								SetPlayOnAWake(bool b) { _bAwake = b; }
 public:		void								SetLoop(bool loop) { _bLoop = loop; }
 public:		void								SetDuration(float duration) { _fDuration = duration; }
 public:		void								SetSpeed(float speed) { _fSpeed = speed; }
@@ -33,11 +33,26 @@ public:		void								SetLifeTime(float lifeTime) { _tOrign._fLifeTime = lifeTime
 public:		void								SetSize(float size) { _tOrign._fSize = size; }
 public:		void								SetColor(D3DXCOLOR color) { _tOrign._dwColor = color; }
 
-public:		void								SetShap(int shape) { _iShape = shape; }
+public:		void								SetShape(int shape) { _iShape = shape; }
 public:		void								SetBoxSize(Vector3 size) { _vBox = size; }
 public:		void								SetRadius(float r) { _fRadius = r; }
 public:		void								SetAngle(float ang) { _fAngle = ang; }
 
+public:		const bool								IsPlayOnAWake() { return _bAwake; }
+public:		const bool								IsLoop() { return _bLoop; }
+public:		const float								GetDuration() { return _fDuration; }
+public:		const float								GetSpeed() { return _fSpeed; }
+public:		const float								GetGravity() { return _fGravity; }
+public:		const float								GetEmitRate() { return _fEmitRate; }
+public:		const float								GetMaxParticles() { return _iMaxParticles; }												
+public:		const PARTICLE_ATRRI*			GetOrign() { return &_tOrign; }
+													
+public:		const int									GetShape() { return _iShape; }
+public:		const D3DXVECTOR3		GetBoxSize() { return _vBox; }
+public:		const float								GetRadius() { return _fRadius; }
+public:		const float								GetAngle() { return _fAngle; }
+
+private:	 bool											_bAwake;
 private:	 bool											_bPlay;
 private:	 bool											_bLoop;
 private:	 float											_fDuration;			//파티클 전체 시간 
@@ -49,7 +64,7 @@ private:	 float											_fEmitTime;
 private:	 int											_iMaxParticles;  //파티클 최대 수
 
 private:	 int											_iShape;
-private:	 Vector3										_vBox;
+private:	 D3DXVECTOR3							_vBox;
 private:	float											_fRadius;
 private:	float											_fAngle;
 private: float											_fHeight;

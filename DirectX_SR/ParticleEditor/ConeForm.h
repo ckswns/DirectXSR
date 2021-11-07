@@ -35,6 +35,7 @@ public:
 	CString _strRadius;
 	CString _strAngle;
 	afx_msg void OnEnChangeEdit();
+	void SetOption(float radius,float angle);
 };
 
 

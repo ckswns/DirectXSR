@@ -51,6 +51,8 @@
 #define IDC_EDIT_ANGLE                  1046
 #define IDC_EDIT_Z                      1047
 #define IDC_STATIC_ANGLE                1047
+#define IDC_BTN_SAVE                    1047
+#define IDC_BTN_LOAD                    1048
 
 // Next default values for new objects
 // 
@@ -58,7 +60,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        314
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1047
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           314
 #endif
 #endif

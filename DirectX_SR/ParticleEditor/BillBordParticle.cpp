@@ -4,26 +4,24 @@
 
 BillBordParticle::BillBordParticle(LPDIRECT3DDEVICE9 pDev) noexcept
 	:Component(COMPONENT_ID::RENDERER), _pGraphicDev(pDev),
-	_bPlay(true), _bLoop(true), _fSpeed(1.f), _fEmitTime(0), _fTime(0),
+	_bAwake(true),_bPlay(true), _bLoop(true), _fSpeed(1.f), _fEmitTime(0), _fTime(0),
 	_iMaxParticles(50), _fEmitRate(5), _fDuration(5.f), _vBox(Vector3::one), _fRadius(1), _fAngle(25.f), _fHeight(5.f)
 {
 }
 
 void BillBordParticle::Init(void) noexcept
 {
-	_dwVbSize = 2048; //Äõµå 512°³
-	_dwIbSize = _dwVbSize / 2;
+	//¹öÆÛ ÃÖ´ë°ª 
+	_dwVbSize = 4056; //Äõµå 1024°³
+	_dwIbSize = _dwVbSize * 0.5f;
 
 	InitBuffer();
 
 	_dwVbOffset = 0;
-	_dwVbBathSize = 512;//Äõµå 128°³
+	_dwVbBathSize =1024;//Äõµå 256°³
 
 	_dwIbOffset = 0;
-	_dwIbBathSize = _dwVbBathSize / 2;
-
-	/*for (int i = 0; i < 5; i++)
-		AddParticle();*/
+	_dwIbBathSize = _dwVbBathSize * 0.5f;
 
 	_pTrans = GetGameObject()->GetTransform();
 
@@ -130,7 +128,8 @@ void BillBordParticle::Render(void) noexcept
 	matWorld = _pTrans->GetWorldMatrix();
 	_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-	if (_dwVbOffset >= _dwVbSize) {
+	if (_dwVbOffset >= _dwVbSize) 
+	{
 		_dwVbOffset = 0;
 		_dwIbOffset = 0;
 	}
@@ -149,7 +148,6 @@ void BillBordParticle::Render(void) noexcept
 	DWORD numParticlesInBatch = 0;
 
 	std::list<PARTICLE_ATRRI*>::iterator iter = _pParticles.begin();
-	//for (iter = _pParticles.begin(); iter != _pParticles.end(); ++iter)
 	while (iter != _pParticles.end())
 	{
 		if ((*iter)->_bIsAlive)
@@ -177,8 +175,8 @@ void BillBordParticle::Render(void) noexcept
 			v->dwColor = ((*iter)->_dwColor);
 			v->vTexUV = D3DXVECTOR2(0.f, 1.f);
 			++v;
-
 			++pIndex;
+
 			pIndex->_0 = numParticlesInBatch;
 			pIndex->_1 = numParticlesInBatch + 2;
 			pIndex->_2 = numParticlesInBatch + 3;
@@ -195,7 +193,7 @@ void BillBordParticle::Render(void) noexcept
 				_pGraphicDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, _dwVbOffset, numParticlesInBatch, _dwIbOffset, (numParticlesInBatch / 2));
 
 				_dwVbOffset += _dwVbBathSize;
-				_dwIbOffset += (_dwVbBathSize / 2);
+				_dwIbOffset += (_dwIbBathSize);
 				if (_dwVbOffset >= _dwVbSize)
 				{
 					_dwVbOffset = 0;
@@ -303,12 +301,9 @@ void BillBordParticle::ResetParticle(PARTICLE_ATRRI* attribute)
 	switch ((SHAPE)_iShape)
 	{
 	case SHAPE_BOX:
-	/*	attribute->_vPosition.x += ce::CE_MATH::Random(_vBox._x);
-		attribute->_vPosition.y += ce::CE_MATH::Random(_vBox._y);
-		attribute->_vPosition.z += ce::CE_MATH::Random(_vBox._z);*/
-		attribute->_vPosition.x += UnsignedRandomf(_vBox._x);
-		attribute->_vPosition.y += UnsignedRandomf(_vBox._y);
-		attribute->_vPosition.z += UnsignedRandomf(_vBox._z);
+		attribute->_vPosition.x += SignedRandomf((_vBox.x*0.5f));
+		attribute->_vPosition.y += SignedRandomf((_vBox.y*0.5f));
+		attribute->_vPosition.z += SignedRandomf((_vBox.z*0.5f));
 		attribute->_vVelocity = Vector3(0, 1, 0);
 		break;
 	case SHAPE_CONE:
@@ -329,9 +324,8 @@ void BillBordParticle::ResetParticle(PARTICLE_ATRRI* attribute)
 		if (fZ > 0) fZ += addZ;
 		else	fZ -= addZ;
 
-		Vector3 vUpper(fX, _fHeight, fZ);
+		D3DXVECTOR3 vUpper(fX, _fHeight, fZ);
 		D3DXVECTOR3 vDir = vUpper - attribute->_vPosition;
-		//vDir.Nomalize();
 		D3DXVec3Normalize(&vDir, &vDir);
 		attribute->_vVelocity = vDir;
 

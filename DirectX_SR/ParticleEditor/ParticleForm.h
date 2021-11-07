@@ -71,6 +71,8 @@ private: CComboBox			 _ComboBox;
 
 public:
 	afx_msg void OnBnClickedChkAwake();
+	afx_msg void OnBnClickedBtnSave();
+	afx_msg void OnBnClickedBtnLoad();
 };
 
 

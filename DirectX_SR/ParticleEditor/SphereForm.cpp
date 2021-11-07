@@ -71,3 +71,9 @@ void SphereForm::OnEnChangeEditRadius()
 	UpdateData(TRUE);
 	_pParticle->SetRadius(_ttof(_strRadius));
 }
+
+void SphereForm::SetRadius(float radius)
+{
+	_strRadius.Format(_T("%.1f"), radius);
+	UpdateData(FALSE);
+}

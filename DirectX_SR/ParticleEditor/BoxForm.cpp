@@ -78,3 +78,12 @@ void BoxForm::OnEnChangeEdit()
 	UpdateData(TRUE);
 	_pParticle->SetBoxSize(Vector3(_ttof(_strX), _ttof(_strY), _ttof(_strZ)));
 }
+
+void BoxForm::SetBoxSize(float x, float y, float z)
+{
+	_strX.Format(_T("%.1f"), x);
+	_strY.Format(_T("%.1f"), y);
+	_strZ.Format(_T("%.1f"), z);
+
+	UpdateData(FALSE);
+}

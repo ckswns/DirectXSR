@@ -72,3 +72,10 @@ void ConeForm::OnEnChangeEdit()
 	_pParticle->SetRadius(_ttof(_strRadius));
 	_pParticle->SetAngle(_ttof(_strAngle));
 }
+
+void ConeForm::SetOption(float radius, float angle)
+{
+	_strRadius.Format(_T("%.1f"), radius);
+	_strAngle.Format(_T("%.1f"), angle);
+	UpdateData(FALSE);
+}
