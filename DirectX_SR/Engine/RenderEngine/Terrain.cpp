@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Terrain.h"
+#include "Assertion.h"
 
 namespace ce
 {
-	Terrain::Terrain(uint16 width, uint16 height, float scaleFactor) noexcept :
+	Terrain::Terrain(uint64 width, uint64 height, float scaleFactor) noexcept :
 		Mesh(scaleFactor),
 		_width(width),
 		_height(height)
@@ -13,10 +14,10 @@ namespace ce
 
 	bool Terrain::Open(LPDIRECT3DDEVICE9 pDevice) noexcept
 	{
-		_nFVF = FVF_TEX;
+		_nFVF = FVF_TEX_NORM;
 		_nTriCnt = (_width - 1) * (_height - 1) * 2;
 		_nVtxCnt = _width * _height;
-		_nVtxSize = sizeof(VTXTEX);
+		_nVtxSize = sizeof(VTXTEXNORM);
 
 		_idxFmt = D3DFMT_INDEX32;
 		_nIdxSize = sizeof(INDEX32);
@@ -28,44 +29,43 @@ namespace ce
 			CE_ASSERT("ckswns", "Mesh::Open에 실패하였습니다");
 		}
 
-		VTXTEX* pVertex = nullptr;
+		VTXTEXNORM* pVertex = nullptr;
 
 		D3DXVECTOR3 e0, e1;
 		D3DXVECTOR3 normal;
 
-		uint64		index = 0;
-		uint64		triCnt = 0;
+		DWORD index = 0;
 
-		_pVB->Lock(0, 0, (void**)&pVertex, 0);
+		if (FAILED(_pVB->Lock(0, 0, (void**)&pVertex, 0)))
+			CE_ASSERT("ckswns", "VtxBuffer::Lock 함수 호출에 실패하였습니다");
 
-		for (uint64 i = 0; i < _height; ++i)
+		for (DWORD z = 0; z < _height; ++z)
 		{
-			for (uint64 j = 0; j < _width; ++j)
+			for (DWORD x = 0; x < _width; ++x)
 			{
-				index = i * _width + j;
+				index = z * _width + x;
 
-				pVertex[index].vPosition = D3DXVECTOR3(float(j * interval),
-														0,
-														float(i * interval));
-				pVertex[index].vTexUV = D3DXVECTOR2(float(j) / (_width - 1),
-													float(i) / (_height - 1));
+				pVertex[index].vPosition = D3DXVECTOR3((x * interval), 0.f, (z * interval));
+				pVertex[index].vTexUV = D3DXVECTOR2(float(z) / (_height - 1), float(x) / (_width - 1));
 			}
 		}
 
+		uint64 triCnt = 0;
 		INDEX32* pIndex = nullptr;
 
-		_pIB->Lock(0, 0, (void**)&pIndex, 0);
+		if (FAILED(_pIB->Lock(0, 0, (void**)&pIndex, 0)))
+			CE_ASSERT("ckswns", "IdxBuffer::Lock 함수 호출에 실패하였습니다");
 
-		for (uint64 i = 0; i < _height - 1; ++i)
+		for (DWORD z = 0; z < _height - 1; ++z)
 		{
-			for (uint64 j = 0; j < _width - 1; ++j)
+			for (DWORD x = 0; x < _width - 1; ++x)
 			{
-				index = i * _width + j;
+				index = z * _width + x;
 
 				pIndex[triCnt]._0 = index + _width;
 				pIndex[triCnt]._1 = index + _width + 1;
 				pIndex[triCnt]._2 = index + 1;
-				triCnt++;
+				triCnt++;			 
 
 				pIndex[triCnt]._0 = index + _width;
 				pIndex[triCnt]._1 = index + 1;
@@ -74,22 +74,22 @@ namespace ce
 			}
 		}
 
-		//for (uint64 i = 0; i < triCnt; i++)
-		//{
-		//	e0 = pVertex[pIndex[i]._1].vPosition - pVertex[pIndex[i]._0].vPosition;
-		//	e1 = pVertex[pIndex[i]._2].vPosition - pVertex[pIndex[i]._0].vPosition;
+		for (DWORD i = 0; i < triCnt; i++)
+		{
+			e0 = pVertex[pIndex[i]._1].vPosition - pVertex[pIndex[i]._0].vPosition;
+			e1 = pVertex[pIndex[i]._2].vPosition - pVertex[pIndex[i]._0].vPosition;
 
-		//	D3DXVec3Cross(&normal, &e0, &e1);
+			D3DXVec3Cross(&normal, &e0, &e1);
 
-		//	pVertex[pIndex[i]._0].vNormal += normal;
-		//	pVertex[pIndex[i]._1].vNormal += normal;
-		//	pVertex[pIndex[i]._2].vNormal += normal;
-		//}
+			pVertex[pIndex[i]._0].vNormal += normal;
+			pVertex[pIndex[i]._1].vNormal += normal;
+			pVertex[pIndex[i]._2].vNormal += normal;
+		}
 
-		//for (uint64 i = 0; i < _nVtxCnt; i++)
-		//{
-		//	D3DXVec3Normalize(&pVertex[i].vNormal, &pVertex[i].vNormal);
-		//}
+		for (DWORD i = 0; i < _nVtxCnt; i++)
+		{
+			D3DXVec3Normalize(&pVertex[i].vNormal, &pVertex[i].vNormal);
+		}
 
 		_pVB->Unlock();
 		_pIB->Unlock();

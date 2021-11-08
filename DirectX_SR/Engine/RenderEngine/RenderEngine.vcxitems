@@ -17,7 +17,6 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Cube.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)D3D9Device.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Grid.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Light.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Material.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
@@ -29,7 +28,6 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Cube.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)D3D9Device.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Grid.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Light.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Material.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp" />

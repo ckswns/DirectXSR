@@ -23,9 +23,11 @@ namespace ce
 	{
 		if (pDevice == nullptr)
 			CE_ASSERT("ckswns", "Devcie객체가 nullptr입니다");
+
 		if (_texture != nullptr)
 			pDevice->SetTexture(0, _texture->GetTexturePTR());
-
+		else
+			pDevice->SetTexture(0, nullptr);
 		pDevice->SetMaterial(&_mat);
 	}
 }

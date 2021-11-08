@@ -25,7 +25,7 @@ void BillBordParticle::Init(void) noexcept
 
 	_pTrans = GetGameObject()->GetTransform();
 
-	if (FAILED(D3DXCreateTextureFromFile(_pGraphicDev, L"D:/SR/GitHunSR/DirectXSR/DirectX_SR/ParticleEditor/res/SS.tga", &_pTexture)))
+	if (FAILED(D3DXCreateTextureFromFile(_pGraphicDev, L"res/SS.tga", &_pTexture)))
 	{
 		MessageBoxW(NULL, L"Failed", L"Texture Error", MB_OK);
 	}
