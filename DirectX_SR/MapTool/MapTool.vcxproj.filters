@@ -47,6 +47,9 @@
     <Filter Include="04.SubView">
       <UniqueIdentifier>{db4bf9bd-536b-410a-828c-32f21814865e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\01.Structure">
+      <UniqueIdentifier>{ef02e703-7d30-4d25-93c7-d0a3f0e4f1bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrm.h">
@@ -97,6 +100,7 @@
     <ClInclude Include="MapToolSubView.h">
       <Filter>04.SubView</Filter>
     </ClInclude>
+    <ClInclude Include="Structure.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -132,6 +136,7 @@
     <ClCompile Include="MapToolSubView.cpp">
       <Filter>04.SubView</Filter>
     </ClCompile>
+    <ClCompile Include="Structure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MapTool.rc">

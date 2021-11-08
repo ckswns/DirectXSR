@@ -31,7 +31,7 @@ public:
 	afx_msg void OnBnClickedScaleApply();
 
 	GameObject*					_pGameObject;
-	std::vector<GameObject*>	_vecObject;
+	std::vector<std::pair<GameObject*,int>>	_vecObject;
 
 	afx_msg void OnBnClickedScaleReset();
 	CListBox _SaveList;
@@ -40,9 +40,15 @@ public:
 
 	uint8	_CubeNumber;
 	afx_msg void OnBnClickedLoadTextureList();
+
 	std::string		_strFilePath;
 	std::map<std::wstring, std::pair<std::string, Texture*>> _mapTex;
+
 	afx_msg void OnLbnSelchangeTextureSelect();
 	Texture* _pTexture;
 	afx_msg void OnLbnSelchangeSelectLoadObject();
+	afx_msg void OnBnClickedPickingSave();
+	afx_msg void OnBnClickedPickingLoad();
+	afx_msg void OnEnChangeCubeFloor();
+	int iFloor;
 };

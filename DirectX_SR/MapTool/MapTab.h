@@ -41,6 +41,8 @@ public:
 	CListBox _TextureList;
 
 	std::map<std::wstring, std::pair<std::string, Texture*>> _mapTex;
+
+	std::vector<Texture*> _vecTex;
 	afx_msg void OnLbnSelchangeSelectTexutrePath();
 
 	CEdit _EditMoveX;
@@ -59,5 +61,4 @@ public:
 	afx_msg void OnDeltaposTerrainMoveZ(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedSaveTerrain();
 	afx_msg void OnBnClickedLoadTerrain();
-	afx_msg void OnLbnSelchangeList1();
 };

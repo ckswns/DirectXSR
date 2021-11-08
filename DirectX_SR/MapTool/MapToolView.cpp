@@ -17,6 +17,7 @@
 #include "EditorCamera.h"
 #include "INIManager.h"
 #include "Terrain.h"
+#include "CubeObject.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -139,6 +140,8 @@ void CMapToolView::OnInitialUpdate()
 	std::pair<std::string, Scene*> _Scene = std::make_pair("base", pScene);
 	m_vecKeyValue.push_back(_Scene);
 
+	g_pGameController = new GameController();
+
 	g_pGameController->Init(g_hWnd, m_vecKeyValue, WINCX, WINCY);
 	g_bInitGame = true;
 
@@ -155,51 +158,79 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	CForm* pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
-	int TerrainIndex = pFormView->m_pMapTab->_iIndex;
-	Component* pTerrainCom = pFormView->m_pMapTab->_vecTerrain[TerrainIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR);
-	Transform* pTransform = pTerrainCom->GetGameObject()->GetTransform();
-	D3DXVECTOR3 vPickingPos = Picking_OnTerrain(point, pTerrainCom, pTransform);
+	CForm*		pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
+	MapTab*		pMaptab = pFormView->m_pMapTab;
+	CubeTab*	pCubetab = pFormView->m_pCubeTab;
 
-	//pFormView->m_pCubeTab->_vecObject
+	int TerrainIndex = pFormView->m_pMapTab->m_RoomList.GetCurSel();
 
-	CView::OnLButtonDown(nFlags, point);
+	if (TerrainIndex == -1)
+	{
+		MessageBoxA(nullptr, "룸번호를 선택해야 합니다.", "RoomNumber Error", MB_OK);
+		return;
+	}
+
+	CTerrain* pTerrainCom = static_cast<CTerrain*>(pMaptab->_vecTerrain[TerrainIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR));
+	Transform* pTransform = pMaptab->_vecTerrain[TerrainIndex]->GetTransform();
+	D3DXVECTOR3 vPickingPos = PickingOnTerrain(point, pTerrainCom, pTransform, TerrainIndex);
+
+	if (pFormView->m_iTabIndex == 1 && vPickingPos.x != 0 && vPickingPos.z != 0)
+	{
+		int CubeIndex = pCubetab->_LoadList.GetCurSel();
+		CString cstrTextureName = L"Cube";
+		CString cstrIndex;
+		cstrIndex.Format(_T("%d"), CubeIndex);
+		cstrTextureName += cstrIndex;
+
+		auto iter = pCubetab->_mapTex.find(cstrTextureName.GetString());
+
+		if (iter != pCubetab->_mapTex.end())
+		{
+			GameObject* pGameObject = GameObject::Instantiate();
+			Texture* pTex = pCubetab->_mapTex[cstrTextureName.GetString()].second;
+			std::string filepath = pCubetab->_mapTex[cstrTextureName.GetString()].first;
+			pGameObject->AddComponent(new CubeObject(pTex));
+			pGameObject->GetTransform()->SetWorldPosition(vPickingPos);
+
+			_vecCube.emplace_back(std::make_pair(pGameObject,std::make_pair(filepath, TerrainIndex)));
+		}
+		else
+			return;
+	}
 }
 
-D3DXVECTOR3 CMapToolView::Picking_OnTerrain(CPoint point, Component* pTerrainCom,Transform* pTransform)
+D3DXVECTOR3 CMapToolView::PickingOnTerrain(CPoint point, CTerrain* pTerrainCom,Transform* pTransform,const int& iIndx)
 {
-	POINT ptMouse;
-	GetCursorPos(&ptMouse);
-	ScreenToClient(&ptMouse);
+	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CForm* pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
+	CubeTab* pCubeTab = pFormView->m_pCubeTab;
 
-	float x = ptMouse.x;
-	float y = ptMouse.y;
-
+	//-----------------------------------------------------------------//
 	D3DVIEWPORT9		ViewPort;
 	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
 
-	D3DXVECTOR3 vMousePose;
+	D3DXVECTOR3 vMousePos;
 	D3D9DEVICE->GetDevice()->GetViewport(&ViewPort);
 
-	vMousePose.x = ptMouse.x / ((ViewPort.Width) * 0.5f) - 1.f;
-	vMousePose.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
-	vMousePose.z = 0.f;
+	vMousePos.x =(point.x) / (ViewPort.Width * 0.5f) - 1.f;
+	vMousePos.y = point.y / -(ViewPort.Height * 0.5f) + 1.f;
+	vMousePos.z = 0.f;
 
 	D3DXMATRIX	matPorj;
 	D3D9DEVICE->GetDevice()->GetTransform(D3DTS_PROJECTION, &matPorj);
 	D3DXMatrixInverse(&matPorj, NULL, &matPorj);
-	D3DXVec3TransformCoord(&vMousePose, &vMousePose, &matPorj);
+	D3DXVec3TransformCoord(&vMousePos, &vMousePos, &matPorj);
 
 	D3DXVECTOR3 vRayPos, vRayDir;
 
 	vRayPos = D3DXVECTOR3(0.f, 0.f, 0.f);
-	vRayDir = vMousePose - vRayPos;
+	vRayDir = vMousePos - vRayPos;
 
 	D3DXMATRIX	matView;
 	D3D9DEVICE->GetDevice()->GetTransform(D3DTS_VIEW, &matView);
 	D3DXMatrixInverse(&matView, NULL, &matView);
 
-	D3DXVec3TransformCoord(&vMousePose, &vMousePose, &matPorj);
+	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matView);
 	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
 
 	D3DXMATRIX	matWorld;
@@ -209,9 +240,10 @@ D3DXVECTOR3 CMapToolView::Picking_OnTerrain(CPoint point, Component* pTerrainCom
 	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matWorld);
 	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matWorld);
 
-	DWORD VtxX = static_cast<CTerrain*>(pTerrainCom)->Get_VtxCntX();
-	DWORD VtxZ = static_cast<CTerrain*>(pTerrainCom)->Get_VtxCntZ();
-	const D3DXVECTOR3* pTerrainVtxPos = static_cast<CTerrain*>(pTerrainCom)->Get_VtxPos();
+	DWORD VtxX = pTerrainCom->Get_VtxCntX();
+	DWORD VtxZ = pTerrainCom->Get_VtxCntZ();
+
+	const D3DXVECTOR3* pTerrainVtxPos = pTerrainCom->Get_VtxPos();
 
 	DWORD dwVtxIndx[3];
 	float fU, fV, fDist;
@@ -229,9 +261,15 @@ D3DXVECTOR3 CMapToolView::Picking_OnTerrain(CPoint point, Component* pTerrainCom
 			if (D3DXIntersectTri(&pTerrainVtxPos[dwVtxIndx[1]], &pTerrainVtxPos[dwVtxIndx[0]], &pTerrainVtxPos[dwVtxIndx[2]]
 								, &vRayPos, &vRayDir, &fU, &fV, &fDist))
 			{
-				return D3DXVECTOR3(pTerrainVtxPos[dwVtxIndx[1]].x + (pTerrainVtxPos[dwVtxIndx[0]].x - pTerrainVtxPos[dwVtxIndx[1]].x) * fU
-									, 0.f
-									, pTerrainVtxPos[dwVtxIndx[1]].z + (pTerrainVtxPos[dwVtxIndx[2]].z - pTerrainVtxPos[dwVtxIndx[1]].z) * fV);
+	/*			return D3DXVECTOR3(pTerrainVtxPos[dwVtxIndx[1]].x + (pTerrainVtxPos[dwVtxIndx[0]].x - pTerrainVtxPos[dwVtxIndx[1]].x) * fU
+					, 0.f
+					, pTerrainVtxPos[dwVtxIndx[1]].z + (pTerrainVtxPos[dwVtxIndx[2]].z - pTerrainVtxPos[dwVtxIndx[1]].z) * fV);*/
+
+				int iFloor = pCubeTab->iFloor;
+
+				return D3DXVECTOR3((pTerrainVtxPos[dwVtxIndx[0]].x + pTerrainVtxPos[dwVtxIndx[2]].x) * 0.5f
+					, ((float)iFloor - 0.5f)
+					, (pTerrainVtxPos[dwVtxIndx[2]].z + pTerrainVtxPos[dwVtxIndx[1]].z) * 0.5f);
 			}
 
 			dwVtxIndx[0] = dwIndex + VtxX;
@@ -241,9 +279,15 @@ D3DXVECTOR3 CMapToolView::Picking_OnTerrain(CPoint point, Component* pTerrainCom
 			if (D3DXIntersectTri(&pTerrainVtxPos[dwVtxIndx[2]], &pTerrainVtxPos[dwVtxIndx[1]], &pTerrainVtxPos[dwVtxIndx[0]]
 				, &vRayPos, &vRayDir, &fU, &fV, &fDist))
 			{
-				return D3DXVECTOR3(pTerrainVtxPos[dwVtxIndx[2]].x + (pTerrainVtxPos[dwVtxIndx[1]].x - pTerrainVtxPos[dwVtxIndx[2]].x) * fU
-									, 0.f
-									, pTerrainVtxPos[dwVtxIndx[2]].z + (pTerrainVtxPos[dwVtxIndx[0]].z - pTerrainVtxPos[dwVtxIndx[1]].z) * fV);
+				//return D3DXVECTOR3(pTerrainVtxPos[dwVtxIndx[2]].x + (pTerrainVtxPos[dwVtxIndx[1]].x - pTerrainVtxPos[dwVtxIndx[2]].x) * fU
+				//					, 0.f
+				//					, pTerrainVtxPos[dwVtxIndx[2]].z + (pTerrainVtxPos[dwVtxIndx[0]].z - pTerrainVtxPos[dwVtxIndx[1]].z) * fV);
+
+				int iFloor = pCubeTab->iFloor;
+
+				return D3DXVECTOR3((pTerrainVtxPos[dwVtxIndx[0]].x + pTerrainVtxPos[dwVtxIndx[1]].x) * 0.5f
+									, ((float)iFloor - 0.5f)
+									, (pTerrainVtxPos[dwVtxIndx[0]].z + pTerrainVtxPos[dwVtxIndx[2]].z) * 0.5f);
 			}
 		}
 	}

@@ -8,6 +8,7 @@
 #include "Transform.h"
 #include "MeshRenderer.h"
 #include "INIManager.h"
+#include "Assertion.h"
 // MapTab 대화 상자
 
 IMPLEMENT_DYNAMIC(MapTab, CDialog)
@@ -51,7 +52,6 @@ BEGIN_MESSAGE_MAP(MapTab, CDialog)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN2, &MapTab::OnDeltaposTerrainMoveZ)
 	ON_BN_CLICKED(IDC_BUTTON4, &MapTab::OnBnClickedSaveTerrain)
 	ON_BN_CLICKED(IDC_BUTTON7, &MapTab::OnBnClickedLoadTerrain)
-	ON_LBN_SELCHANGE(IDC_LIST1, &MapTab::OnLbnSelchangeList1)
 END_MESSAGE_MAP()
 
 
@@ -87,16 +87,12 @@ void MapTab::Release()
 		}
 		_mapTex.clear();
 	}
-
-	//if (!_vecTerrain.empty())
-	//{
-	//	for (auto iter = _vecTerrain.begin(); iter != _vecTerrain.end(); iter++)
-	//	{
-	//		if (iter->first != nullptr)
-	//			delete iter->first;
-	//	}
-	//	_vecTerrain.clear();
-	//}
+	
+	if (!_vecTex.empty())
+	{
+		for_each(_vecTex.begin(), _vecTex.end(), Safe_Delete<Texture*>);
+		_vecTex.clear();
+	}
 
 }
 
@@ -106,11 +102,6 @@ void MapTab::OnBnClickedCreateTerrain()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	UpdateData(TRUE);
 
-	//if (strcmp("", _strfilepath.c_str()) == 0)
-	//{
-	//	MessageBoxA(nullptr, "Texture 경로가 없습니다.", "FilePath Error", MB_OK);
-	//	return;
-	//}
 	if (m_dwVtxX == 0 || m_dwVtxZ == 0)
 	{
 		MessageBoxA(nullptr, "VerTex 설정이 안되있습니다.", "VtxSetting Error", MB_OK);
@@ -120,9 +111,6 @@ void MapTab::OnBnClickedCreateTerrain()
 	GameObject* pGameObject;
 	pGameObject = GameObject::Instantiate();
 
-	//Texture* pTexture = new Texture();
-	//pTexture->Init(D3D9DEVICE->GetDevice(), _strfilepath.c_str());
-	//pGameObject->AddComponent(new CTerrain(D3D9DEVICE->GetDevice(), m_dwVtxX, m_dwVtxZ, m_dwRoomNumber, pTexture));
 	pGameObject->AddComponent(new CTerrain(D3D9DEVICE->GetDevice(), m_dwVtxX, m_dwVtxZ, m_dwRoomNumber));
 	m_dwLastNumber++;
 
@@ -247,7 +235,7 @@ void MapTab::OnDeltaposMoveTerrainX(NMHDR* pNMHDR, LRESULT* pResult)
 		cstrValue.Format(_T("%d"), _iMoveX);
 		_EditMoveX.SetWindowText(cstrValue);
 
-		static_cast<CTerrain*>(_vecTerrain[iIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Set_MoveCheck();
+		static_cast<CTerrain*>(_vecTerrain[iIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR))->MoveCheck(true);
 	}
 	*pResult = 0;
 }
@@ -270,16 +258,21 @@ void MapTab::OnDeltaposTerrainMoveZ(NMHDR* pNMHDR, LRESULT* pResult)
 		cstrValue.Format(_T("%d"), _iMoveZ);
 		_EditMoveZ.SetWindowText(cstrValue);
 
-		static_cast<CTerrain*>(_vecTerrain[iIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Set_MoveCheck();
+		static_cast<CTerrain*>(_vecTerrain[iIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR))->MoveCheck(true);
 	}
 	*pResult = 0;
 }
-
 
 // 저장
 void MapTab::OnBnClickedSaveTerrain()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (_vecTerrain.empty())
+	{
+		MessageBoxA(nullptr, "저장할게 없습니다.", "Save Error", MB_OK);
+		return;
+	}
+
 	int iSectionNumber = 0;
 
 	size_t objectsize = _vecTerrain.size();
@@ -308,31 +301,34 @@ void MapTab::OnBnClickedSaveTerrain()
 		strRoomnumber = (std::to_string(static_cast<CTerrain*>(_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Get_RoomNumber()));
 		INIMANAGER->AddData(strSection, "RoomNumber", strRoomnumber);
 
-		std::string	strMoveX;
-		strMoveX = (std::to_string(static_cast<CTerrain*>(_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Get_CurrtMovePosX()));
-		INIMANAGER->AddData(strSection, "MoveX", strMoveX);
+		std::string strworldposX;
+		strworldposX = (std::to_string(static_cast<CTerrain*>(_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Getworldvec().x));
+		INIMANAGER->AddData(strSection, "wolrdposX", strworldposX);
 
-		std::string strMoveZ;
-		strMoveZ = (std::to_string(static_cast<CTerrain*>(_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Get_CurrtMovePosZ()));
-		INIMANAGER->AddData(strSection, "MoveZ", strMoveZ);
-		INIMANAGER->AddData(strSection, "filepath", static_cast<CTerrain*>(_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Get_Filepath());
+		std::string strworldposY;
+		strworldposY = (std::to_string(static_cast<CTerrain*>(_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Getworldvec().y));
+		INIMANAGER->AddData(strSection, "wolrdposY", strworldposY);
+		
+		std::string strworldposZ;
+		strworldposZ = (std::to_string(static_cast<CTerrain*>(_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Getworldvec().z));
+		INIMANAGER->AddData(strSection, "wolrdposZ", strworldposZ);
+
+		std::string strFilepath;
+		strFilepath = (static_cast<CTerrain*>(_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Get_Filepath());
+		INIMANAGER->AddData(strSection, "filepath", strFilepath);
+
 		iSectionNumber++;
 	}
 	INIMANAGER->SaveIni("Data/Terrain");
-	MessageBoxA(nullptr, "저장 성공", "Success", MB_OK);
+	MessageBoxA(nullptr, "저장 성공", "Save Success", MB_OK);
 }
 
-
+// 불러오기
 void MapTab::OnBnClickedLoadTerrain()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	//if (_vecTerrain.empty() == false)
-	//{
-	//	for (size_t t = 0; t < _vecTerrain.size(); t++)
-	//	{
-	//		_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR);
-	//	}
-	//}
+	UpdateData(TRUE);
+
 	if (!_vecTerrain.empty())
 	{
 		MessageBoxA(nullptr, "Load 할 수 없습니다.", "Load Failed", MB_OK);
@@ -346,49 +342,52 @@ void MapTab::OnBnClickedLoadTerrain()
 	iObjectSize = stoi(strobjectsize);
 	
 	std::string strSection = "Terrain";
-	std::string strVtxX;
-	std::string strVtxZ;
-	std::string strRoomNumber;
-	std::string strMoveX;
-	std::string strMoveZ;
-	std::string strfilepath;
 
 	for (int i = 0; i < iObjectSize; i++)
 	{
 		std::string strSection = "Terrain";
 		strSection += std::to_string(i);
+		std::string strVtxX;
 		strVtxX = INIMANAGER->LoadDataString("Data/Terrain", strSection, "VertxX");
+		std::string strVtxZ;
 		strVtxZ = INIMANAGER->LoadDataString("Data/Terrain", strSection, "VertxZ");
+		std::string strRoomNumber;
 		strRoomNumber = INIMANAGER->LoadDataString("Data/Terrain", strSection, "RoomNumber");
-		strMoveX = INIMANAGER->LoadDataString("Data/Terrain", strSection, "MoveX");
-		strMoveZ = INIMANAGER->LoadDataString("Data/Terrain", strSection, "MoveZ");
+		std::string strwolrdX;
+		strwolrdX = INIMANAGER->LoadDataString("Data/Terrain", strSection, "wolrdposX");
+		std::string strwolrdY;
+		strwolrdY = INIMANAGER->LoadDataString("Data/Terrain", strSection, "wolrdposY");
+		std::string strwolrdZ;
+		strwolrdZ = INIMANAGER->LoadDataString("Data/Terrain", strSection, "wolrdposZ");
+		std::string strfilepath;
 		strfilepath = INIMANAGER->LoadDataString("Data/Terrain", strSection, "filepath");
-		
+
 		DWORD VtxX = stoul(strVtxX);
 		DWORD VtxZ = stoul(strVtxZ);
 		DWORD Room = stoul(strRoomNumber);
-		int MoveX = stoi(strMoveX);
-		int MoveZ = stoi(strMoveZ);
+		D3DXVECTOR3 vworldpos = D3DXVECTOR3(stof(strwolrdX), stof(strwolrdY), stof(strwolrdZ));
 
 		GameObject* pGameobject = GameObject::Instantiate();
-		pGameobject->AddComponent(new CTerrain(D3D9DEVICE->GetDevice(), VtxX, VtxZ, Room, MoveX, _iMoveZ));
+		pGameobject->AddComponent(new CTerrain(D3D9DEVICE->GetDevice(), VtxX, VtxZ, Room, vworldpos));
+		/*pGameobject->GetTransform()->SetWorldPosition(vworldpos);*/
 		
 		Texture* tex = new Texture();
 		tex->Init(D3D9DEVICE->GetDevice(), strfilepath.c_str());
+		_vecTex.emplace_back(tex);
+
 		std::wstring temp;
 		temp.assign(strRoomNumber.begin(), strRoomNumber.end());
-		_mapTex.insert(std::make_pair(temp, std::make_pair(strfilepath, tex)));
 		m_RoomList.AddString(temp.c_str());
 
-		static_cast<CTerrain*>(pGameobject->GetComponent(COMPONENT_ID::BEHAVIOUR))->Set_Textureinfo(tex, _strfilepath);
+		static_cast<CTerrain*>(pGameobject->GetComponent(COMPONENT_ID::BEHAVIOUR))->Set_Textureinfo(tex, strfilepath);
 		
 		_vecTerrain.emplace_back(pGameobject);
+
+		m_dwRoomNumber = i;
 	}
+	MessageBoxA(nullptr, "불러오기 성공!", "Load Success", MB_OK);
+	m_dwRoomNumber += 1;
+	
+	UpdateData(FALSE);
 }
 
-void MapTab::OnLbnSelchangeList1()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	_iIndex = m_RoomList.GetCurSel();
-}

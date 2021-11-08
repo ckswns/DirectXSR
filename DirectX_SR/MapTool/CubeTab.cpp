@@ -10,6 +10,8 @@
 #include "CubeObject.h"
 #include "INIManager.h"
 #include "MeshRenderer.h"
+#include "MainFrm.h"
+#include "MapToolView.h"
 
 // CubeTab 대화 상자
 IMPLEMENT_DYNAMIC(CubeTab, CDialog)
@@ -20,6 +22,7 @@ CubeTab::CubeTab(CWnd* pParent /*=nullptr*/)
 	, _fScaleY(1.f)
 	, _fScaleZ(1.f)
 	, _CubeNumber(0)
+	, iFloor(1)
 {
 }
 
@@ -45,6 +48,7 @@ void CubeTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST2, _SaveList);
 	DDX_Control(pDX, IDC_LIST3, _TextureList);
 	DDX_Control(pDX, IDC_LIST4, _LoadList);
+	DDX_Text(pDX, IDC_EDIT4, iFloor);
 }
 
 BEGIN_MESSAGE_MAP(CubeTab, CDialog)
@@ -56,6 +60,9 @@ BEGIN_MESSAGE_MAP(CubeTab, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON6, &CubeTab::OnBnClickedLoadTextureList)
 	ON_LBN_SELCHANGE(IDC_LIST3, &CubeTab::OnLbnSelchangeTextureSelect)
 	ON_LBN_SELCHANGE(IDC_LIST4, &CubeTab::OnLbnSelchangeSelectLoadObject)
+	ON_BN_CLICKED(IDC_BUTTON7, &CubeTab::OnBnClickedPickingSave)
+	ON_BN_CLICKED(IDC_BUTTON8, &CubeTab::OnBnClickedPickingLoad)
+	ON_EN_CHANGE(IDC_EDIT4, &CubeTab::OnEnChangeCubeFloor)
 END_MESSAGE_MAP()
 
 
@@ -101,7 +108,7 @@ void CubeTab::OnBnClickedDataSave()
 		MessageBoxA(nullptr, "목록이 비여있습니다.", "Save Error", MB_OK);
 		return; 
 	}
-	CString strObjectConun;
+	//CString strObjectConun;
 
 	CString strNumber;
 	strNumber.Format(_T("%d"), _CubeNumber);
@@ -120,7 +127,6 @@ void CubeTab::OnBnClickedDataSave()
 	strScaleY = (std::to_string(_fScaleY));
 	std::string  strScaleZ;
 	strScaleZ = (std::to_string(_fScaleZ));
-
 
 	//	섹션 / 키값(고정된 값) / 넣고자 하는 데이터
 	INIMANAGER->AddData(/*섹션*/strSection, /*키값(고정값)*/"filePath", /*넣고 자 하는 데이터*/_strFilePath);
@@ -193,13 +199,13 @@ void CubeTab::OnBnClickedDataLoad()
 		pTexture->Init(D3D9DEVICE->GetDevice(), strLoadFilePath.c_str());
 
 		_mapTex.insert(std::make_pair(wstrKey, std::make_pair(strLoadFilePath, pTexture)));
-			
+
 		GameObject* pGameObject = GameObject::Instantiate();
 		pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
 		pGameObject->AddComponent(new CubeObject(pTexture));
 
 		pGameObject->SetActive(false);
-		_vecObject.push_back(pGameObject);
+		_vecObject.emplace_back(pGameObject,0); // 고민 후 삭제
 
 		iCount++;
 	}
@@ -210,21 +216,21 @@ void CubeTab::OnLbnSelchangeSelectLoadObject()
 {
 	// TODO: Load Object Render Check
 
-	if (_vecObject.empty())
-	{
-		MessageBoxA(nullptr, "Object 목록이 비였습니다.", "Object List Error", MB_OK);
-		return;
-	}
+	//if (_vecObject.empty())
+	//{
+	//	MessageBoxA(nullptr, "Object 목록이 비였습니다.", "Object List Error", MB_OK);
+	//	return;
+	//}
 
-	int iIndex = _LoadList.GetCurSel();
-	size_t ObjectListSize = _vecObject.size();
+	//int iIndex = _LoadList.GetCurSel();
+	//size_t ObjectListSize = _vecObject.size();
 
-	for (size_t i = 0; i < ObjectListSize; i++)
-	{
-		_vecObject[i]->SetActive(false);
-	}
+	//for (size_t i = 0; i < ObjectListSize; i++)
+	//{
+	//	_vecObject[i]->SetActive(false);
+	//}
 
-	_vecObject[iIndex]->SetActive(true);
+	//_vecObject[iIndex]->SetActive(true);
 }
 
 void CubeTab::OnBnClickedScaleApply()
@@ -352,3 +358,149 @@ void CubeTab::OnLbnSelchangeTextureSelect()
 }
 
 
+void CubeTab::OnBnClickedPickingSave()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CMapToolView* pMapToolview = static_cast<CMapToolView*>(pMain->m_tMainSplitter.GetPane(0, 1));
+
+	if (pMapToolview->_vecCube.empty())
+	{
+		MessageBoxA(nullptr, "저장할게 없습니다.", "Picking Save Error", MB_OK);
+		return;
+	}
+
+	int tcubesize = (int)pMapToolview->_vecCube.size();
+	std::string strCubeCnt;
+	strCubeCnt = std::to_string(tcubesize);
+	INIMANAGER->AddData("Start", "CubeCnt", strCubeCnt);
+
+	for (int i = 0; i < tcubesize; i++)
+	{
+		CString strNumber;
+		strNumber.Format(_T("%d"), i);
+
+		CString strName = L"PickingCube";
+		strName += strNumber;
+
+		std::string strSection;
+		strSection = CT2CA(strName);
+		std::string filepath = pMapToolview->_vecCube[i].second.first;
+		INIMANAGER->AddData(strSection, "filePath", filepath);
+
+		D3DXVECTOR3 vScale = pMapToolview->_vecCube[i].first->GetTransform()->GetLocalScale();
+		std::string  strScaleX;
+		strScaleX = (std::to_string(vScale.x));
+		INIMANAGER->AddData(strSection, "scaleX", strScaleX);
+
+		std::string  strScaleY;
+		strScaleY = (std::to_string(vScale.y));
+		INIMANAGER->AddData(strSection, "scaleY", strScaleY);
+
+		std::string  strScaleZ;
+		strScaleZ = (std::to_string(vScale.z));
+		INIMANAGER->AddData(strSection, "scaleZ", strScaleZ);
+
+		D3DXVECTOR3 vworldpos = pMapToolview->_vecCube[i].first->GetTransform()->GetWorldPosition();
+		std::string  strworldposX;
+		strworldposX = (std::to_string(vworldpos.x));
+		INIMANAGER->AddData(strSection, "worldposX", strworldposX);
+
+		std::string  strworldposY;
+		strworldposY = (std::to_string(vworldpos.y));
+		INIMANAGER->AddData(strSection, "worldposY", strworldposY);
+
+		std::string  strworldposZ;
+		strworldposZ = (std::to_string(vworldpos.z));
+		INIMANAGER->AddData(strSection, "worldposZ", strworldposZ);
+
+		std::string strRoomnumber;
+		strRoomnumber = (std::to_string(pMapToolview->_vecCube[i].second.second));
+		INIMANAGER->AddData(strSection, "Room", strRoomnumber);
+	}
+	INIMANAGER->SaveIni("Data/PickingCube");
+	MessageBoxA(nullptr, "PickingCube 저장 성공!", "PickingCube Save Success", MB_OK);
+}
+
+
+void CubeTab::OnBnClickedPickingLoad()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CMapToolView* pMapToolview = static_cast<CMapToolView*>(pMain->m_tMainSplitter.GetPane(0, 1));
+
+	if (!pMapToolview->_vecCube.empty())
+	{
+		MessageBoxA(nullptr, "이미 로드되어있습니다.", "Load Error", MB_OK);
+		return;
+	}
+	std::string strStart;
+	int objcnt = std::stoi(INIMANAGER->LoadDataString("Data/PickingCube", "Start", "CubeCnt"));
+
+	int iKeyNumber = 0;
+
+	for (int i = 0; i < objcnt; i++)
+	{
+		std::string strsection = "PickingCube";
+		strsection += std::to_string(i);
+
+		std::string strfilepath;
+		strfilepath = INIMANAGER->LoadDataString("Data/PickingCube", strsection, "filePath");
+
+		D3DXVECTOR3 vscale;
+		vscale.x = stof(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "scaleX"));
+		vscale.y = stof(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "scaleY"));
+		vscale.z = stof(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "scaleZ"));
+
+		D3DXVECTOR3	vworldpos;
+		vworldpos.x = stof(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "worldposX"));
+		vworldpos.y = stof(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "worldposY"));
+		vworldpos.z = stof(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "worldposZ"));
+
+		int	Roomnumber;
+		Roomnumber = stoi(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "Room"));
+
+		GameObject* pGameObject = GameObject::Instantiate();
+		pGameObject = GameObject::Instantiate();
+		Texture* pTex = new Texture();
+		pTex->Init(D3D9DEVICE->GetDevice(), strfilepath.c_str());
+
+		size_t split;
+		split = strfilepath.find('\\');
+		std::string strKey;
+		strKey = strfilepath.substr(split);
+		std::wstring wstrKey;
+		wstrKey.assign(strKey.begin(), strKey.end());
+
+		wstrKey += std::to_wstring(iKeyNumber);
+
+		_mapTex.insert(std::make_pair(wstrKey, std::make_pair(strfilepath, pTex))); // 삭제용
+
+		pGameObject->AddComponent(new CubeObject(pTex));
+		pGameObject->GetTransform()->SetLocalScale(vscale);
+		pGameObject->GetTransform()->SetWorldPosition(vworldpos);
+
+		/*_vecObject.emplace_back(pGameObject, Roomnumber);*/
+		pMapToolview->_vecCube.emplace_back(pGameObject, std::make_pair(strfilepath, Roomnumber));
+
+		iKeyNumber++;
+	}
+
+	MessageBoxA(nullptr, "Picking Cube 불러오기 성공!", "Load Success", MB_OK);
+}
+
+
+void CubeTab::OnEnChangeCubeFloor()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialog::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
+	iFloor;
+
+	UpdateData(FALSE);
+}
