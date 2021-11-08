@@ -22,11 +22,25 @@ namespace ce
 
 	void AssetManager::Release(void) noexcept
 	{
+		for (int i = 0; i < static_cast<int>(AssetType::END); i++)
+		{
+			for (auto iter = _mapAsset[i].begin(); iter != _mapAsset[i].end(); iter++)
+			{
+				iter->second->Release();
+				delete iter->second;
+				iter->second = nullptr;
+			}
+
+			_mapAsset[i].clear();
+		}
 	}
 
 	void AssetManager::LoadAssetFolder(std::string _assetFolderPath, std::string* showingStr) noexcept
 	{
-		
+		_bWhileLoading = true;
+
+		std::thread loading(&AssetManager::LoadAssetAsync, this, _assetFolderPath, showingStr);
+		loading.detach();
 	}
 
 	AssetManager::CONST_PTR_CSVDATA AssetManager::GetCSVData(std::string _key) noexcept
@@ -64,17 +78,14 @@ namespace ce
 				|| fileExtension == ".bmp"
 				|| fileExtension == ".jpg"
 				|| fileExtension == ".jpeg"
-				|| fileExtension == ".dds")
+				|| fileExtension == ".dds"
+				|| fileExtension == ".tga")
 			{
 				type = AssetType::TEXTURE;
 			}
 
 			else if (fileExtension == ".csv"
-				|| fileExtension == ".ani"
-				|| fileExtension == ".txt"
-				|| fileExtension == ".objINFO"
-				|| fileExtension == ".sceneINFO"
-				|| fileExtension == ".eventINFO")
+				|| fileExtension == ".txt")
 			{
 				type = AssetType::TEXT;
 			}
