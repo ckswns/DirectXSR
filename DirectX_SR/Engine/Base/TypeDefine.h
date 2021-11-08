@@ -116,9 +116,9 @@ namespace ce
 
 	typedef struct tagIndex32
 	{
-		uint64	_0;
-		uint64	_1;
-		uint64	_2;
+		DWORD	_0;
+		DWORD	_1;
+		DWORD	_2;
 
 	}INDEX32;
 
