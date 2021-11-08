@@ -31,7 +31,7 @@ namespace ce
 			return false;
 		}
 
-		uint64 uFlag = 0;
+		DWORD uFlag = 0;
 
 		if (DeveiceCaps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)
 			uFlag |= D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED;
@@ -77,7 +77,7 @@ namespace ce
 		_pDevice->Clear(0, NULL, D3DCLEAR_STENCIL | D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, _nClearColor, 1.f, 0);
 		_pDevice->BeginScene();
 		_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-		_pDevice->SetRenderState(D3DRS_LIGHTING, true);
+		_pDevice->SetRenderState(D3DRS_LIGHTING, false);
 		_pDevice->SetRenderState(D3DRS_AMBIENT, 0x00202020);
 	}
 

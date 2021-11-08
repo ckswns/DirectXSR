@@ -47,7 +47,6 @@ namespace ce
 		pVertex[3].vPosition = D3DXVECTOR3(-0.5f * _intvX, -0.5f * _intvY, 0.f);
 		pVertex[3].vTexUV = D3DXVECTOR2(0.f, 1.f);
 
-
 		INDEX16* pIndex = nullptr;
 
 		if (FAILED(_pIB->Lock(0, 0, (void**)&pIndex, 0)))

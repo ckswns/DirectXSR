@@ -20,7 +20,7 @@ TestScene::~TestScene(void) noexcept
 bool TestScene::Init(void) noexcept
 {
 	_texture = new ce::Texture();
-	_texture->Init(D3D9DEVICE->GetDevice(), "test.jpg");
+	_texture->Init(D3D9DEVICE->GetDevice(), "Npc1_1.png");
 	
 	Quad* terrain = new Quad(4, 4);
 	terrain->Open(D3D9DEVICE->GetDevice());
