@@ -73,6 +73,54 @@ void CubeTab::OnBnClickedCreateCube()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
+	UpdateData(TRUE);
+
+	//GameObject* pGameObject;s
+	_pGameObject = GameObject::Instantiate();
+	_pGameObject->AddComponent(new CubeObject());
+
+	UpdateData(FALSE);
+}
+
+
+void CubeTab::OnBnClickedDataSave()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+
+
+	//CString strNumber;
+	//strNumber.Format(_T("%d"), _CubeNumber);
+	//TCHAR	szName[MAX_PATH] = L"Cube";
+	//lstrcat(szName, strNumber);
+	//_SaveList.AddString(szName);
+	//_CubeNumber++;
+}
+
+
+void CubeTab::OnBnClickedDataLoad()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CubeTab::OnBnClickedScaleApply()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	UpdateData(TRUE);
+	
+	_pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
+
+	UpdateData(FALSE);
+}
+
+
+void CubeTab::OnBnClickedScaleReset()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
 	if (_pTexture == nullptr)
 	{
 		MessageBoxA(nullptr, "텍스트가 없습니다.", "Create Cube Error", MB_OK);
