@@ -62,11 +62,11 @@ namespace ce
 	typedef struct tagVertexColor
 	{
 		D3DXVECTOR3		vPosition;
-		uint64			dwColor;
+		DWORD			dwColor;
 
 	}VTXCOL;
 
-	const uint64	FVF_COL = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX0;
+	const DWORD	FVF_COL = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX0;
 
 	typedef struct tagVertexTexture
 	{
@@ -75,7 +75,7 @@ namespace ce
 
 	}VTXTEX;
 
-	const uint64	FVF_TEX = D3DFVF_XYZ | D3DFVF_TEX1;
+	const DWORD	FVF_TEX = D3DFVF_XYZ | D3DFVF_TEX1;
 
 	typedef struct tagVertexCubeTexture
 	{
@@ -84,7 +84,7 @@ namespace ce
 
 	}VTXCUBE;
 
-	const uint64	FVF_CUBE = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0); // 텍스처의 UV 좌표 값을 FLOAT형 3개로 표현하겠다는 매크로(괄호안의 숫자 0의 의미는 본래 버텍스에 텍스쳐 UV값이 여러개가 올 수 있는데 그중 0번째 값을 지정하겠다는 의미)
+	const DWORD	FVF_CUBE = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0); // 텍스처의 UV 좌표 값을 FLOAT형 3개로 표현하겠다는 매크로(괄호안의 숫자 0의 의미는 본래 버텍스에 텍스쳐 UV값이 여러개가 올 수 있는데 그중 0번째 값을 지정하겠다는 의미)
 
 	typedef struct tagVertexTextureNormal
 	{
@@ -94,7 +94,7 @@ namespace ce
 
 	}VTXTEXNORM;
 
-	const uint64	FVF_TEX_NORM = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_NORMAL;
+	const DWORD	FVF_TEX_NORM = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_NORMAL;
 
 	typedef struct tagVertexCubeTextureNormal
 	{
@@ -104,7 +104,7 @@ namespace ce
 
 	}VTXCUBENORM;
 
-	const uint64	FVF_CUBE_NORM = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_NORMAL | D3DFVF_TEXCOORDSIZE3(0); // 텍스처의 UV 좌표 값을 FLOAT형 3개로 표현하겠다는 매크로(괄호안의 숫자 0의 의미는 본래 버텍스에 텍스쳐 UV값이 여러개가 올 수 있는데 그중 0번째 값을 지정하겠다는 의미)
+	const DWORD	FVF_CUBE_NORM = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_NORMAL | D3DFVF_TEXCOORDSIZE3(0); // 텍스처의 UV 좌표 값을 FLOAT형 3개로 표현하겠다는 매크로(괄호안의 숫자 0의 의미는 본래 버텍스에 텍스쳐 UV값이 여러개가 올 수 있는데 그중 0번째 값을 지정하겠다는 의미)
 
 	typedef struct tagIndex16
 	{

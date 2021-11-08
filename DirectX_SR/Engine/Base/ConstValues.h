@@ -22,6 +22,7 @@ namespace ce
 			static constexpr ID AUDIOLISTENER	= (1 << 8);
 			static constexpr ID LIGHT			= (1 << 9);
 			static constexpr ID BEHAVIOUR		= (1 << 10);
+			static constexpr ID IMAGE			= (1 << 11);
 		}
 
 		namespace KEY_CODES

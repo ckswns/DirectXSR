@@ -27,13 +27,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MapTool", "MapTool", "{A66A
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapTool", "MapTool\MapTool.vcxproj", "{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}"
 EndProject
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ParticleEditor", "ParticleEditor", "{72F7062D-CCC8-44C7-888E-641E90AAF714}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleEditor", "ParticleEditor\ParticleEditor.vcxproj", "{C7066174-8323-4476-A48E-5D061F4A6EE3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{2022811C-05B6-4A11-9473-B5D3AB673127}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameClient", "GameClient\GameClient.vcxproj", "{71013861-A19A-4CC9-B5D2-59986E15D383}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Engine\Base\Base.vcxitems*{067c1003-9c41-4524-ac51-5eac5921d62e}*SharedItemsImports = 9
+		Engine\Base\Base.vcxitems*{71013861-a19a-4cc9-b5d2-59986e15d383}*SharedItemsImports = 4
+		Engine\Component\Component.vcxitems*{71013861-a19a-4cc9-b5d2-59986e15d383}*SharedItemsImports = 4
+		Engine\GameSystem\GameSystem.vcxitems*{71013861-a19a-4cc9-b5d2-59986e15d383}*SharedItemsImports = 4
+		Engine\RenderEngine\RenderEngine.vcxitems*{71013861-a19a-4cc9-b5d2-59986e15d383}*SharedItemsImports = 4
+		Engine\UserInterface\UserInterface.vcxitems*{71013861-a19a-4cc9-b5d2-59986e15d383}*SharedItemsImports = 4
 		Engine\Component\Component.vcxitems*{a5db4e61-e28b-4c47-83e7-19bf9b80f741}*SharedItemsImports = 9
 		Engine\UserInterface\UserInterface.vcxitems*{b6756e38-4e6a-42ab-b557-10a4c7478da7}*SharedItemsImports = 9
 		Engine\GameSystem\GameSystem.vcxitems*{bb59ca26-4fdd-4aff-a2c5-77c5122891ce}*SharedItemsImports = 9
@@ -76,13 +85,21 @@ Global
 		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Release|x86.ActiveCfg = Release|Win32
 		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3}.Release|x86.Build.0 = Release|Win32
 		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Debug|x64.ActiveCfg = Debug|x64
-		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Debug|x86.ActiveCfg = Debug|Win32
 		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Debug|x64.Build.0 = Debug|x64
+		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Debug|x86.ActiveCfg = Debug|Win32
 		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Debug|x86.Build.0 = Debug|Win32
 		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Release|x64.ActiveCfg = Release|x64
 		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Release|x64.Build.0 = Release|x64
 		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Release|x86.ActiveCfg = Release|Win32
 		{C7066174-8323-4476-A48E-5D061F4A6EE3}.Release|x86.Build.0 = Release|Win32
+		{71013861-A19A-4CC9-B5D2-59986E15D383}.Debug|x64.ActiveCfg = Debug|x64
+		{71013861-A19A-4CC9-B5D2-59986E15D383}.Debug|x64.Build.0 = Debug|x64
+		{71013861-A19A-4CC9-B5D2-59986E15D383}.Debug|x86.ActiveCfg = Debug|Win32
+		{71013861-A19A-4CC9-B5D2-59986E15D383}.Debug|x86.Build.0 = Debug|Win32
+		{71013861-A19A-4CC9-B5D2-59986E15D383}.Release|x64.ActiveCfg = Release|x64
+		{71013861-A19A-4CC9-B5D2-59986E15D383}.Release|x64.Build.0 = Release|x64
+		{71013861-A19A-4CC9-B5D2-59986E15D383}.Release|x86.ActiveCfg = Release|Win32
+		{71013861-A19A-4CC9-B5D2-59986E15D383}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +117,8 @@ Global
 		{D98A7372-9439-47F6-B3CF-EBA4FD6CC6F3} = {A66AB5E3-657E-470C-AEA0-ECEDCFC11CC4}
 		{72F7062D-CCC8-44C7-888E-641E90AAF714} = {9299F781-E035-4E3D-8CEA-C4705759AFB1}
 		{C7066174-8323-4476-A48E-5D061F4A6EE3} = {72F7062D-CCC8-44C7-888E-641E90AAF714}
+		{2022811C-05B6-4A11-9473-B5D3AB673127} = {6DD8AC77-DEEE-4739-8E73-EDB3B8F1A42C}
+		{71013861-A19A-4CC9-B5D2-59986E15D383} = {2022811C-05B6-4A11-9473-B5D3AB673127}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24EA95B6-1733-40BC-B106-E9EB7E3182F4}

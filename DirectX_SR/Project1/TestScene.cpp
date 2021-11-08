@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Terrain.h"
 #include "MeshRenderer.h"
+#include "Quad.h"
 
 TestScene::TestScene(void) noexcept
 {
@@ -21,15 +22,14 @@ bool TestScene::Init(void) noexcept
 	_texture = new ce::Texture();
 	_texture->Init(D3D9DEVICE->GetDevice(), "test.jpg");
 	
-	Terrain* terrain = new Terrain(4, 4);
+	Quad* terrain = new Quad(4, 4);
 	terrain->Open(D3D9DEVICE->GetDevice());
 
 	GameObject* obj;
 	obj = GameObject::Instantiate();
 	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), terrain);
-	mr->GetMaterialPTR()->SetTexture(_texture);
-
 	obj->AddComponent(mr);
+	mr->GetMaterialPTR()->SetTexture(_texture);
 
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new CubeObject());
