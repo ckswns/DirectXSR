@@ -52,6 +52,9 @@ using namespace ce;
 #include "MapTool_Define.h"
 #include "MapTool_Struct.h"
 
+#include <filesystem>
+namespace fs = std::filesystem;
+
 
 #ifdef _UNICODE
 #if defined _M_IX86

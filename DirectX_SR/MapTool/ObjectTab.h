@@ -3,6 +3,8 @@
 
 // ObjectTab 대화 상자
 
+#include "Terrain.h"
+
 class ObjectTab : public CDialog
 {
 	DECLARE_DYNAMIC(ObjectTab)

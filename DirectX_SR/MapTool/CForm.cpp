@@ -20,6 +20,7 @@ CForm::~CForm()
 {
 	Safe_Delete(m_pMapTab);
 	Safe_Delete(m_pObjectTab);
+	Safe_Delete(m_pCubeTab);
 }
 
 void CForm::DoDataExchange(CDataExchange* pDX)
