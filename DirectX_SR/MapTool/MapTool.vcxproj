@@ -80,8 +80,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib/x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(WindowsSDK_LibraryPath_x64);$(DXSDK_DIR)Lib/x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -91,8 +91,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib/x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(WindowsSDK_LibraryPath_x64);$(DXSDK_DIR)Lib/x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -195,6 +195,7 @@
   <ItemGroup>
     <ClInclude Include="CForm.h" />
     <ClInclude Include="CubeTab.h" />
+    <ClInclude Include="FloorTerrain.h" />
     <ClInclude Include="MapTab.h" />
     <ClInclude Include="MapToolSubView.h" />
     <ClInclude Include="MapTool_Define.h" />
@@ -213,6 +214,7 @@
   <ItemGroup>
     <ClCompile Include="CForm.cpp" />
     <ClCompile Include="CubeTab.cpp" />
+    <ClCompile Include="FloorTerrain.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapTab.cpp" />
     <ClCompile Include="MapTool.cpp" />

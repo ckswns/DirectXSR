@@ -7,15 +7,15 @@
 
 CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphicDevconst
 					, const DWORD& dwCntX, const DWORD& dwCntZ, const DWORD& dwRoomNumber
-					, const int& dwMoveX, const int& dwMoveZ)
+					, const D3DXVECTOR3 vworldpos)
 	: m_pGraphicDev(pGraphicDevconst)
 	, m_RoomNumber(dwRoomNumber)
 	, m_dwVtxCntX(dwCntX), m_dwVtxCntZ(dwCntZ)
 	, m_dwVtxCnt(0),m_dwVtxSize(0),m_dwTriCnt(0), m_dwFVF(0)
 	, m_dwIdxSize(0), m_IdxFmt(D3DFMT_UNKNOWN)
 	, m_pIB(nullptr), m_pVB(nullptr)
-	, _iCurrMovePositionX(dwMoveX), _iCurrMovePositionZ(dwMoveZ)
 {
+	_vworldpos = vworldpos;
 }
 
 CTerrain::~CTerrain(void)
@@ -41,30 +41,21 @@ void CTerrain::Start(void) noexcept
 		return;
 
 	_pVtxPos = new D3DXVECTOR3[m_dwVtxCnt];
-
-	Buffer_Init(_iCurrMovePositionX,_iCurrMovePositionZ);
+	BufferInit();
 
 	CMainFrame*		pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 	CForm*			pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
 
 	_pMaptab = static_cast<MapTab*>(pFormView->m_pMapTab);
-	
 }
 
 void CTerrain::Update(float fElapsedTime) noexcept
 {
-	if (_bMoveCheck)
-	{	
-		_iCurrMovePositionX = _pMaptab->_iMoveX;
-		_iCurrMovePositionZ = _pMaptab->_iMoveZ;
-
-		Buffer_Init(_iCurrMovePositionX,_iCurrMovePositionZ);
-		_bMoveCheck = false;
-	}
 }
 
 void CTerrain::DbgRender(void) noexcept
 {
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &transform->GetWorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	if (m_pTexture != 0)
@@ -78,7 +69,7 @@ void CTerrain::DbgRender(void) noexcept
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
-void CTerrain::Set_Textureinfo(Texture* pTexture, std::string& strfilepath)
+void CTerrain::Set_Textureinfo(Texture* pTexture, std::string strfilepath)
 {
 	if (m_pTexture)
 		m_pTexture = nullptr;
@@ -87,7 +78,19 @@ void CTerrain::Set_Textureinfo(Texture* pTexture, std::string& strfilepath)
 	m_pTexture = pTexture;
 }
 
-void CTerrain::Buffer_Init(const int& iMoveX, const int& iMoveZ)
+void CTerrain::MoveCheck(bool bCheck)
+{
+	_bMoveCheck = bCheck;
+
+	if (_bMoveCheck)
+	{
+		transform->SetWorldPosition((float)_pMaptab->_iMoveX, 0.f, (float)_pMaptab->_iMoveZ);
+		_bMoveCheck = false;
+		_vworldpos = transform->GetWorldPosition();
+	}
+}
+
+void CTerrain::BufferInit(const int& iMoveX, const int& iMoveZ)
 {
 	VTTEX* pVertex = nullptr;
 	DWORD	dwIndex = 0;
@@ -100,14 +103,13 @@ void CTerrain::Buffer_Init(const int& iMoveX, const int& iMoveZ)
 		{
 			dwIndex = z * m_dwVtxCntX + x;
 
-			pVertex[dwIndex].vPosition = D3DXVECTOR3(float(x + iMoveX), 0.f, float(z + iMoveZ));
+			pVertex[dwIndex].vPosition = (D3DXVECTOR3(float(x ), 0.f, float(z )) + _vworldpos);
 
-			_pVtxPos[dwIndex] = pVertex[dwIndex].vPosition;
+			_pVtxPos[dwIndex] = (pVertex[dwIndex].vPosition);
 
 			pVertex[dwIndex].vTexUV = D3DXVECTOR2(float(z) / (m_dwVtxCntZ - 1), float(x) / (m_dwVtxCntX - 1));
 		}
 	}
-	m_pVB->Unlock();
 
 	DWORD		dwTriCnt = 0;
 	IDX32* pIndex = nullptr;
@@ -131,5 +133,7 @@ void CTerrain::Buffer_Init(const int& iMoveX, const int& iMoveZ)
 			dwTriCnt++;
 		}
 	}
+
+	m_pVB->Unlock();
 	m_pIB->Unlock();
 }

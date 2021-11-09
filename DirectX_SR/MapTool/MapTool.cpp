@@ -33,6 +33,10 @@ END_MESSAGE_MAP()
 GameController* g_pGameController;
 bool			g_bInitGame = false;
 
+RECT			g_rtMfc;
+FLOAT			g_MousePosX = 0.0f;
+FLOAT			g_MousePosY = 0.0f;
+
 CMapToolApp::CMapToolApp() noexcept
 {
 
@@ -130,6 +134,7 @@ BOOL CMapToolApp::InitInstance()
 	// 창 하나만 초기화되었으므로 이를 표시하고 업데이트합니다.
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
+	GetClientRect(g_hWnd,&g_rtMfc);
 	return TRUE;
 }
 

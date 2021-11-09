@@ -3,36 +3,35 @@
 
 #include "Behaviour.h"
 #include "Texture.h"
+#include "Mesh.h"
 
 class MapTab;
 
 class CTerrain final : public Behaviour
 {
-
 public: explicit CTerrain(LPDIRECT3DDEVICE9 pGraphicDev, const DWORD& dwCntX, const DWORD& dwCntZ
-						, const DWORD& dwRoomNumber, const int& dwMoveX = 0, const int& dwMoveZ = 0);
+						, const DWORD& dwRoomNumber, const D3DXVECTOR3 vworldpos = D3DXVECTOR3(0,0,0));
 public: virtual ~CTerrain(void);
 	  
 public:	virtual void Start(void) noexcept override;
 public: virtual void Update(float) noexcept;
 public: virtual void DbgRender(void) noexcept override;
 
-public: void						Set_Textureinfo(Texture* pTexture, std::string& strfilepath);
-public: inline void					Set_MoveCheck() { _bMoveCheck = true; }
+public: void					Set_Textureinfo(Texture* pTexture, std::string strfilepath);
+public: void					MoveCheck(bool bCheck);
 
 public: inline const int&			Get_VtxCntX() const { return m_dwVtxCntX; }
 public: inline const int&			Get_VtxCntZ() const { return m_dwVtxCntZ; }
 
 public: inline const int&			Get_RoomNumber() const { return m_RoomNumber; }
 
-public: inline const int&			Get_CurrtMovePosX() const { return _iCurrMovePositionX; }
-public: inline const int&			Get_CurrtMovePosZ() const { return _iCurrMovePositionZ; }
-
 public: inline std::string			Get_Filepath() { return _strFilePath; }
 
-public: inline D3DXVECTOR3*			Get_VtxPos(void) { return _pVtxPos; }
+public: const D3DXVECTOR3*			Get_VtxPos(void) { return _pVtxPos; }
 
-private: void						Buffer_Init(const int& iMoveX = 0,const int& iMoveZ = 0);
+private: void						BufferInit(const int& iMoveX = 0,const int& iMoveZ = 0);
+
+public: const D3DXVECTOR3			Getworldvec() const { return _vworldpos; }
 
 private: DWORD						m_dwVtxCntX;
 private: DWORD						m_dwVtxCntZ;
@@ -47,22 +46,18 @@ private: DWORD						m_dwIdxSize;
 
 private: DWORD						m_RoomNumber;
 
-//private: D3DFORMAT				m_IdxFmt;
-private: VTXINFO					m_VtxInfo;
-
 private: LPDIRECT3DVERTEXBUFFER9	m_pVB;
 private: LPDIRECT3DINDEXBUFFER9		m_pIB;
 	   
 private: LPDIRECT3DDEVICE9			m_pGraphicDev;
-private: Texture*					m_pTexture;
+private: Texture*					m_pTexture = nullptr;
 private: std::string				_strFilePath;
 
-private: MapTab*					_pMaptab;
+private: MapTab*					_pMaptab = nullptr;
 private: bool						_bMoveCheck = false;
-private: int						_iCurrMovePositionX;
-private: int						_iCurrMovePositionZ;
 
-private: D3DXVECTOR3*				_pVtxPos;
+private: D3DXVECTOR3*				_pVtxPos = nullptr;
+private: D3DXVECTOR3				_vworldpos;
 };
 
 #endif // TerrainTex_h__
