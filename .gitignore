@@ -32,4 +32,14 @@ DirectX_SR/Project1/x64/Release
 DirectX_SR/MapTool/x64/Debug/vc142.idb
 *.exe
 DirectX_SR/MapTool/x64/Debug/vc142.idb
+*.idb
+*.pch
+DirectX_SR/Project1/Debug/Project1.ilk
+DirectX_SR/Project1/Debug/Project1.res
+DirectX_SR/Project1/Debug/Project1.vcxproj.FileListAbsolute.txt
+DirectX_SR/MapTool/Debug/MapTool.vcxproj.FileListAbsolute.txt
 DirectX_SR/MapTool/x64/Debug/MapTool.pch
+DirectX_SR/MapTool/x64/Debug/MapTool.pch
+DirectX_SR/MapTool/x64/Debug/MapTool.pch
+*.pch
+DirectX_SR/GameClient/Debug/GameClient.vcxproj.FileListAbsolute.txt

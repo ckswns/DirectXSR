@@ -94,6 +94,14 @@ namespace ce
 		}
 	}
 
+	void SceneManager::UIRender(float fElapedTime) noexcept
+	{
+		if (_pActiveScene)
+		{
+			_pActiveScene->UIRenderXXX(fElapedTime);
+		}
+	}
+
 	void SceneManager::Release(void) noexcept
 	{
 		for (auto iter = _mapScene.begin(); iter != _mapScene.end(); iter++)

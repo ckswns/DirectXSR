@@ -35,9 +35,9 @@ namespace ce
 
 	public:		GameObjectLayer						GetLayer(void) const noexcept { return _eLayer; }
 
-	public:		void								SetLayer(GameObjectLayer _layer) { _eLayer = _layer; }
-	public:		virtual int32						GetSortOrderXXX(void) const noexcept { return _nSortOrder; }
-	public:		void								SetSortOrderXXX(int order) noexcept { _nSortOrder = order; }
+	public:		void								SetLayer(GameObjectLayer _layer) noexcept;
+	public:		virtual int32						GetSortOrder(void) const noexcept { return _nSortOrder; }
+	public:		void								SetSortOrder(int order) noexcept { _nSortOrder = order; }
 
 	public:		std::string							GetName(void) const noexcept { return _strName; }
 	public:		const GameObjectTag&				GetTag(void) const noexcept { return _eTag; }

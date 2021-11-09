@@ -13,6 +13,8 @@ namespace ce
 	public:		bool				Init(HWND hWnd, uint16 winWidth, uint16 winHeight, D3DXCOLOR clearColor = D3DCOLOR_ARGB(255, 0, 0, 255)) noexcept;
 	public:		void				Begin(void) noexcept;
 	public:		void				End(void) noexcept;
+	public:		void				UIBegin(void) noexcept;
+	public:		void				UIEnd(void) noexcept;
 	public:		void				Release(void) noexcept;
 
 	public:		LPDIRECT3DDEVICE9	GetDevice(void) noexcept { return _pDevice; }
@@ -21,9 +23,12 @@ namespace ce
 	public:		uint32				GetWindowHeight(void) const noexcept { return _windowHeight; }
 
 	public:		POINT				GetWindowSize(void) const noexcept { return POINT{ (long)_windowWidth, (long)_windowHeight }; }
+	
+	public:		LPD3DXSPRITE		GetSprite(void) noexcept { return _pSprite; }
 
 	private:	LPDIRECT3D9			_pSDK;
 	private:	LPDIRECT3DDEVICE9	_pDevice;
+	private:	LPD3DXSPRITE		_pSprite;
 
 	private:	D3DXCOLOR			_nClearColor = D3DCOLOR_ARGB(255, 0, 0, 255);
 

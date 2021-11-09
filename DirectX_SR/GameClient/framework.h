@@ -16,8 +16,8 @@
 #include <queue>
 #include <chrono>
 
-#include "../External/include/fmod.hpp"
-#define __USE_FMOD__
+//#include "../External/include/fmod.hpp"
+//#define __USE_FMOD__
 
 #include "d3d9.h"
 #pragma comment(lib, "d3d9.lib")
@@ -28,4 +28,5 @@
 #include "AutoDetectMemoryLeak.h"
 #include "ManagerDef.h"
 #include "ConstValues.h"
+
 using namespace ce;

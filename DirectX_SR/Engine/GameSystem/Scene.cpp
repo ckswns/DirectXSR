@@ -9,8 +9,34 @@
 
 namespace ce
 {
+	void Scene::OnChangeGameObjectLayerXXX(std::pair<GameObjectLayer, GameObject*> obj) noexcept
+	{
+		_vLayerChangedObj.emplace_back(obj);
+	}
+
 	void Scene::FixedUpdateXXX(float fElapsedTime) noexcept
 	{
+		if (_vLayerChangedObj.empty() == false)
+		{
+			for (int i = 0; i < _vLayerChangedObj.size(); i++)
+			{
+				int layer = static_cast<int>(_vLayerChangedObj[i].first);
+
+				auto iter = std::find(_vGameObjs[layer].begin(), _vGameObjs[layer].end(), _vLayerChangedObj[i].second);
+
+				if (iter != _vGameObjs[layer].end())
+				{
+					_vGameObjs[layer].erase(iter);
+					int newLayer = static_cast<int>(_vLayerChangedObj[i].second->GetLayer());
+					_vGameObjs[newLayer].emplace_back(_vLayerChangedObj[i].second);
+				}
+				else
+					CE_ASSERT("ckswns", "레이어 이동중에 게임오브젝트가 유실되었을 가능성이 있습니다\n개발자에게 문의하세요");
+			}
+
+			_vLayerChangedObj.clear();
+		}
+
 		for (int i = 0; i < static_cast<int>(GameObjectLayer::END); i++)
 		{
 			for (auto iter = _vGameObjs[i].begin(); iter != _vGameObjs[i].end();)
@@ -137,11 +163,14 @@ namespace ce
 				_vGameObjs[i][j]->RenderXXX();
 			}
 		}
+	}
 
+	void Scene::UIRenderXXX(float fElapsedTime) noexcept
+	{
 		std::sort(_vGameObjs[static_cast<int>(GameObjectLayer::UI)].begin(), _vGameObjs[static_cast<int>(GameObjectLayer::UI)].end(),
 			[](GameObject* lhs, GameObject* rhs)
 			{
-				return lhs->GetSortOrderXXX() < rhs->GetSortOrderXXX();
+				return lhs->GetSortOrder() < rhs->GetSortOrder();
 			});
 
 		int i = static_cast<int>(GameObjectLayer::UI);

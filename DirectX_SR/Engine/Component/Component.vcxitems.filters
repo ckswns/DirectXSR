@@ -46,6 +46,12 @@
     <Filter Include="Physics\Collider\SphereCollider">
       <UniqueIdentifier>{cad0f37b-2365-4933-856a-6dd872870abd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Transform\RectTransform">
+      <UniqueIdentifier>{518c7744-7feb-4c8d-9a35-1bc649abcf78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\ParticleRenderer">
+      <UniqueIdentifier>{9231bde3-ea5b-4cc4-9689-0596d021e9fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h">
@@ -82,6 +88,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SphereCollider.h">
       <Filter>Physics\Collider\SphereCollider</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RectTransform.h">
+      <Filter>Transform\RectTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ParticleRendererr.h">
+      <Filter>Renderer\ParticleRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
@@ -116,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SphereCollider.cpp">
       <Filter>Physics\Collider\SphereCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RectTransform.cpp">
+      <Filter>Transform\RectTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ParticleRendererr.cpp">
+      <Filter>Renderer\ParticleRenderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
