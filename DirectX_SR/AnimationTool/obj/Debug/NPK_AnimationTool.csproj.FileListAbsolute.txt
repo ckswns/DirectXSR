@@ -1,0 +1,10 @@
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\bin\Debug\NPK_AnimationTool.exe.config
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\bin\Debug\NPK_AnimationTool.exe
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\bin\Debug\NPK_AnimationTool.pdb
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\obj\Debug\NPK_AnimationTool.csproj.AssemblyReference.cache
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\obj\Debug\NPK_AnimationTool.Form1.resources
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\obj\Debug\NPK_AnimationTool.Properties.Resources.resources
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\obj\Debug\NPK_AnimationTool.csproj.GenerateResource.cache
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\obj\Debug\NPK_AnimationTool.csproj.CoreCompileInputs.cache
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\obj\Debug\NPK_AnimationTool.exe
+C:\Users\jeon\Desktop\portpolio\DX2D_PORTPOLIO\NPK_AnimationTool\obj\Debug\NPK_AnimationTool.pdb

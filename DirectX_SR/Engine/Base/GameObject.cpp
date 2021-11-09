@@ -93,6 +93,16 @@ namespace ce
 		}
     }
 
+	void GameObject::SetLayer(GameObjectLayer _layer) noexcept
+	{
+		if (_eLayer == _layer)
+			return;
+		GameObjectLayer old = _eLayer;
+		_eLayer = _layer;
+
+		SceneManager::Instance()->GetActiveScene()->OnChangeGameObjectLayerXXX(std::make_pair(old, this));
+	}
+
     Transform* const GameObject::GetTransform(void) noexcept
     {
         return _pTransform;
@@ -104,7 +114,7 @@ namespace ce
 			return nullptr;
 
 		auto iter = std::find_if(_pComponents.begin(), _pComponents.end(),
-			[&typeID](Component* value) { return value->GetType() & typeID; });
+			[&typeID](Component* value) { return value->GetID() & typeID; });
 
 		if (iter == _pComponents.end())
 			return nullptr;
@@ -116,7 +126,7 @@ namespace ce
     {
 		if (value->GetIsUniq())
 		{
-			if (_hasComponentID & value->GetType())
+			if (_hasComponentID & value->GetID())
 			{
 				CE_ASSERT("ckswns", "해당 컴퍼넌트는 중복 삽입이 불가능합니다.");
 				return nullptr;
@@ -135,20 +145,20 @@ namespace ce
 		value->SetGameObjectXXX(this);
 		value->Init();
 
-		//if (value->GetType() == CONST_VALUES::COMPONENT_ID::COLLIDER2D)
+		//if (value->GetID() == CONST_VALUES::COMPONENT_ID::COLLIDER2D)
 		//{
 		//	GAMEOBJECTMANAGER->InsertPhysicsObjectXXXX(static_cast<Collider2D*>(value));
 		//}
 
 		_pComponents.emplace_back(value);
-		_hasComponentID |= value->GetType();
+		_hasComponentID |= value->GetID();
 
 		return value;
     }
 
     bool GameObject::HasComponent(Component* value) const noexcept
     {
-		return _hasComponentID & value->GetType() ? true : false;
+		return _hasComponentID & value->GetID() ? true : false;
     }
 
     bool GameObject::HasComponent(COMPONENT_ID::ID typeID) const noexcept
@@ -158,10 +168,10 @@ namespace ce
 
     void GameObject::RemoveComponent(Component* value) noexcept
     {
-		if ((_hasComponentID & value->GetType()) == false)
+		if ((_hasComponentID & value->GetID()) == false)
 			return;
 
-		if (value->GetType() & COMPONENT_ID::TRANSFORM)
+		if (value->GetID() & COMPONENT_ID::TRANSFORM)
 			return;
 
 		auto iter = std::find(_pComponents.begin(), _pComponents.end(), value);
@@ -169,7 +179,7 @@ namespace ce
 		if (iter == _pComponents.end())
 			return;
 
-		_hasComponentID ^= (*iter)->GetType();
+		_hasComponentID ^= (*iter)->GetID();
 
 		delete* iter;
 		*iter = nullptr;

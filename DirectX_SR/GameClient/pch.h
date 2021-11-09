@@ -10,4 +10,11 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 
+#define WINCX 1280
+#define WINCY 720
+
 #endif //PCH_H
+
+using namespace ce;
+
+extern HWND g_hWnd;

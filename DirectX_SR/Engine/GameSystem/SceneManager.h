@@ -18,6 +18,7 @@ namespace ce
 	public:		void			LateUpdate(float fElapedTime) noexcept;
 	public:		void			Release(void) noexcept;
 	public:		void			Render(float fElapedTime) noexcept;
+	public:		void			UIRender(float fElapedTime) noexcept;
 
 	public:		bool			AddScene(Scene* pScene, std::string key) noexcept;
 	public:		bool			LoadScene(std::string key) noexcept;

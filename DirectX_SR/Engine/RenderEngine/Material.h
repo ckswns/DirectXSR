@@ -14,6 +14,7 @@ namespace ce
 
 	public:		void					SetTexture(Texture* pTexture) noexcept;
 	public:		Texture*				GetTexture() noexcept { return _texture; }
+	public:		const D3DMATERIAL9&		GetNativeMaterial(void) const noexcept { return _mat; }
 
 	public:		void					Render(LPDIRECT3DDEVICE9 pDevice) noexcept;
 

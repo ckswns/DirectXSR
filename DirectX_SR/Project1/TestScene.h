@@ -19,5 +19,6 @@ public:	void		Render(float fElapsedTime) noexcept override;
 public:	void		Release(void) noexcept override;
 
 private: ce::Texture* _texture;
+private: ce::Texture* _texture2;
 };
 
