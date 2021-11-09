@@ -9,7 +9,7 @@ namespace ce
 	{
 		namespace COMPONENT_ID
 		{
-			using ID = unsigned short;
+			using ID = unsigned __int16;
 
 			static constexpr ID TRANSFORM		= (1 << 0);
 			static constexpr ID ANIMATOR		= (1 << 1);
@@ -22,7 +22,8 @@ namespace ce
 			static constexpr ID AUDIOLISTENER	= (1 << 8);
 			static constexpr ID LIGHT			= (1 << 9);
 			static constexpr ID BEHAVIOUR		= (1 << 10);
-			static constexpr ID IMAGE			= (1 << 11);
+			static constexpr ID RECT_TRANSFORM	= (1 << 11);
+			static constexpr ID IMAGE			= (1 << 12);
 		}
 
 		namespace KEY_CODES

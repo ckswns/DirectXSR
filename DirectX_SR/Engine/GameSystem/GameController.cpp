@@ -88,6 +88,10 @@ namespace ce
 
 		SCENEMANAGER->Render(deltaTime);
 
+		D3D9DEVICE->UIBegin();
+		SCENEMANAGER->UIRender(deltaTime);
+		D3D9DEVICE->UIEnd();
+
 		D3D9DEVICE->End();
 	}
 

@@ -6,7 +6,8 @@ namespace ce
 {
 	D3D9Device::D3D9Device() noexcept :
 		_pSDK(nullptr),
-		_pDevice(nullptr)
+		_pDevice(nullptr),
+		_pSprite(nullptr)
 	{
 		__noop;
 	}
@@ -67,6 +68,12 @@ namespace ce
 			return false;
 		}
 
+		if (FAILED(D3DXCreateSprite(_pDevice, &_pSprite)))
+		{
+			CE_ASSERT("ckswns", "D3DXCreateSprite함수 호출이 실패하였습니다");
+			return false;
+		}
+
 		_nClearColor = clearColor;
 
 		return true;
@@ -77,8 +84,9 @@ namespace ce
 		_pDevice->Clear(0, NULL, D3DCLEAR_STENCIL | D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, _nClearColor, 1.f, 0);
 		_pDevice->BeginScene();
 		_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-		_pDevice->SetRenderState(D3DRS_LIGHTING, false);
+		_pDevice->SetRenderState(D3DRS_LIGHTING, true);
 		_pDevice->SetRenderState(D3DRS_AMBIENT, 0x00202020);
+		_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	}
 
 	void D3D9Device::End(void) noexcept
@@ -87,8 +95,22 @@ namespace ce
 		_pDevice->Present(NULL, NULL, NULL, NULL);
 	}
 
+	void D3D9Device::UIBegin(void) noexcept
+	{
+		_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
+		//_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
+		//_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
+	}
+
+	void D3D9Device::UIEnd(void) noexcept
+	{
+		_pSprite->End();
+	}
+
 	void D3D9Device::Release(void) noexcept
 	{
+		if (_pSprite)
+			_pSprite->Release();
 		if (_pDevice)
 			_pDevice->Release();
 		if (_pSDK)

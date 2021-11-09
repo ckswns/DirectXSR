@@ -11,9 +11,6 @@
 
 #define MAX_LOADSTRING 100
 
-#define WINCX 1280
-#define WINCY 720
-
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
@@ -64,13 +61,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	pGameController->Init(g_hWnd, scenesList, WINCX, WINCY);
  
     // Main message loop:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    while (WM_QUIT != msg.message)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+		}
 		else
 		{
 			pGameController->Update();
