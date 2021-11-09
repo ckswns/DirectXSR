@@ -52,6 +52,9 @@
     <Filter Include="Renderer\ParticleRenderer">
       <UniqueIdentifier>{9231bde3-ea5b-4cc4-9689-0596d021e9fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics\Collider\BoxCollider">
+      <UniqueIdentifier>{3debf6d4-a6ce-43b9-9939-a60daa0076cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h">
@@ -94,6 +97,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ParticleRendererr.h">
       <Filter>Renderer\ParticleRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TerrainCollider.h">
+      <Filter>Physics\Collider\TerrainCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BoxCollider.h">
+      <Filter>Physics\Collider\BoxCollider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
@@ -134,6 +143,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ParticleRendererr.cpp">
       <Filter>Renderer\ParticleRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TerrainCollider.cpp">
+      <Filter>Physics\Collider\TerrainCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BoxCollider.cpp">
+      <Filter>Physics\Collider\BoxCollider</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
