@@ -26,7 +26,12 @@ namespace ce
 
 	void MeshRenderer::Render(void) noexcept
 	{
+		//_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+		//_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+		//_pDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);
+
 		_pDevice->SetTransform(D3DTS_WORLD, &_pTransform->GetWorldMatrix());
+
 		_material.Render(_pDevice);
 		_pMesh->Render(_pDevice);
 	}

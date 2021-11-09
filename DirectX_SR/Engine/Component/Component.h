@@ -24,7 +24,7 @@ namespace ce
 	public:		virtual void			Render(void) noexcept PURE;
 	public:		virtual void			Release(void) noexcept PURE;
 
-	public:		COMPONENT_ID::ID		GetType(void) const noexcept { return _identification; }
+	public:		COMPONENT_ID::ID		GetID(void) const noexcept { return _identification; }
 	public:		COMPONENT_ID::ID		GetDependencyID(void) const noexcept { return _dependencyID; }
 
 	public:		bool					GetIsUniq(void) const noexcept { return _isUniq; }
