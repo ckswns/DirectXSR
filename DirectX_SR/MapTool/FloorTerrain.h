@@ -3,11 +3,12 @@
 
 class FloorTerrain : public Mesh
 {
-public: explicit FloorTerrain(WORD wwith, WORD whegiht, float flength);
+public: explicit FloorTerrain(WORD wwidth, WORD whegiht, float flength);
 public: virtual ~FloorTerrain(void);
 
 public: bool							Open(LPDIRECT3DDEVICE9 pDevice) noexcept override;
 public: void							Render(LPDIRECT3DDEVICE9 pDevice) noexcept override;
+public: void							Close(void) noexcept override;
 
 public:  bool							LoadTextures();
 public:  BOOL							CreateAlphaMaps();
@@ -16,11 +17,13 @@ public:  BOOL							IntersectTriangle(const D3DXVECTOR3& orig,
 															D3DXVECTOR3& v1, D3DXVECTOR3& v2,
 															FLOAT* t, FLOAT* u, FLOAT* v);
 public:  void							PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY);
+public:  D3DXVECTOR3					PickingOnTerrain(CPoint point);
+
 public:  bool							DrawAlphamaps(int nIndex);
 public:  void							DrawPickCircle(int Count, float size, D3DCOLOR Col);
 public:  void							AlphaTextureRender();
 public:  void							MiniAlphaTextureRender();
-public:  bool							TerrainInit();
+public:  bool							TerrainInit(WORD wWidth, WORD wHeight, float fLength);
 public:  void							TerrainRender();
 
 public:  //----------------------------------------------------------------------------------//
@@ -92,5 +95,6 @@ private: float						_fGetV;
 private: BOOL						_blClicked;
 private: int						_nTexPosX;
 private: int						_nTexPosY;
+
 };
 

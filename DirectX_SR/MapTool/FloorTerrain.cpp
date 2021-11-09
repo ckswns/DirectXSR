@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "FloorTerrain.h"
+#include "Transform.h"
 
-FloorTerrain::FloorTerrain(WORD wwith, WORD whegiht, float flength)
+FloorTerrain::FloorTerrain(WORD wwidth, WORD whegiht, float flength)
 	:
-	 _wWidth(wwith), _wHeight(whegiht)
+	 _wWidth(wwidth), _wHeight(whegiht)
 	, _wWidthVertices(0), _wHeightVertices(0)
 	, _dwTotalVertices(0x00), _dwTotalIndices(0x00)
 	, _fLength(flength)
@@ -22,6 +23,7 @@ FloorTerrain::FloorTerrain(WORD wwith, WORD whegiht, float flength)
 }
 FloorTerrain::~FloorTerrain(void)
 {
+	Close();
 }
 
 bool FloorTerrain::Open(LPDIRECT3DDEVICE9 pDevice) noexcept
@@ -33,20 +35,31 @@ bool FloorTerrain::Open(LPDIRECT3DDEVICE9 pDevice) noexcept
 	if (CreateAlphaMaps() == 0)
 		return MessageBoxA(nullptr, "CreateAlphaMaps Err", "Err", MB_OK);
 
-	if (!TerrainInit())
+	if (!TerrainInit(_wWidth,_wHeight,1.f))
 		return MessageBoxA(nullptr, "TerrainInit", "Err", MB_OK);
 
 	return true;
 }
 
+void FloorTerrain::Close(void) noexcept
+{
+	SAFE_RELEASE_(_pBaseTexture);
+	for (int i = 0; i < MAXTEXNUM; ++i)
+	{
+		SAFE_RELEASE_(_Tex[i].pTexture);
+		SAFE_RELEASE_(_Tex[i].pAlphamap);
+	}
+	SAFE_RELEASE_(_pVB);
+	SAFE_RELEASE_(_pIB);
+	SAFE_DELETE_(_pVertices);
+}
+
 void FloorTerrain::Render(LPDIRECT3DDEVICE9 pDevice) noexcept
 {
-	//PickingProcess(g_rtMfc, g_MousePosX, g_MousePosY);
-	//if (_blClicked)
-	//	DrawAlphamaps(_nCurSelIndex);
+	PickingProcess(g_rtMfc, g_MousePosX, g_MousePosY);
 
-	//Mesh::Render(pDevice);
-
+	if (_blClicked)
+		DrawAlphamaps(_nCurSelIndex);
 
 	TerrainRender();
 	AlphaTextureRender();
@@ -55,91 +68,136 @@ void FloorTerrain::Render(LPDIRECT3DDEVICE9 pDevice) noexcept
 	DrawPickCircle(30, _fBrushSize, 0xffff0000);
 }
 
-bool FloorTerrain::TerrainInit()
+bool FloorTerrain::TerrainInit(WORD wWidth, WORD wHeight, float fLength)
 {
-	WORD x, z;
+	WORD x, y;
 
-	_wWidthVertices = _wWidth + 1;
-	_wHeightVertices = _wHeight + 1;
-	_dwTotalVertices = _wWidthVertices * _wHeightVertices;
-	
+	_wWidth = wWidth;
+	_wHeight = wHeight;
+	_wWidthVertices = wWidth + 1;									//맵의 가로 정점수
+	_wHeightVertices = wHeight + 1;									//맵의 세로 정점수
+	_dwTotalVertices = _wWidthVertices * _wHeightVertices;			//맵의 전체정점수
+
+	_fLength = fLength;
+
+	//if(FAILED(D3DXCreateTextureFromFile(_pd3dDevice, chFileName, &_Texture)))
+	//{ return false;}
+
+	//ex)2*2		
+
+	//		6---7---8
+	//		| ＼| ＼|
+	//		3---4---5
+	//		| ＼| ＼|
+	//		0---1---2
+
+	//2.정점좌표,텍스쳐좌표 설정
+
 	_pVertices = new CUSVTX[_dwTotalVertices];
 
-	//memset(_pVertices, sizeof(CUSVTX) * _dwTotalVertices, NULL);
-
-	WORD dwIndx = 0;
-	for (z = 0; z < _wHeightVertices; ++z)
+	for (y = 0; y < _wHeightVertices; ++y)
 	{
 		for (x = 0; x < _wWidthVertices; ++x)
 		{
-			dwIndx = (z * _wWidthVertices) + x;
+			_pVertices[(y * _wWidthVertices) + x].vPosition.x = (float)(x); //+ _fLength;
+			_pVertices[(y * _wWidthVertices) + x].vPosition.y = 0.0f;
+			_pVertices[(y * _wWidthVertices) + x].vPosition.z = (float)(y); //+ _fLength;
 
-			_pVertices[dwIndx].vPosition.x = float(x);
-			_pVertices[dwIndx].vPosition.y = 0.f;
-			_pVertices[dwIndx].vPosition.z = float(z);
-
-			_pVertices[dwIndx].vAplhaUV.x = (float)x / (float)_wWidth; // Alpha U
-			_pVertices[dwIndx].vAplhaUV.y = 1.0f - (float)z / (float)_wHeight; // Alpha V
-
-			_pVertices[dwIndx].vTextureUV.x = (float)x / (float)_wWidth; // Texture U
-			_pVertices[dwIndx].vTextureUV.y = 1.0f - (float)z / (float)_wHeight; // Texture V
+			_pVertices[(y * _wWidthVertices) + x].vAplhaUV.x = (float)x / (float)_wWidth;
+			_pVertices[(y * _wWidthVertices) + x].vAplhaUV.y = 1.0f - (float)y / (float)_wHeight;
+			_pVertices[(y * _wWidthVertices) + x].vTextureUV.x = (float)x / (float)_wWidth;
+			_pVertices[(y * _wWidthVertices) + x].vTextureUV.y = 1.0f - (float)y / (float)_wHeight;
 		}
 	}
+
+	//3.정점버퍼 설정
+
 	void* pVertices;
 
-	if (FAILED(_pGraphicDev->CreateVertexBuffer(_dwTotalVertices * sizeof(CUSVTX), 0, D3DFVF_CUSTOMVERTEX, D3DPOOL_DEFAULT, &_pVB, NULL)))
+	if (FAILED(_pGraphicDev->CreateVertexBuffer(
+		_dwTotalVertices * sizeof(CUSVTX),
+		0,
+		D3DFVF_CUSTOMVERTEX,
+		D3DPOOL_DEFAULT,
+		&_pVB,
+		NULL)))
+	{
 		return false;
+	}
 
-	if (FAILED(_pVB->Lock(0, sizeof(CUSVTX) * _dwTotalVertices, (void**)&pVertices, 0)))
+	if (FAILED(_pVB->Lock(0, _dwTotalVertices * sizeof(CUSVTX), (void**)&pVertices, 0)))
+	{
 		return false;
+	}
 
-	memcpy(pVertices, _pVertices, sizeof(CUSVTX) * _dwTotalVertices);
+	memcpy(pVertices, _pVertices,
+		_dwTotalVertices * sizeof(CUSVTX));
 	_pVB->Unlock();
 
-	//-----------------------------------------------------------------------------------//
-	// 인덱스 버퍼 설정
-	int totalStrips = _wWidthVertices - 1;
-	int total_Indexes_per_strip = _wHeightVertices << 1;
 
-	_dwTotalIndices = (total_Indexes_per_strip * totalStrips) + (totalStrips << 1) - 2;
+	//4.인덱스 설정
 
-	WORD*	pIndexValues = new WORD[_dwTotalIndices];
-	WORD*	Index = pIndexValues;
-	WORD	start_vertex = 0;
-	WORD	linestep = (WORD)(_fLength * _wHeightVertices);
+	int total_strips =
+		_wWidthVertices - 1;
+	int total_indexes_per_strip =
+		_wWidthVertices << 1;
 
-	for (z = 0; z < totalStrips; ++z)
+	// the total number of indices is equal
+	// 인덱스의 총 개수는 같음
+	// 
+	// to the number of strips times the
+	// 스트립 수 배
+	// 
+	// indices used per strip plus one
+	// 스트립당 사용된 인덱스 + 1
+	// 
+	// degenerate triangle between each strip
+	// 각 스트립 사이의 퇴화 삼각형
+	_dwTotalIndices = (total_indexes_per_strip * total_strips) + (total_strips << 1) - 2;
+
+	unsigned short* pIndexValues = new unsigned short[_dwTotalIndices];
+
+	unsigned short* index = pIndexValues;
+	unsigned short start_vert = 0;
+	unsigned short lineStep = (unsigned short)(_fLength * _wHeightVertices);
+
+	for (y = 0; y < total_strips; ++y)
 	{
-		WORD vertex = start_vertex;
+		unsigned short vert = start_vert;
 
+		// create a strip for this row
 		for (x = 0; x < _wWidthVertices; ++x)
 		{
-			*(Index++) = vertex;
-			*(Index++) = vertex + linestep;
-			//vertex += 1;
-			vertex++;
-
+			*(index++) = vert;
+			*(index++) = vert + lineStep;
+			vert += 1;
 		}
-		start_vertex += linestep;
+		start_vert += lineStep;
 
-		if (z + 1 < totalStrips)
+		if (y + 1 < total_strips)
 		{
-			*(Index++) = (vertex - 1) + linestep;
-			*(Index++) = start_vertex;
+			// add a degenerate to attach to 
+			// the next row
+			*(index++) = (vert - 1) + lineStep;
+			*(index++) = start_vert;
 		}
 	}
 
-	_dwPolygonsCount = _dwTotalIndices - 2;
-
-	if (FAILED(_pGraphicDev->CreateIndexBuffer(_dwTotalIndices * sizeof(WORD), 0, D3DFMT_INDEX32, D3DPOOL_MANAGED, &_pIB, NULL)))
+	_dwPolygonsCount = _dwTotalIndices - 2; //스트립으로 그릴때는 2를빼준다
+	//인덱스버퍼설정
+	if (FAILED(_pGraphicDev->CreateIndexBuffer(
+		_dwTotalIndices * sizeof(WORD), 0,
+		D3DFMT_INDEX16, D3DPOOL_DEFAULT, &_pIB, NULL)))
+	{
 		return false;
+	}
 
 	void* pIndices;
 	_pIB->Lock(0, 0, (void**)&pIndices, 0);
-	memcpy(pIndices, pIndexValues , _dwTotalIndices * sizeof(WORD));
+	memcpy(pIndices, pIndexValues, _dwTotalIndices * sizeof(WORD));
 	_pIB->Unlock();
 
-	delete[] pIndexValues;
+	delete[]pIndexValues;
 
 	return true;
 }
@@ -148,14 +206,12 @@ void FloorTerrain::TerrainRender()
 {
 	D3DXMATRIXA16 matTemp;
 
-	_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
 
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 
 	// Allow multiple passes to blend together correctly
-	//여러 패스가 올바르게 혼합되도록 허용
-
 	_pGraphicDev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	_pGraphicDev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	_pGraphicDev->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
@@ -176,10 +232,16 @@ void FloorTerrain::TerrainRender()
 
 	_pGraphicDev->SetTexture(0, _pBaseTexture);
 	_pGraphicDev->SetStreamSource(0, _pVB, 0, sizeof(CUSVTX));
-	_pGraphicDev->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, _dwTotalVertices, 0, _dwPolygonsCount);
-	_pGraphicDev->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
+	_pGraphicDev->DrawIndexedPrimitive(
+		D3DPT_TRIANGLESTRIP,		//프리미티브타입
+		0,
+		0,
+		_dwTotalVertices,
+		0,
+		_dwPolygonsCount
+	);
 
-	//_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	_pGraphicDev->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
 }
 
 bool FloorTerrain::LoadTextures()
@@ -189,12 +251,12 @@ bool FloorTerrain::LoadTextures()
 		return FALSE;
 	}
 
-	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile0.png", &_Tex[0].pTexture))) {
+	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile2.png", &_Tex[0].pTexture))) {
 		MessageBoxA(NULL, "Failed to load 'Tile0.png'", "Error", MB_OK);
 		return FALSE;
 	}
 
-	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile2.png", &_Tex[1].pTexture))) {
+	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile0.png", &_Tex[1].pTexture))) {
 		MessageBoxA(NULL, "Failed to load 'Tile2.png'", "Error", MB_OK);
 		return FALSE;
 	}
@@ -307,13 +369,17 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 	D3DXMatrixIdentity(&matWorld);
 	D3DXMatrixIdentity(&matView);
 	D3DXMatrixIdentity(&matProj);
-
+	
+	CPoint CpMouse = { (int)fCurPosX,(int)fCurPosY };
 	// Get Picking Ray.
 
 	_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
 	_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
 	D3DXMatrixInverse(&matWorld, NULL, &matView);
+
+	/*rtRect.right = rtRect.right + 300;*/
+	rtRect.left = rtRect.left + 300;
 
 	FLOAT fWidth = FLOAT(rtRect.right - rtRect.left);
 	FLOAT fHeight = FLOAT(rtRect.bottom - rtRect.top);
@@ -360,7 +426,8 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 				v0, v1, v2,
 				&fDist, &_fGetU, &_fGetV))
 			{
-				_vGetPos = vOrg + vDir * fDist;
+				//_vGetPos = vOrg + vDir * fDist;
+				_vGetPos = PickingOnTerrain(CpMouse);
 				_blPickOK = TRUE;
 				break;
 			}
@@ -368,7 +435,8 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 				v1, v3, v2,
 				&fDist, &_fGetU, &_fGetV))
 			{
-				_vGetPos = vOrg + vDir * fDist;
+				//_vGetPos = vOrg + vDir * fDist;
+				_vGetPos = PickingOnTerrain(CpMouse);
 				_blPickOK = TRUE;
 				break;
 			}
@@ -376,6 +444,84 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 				_blPickOK = FALSE;
 		}
 	}
+	// 선생님 픽킹 성공 했을때 월드 좌표의 버텍스 좌표의 위치를 _vGetpos 에 넣어주고 _blPickok 던지고 실패하면 false 던지고
+}
+
+D3DXVECTOR3 FloorTerrain::PickingOnTerrain(CPoint point)
+{
+	//-----------------------------------------------------------------//
+	D3DVIEWPORT9		ViewPort;
+	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+
+	D3DXVECTOR3 vMousePos;
+	D3D9DEVICE->GetDevice()->GetViewport(&ViewPort);
+
+	vMousePos.x = (point.x) / (ViewPort.Width * 0.5f) - 1.f;
+	vMousePos.y = point.y / -(ViewPort.Height * 0.5f) + 1.f;
+	vMousePos.z = 0.f;
+
+	D3DXMATRIX	matPorj;
+	D3D9DEVICE->GetDevice()->GetTransform(D3DTS_PROJECTION, &matPorj);
+	D3DXMatrixInverse(&matPorj, NULL, &matPorj);
+	D3DXVec3TransformCoord(&vMousePos, &vMousePos, &matPorj);
+
+	D3DXVECTOR3 vRayPos, vRayDir;
+
+	vRayPos = D3DXVECTOR3(0.f, 0.f, 0.f);
+	vRayDir = vMousePos - vRayPos;
+
+	D3DXMATRIX	matView;
+	D3D9DEVICE->GetDevice()->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixInverse(&matView, NULL, &matView);
+
+	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matView);
+	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
+
+	D3DXMATRIX	matWorld;
+	_pGraphicDev->GetTransform(D3DTS_WORLD, &matWorld);
+	D3DXMatrixInverse(&matWorld, NULL, &matWorld);
+
+	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matWorld);
+	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matWorld);
+
+	DWORD VtxX = _wWidthVertices;
+	DWORD VtxZ = _wHeightVertices;
+
+	DWORD dwVtxIndx[3];
+	float fU, fV, fDist;
+
+	for (DWORD z = 0; z < VtxZ - 1; ++z)
+	{
+		for (DWORD x = 0; x < VtxX - 1; ++x)
+		{
+			DWORD dwIndex = z * VtxX + x;
+
+			dwVtxIndx[0] = dwIndex + VtxX;
+			dwVtxIndx[1] = dwIndex + VtxX + 1;
+			dwVtxIndx[2] = dwIndex + 1;
+
+			if (D3DXIntersectTri(&_pVertices[dwVtxIndx[1]].vPosition, &_pVertices[dwVtxIndx[0]].vPosition, &_pVertices[dwVtxIndx[2]].vPosition
+				, &vRayPos, &vRayDir, &fU, &fV, &fDist))
+			{
+							return D3DXVECTOR3(_pVertices[dwVtxIndx[1]].vPosition.x + (_pVertices[dwVtxIndx[0]].vPosition.x - _pVertices[dwVtxIndx[1]].vPosition.x) * fU
+								, 0.f
+								, _pVertices[dwVtxIndx[1]].vPosition.z + (_pVertices[dwVtxIndx[2]].vPosition.z - _pVertices[dwVtxIndx[1]].vPosition.z) * fV);
+			}
+
+			dwVtxIndx[0] = dwIndex + VtxX;
+			dwVtxIndx[1] = dwIndex + 1;
+			dwVtxIndx[2] = dwIndex;
+
+			if (D3DXIntersectTri(&_pVertices[dwVtxIndx[2]].vPosition, &_pVertices[dwVtxIndx[1]].vPosition, &_pVertices[dwVtxIndx[0]].vPosition
+				, &vRayPos, &vRayDir, &fU, &fV, &fDist))
+			{
+				return D3DXVECTOR3(_pVertices[dwVtxIndx[2]].vPosition.x + (_pVertices[dwVtxIndx[1]].vPosition.x - _pVertices[dwVtxIndx[2]].vPosition.x) * fU
+									, 0.f
+									, _pVertices[dwVtxIndx[2]].vPosition.z + (_pVertices[dwVtxIndx[0]].vPosition.z - _pVertices[dwVtxIndx[1]].vPosition.z) * fV);
+			}
+		}
+	}
+	return D3DXVECTOR3(0.f, 0.f, 0.f);
 }
 
 bool FloorTerrain::DrawAlphamaps(int nIndex)
@@ -395,7 +541,7 @@ bool FloorTerrain::DrawAlphamaps(int nIndex)
 
 	float	PosU = _vGetPos.x / (float)(MAPWIDTH);
 	float	PosV = 1 - _vGetPos.z / (float)(MAPHEIGHT);
-	//float	PosV = m_vGetPos.z / (float)(MAPHEIGHT);
+	//float	PosV = _vGetPos.z / (float)(MAPHEIGHT);
 
 
 	_nTexPosX = int(PosU * TEXALPHASIZE);

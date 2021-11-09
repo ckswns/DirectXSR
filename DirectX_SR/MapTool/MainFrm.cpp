@@ -91,7 +91,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 
 	m_tMainSplitter.CreateStatic(this, 1, 2);
 
-	m_tMainSplitter.CreateView(0, 0, RUNTIME_CLASS(CForm), CSize(350, WINCY), pContext);
+	m_tMainSplitter.CreateView(0, 0, RUNTIME_CLASS(CForm), CSize(300, WINCY), pContext);
 	m_tMainSplitter.CreateView(0, 1, RUNTIME_CLASS(CMapToolView), CSize(WINCX, WINCY), pContext);
 
 	//m_MapToolview = (CMapToolView*)m_tMainSplitter.GetPane(0, 0);

@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "FloorTerrain.h"
 
+
 class CMapToolDoc;
 
 class CMapToolView : public CView
@@ -62,7 +63,11 @@ public:
 
 	std::vector<std::pair<GameObject*,std::pair<std::string,int>>> _vecCube;
 
-private: FloorTerrain* _pFloorTerrain;
+private: Mesh* _mesh = nullptr;
+
+public:
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // MapToolView.cpp의 디버그 버전

@@ -59,6 +59,7 @@ typedef struct TagLINE3D
 	D3DCOLOR	Col;
 
 }L3D;
+
 #define D3DFVF_LINE3D (D3DFVF_XYZ | D3DFVF_DIFFUSE)
 
 typedef struct TagTexture

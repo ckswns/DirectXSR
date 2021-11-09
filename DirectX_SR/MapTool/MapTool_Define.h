@@ -10,6 +10,10 @@
 #define TEXALPHASIZE	512
 #define MINIALPHASIZE	128
 
+#define SAFE_DELETE_(p)       {if(p) {delete (p);     (p)=NULL;}}
+#define SAFE_DELETE_ARRAY_(p) {if(p) {delete[] (p);   (p)=NULL;}}
+#define SAFE_RELEASE_(p)      {if(p) {(p)->Release(); (p)=NULL;}}
+
 extern	HWND			g_hWnd;
 extern	GameController*	g_pGameController;
 extern	bool			g_bInitGame;

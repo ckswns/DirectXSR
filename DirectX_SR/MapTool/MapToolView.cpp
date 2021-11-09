@@ -37,6 +37,8 @@ BEGIN_MESSAGE_MAP(CMapToolView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_WM_LBUTTONDOWN()
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 // CMapToolView 생성/소멸
@@ -120,10 +122,6 @@ void CMapToolView::OnInitialUpdate()
 
 	CView::OnInitialUpdate();
 
-	//std::string strTest;
-	//strTest = INIMANAGER->LoadDataString("Data/Cube", "Cube0", "filePath");
-	//int i = 0;
-
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
 	g_hWnd = m_hWnd;
@@ -149,16 +147,32 @@ void CMapToolView::OnInitialUpdate()
 	g_bInitGame = true;
 
 	m_pGraphicDev = D3D9DEVICE->GetDevice();
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	GameObject* pGameObject;
+
+	D3DXMATRIXA16 matWorld;
+	D3DXMatrixIdentity(&matWorld);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	//D3DXVECTOR3 vEyePt(float((MAPWIDTH) / 2), 20.0f, -10.0f);
+	//D3DXVECTOR3 vLookatPt(float((MAPWIDTH) / 2), 10.0f, 0.0f);
+	//D3DXVECTOR3 vUpVec(0.0f, 1.0f, 0.0f);
+
+	//D3DXMATRIXA16 matView;
+	//D3DXMatrixLookAtLH(&matView, &vEyePt, &vLookatPt, &vUpVec);
+	//m_pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
+
+	///// 프로젝션 행렬 설정
+	//D3DXMATRIXA16 matProj;
+	//FLOAT fWidth = WINCX;
+	//FLOAT fHeight = WINCY;
+	//D3DXMatrixPerspectiveFovLH(&matProj, D3DX_PI / 4.0f, fWidth / fHeight, 1.0f, 100.0f);
+	//m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 	pGameObject = GameObject::Instantiate();
 	pGameObject->AddComponent(new EditorCamera(g_hWnd,10));
 
 	//pGameObject = GameObject::Instantiate();
-	//
 	//ce::Texture* test = new ce::Texture();
-
 	//test->Init(m_pGraphicDev, "Resource/Tile0.png");
 	//Mesh* mesh = new Quad();
 	//mesh->Open(m_pGraphicDev);
@@ -166,57 +180,69 @@ void CMapToolView::OnInitialUpdate()
 	//pGameObject->AddComponent(mr);
 	//mr->GetMaterialPTR()->SetTexture(test);
 
-	Mesh* mesh = new FloorTerrain(30, 30, 1.f);
-	mesh->Open(m_pGraphicDev);
-	MeshRenderer* mr = new MeshRenderer(m_pGraphicDev, mesh);
-	pGameObject->AddComponent(mr);
+	// Default Setting
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
+	// Allow multiple passes to blend together correctly
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
+	pGameObject = GameObject::Instantiate();
+	_mesh = new FloorTerrain(30, 30, 1.f);
+	_mesh->Open(m_pGraphicDev);
+	MeshRenderer* mr = new MeshRenderer(m_pGraphicDev, _mesh);
+	pGameObject->AddComponent(mr);
 }
 
 
 void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	CForm*		pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
-	MapTab*		pMaptab = pFormView->m_pMapTab;
-	CubeTab*	pCubetab = pFormView->m_pCubeTab;
 
-	int TerrainIndex = pFormView->m_pMapTab->m_RoomList.GetCurSel();
+	static_cast<FloorTerrain*>(_mesh)->SetClicked(TRUE);
 
-	if (TerrainIndex == -1)
-	{
-		MessageBoxA(nullptr, "룸번호를 선택해야 합니다.", "RoomNumber Error", MB_OK);
-		return;
-	}
+	// 큐브 피킹----------------------------------------------------------------//
+	//CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	//CForm*		pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
+	//MapTab*		pMaptab = pFormView->m_pMapTab;
+	//CubeTab*	pCubetab = pFormView->m_pCubeTab;
 
-	CTerrain* pTerrainCom = static_cast<CTerrain*>(pMaptab->_vecTerrain[TerrainIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR));
-	Transform* pTransform = pMaptab->_vecTerrain[TerrainIndex]->GetTransform();
-	D3DXVECTOR3 vPickingPos = PickingOnTerrain(point, pTerrainCom, pTransform, TerrainIndex);
+	//int TerrainIndex = pFormView->m_pMapTab->m_RoomList.GetCurSel();
 
-	if (pFormView->m_iTabIndex == 1 && vPickingPos.x != 0 && vPickingPos.z != 0)
-	{
-		int CubeIndex = pCubetab->_LoadList.GetCurSel();
-		CString cstrTextureName = L"Cube";
-		CString cstrIndex;
-		cstrIndex.Format(_T("%d"), CubeIndex);
-		cstrTextureName += cstrIndex;
+	//if (TerrainIndex == -1)
+	//{
+	//	MessageBoxA(nullptr, "룸번호를 선택해야 합니다.", "RoomNumber Error", MB_OK);
+	//	return;
+	//}
 
-		auto iter = pCubetab->_mapTex.find(cstrTextureName.GetString());
+	//CTerrain* pTerrainCom = static_cast<CTerrain*>(pMaptab->_vecTerrain[TerrainIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR));
+	//Transform* pTransform = pMaptab->_vecTerrain[TerrainIndex]->GetTransform();
+	//D3DXVECTOR3 vPickingPos = PickingOnTerrain(point, pTerrainCom, pTransform, TerrainIndex);
 
-		if (iter != pCubetab->_mapTex.end())
-		{
-			GameObject* pGameObject = GameObject::Instantiate();
-			Texture* pTex = pCubetab->_mapTex[cstrTextureName.GetString()].second;
-			std::string filepath = pCubetab->_mapTex[cstrTextureName.GetString()].first;
-			pGameObject->AddComponent(new CubeObject(pTex));
-			pGameObject->GetTransform()->SetWorldPosition(vPickingPos);
+	//if (pFormView->m_iTabIndex == 1 && vPickingPos.x != 0 && vPickingPos.z != 0)
+	//{
+	//	int CubeIndex = pCubetab->_LoadList.GetCurSel();
+	//	CString cstrTextureName = L"Cube";
+	//	CString cstrIndex;
+	//	cstrIndex.Format(_T("%d"), CubeIndex);
+	//	cstrTextureName += cstrIndex;
 
-			_vecCube.emplace_back(std::make_pair(pGameObject,std::make_pair(filepath, TerrainIndex)));
-		}
-		else
-			return;
-	}
+	//	auto iter = pCubetab->_mapTex.find(cstrTextureName.GetString());
+
+	//	if (iter != pCubetab->_mapTex.end())
+	//	{
+	//		GameObject* pGameObject = GameObject::Instantiate();
+	//		Texture* pTex = pCubetab->_mapTex[cstrTextureName.GetString()].second;
+	//		std::string filepath = pCubetab->_mapTex[cstrTextureName.GetString()].first;
+	//		pGameObject->AddComponent(new CubeObject(pTex));
+	//		pGameObject->GetTransform()->SetWorldPosition(vPickingPos);
+
+	//		_vecCube.emplace_back(std::make_pair(pGameObject,std::make_pair(filepath, TerrainIndex)));
+	//	}
+	//	else
+	//		return;
+	//}
 }
 
 D3DXVECTOR3 CMapToolView::PickingOnTerrain(CPoint point, CTerrain* pTerrainCom,Transform* pTransform,const int& iIndx)
@@ -312,4 +338,25 @@ D3DXVECTOR3 CMapToolView::PickingOnTerrain(CPoint point, CTerrain* pTerrainCom,T
 		}
 	}
 	return D3DXVECTOR3(0.f,0.f,0.f);
+}
+
+
+void CMapToolView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	g_MousePosX = point.x;
+	g_MousePosY = point.y;
+
+	//CView::OnMouseMove(nFlags, point);
+}
+
+
+void CMapToolView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	static_cast<FloorTerrain*>(_mesh)->SetClicked(FALSE);
+
+	CView::OnLButtonUp(nFlags, point);
 }

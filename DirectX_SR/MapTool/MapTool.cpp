@@ -134,8 +134,9 @@ BOOL CMapToolApp::InitInstance()
 	// 창 하나만 초기화되었으므로 이를 표시하고 업데이트합니다.
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
-	GetClientRect(g_hWnd,&g_rtMfc);
 	return TRUE;
+
+	GetClientRect(g_hWnd, &g_rtMfc);
 }
 
 int CMapToolApp::ExitInstance()
