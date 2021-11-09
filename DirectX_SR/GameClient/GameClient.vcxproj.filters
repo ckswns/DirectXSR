@@ -28,6 +28,36 @@
     <Filter Include="00. Game\00. Scene\01.Create">
       <UniqueIdentifier>{e3d86f59-bc71-4d1c-835b-e4d78ca44540}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject">
+      <UniqueIdentifier>{bc3ec503-8e32-4b35-9ed3-0c53f42e2cab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player">
+      <UniqueIdentifier>{3b180011-666b-4c4e-a785-14ce52323326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Skill">
+      <UniqueIdentifier>{03e65e24-4fe4-43b1-90be-64cbf5a8412c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\98.Include">
+      <UniqueIdentifier>{0efcff65-7b50-4694-bcdb-16c8434e40cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton">
+      <UniqueIdentifier>{b223a755-5cf3-41ec-bc01-912ec3e20478}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Command">
+      <UniqueIdentifier>{5af0d014-8f4b-427b-8f61-196c5cbb979a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Command\SkillCommand">
+      <UniqueIdentifier>{b91db208-2c78-4d8c-b033-e08a030a4e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Command\AttackCommand">
+      <UniqueIdentifier>{fa4e8722-89e6-4f8e-ab53-49329322cec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Command\MoveCommand">
+      <UniqueIdentifier>{e19d1efa-3196-4ded-9f0e-fe945e3fff7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\InputHandle">
+      <UniqueIdentifier>{b76ee25e-0318-4d9b-b18b-dcd49cdd3f43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -51,6 +81,42 @@
     <ClInclude Include="PlayerSelectScene.h">
       <Filter>00. Game\00. Scene\01.Create</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>00. Game\01. GameObject\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Game_Struct.h">
+      <Filter>00. Game\98.Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Game_Enum.h">
+      <Filter>00. Game\98.Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>00. Game\01. GameObject\00. Player\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="RaiseSkeleton.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillCommand.h">
+      <Filter>00. Game\01. GameObject\00. Player\Command\SkillCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackCommand.h">
+      <Filter>00. Game\01. GameObject\00. Player\Command\AttackCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCommand.h">
+      <Filter>00. Game\01. GameObject\00. Player\Command\MoveCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHandler.h">
+      <Filter>00. Game\01. GameObject\InputHandle</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>00. Game\00. Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -64,6 +130,30 @@
     </ClCompile>
     <ClCompile Include="PlayerSelectScene.cpp">
       <Filter>00. Game\00. Scene\01.Create</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>00. Game\01. GameObject\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="RaiseSkeleton.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillCommand.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Command\SkillCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackCommand.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Command\AttackCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCommand.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Command\MoveCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>00. Game\01. GameObject\InputHandle</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>00. Game\00. Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
