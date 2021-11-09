@@ -32,3 +32,4 @@ DirectX_SR/Project1/x64/Release
 DirectX_SR/MapTool/x64/Debug/vc142.idb
 *.exe
 DirectX_SR/MapTool/x64/Debug/vc142.idb
+DirectX_SR/MapTool/x64/Debug/MapTool.pch

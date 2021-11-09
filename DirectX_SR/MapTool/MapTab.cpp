@@ -315,6 +315,13 @@ void MapTab::OnBnClickedSaveTerrain()
 
 		std::string strFilepath;
 		strFilepath = (static_cast<CTerrain*>(_vecTerrain[t]->GetComponent(COMPONENT_ID::BEHAVIOUR))->Get_Filepath());
+
+		if (!strcmp("", strFilepath.c_str()))
+		{
+			MessageBoxA(nullptr,"해당 지역에 텍스쳐파일이 없습니다.", strRoomnumber.c_str(), MB_OK);
+			return;
+		}
+
 		INIMANAGER->AddData(strSection, "filepath", strFilepath);
 
 		iSectionNumber++;

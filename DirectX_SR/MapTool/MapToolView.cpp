@@ -18,6 +18,9 @@
 #include "INIManager.h"
 #include "Terrain.h"
 #include "CubeObject.h"
+#include "Quad.h"
+#include "Texture.h"
+#include "MeshRenderer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -151,6 +154,23 @@ void CMapToolView::OnInitialUpdate()
 	GameObject* pGameObject;
 	pGameObject = GameObject::Instantiate();
 	pGameObject->AddComponent(new EditorCamera(g_hWnd,10));
+
+	//pGameObject = GameObject::Instantiate();
+	//
+	//ce::Texture* test = new ce::Texture();
+
+	//test->Init(m_pGraphicDev, "Resource/Tile0.png");
+	//Mesh* mesh = new Quad();
+	//mesh->Open(m_pGraphicDev);
+	//MeshRenderer* mr = new MeshRenderer(m_pGraphicDev, mesh);
+	//pGameObject->AddComponent(mr);
+	//mr->GetMaterialPTR()->SetTexture(test);
+
+	Mesh* mesh = new FloorTerrain(30, 30, 1.f);
+	mesh->Open(m_pGraphicDev);
+	MeshRenderer* mr = new MeshRenderer(m_pGraphicDev, mesh);
+	pGameObject->AddComponent(mr);
+
 }
 
 

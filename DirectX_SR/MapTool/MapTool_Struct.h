@@ -43,19 +43,33 @@ typedef	struct TagIndex32
 
 }IDX32;
 
-typedef	struct TagVerTexInfo
+typedef struct TagCUSTOMVTX
 {
-	DWORD				_dwVtxCntX;
-	DWORD				_dwVtxCntZ;
-	float				_dwVtxIntvX;
-	float				_dwVtxIntvZ;
-	DWORD				_dwVtxCnt;
-	DWORD				_dwVtxSize;
-	DWORD				_dwTriCnt;
-	DWORD				_dwFVF;
-	DWORD				_dwIdxSize;
-	DWORD				_RoomNumber;
+	D3DXVECTOR3 vPosition;
+	D3DXVECTOR2 vAplhaUV;
+	D3DXVECTOR2	vTextureUV;
 
-}VTXINFO;
+}CUSVTX;
+
+#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEX2)
+
+typedef struct TagLINE3D
+{
+	D3DXVECTOR3	VPos;
+	D3DCOLOR	Col;
+
+}L3D;
+#define D3DFVF_LINE3D (D3DFVF_XYZ | D3DFVF_DIFFUSE)
+
+typedef struct TagTexture
+{
+	IDirect3DTexture9* pTexture;
+	IDirect3DTexture9* pAlphamap;
+	TagTexture()
+	{
+		pTexture = nullptr;
+		pAlphamap = nullptr;
+	}
+}tTex;
 
 #endif // MapTool_Struct_h__

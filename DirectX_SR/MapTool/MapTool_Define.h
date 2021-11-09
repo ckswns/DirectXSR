@@ -2,12 +2,20 @@
 #ifndef MapTool_Define_h__
 #define MapTool_Define_h__
 
+#define MAPWIDTH		32
+#define MAPHEIGHT		32
 #define WINCX 800
 #define WINCY 600
+#define MAXTEXNUM		4
+#define TEXALPHASIZE	512
+#define MINIALPHASIZE	128
 
 extern	HWND			g_hWnd;
-extern GameController*	g_pGameController;
-extern bool				g_bInitGame;
+extern	GameController*	g_pGameController;
+extern	bool			g_bInitGame;
+extern	RECT			g_rtMfc;
+extern	FLOAT			g_MousePosX;
+extern	FLOAT			g_MousePosY;
 
 
 template<typename T>
@@ -18,7 +26,6 @@ void	Safe_Delete(T& Pointer)
 		delete Pointer;
 		Pointer = nullptr;
 	}
-
 }
 
 #endif // MapTool_Define_h__

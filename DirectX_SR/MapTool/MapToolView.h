@@ -10,6 +10,7 @@
 #include "Transform.h"
 #include "EditorCamera.h"
 #include "Texture.h"
+#include "FloorTerrain.h"
 
 class CMapToolDoc;
 
@@ -60,6 +61,8 @@ public:
 	D3DXVECTOR3	 PickingOnTerrain(CPoint point, CTerrain* pTerrainCom, Transform* pTransform, const int& iIndx);
 
 	std::vector<std::pair<GameObject*,std::pair<std::string,int>>> _vecCube;
+
+private: FloorTerrain* _pFloorTerrain;
 };
 
 #ifndef _DEBUG  // MapToolView.cpp의 디버그 버전

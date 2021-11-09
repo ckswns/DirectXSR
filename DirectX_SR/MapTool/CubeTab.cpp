@@ -82,38 +82,16 @@ void CubeTab::OnBnClickedCreateCube()
 	UpdateData(FALSE);
 }
 
-
-void CubeTab::OnBnClickedDataSave()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-
-
-	//CString strNumber;
-	//strNumber.Format(_T("%d"), _CubeNumber);
-	//TCHAR	szName[MAX_PATH] = L"Cube";
-	//lstrcat(szName, strNumber);
-	//_SaveList.AddString(szName);
-	//_CubeNumber++;
-}
-
-
-void CubeTab::OnBnClickedDataLoad()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
-
-
-void CubeTab::OnBnClickedScaleApply()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	UpdateData(TRUE);
-	
-	_pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
-
-	UpdateData(FALSE);
-}
+//void CubeTab::OnBnClickedScaleApply()
+//{
+//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//
+//	UpdateData(TRUE);
+//	
+//	_pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
+//
+//	UpdateData(FALSE);
+//}
 
 
 void CubeTab::OnBnClickedScaleReset()
@@ -156,7 +134,6 @@ void CubeTab::OnBnClickedDataSave()
 		MessageBoxA(nullptr, "목록이 비여있습니다.", "Save Error", MB_OK);
 		return; 
 	}
-	//CString strObjectConun;
 
 	CString strNumber;
 	strNumber.Format(_T("%d"), _CubeNumber);
@@ -298,25 +275,25 @@ void CubeTab::OnBnClickedScaleApply()
 }
 
 
-void CubeTab::OnBnClickedScaleReset()
-{
-	// TODO: Scale 초기화
-	UpdateData(TRUE);
-
-	if (_pGameObject == nullptr)
-	{
-		MessageBoxA(nullptr, "오브젝트가 없습니다.", "Scale Reset Error", MB_OK);
-		return;
-	}
-
-	_fScaleX = 1.f;
-	_fScaleY = 1.f;
-	_fScaleZ = 1.f;
-
-	_pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
-
-	UpdateData(FALSE);
-}
+//void CubeTab::OnBnClickedScaleReset()
+//{
+//	// TODO: Scale 초기화
+//	UpdateData(TRUE);
+//
+//	if (_pGameObject == nullptr)
+//	{
+//		MessageBoxA(nullptr, "오브젝트가 없습니다.", "Scale Reset Error", MB_OK);
+//		return;
+//	}
+//
+//	_fScaleX = 1.f;
+//	_fScaleY = 1.f;
+//	_fScaleZ = 1.f;
+//
+//	_pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
+//
+//	UpdateData(FALSE);
+//}
 
 
 void CubeTab::OnBnClickedLoadTextureList()
