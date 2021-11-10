@@ -28,5 +28,9 @@
 #include "AutoDetectMemoryLeak.h"
 #include "ManagerDef.h"
 #include "ConstValues.h"
+#include "CEMath.h"
 
 using namespace ce;
+
+#include "Game_Struct.h"
+#include "Game_Enum.h"
