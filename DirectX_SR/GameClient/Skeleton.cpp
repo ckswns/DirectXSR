@@ -18,9 +18,10 @@ void Skeleton::Start(void) noexcept
 
 	Quad* quad = new Quad(0, 0);
 	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), quad);
+
 	//텍스처 셋팅
-	mr->GetMaterialPTR()->SetTexture(_pTexture);
-	GetGameObject()->AddComponent(mr);
+	//mr->GetMaterialPTR()->SetTextures(_pTexture);
+//	GetGameObject()->AddComponent(mr);
 
 	//선택된 시체 위치 
 	//스켈레톤 생성 애니메이션

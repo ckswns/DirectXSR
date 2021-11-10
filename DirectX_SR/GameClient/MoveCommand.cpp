@@ -4,5 +4,5 @@
 
 void MoveCommand::Execute(GameObject* Actor, D3DXVECTOR3 curPos) noexcept
 {
-	static_cast<Player*>(Actor->GetComponent(COMPONENT_ID::BEHAVIOUR))->SetDestination(curPos);
+	static_cast<Player*>(Actor->GetComponent(COMPONENT_ID::BEHAVIOUR))->Move(curPos);
 }

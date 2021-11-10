@@ -5,6 +5,8 @@ namespace ce
 {
 	class Transform;
 	class Texture;
+	class Animator;
+	class MeshRenderer;
 }
 
 class Skill;
@@ -16,12 +18,14 @@ public:		virtual					~Player(void) noexcept { __noop; }
 public:		virtual void				Start(void) noexcept;
 public:		virtual void				Update(float fElapsedTime) noexcept;
 
+private:		void						SetAnimation(MeshRenderer* mr);
+
 public:		void						UsingSkill(SKILL_ID id);
 public:		void						Attack(D3DXVECTOR3 _vMonsterPos);
-public:		void						SetDestination(D3DXVECTOR3 dest) { _vDest = dest; _bMove = true; }
+public:		void						Move(D3DXVECTOR3 dest);
 
 private:		Transform*				_pTrans;
-private:		Texture*					_pTexture;
+private:		Animator*				_pAnimator;
 private:		STAT						_tStat;
 private:		std::vector<Skill*>	_pSkills;
 
