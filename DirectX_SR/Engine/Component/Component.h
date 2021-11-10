@@ -20,9 +20,14 @@ namespace ce
 	public:		virtual 				~Component() noexcept { __noop; }
 
 	public:		virtual void			Init(void) noexcept PURE;
+	public:		virtual void			FixedUpdate(float) noexcept PURE;
 	public:		virtual void			Update(float) noexcept PURE;
+	public:		virtual void			LateUpdate(float) noexcept PURE;
 	public:		virtual void			Render(void) noexcept PURE;
 	public:		virtual void			Release(void) noexcept PURE;
+
+	public:		virtual void			OnEnable(void) noexcept { __noop; }
+	public:		virtual void			OnDisable(void) noexcept { __noop; }
 
 	public:		COMPONENT_ID::ID		GetID(void) const noexcept { return _identification; }
 	public:		COMPONENT_ID::ID		GetDependencyID(void) const noexcept { return _dependencyID; }

@@ -53,11 +53,6 @@ namespace ce
 			_owner->SetLayer(GameObjectLayer::UI);
 		}
 
-		void Image::Update(float) noexcept
-		{
-			__noop;
-		}
-
 		void Image::Render(void) noexcept
 		{
 			if (_material.GetMainTexture() == nullptr)

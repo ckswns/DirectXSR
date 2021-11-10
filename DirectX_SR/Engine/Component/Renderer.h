@@ -10,6 +10,10 @@ namespace ce
 	public:		explicit			Renderer(LPDIRECT3DDEVICE9 pDevice) : Component(COMPONENT_ID::RENDERER, true), _pDevice(pDevice) { __noop; }
 	public:		virtual				~Renderer(void) noexcept { __noop; }
 
+	public:		void				FixedUpdate(float) noexcept override final { __noop; }
+	public:		void				Update(float) noexcept override final { __noop; }
+	public:		void				LateUpdate(float) noexcept override final { __noop; }
+
 	public:		const Material&		GetMaterial(void) const noexcept { return _material; }
 	public:		Material*			GetMaterialPTR(void) noexcept { return &_material; }
 
