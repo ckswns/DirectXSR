@@ -21,7 +21,6 @@ namespace ce
 	public:		void		SetColor(D3DXCOLOR c) noexcept;
 
 	private:	Quad*		_quad;
-	private:	Material	_material;
 	private:	Transform*	_transform;
 	};
 }
