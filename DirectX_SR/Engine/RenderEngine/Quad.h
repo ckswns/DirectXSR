@@ -10,6 +10,8 @@ namespace ce
 
 	public:		bool		Open(LPDIRECT3DDEVICE9 pDevice) noexcept override;
 
+	public:		void		SetInterval(float x, float y) noexcept { _intvX = x, _intvY = y; }
+
 	private:	float		_intvX;
 	private:	float		_intvY;
 	};

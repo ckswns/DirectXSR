@@ -98,7 +98,7 @@ namespace ce
 
 	private:	Transform*							_pTransform;
 	private:	std::vector<Component*>				_pComponents;
-	private:	std::vector<Behaviour*>				_pBehaviours;
+
 	private:	COMPONENT_ID::ID					_hasComponentID;
 
 	private:	friend								SceneManager;

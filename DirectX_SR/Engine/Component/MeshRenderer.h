@@ -15,7 +15,6 @@ namespace ce
 	public:		void			SetMesh(Mesh* pMesh) noexcept;
 
 	public:		void			Init(void) noexcept override;
-	public:		void			Update(float) noexcept override { __noop; }
 	public:		void			Render(void) noexcept override;
 	public:		void			Release(void) noexcept override;
 

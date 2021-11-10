@@ -19,15 +19,5 @@ namespace ce
 		{
 			_transform = _owner->GetTransform();
 		}
-
-		void RectTransform::Update(float) noexcept
-		{
-
-		}
-
-		void RectTransform::Release(void) noexcept
-		{
-
-		}
 	}
 }

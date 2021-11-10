@@ -6,7 +6,7 @@ namespace ce
 {
 	Material::Material(void) noexcept 
 	{
-		ZeroMemory(&_mat, sizeof(D3DXMATERIAL));
+		//ZeroMemory(&_mat, sizeof(D3DXMATERIAL));
 
 		_mat.Diffuse.r = 1;
 		_mat.Diffuse.g = 1;
@@ -73,7 +73,7 @@ namespace ce
 		else
 		{
 			for (int i = 0; i < _textures.size(); i++)
-				pDevice->SetTexture(0, _textures[i]->GetTexturePTR());
+				pDevice->SetTexture(i, _textures[i]->GetTexturePTR());
 		}
 
 		pDevice->SetMaterial(&_mat);

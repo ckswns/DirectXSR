@@ -8,6 +8,7 @@
 #include "Terrain.h"
 #include "MeshRenderer.h"
 #include "Quad.h"
+#include "SpriteRenderer.h"
 
 TestScene::TestScene(void) noexcept
 {
@@ -23,26 +24,19 @@ bool TestScene::Init(void) noexcept
 	_texture->Init(D3D9DEVICE->GetDevice(), "Npc1_1.png");
 	
 	_texture2 = new ce::Texture();
-	_texture2->Init(D3D9DEVICE->GetDevice(), "test.jpg");
-
-	Mesh* terrain = new Terrain(40, 40);
-	terrain->Open(D3D9DEVICE->GetDevice());
+	_texture2->Init(D3D9DEVICE->GetDevice(), "flag.png");
 
 	GameObject* obj;
-	obj = GameObject::Instantiate();
-	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), terrain);
-	obj->AddComponent(mr);
-	mr->GetMaterialPTR()->SetMainTexture(_texture);
 
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new CubeObject());
-	obj->GetTransform()->SetLocalPosition(-1, 0, 0);
-	static_cast<MeshRenderer*>(obj->GetComponent(COMPONENT_ID::RENDERER))->GetMaterialPTR()->SetMainTexture(_texture);
-
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new CubeObject());
-	obj->GetTransform()->SetLocalPosition(1, 0, 0);
-	static_cast<MeshRenderer*>(obj->GetComponent(COMPONENT_ID::RENDERER))->GetMaterialPTR()->SetMainTexture(_texture2);
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			obj = GameObject::Instantiate();
+			obj->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), _texture2));
+			obj->GetTransform()->SetLocalPosition(i * 10, j * 20, 0);
+		}
+	}
 
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new EditorCamera(g_hWnd));
