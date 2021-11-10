@@ -37,7 +37,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Vector4.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Animation.hpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Animation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioAsset.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CEMath.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Matrix4x4.cpp" />

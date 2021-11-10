@@ -158,7 +158,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerPrefs.cpp">
       <Filter>PlayerPrefs</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Animation.hpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Animation.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp">

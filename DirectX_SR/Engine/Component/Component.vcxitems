@@ -27,6 +27,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ParticleRendererr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RectTransform.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Renderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RigidBody.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SphereCollider.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpriteRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TerrainCollider.h" />
@@ -44,6 +45,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ParticleRendererr.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RectTransform.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Renderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RigidBody.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SphereCollider.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpriteRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TerrainCollider.cpp" />

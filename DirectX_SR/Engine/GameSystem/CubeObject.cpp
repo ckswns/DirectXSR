@@ -32,7 +32,7 @@ namespace ce
 		cube->Open(D3D9Device::Instance()->GetDevice());
 
 		MeshRenderer* meshRenderer = new MeshRenderer(D3D9Device::Instance()->GetDevice(), cube);
-		meshRenderer->GetMaterialPTR()->SetTexture(_texture);
+		meshRenderer->GetMaterialPTR()->SetMainTexture(_texture);
 
 		meshRenderer->GetMaterialPTR()->SetColor(_color);
 		gameObject->AddComponent(meshRenderer);

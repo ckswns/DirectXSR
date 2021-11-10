@@ -66,18 +66,20 @@ namespace NPK_AnimationTool
                 string[] DataFileNM = pattern.SelectMany(patterns =>
                     Directory.GetFiles(dlg.SelectedPath, patterns)).ToArray();
 
-                string[] posFile = File.ReadAllLines(dlg.SelectedPath + "\\pos.csv");
-
                 imgList = new ImageList();
                 imgList.ImageSize = new Size(64, 64);
 
                 for (int i = 0; i < DataFileNM.Length; i++)
                 {
-                    string[] posData = posFile[i + 1].Split(',');
-                    Image temp = Image.FromFile(dlg.SelectedPath + "\\" + i.ToString() + ".png");
+                    Image temp = Image.FromFile(DataFileNM[i]);
+                    String str = DataFileNM[i];
+                    String[] strs = str.Split('\\');
+
+                    str = strs[strs.Length - 1];
+
                     imgList.Images.Add(i.ToString(), temp);
                     
-                    Sprite spr = new Sprite(int.Parse(posData[0]), int.Parse(posData[1]), int.Parse(posData[2]), int.Parse(posData[3]), int.Parse(posData[4]), int.Parse(posData[5]), temp, i.ToString() + ".png");
+                    Sprite spr = new Sprite(temp, str);
 
                     spriteList.Add(spr);
                 }
@@ -87,8 +89,13 @@ namespace NPK_AnimationTool
 
                 for (int i = 0; i < imgList.Images.Count; i++)
                 {
-                    spriteListView.Items.Add(new ListViewItem(dlg.SelectedPath + "\\" + i.ToString() + ".png", i));
-                    this.spriteListView.Items[i].Text = i.ToString();
+                    String str = DataFileNM[i];
+                    String[] strs = str.Split('\\');
+
+                    str = strs[strs.Length - 1];
+
+                    spriteListView.Items.Add(new ListViewItem(DataFileNM[i], i));
+                    this.spriteListView.Items[i].Text = str;
                 }
 
                 this.Refresh();
@@ -332,10 +339,7 @@ namespace NPK_AnimationTool
         {
             int index = int.Parse(textBox_frameIndex.Text);
 
-            Sprite sprite = new Sprite(spriteList[selectedImgIndex].width, spriteList[selectedImgIndex].height,
-                spriteList[selectedImgIndex].offsetX, spriteList[selectedImgIndex].offsetY,
-                spriteList[selectedImgIndex].maxWidth, spriteList[selectedImgIndex].maxHeight,
-                spriteList[selectedImgIndex].image, spriteList[selectedImgIndex].fileName);
+            Sprite sprite = new Sprite(spriteList[selectedImgIndex].image, spriteList[selectedImgIndex].fileName);
 
             sprite.frameTime = float.Parse(textBox_selectFrameTime.Text);
             sprite.eventStr = textBox_frameEvent.Text;
@@ -372,7 +376,7 @@ namespace NPK_AnimationTool
             {
                 string csv = string.Empty;
 
-                csv += "index,imagePath,centerX,centerY,loop,frameTime,eventStr,width,height,offsetX,offsetY,maxWidth,maxHeight,";
+                csv += "index,imagePath,centerX,centerY,loop,frameTime,eventStr,width,height,offsetX,offsetY,";
 
                 for (int j = 0; j < animationList[i].spriteList.Count; j++)
                 {
@@ -413,12 +417,6 @@ namespace NPK_AnimationTool
                     csv += ",";
 
                     csv += animationList[i].spriteList[j].offsetY.ToString();
-                    csv += ",";
-
-                    csv += animationList[i].spriteList[j].maxWidth.ToString();
-                    csv += ",";
-
-                    csv += animationList[i].spriteList[j].maxHeight.ToString();
                     csv += ",";
                 }
 

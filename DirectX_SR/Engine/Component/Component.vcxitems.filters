@@ -103,6 +103,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BoxCollider.h">
       <Filter>Physics\Collider\BoxCollider</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RigidBody.h">
+      <Filter>Physics\Rigidbody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
@@ -149,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)BoxCollider.cpp">
       <Filter>Physics\Collider\BoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RigidBody.cpp">
+      <Filter>Physics\Rigidbody</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

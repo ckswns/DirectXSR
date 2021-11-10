@@ -47,6 +47,14 @@ void FloorTerrain::Render(LPDIRECT3DDEVICE9 pDevice) noexcept
 
 	//Mesh::Render(pDevice);
 
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	TerrainRender();
 	AlphaTextureRender();
