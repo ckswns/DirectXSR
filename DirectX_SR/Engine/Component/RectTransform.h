@@ -13,9 +13,11 @@ namespace ce
 		public:		virtual				~RectTransform(void) noexcept { __noop; }
 
 		public:		void				Init(void) noexcept override;
-		public:		void				Update(float) noexcept override;
+		public:		void				FixedUpdate(float) noexcept override { __noop; }
+		public:		void				Update(float) noexcept override { __noop; }
+		public:		void				LateUpdate(float) noexcept override { __noop; }
 		public:		void				Render(void) noexcept override { __noop; }
-		public:		void				Release(void) noexcept override;
+		public:		void				Release(void) noexcept override { __noop; }
 
 		public:		void				SetPivot(D3DXVECTOR2 v) noexcept { _pivot = v; }
 		public:		void				SetWidth(float w) noexcept { _width = w; }

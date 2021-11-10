@@ -47,7 +47,7 @@ namespace ce
 		_pDevice->SetTransform(D3DTS_PROJECTION, &_matProj);
 	}
 
-	void Camera::Update(float fElapsedTime) noexcept
+	void Camera::LateUpdate(float fElapsedTime) noexcept
 	{
 		Transform* transform = GetTransform();
 		const D3DXVECTOR3& pos = transform->GetWorldPosition();
