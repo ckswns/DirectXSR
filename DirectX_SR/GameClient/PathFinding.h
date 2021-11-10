@@ -4,8 +4,8 @@
 namespace ce
 {
 	class Transform;
-	class Node
 }
+class Node;
 class PathFinding : public Behaviour
 {
 public:		explicit		PathFinding() noexcept { __noop; }
