@@ -4,7 +4,7 @@
 #include "Node.h"
 #include "NeviMesh.h"
 
-void PathFinding::Start(void) noexcept
+void PathFinding::Start(NeviMesh* nevi) noexcept
 {
 }
 

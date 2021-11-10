@@ -5,7 +5,7 @@ private:	using			LIST_NODE = std::list<Node*>;
 
 public:	Node(bool walkAble, D3DXVECTOR3 center, int x, int y)
 	:_bWalkable(walkAble), _vCenter(center), _iX(x), _iY(y),
-	_fGCost(0), _fHCost(0), _fFcost(0), _pParent(nullptr), _pNeighbours(nullptr)
+	_fGCost(0), _fHCost(0), _fFcost(0), _pParent(nullptr)
 {
 	__noop;
 }

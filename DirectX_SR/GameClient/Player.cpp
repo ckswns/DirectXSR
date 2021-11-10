@@ -8,6 +8,7 @@
 #include "Animator.h"
 #include "Skill.h"
 
+#include "SpriteRenderer.h"
 void Player::Start(void) noexcept
 {
 	_bAtt = false;
@@ -20,14 +21,20 @@ void Player::Start(void) noexcept
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
-	Quad* quad = new Quad(4, 4);
+	/*Quad* quad = new Quad(4, 4);
 	quad->Open(D3D9DEVICE->GetDevice());
 	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), quad);
-	GetGameObject()->AddComponent(mr);
+	GetGameObject()->AddComponent(mr);*/
+
+	Texture* _texture = new ce::Texture();
+	_texture->Init(D3D9DEVICE->GetDevice(), "Asset/Player/Player.png");
+
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), _texture);
+	GetGameObject()->AddComponent(sr);
 
 	_pAnimator = new Animator(true);
 	GetGameObject()->AddComponent(_pAnimator);
-	SetAnimation(mr);
+	SetAnimation(sr);
 }
 
 void Player::Update(float fElapsedTime) noexcept
@@ -52,7 +59,7 @@ void Player::Update(float fElapsedTime) noexcept
 	}
 }
 
-void Player::SetAnimation(MeshRenderer* mr)
+void Player::SetAnimation(SpriteRenderer* sr)
 {
 	std::vector<Texture*> TList;
 	std::vector<float>		FrameTime;
@@ -73,7 +80,7 @@ void Player::SetAnimation(MeshRenderer* mr)
 		}
 
 		ani = new Animation(FrameTime, TList, true);
-		ani->SetMaterial(mr->GetMaterialPTR());
+		ani->SetMaterial(sr->GetMaterialPTR());
 		_pAnimator->InsertAnimation("Stand", ani);
 
 		TList.clear();
@@ -94,7 +101,7 @@ void Player::SetAnimation(MeshRenderer* mr)
 		}
 
 		ani = new Animation(FrameTime, TList, true);
-		ani->SetMaterial(mr->GetMaterialPTR());
+		ani->SetMaterial(sr->GetMaterialPTR());
 		_pAnimator->InsertAnimation("Walk", ani);
 
 		TList.clear();
@@ -115,7 +122,7 @@ void Player::SetAnimation(MeshRenderer* mr)
 		}
 
 		ani = new Animation(FrameTime, TList, true);
-		ani->SetMaterial(mr->GetMaterialPTR());
+		ani->SetMaterial(sr->GetMaterialPTR());
 		_pAnimator->InsertAnimation("Attack", ani);
 
 		TList.clear();

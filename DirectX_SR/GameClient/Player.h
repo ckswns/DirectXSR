@@ -6,7 +6,7 @@ namespace ce
 	class Transform;
 	class Texture;
 	class Animator;
-	class MeshRenderer;
+	class SpriteRenderer;
 }
 
 class Skill;
@@ -18,7 +18,7 @@ public:		virtual					~Player(void) noexcept { __noop; }
 public:		virtual void				Start(void) noexcept;
 public:		virtual void				Update(float fElapsedTime) noexcept;
 
-private:		void						SetAnimation(MeshRenderer* mr);
+private:		void						SetAnimation(SpriteRenderer* mr);
 
 public:		void						UsingSkill(SKILL_ID id);
 public:		void						Attack(D3DXVECTOR3 _vMonsterPos);
