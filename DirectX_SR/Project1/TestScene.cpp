@@ -32,17 +32,17 @@ bool TestScene::Init(void) noexcept
 	obj = GameObject::Instantiate();
 	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), terrain);
 	obj->AddComponent(mr);
-	mr->GetMaterialPTR()->SetTexture(_texture);
+	mr->GetMaterialPTR()->SetMainTexture(_texture);
 
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new CubeObject());
 	obj->GetTransform()->SetLocalPosition(-1, 0, 0);
-	static_cast<MeshRenderer*>(obj->GetComponent(COMPONENT_ID::RENDERER))->GetMaterialPTR()->SetTexture(_texture);
+	static_cast<MeshRenderer*>(obj->GetComponent(COMPONENT_ID::RENDERER))->GetMaterialPTR()->SetMainTexture(_texture);
 
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new CubeObject());
 	obj->GetTransform()->SetLocalPosition(1, 0, 0);
-	static_cast<MeshRenderer*>(obj->GetComponent(COMPONENT_ID::RENDERER))->GetMaterialPTR()->SetTexture(_texture2);
+	static_cast<MeshRenderer*>(obj->GetComponent(COMPONENT_ID::RENDERER))->GetMaterialPTR()->SetMainTexture(_texture2);
 
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new EditorCamera(g_hWnd));

@@ -6,50 +6,45 @@
 #include <functional>
 #endif
 
+#ifndef _MAP_
+#include <map>
+#endif // !#ifndef _MAP_
+
 #ifndef PURE
 #define PURE =0
 #endif
 
-#define ANIMATION_TYPE_NUM 4
-
 namespace ce
 {
-	enum class AnimationType
-	{
-		SPRITE_ANIMATION,
-		POSITION_ANIMATION_LOCAL,
-		ROTATION_ANIMATION_LOCAL,
-		SCALE_ANIMATION_LOCAL,
-		POSITION_ANIMATION_GLOBAL,
-		ROTATION_ANIMATION_GLOBAL,
-		SCALE_ANIMATION_GLOBAL,
-	};
+	class GameObject;
+	class Material;
 
-	template <typename T>
-	class Animation
+	class Animation final
 	{
-	protected:	struct AnimationData
+	public:		class EventData
 				{
-					explicit AnimationData(D3DXVECTOR3 v, AnimationType eType) noexcept : _D3DXVECTOR3(v), _isInit(true), _eType(eType) { __noop; }
-					explicit AnimationData(Texture* t) noexcept : _texture(t), _isInit(true), _eType(AnimationType::SPRITE_ANIMATION) { __noop; }
-					
-					union
-					{
-						D3DXVECTOR3 _D3DXVECTOR3;
-						Texture* _texture;
-					};
+				public:			EventData(uint32 keyFrame, std::string eventStr, GameObject* listener) noexcept :
+									_keyFrame(keyFrame),
+									_eventName(eventStr),
+									_pListener(listener)
+								{
+									__noop; 
+								}
 
-					AnimationType _eType;
-					bool _isInit;
+				private:		uint32		_keyFrame;
+				private:		std::string _eventName;
+				private:		GameObject* _pListener;
+
+				private:		friend Animation;
 				};
 
-	protected:	using			VEC_EVENTS = std::vector<std::pair<T*, std::function<void(T&)>>>;
-	protected:	using			VEC_DATA = std::vector<AnimationData>;
-	protected:	using			VEC_KEYFRAME = std::vector<std::pair<float, std::pair<VEC_DATA, VEC_EVENTS>>>;
+	private:	using			VEC_EVENT = std::vector<EventData>;
+	private:	using			VEC_FRAME = std::vector<float>;
+	private:	using			VEC_TEX = std::vector<Texture*>;
+	private:	using			MAP_EVENT = std::map<uint32, std::vector<EventData>>;
 
 	public:		explicit		Animation(void) noexcept = delete;
-	public:		explicit		Animation(float totalTime, bool loop = false) noexcept;
-	public:		explicit		Animation(float totalTime, bool loop, const std::vector<float>& vKeyFrames) noexcept;
+	public:		explicit		Animation(const std::vector<float>& vFrameTime, const std::vector<Texture*>& vTex, bool loop = false) noexcept;
 	public:		virtual			~Animation(void) noexcept { __noop; }
 
 	public:		virtual void	Update(float fElapsedTime) noexcept;
@@ -67,16 +62,28 @@ namespace ce
 	public:		float			GetRealTimeProgress(void) const noexcept { return _fCurrentAniTime; }
 	public:		float			GetTimeLength(void) const noexcept { return _fTotalAniTime; }
 
-	public:		bool			AddKeyFrame(float keyTime) noexcept;
-	public:		bool			AddEvent(int keyIndex, T* listener, std::function<void(T&)> fp) noexcept;
+	public:		int				GetCurrentFrame(void) const noexcept { return _iFrame; }
 
-	protected:	bool			_bLoop;
-	protected:	bool			_bEnd;
-	protected:	bool			_bPlay;
+	public:		bool			AddEvent(uint32 keyIndex, std::string eventStr, GameObject* listener) noexcept;
+	public:		bool			AddEvent(EventData data) noexcept;
 
-	protected:	float			_fCurrentAniTime;
-	protected:	float			_fTotalAniTime;
+	public:		void			SetMaterial(Material* mat) noexcept { _material = mat; }
 
-	protected:	VEC_KEYFRAME	_vKeyFrame;
+	private:	int				_iFrame;
+
+	private:	bool			_bLoop;
+	private:	bool			_bEnd;
+	private:	bool			_bPlay;
+
+	private:	float			_fCurrentAniTime;
+	private:	float			_fTotalAniTime;
+
+	private:	VEC_FRAME		_vFrameTime;
+	private:	VEC_TEX			_vTexture;
+	private:	MAP_EVENT		_mapEvent;
+
+	private:	Material*		_material;
+
+	private:	std::function<void(GameObject&, int, std::string)> _fp;
 	};
 }

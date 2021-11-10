@@ -250,6 +250,10 @@ namespace ce
 		}
     }
 
+	void GameObject::OnAnimationEvent(int frame, std::string eventName)
+	{
+	}
+
 	GameObject* GameObject::Instantiate() noexcept
 	{
 		if (SceneManager::Instance()->GetActiveScene() != nullptr)

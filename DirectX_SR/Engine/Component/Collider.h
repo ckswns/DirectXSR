@@ -26,8 +26,9 @@ namespace ce
 	public:		Transform*		GetTransform(void) noexcept { return _owner->GetTransform(); }
 
 	public:		GameObject*		GetGameObject(void) noexcept { return _owner; }
+	public:		void			SetRaycastTarget(bool rhs) noexcept { _enableRaycast = rhs; }
 
-
+	protected:	bool			_enableRaycast = true;
 	protected:	Collider::Type	_type;
 	};
 }

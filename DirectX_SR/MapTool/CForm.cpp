@@ -53,7 +53,6 @@ void CForm::Dump(CDumpContext& dc) const
 
 // CForm 메시지 처리기
 
-
 void CForm::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
@@ -63,8 +62,8 @@ void CForm::OnInitialUpdate()
 	m_TabBox.DeleteAllItems();
 
 	m_TabBox.InsertItem(0, L"Map");
-	m_TabBox.InsertItem(1, L"Object");
-	m_TabBox.InsertItem(2, L"Cube");
+	m_TabBox.InsertItem(1, L"Cube");
+	m_TabBox.InsertItem(2, L"Object");
 
 	CRect temp_rect;
 	m_TabBox.GetClientRect(&temp_rect);
@@ -74,15 +73,15 @@ void CForm::OnInitialUpdate()
 	m_pMapTab->MoveWindow(5, 25, temp_rect.Width(), temp_rect.Height());
 	m_pMapTab->ShowWindow(SW_SHOW);
 
-	m_pObjectTab = new ObjectTab;
-	m_pObjectTab->Create(IDD_ObjectTab, &m_TabBox);
-	m_pObjectTab->MoveWindow(5, 25, temp_rect.Width(), temp_rect.Height());
-	m_pObjectTab->ShowWindow(SW_HIDE);
-
 	m_pCubeTab = new CubeTab;
 	m_pCubeTab->Create(IDD_CubeTab, &m_TabBox);
 	m_pCubeTab->MoveWindow(5, 25, temp_rect.Width(), temp_rect.Height());
 	m_pCubeTab->ShowWindow(SW_HIDE);
+
+	m_pObjectTab = new ObjectTab;
+	m_pObjectTab->Create(IDD_ObjectTab, &m_TabBox);
+	m_pObjectTab->MoveWindow(5, 25, temp_rect.Width(), temp_rect.Height());
+	m_pObjectTab->ShowWindow(SW_HIDE);
 
 	Invalidate(FALSE);
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
@@ -103,13 +102,13 @@ void CForm::OnTcnSelchangeTab(NMHDR* pNMHDR, LRESULT* pResult)
 		break;
 	case 1:
 		m_pMapTab->ShowWindow(SW_HIDE);
-		m_pObjectTab->ShowWindow(SW_SHOW);
-		m_pCubeTab->ShowWindow(SW_HIDE);
+		m_pCubeTab->ShowWindow(SW_SHOW);
+		m_pObjectTab->ShowWindow(SW_HIDE);
 		break;
 	case 2:
 		m_pMapTab->ShowWindow(SW_HIDE);
-		m_pObjectTab->ShowWindow(SW_HIDE);
-		m_pCubeTab->ShowWindow(SW_SHOW);
+		m_pCubeTab->ShowWindow(SW_HIDE);
+		m_pObjectTab->ShowWindow(SW_SHOW);
 		break;
 	}
 

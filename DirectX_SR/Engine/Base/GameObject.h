@@ -67,6 +67,8 @@ namespace ce
 	private:	bool								GetActiveChanged(void) noexcept { return _bActiveChanged; }
 	private:	void								SetActiveChanged(bool active) noexcept { _bActiveChanged = active; }
 
+	public:		void								OnAnimationEvent(int frame, std::string eventName);
+
 	public:		static GameObject*					Instantiate() noexcept;
 	public:		static void							Destroy(GameObject* obj) noexcept;
 

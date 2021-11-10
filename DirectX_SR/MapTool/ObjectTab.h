@@ -3,8 +3,6 @@
 
 // ObjectTab 대화 상자
 
-#include "Terrain.h"
-
 class ObjectTab : public CDialog
 {
 	DECLARE_DYNAMIC(ObjectTab)
@@ -21,5 +19,8 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
-	DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP() 
+public:
+	CListBox _TextureList;
+	afx_msg void OnBnClickedObjectTextureLoad();
 };

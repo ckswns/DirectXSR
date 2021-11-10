@@ -10,6 +10,7 @@
 #define IDD_Test                        313
 #define IDD_MapTab                      315
 #define IDD_ObjectTab                   317
+#define IDD_ObjectTab1                  317
 #define IDD_CubeTab                     318
 #define IDC_EDIT1                       1002
 #define IDC_EDIT2                       1003
@@ -21,6 +22,7 @@
 #define IDC_BUTTON3                     1008
 #define IDC_LIST1                       1009
 #define IDC_BUTTON5                     1009
+#define IDC_BUTTON9                     1010
 #define IDC_BUTTON1                     1012
 #define IDC_BUTTON4                     1013
 #define IDC_BUTTON7                     1014
@@ -29,6 +31,7 @@
 #define IDC_BUTTON6                     1017
 #define IDC_LIST4                       1018
 #define IDC_SPIN2                       1019
+#define IDC_BUTTON8                     1019
 #define IDC_SPIN3                       1020
 
 // Next default values for new objects
