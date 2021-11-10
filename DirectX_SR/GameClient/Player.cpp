@@ -1,18 +1,19 @@
 #include "pch.h"
 #include "Player.h"
 #include "Transform.h"
-#include "MeshRenderer.h"
-#include "Quad.h"
 #include "Texture.h"
 #include "Animation.h"
 #include "Animator.h"
 #include "Skill.h"
+#include "PathFinding.h"
+#include "Node.h"
 
 #include "SpriteRenderer.h"
 void Player::Start(void) noexcept
 {
 	_bAtt = false;
 	_bMove = false;
+	_bFind = false;
 
 	_fSpeed = 5.f;
 	_fRunSpeed = _fSpeed + 2.f;
@@ -35,15 +36,45 @@ void Player::Start(void) noexcept
 	_pAnimator = new Animator(true);
 	GetGameObject()->AddComponent(_pAnimator);
 	SetAnimation(sr);
+
+	_pPath = (_pPathFinding->GetPath());
 }
 
 void Player::Update(float fElapsedTime) noexcept
 {
 	if (_bMove)
 	{
-		D3DXVECTOR3 vDir = _vDest - _pTrans->GetWorldPosition();
+		if (_bFind) 
+		{
+			if (!_pPath.empty())
+			{
+				std::list<Node*>::iterator iter = _pPath.begin();
 
-		if (D3DXVec3Length(&vDir) <= 1.f)
+				D3DXVECTOR3 vDir = (*iter)->GetPos() - _pTrans->GetWorldPosition();
+
+				if (D3DXVec3Length(&vDir) < 1.f)
+				{
+					_pPath.pop_front();
+				}
+				else
+				{
+					D3DXVec3Normalize(&vDir, &vDir);
+
+					_pTrans->Translate(vDir * _fSpeed * fElapsedTime);
+				}
+			}
+			else
+			{
+				_bFind = false;
+				_bMove = false;
+				_pAnimator->SetAnimation("Stand");
+				if (_bAtt)
+					Attack(_vDest);
+			}
+		}
+	//	D3DXVECTOR3 vDir = _vDest - _pTrans->GetWorldPosition();
+
+		/*if (D3DXVec3Length(&vDir) <= 1.f)
 		{
 			_bMove = false;
 			_pAnimator->SetAnimation("Stand");
@@ -55,7 +86,7 @@ void Player::Update(float fElapsedTime) noexcept
 			D3DXVec3Normalize(&vDir, &vDir);
 
 			_pTrans->Translate(vDir * _fSpeed* fElapsedTime);
-		}
+		}*/
 	}
 }
 
@@ -145,7 +176,6 @@ void Player::Attack(D3DXVECTOR3 _vMonsterPos)
 	{
 		// >> 공격
 		// 공격 애니메이션
-		
 		_pAnimator->SetAnimation("Attack");
 		// 소리 
 		//충돌판정
@@ -165,4 +195,7 @@ void Player::Move(D3DXVECTOR3 dest)
 	_vDest = dest; 
 	_bMove = true;
 	_pAnimator->SetAnimation("Walk");
+
+	_bFind =_pPathFinding->FindPath(_pTrans->GetWorldPosition(),dest);
+	_pPath = (_pPathFinding->GetPath());
 }

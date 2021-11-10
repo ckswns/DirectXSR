@@ -129,6 +129,9 @@
     <ClInclude Include="PathFinding.h">
       <Filter>00. Game\01. GameObject\NeviMesh</Filter>
     </ClInclude>
+    <ClInclude Include="PriorityQueue.h">
+      <Filter>00. Game\01. GameObject\NeviMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">

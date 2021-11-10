@@ -11,7 +11,13 @@ namespace ce
 
 	public:		bool		Open(LPDIRECT3DDEVICE9 pDevice) noexcept override;
 
+	public:		uint64	Get_VtxCntX() { return _width; }
+	public:		uint64	Get_VtxCntZ() { return _height; }
+	public:		D3DXVECTOR3* Get_VtxPos(void) { return _pVtxPos; }
+
 	private:	uint64		_width;
 	private:	uint64		_height;
+
+	private: D3DXVECTOR3* _pVtxPos;
 	};
 }
