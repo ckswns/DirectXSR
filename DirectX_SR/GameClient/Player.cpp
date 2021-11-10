@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "Player.h"
+#include "Transform.h"
 #include "MeshRenderer.h"
 #include "Quad.h"
-#include "Transform.h"
 #include "Texture.h"
+#include "Animation.h"
+#include "Animator.h"
 #include "Skill.h"
 
 void Player::Start(void) noexcept
@@ -18,16 +20,14 @@ void Player::Start(void) noexcept
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
-	_pTexture = new Texture();
-	_pTexture->Init(D3D9DEVICE->GetDevice(), "Asset/Player/Player.png");
-
 	Quad* quad = new Quad(4, 4);
 	quad->Open(D3D9DEVICE->GetDevice());
-
 	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), quad);
 	GetGameObject()->AddComponent(mr);
-	//텍스처 셋팅
-	mr->GetMaterialPTR()->SetTexture(_pTexture);
+
+	_pAnimator = new Animator(true);
+	GetGameObject()->AddComponent(_pAnimator);
+	SetAnimation(mr);
 }
 
 void Player::Update(float fElapsedTime) noexcept
@@ -39,6 +39,7 @@ void Player::Update(float fElapsedTime) noexcept
 		if (D3DXVec3Length(&vDir) <= 1.f)
 		{
 			_bMove = false;
+			_pAnimator->SetAnimation("Stand");
 			if (_bAtt)
 				Attack(_vDest);
 		}
@@ -48,6 +49,77 @@ void Player::Update(float fElapsedTime) noexcept
 
 			_pTrans->Translate(vDir * _fSpeed* fElapsedTime);
 		}
+	}
+}
+
+void Player::SetAnimation(MeshRenderer* mr)
+{
+	std::vector<Texture*> TList;
+	std::vector<float>		FrameTime;
+	Texture* _pTexture;
+	Animation* ani;
+
+	//Stand
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/stand_8/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.5f);
+		}
+
+		ani = new Animation(FrameTime, TList, true);
+		ani->SetMaterial(mr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Stand", ani);
+
+		TList.clear();
+		FrameTime.clear();
+	}
+
+	//Walk
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/walk_8/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList, true);
+		ani->SetMaterial(mr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Walk", ani);
+
+		TList.clear();
+		FrameTime.clear();
+	}
+
+	//Attack
+	{
+		for (int i = 0; i < 19; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/attack_8/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList, true);
+		ani->SetMaterial(mr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Attack", ani);
+
+		TList.clear();
+		FrameTime.clear();
 	}
 }
 
@@ -66,14 +138,24 @@ void Player::Attack(D3DXVECTOR3 _vMonsterPos)
 	{
 		// >> 공격
 		// 공격 애니메이션
+		
+		_pAnimator->SetAnimation("Attack");
 		// 소리 
 		//충돌판정
 	}
 	else 
 	{
-		_bMove = true;
 		_vDest = _vMonsterPos;
-		//이동 애니메이션
+		_bMove = true;
+		_pAnimator->SetAnimation("Walk");
 	}
 
+}
+
+void Player::Move(D3DXVECTOR3 dest)
+{
+	_bAtt = false;
+	_vDest = dest; 
+	_bMove = true;
+	_pAnimator->SetAnimation("Walk");
 }
