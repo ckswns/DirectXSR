@@ -2,6 +2,7 @@
 #include "InputHandler.h"
 #include "AttackCommand.h"
 #include "MoveCommand.h"
+#include "SkillCommand.h"
 #include "Terrain.h"
 
 InputHandler::InputHandler(GameObject* player, Terrain* terrain) noexcept
@@ -12,26 +13,37 @@ InputHandler::InputHandler(GameObject* player, Terrain* terrain) noexcept
 void InputHandler::Start(void) noexcept
 {
 
-	_pLBCommand = new AttackCommand();
+//	_pLBCommand = new AttackCommand();
+	_pLBCommand = new SkillCommand();
+	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::RAISE_SKELETON);
 	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
 }
 
 void InputHandler::Update(float fElapsedTime) noexcept
 {
-	if (INPUT->GetKeyStay(KEY_LBUTTON))
+	if (INPUT->GetKeyDown(KEY_LBUTTON))
 	{
 		//마우스 피킹 
 		//바닥인 경우 이동
-		_pMoveCommand->Execute(_pPlayer, MousePicking());
+	//	_pMoveCommand->Execute(_pPlayer, MousePicking());
 		//아닌 경우 커맨드 
-//		_pLBCommand->Execute(_pPlayer, MousePicking());
+		_pLBCommand->Execute(_pPlayer, MousePicking());
 	}
 	else if (INPUT->GetKeyStay(KEY_RBUTTON))
 	{
-	//	_pMoveCommand->Execute(_pPlayer, MousePicking());
+		_pMoveCommand->Execute(_pPlayer, MousePicking());
 	}
 
+	if (INPUT->GetKeyStay(KEY_Z))
+	{
+	
+	}
+	else if (INPUT->GetKeyUp(KEY_Z))
+	{
+
+	//	_bRun = false;
+	}
 
 }
 

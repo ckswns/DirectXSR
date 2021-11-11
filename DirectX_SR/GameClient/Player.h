@@ -22,9 +22,11 @@ public:		virtual void				Update(float fElapsedTime) noexcept;
 
 private:		void						SetAnimation(SpriteRenderer* mr);
 
-public:		void						UsingSkill(SKILL_ID id);
+public:		void						UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 public:		void						Attack(D3DXVECTOR3 _vMonsterPos);
 public:		void						Move(D3DXVECTOR3 dest);
+
+public:		void						SetRun(bool run) { _bRun = run; }
 
 private:		Transform*				_pTrans;
 private:		Animator*				_pAnimator;
@@ -40,9 +42,9 @@ private:		bool						_bAtt;
 private:		bool						_bMove;
 private:		D3DXVECTOR3		_vDest;
 
+private:		bool						_bRun;
 private:		float						_fSpeed;
 private:		float						_fRunSpeed;
 
-private:		int							_iMaxSkeleton;
 };
 

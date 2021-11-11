@@ -14,6 +14,8 @@
 #include "Texture.h"
 #include "MeshRenderer.h"
 
+#include "Skeleton.h"
+
 Game::Game(void) noexcept
 {
 }
@@ -41,11 +43,13 @@ bool Game::Init(void) noexcept
 
     //Player
     GameObject* pPlayer = GameObject::Instantiate();
-
     PathFinding* pf = new PathFinding(_pNeviMesh);
-    //pPlayer->AddComponent(pf);
     pPlayer->AddComponent(new Player(pf));
-    pPlayer->GetTransform()->SetLocalPosition(0, 1, 0);
+    //pPlayer->GetTransform()->SetLocalPosition(0, 1, 0);
+
+    //GameObject* pSkeleton = GameObject::Instantiate();
+    //pSkeleton->AddComponent(new Skeleton(pPlayer->GetTransform()));
+    //pSkeleton->GetTransform()->SetWorldPosition(1,1,0);
 
     //InputHandler
     pGameObj = GameObject::Instantiate();
@@ -54,7 +58,7 @@ bool Game::Init(void) noexcept
     //EditorCamera
     pGameObj = GameObject::Instantiate();
     pGameObj->AddComponent(new EditorCamera(g_hWnd));
-    pGameObj->GetTransform()->SetLocalPosition(0, 1, 0);
+    pGameObj->GetTransform()->SetLocalPosition(3, 3, -3);
     pGameObj->GetTransform()->SetLocalEulerAngle(0, 0, 0);
 
     return false;

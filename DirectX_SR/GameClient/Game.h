@@ -2,8 +2,7 @@
 #include "Scene.h"
 
 class NeviMesh;
-class Game :
-    public Scene
+class Game : public Scene
 {
 public:		explicit		Game(void) noexcept;
 public:		virtual			~Game(void) noexcept { __noop; }

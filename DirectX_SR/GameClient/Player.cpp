@@ -1,24 +1,27 @@
 #include "pch.h"
 #include "Player.h"
 #include "Transform.h"
+#include "SpriteRenderer.h"
 #include "Texture.h"
 #include "Animation.h"
 #include "Animator.h"
 #include "Skill.h"
 #include "PathFinding.h"
 #include "Node.h"
+#include "RaiseSkeleton.h"
 
-#include "SpriteRenderer.h"
 void Player::Start(void) noexcept
 {
 	_bAtt = false;
 	_bMove = false;
 	_bFind = false;
 
+	_bRun = false;
 	_fSpeed = 5.f;
-	_fRunSpeed = _fSpeed + 2.f;
+	_fRunSpeed = 7.f;
 
-	_pSkills.resize(SKILL_END);
+	_pSkills.reserve(SKILL_END);
+	_pSkills.push_back(new RaiseSkeleton());
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
@@ -36,12 +39,12 @@ void Player::Start(void) noexcept
 	_pAnimator = new Animator(true);
 	GetGameObject()->AddComponent(_pAnimator);
 	SetAnimation(sr);
-
-	_pPath = (_pPathFinding->GetPath());
 }
 
 void Player::Update(float fElapsedTime) noexcept
 {
+
+
 	if (_bMove)
 	{
 		if (_bFind) 
@@ -60,7 +63,17 @@ void Player::Update(float fElapsedTime) noexcept
 				{
 					D3DXVec3Normalize(&vDir, &vDir);
 
-					_pTrans->Translate(vDir * _fSpeed * fElapsedTime);
+					if (_bRun) 
+					{
+						//스태미나 게이지 감소
+
+						_pTrans->Translate(vDir * _fRunSpeed * fElapsedTime);
+				
+					}
+					else
+					{
+						_pTrans->Translate(vDir * _fSpeed * fElapsedTime);
+					}
 				}
 			}
 			else
@@ -164,9 +177,17 @@ void Player::SetAnimation(SpriteRenderer* sr)
 	}
 }
 
-void Player::UsingSkill(SKILL_ID id)
+void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 {
-	_pSkills[id]->Using();
+	for (auto pSkill : _pSkills)
+	{
+		if (pSkill->GetSkillID() == id)
+		{
+			pSkill->Using(vPos, _pTrans);
+			break;
+		}
+	}
+//	_pSkills[id]->Using(vPos,_pTrans);
 }
 
 void Player::Attack(D3DXVECTOR3 _vMonsterPos)

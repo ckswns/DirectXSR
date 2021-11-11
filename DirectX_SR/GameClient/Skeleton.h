@@ -4,7 +4,8 @@
 namespace ce 
 {
 	class Transform;
-	class Texture;
+	class Animator;
+	class SpriteRenderer;
 }
 class Skeleton : public Behaviour
 {
@@ -13,11 +14,17 @@ public:		explicit					Skeleton(Transform* ownerTrans) noexcept;
 public:		virtual					~Skeleton(void) noexcept { __noop; }
 
 public:		virtual void				Start(void) noexcept;
-public:		virtual void				FixedUpdate(float fElapsedTime) noexcept;
+public:		virtual void				Update(float fElapsedTime) noexcept;
+
+public:		void						Destroy();
+
+private:		void						SetAnimation(SpriteRenderer* sr);
 
 private:		Transform*				_pTrans;
 private:		Transform*				_pOwnerTrans;
-private:		Texture*					_pTexture;
+private:		Animator*				_pAnimator;
+private:		bool						_bOnce;
+private:		bool						_bDestroy;
 
 private:		float						_fSpeed;
 private:		float						_fMaxDist;

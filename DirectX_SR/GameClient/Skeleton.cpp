@@ -2,8 +2,9 @@
 #include "Skeleton.h"
 #include "Transform.h"
 #include "Texture.h"
-#include "Quad.h"
-#include "MeshRenderer.h"
+#include "SpriteRenderer.h"
+#include "Animator.h"
+#include "Animation.h"
 
 Skeleton::Skeleton(Transform* ownerTrans) noexcept
 	: _pOwnerTrans(ownerTrans), _fSpeed(5.f), _fMaxDist(10.f)
@@ -12,23 +13,41 @@ Skeleton::Skeleton(Transform* ownerTrans) noexcept
 
 void Skeleton::Start(void) noexcept
 {
+	_bOnce = true;
+
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
-	_pTexture = new Texture();
-	_pTexture->Init(D3D9DEVICE->GetDevice(), "Asset/Player/Skeleton.png");
 
-	Quad* quad = new Quad(0, 0);
-	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), quad);
+	Texture* _texture = new ce::Texture();
+	_texture->Init(D3D9DEVICE->GetDevice(), "Asset/Player/Skeleton.png");
 
-	//텍스처 셋팅
-	//mr->GetMaterialPTR()->SetTextures(_pTexture);
-//	GetGameObject()->AddComponent(mr);
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), _texture);
+	GetGameObject()->AddComponent(sr);
 
-	//선택된 시체 위치 
-	//스켈레톤 생성 애니메이션
+	_pAnimator = new Animator(true);
+	GetGameObject()->AddComponent(_pAnimator);
+	SetAnimation(sr);
 }
 
-void Skeleton::FixedUpdate(float fElapsedTime) noexcept
+void Skeleton::Update(float fElapsedTime) noexcept
 {
+	if (_bOnce)
+	{
+		if (_pAnimator->GetCurrentAnimationEnd())
+		{
+			_pAnimator->Play("Stand");
+			_bOnce = false;
+		}
+	}
+
+	if (_bDestroy)
+	{
+		if (_pAnimator->GetCurrentAnimationEnd())
+		{
+			//없애는 판정 
+			//GetGameObject()->
+		}
+	}
+
 	//플레이어와 거리확인
 	D3DXVECTOR3 vDir = _pOwnerTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
 	if (D3DXVec3Length(&vDir) >= 10.f)
@@ -43,4 +62,122 @@ void Skeleton::FixedUpdate(float fElapsedTime) noexcept
 	//돌아다님
 	//몬스터 발견 시 공격(죽일때까지 공격)
 
+}
+
+void Skeleton::Destroy()
+{
+	_bDestroy = true;
+	_pAnimator->Play("Dead");
+}
+
+void Skeleton::SetAnimation(SpriteRenderer* sr)
+{
+	std::vector<Texture*> TList;
+	std::vector<float>		FrameTime;
+	Texture* _pTexture;
+	Animation* ani;
+
+	//Create
+	{
+		for (int i = 0; i < 12; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/Skeleton/create/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList, false);
+		ani->SetMaterial(sr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Create", ani);
+
+		TList.clear();
+		FrameTime.clear();
+	}
+
+	//Stand
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/Skeleton/stand_8/stand_%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.5f);
+		}
+
+		ani = new Animation(FrameTime, TList, true);
+		ani->SetMaterial(sr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Stand", ani);
+
+		TList.clear();
+		FrameTime.clear();
+	}
+
+	//Walk
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/Skeleton/walk_8/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList, true);
+		ani->SetMaterial(sr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Walk", ani);
+
+		TList.clear();
+		FrameTime.clear();
+	}
+
+	//Attack
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/Skeleton/attack_8/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList, false);
+		ani->SetMaterial(sr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Attack", ani);
+
+		TList.clear();
+		FrameTime.clear();
+	}
+	//Dead
+	{
+		for (int i = 0; i < 19; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/Skeleton/death/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList, false);
+		ani->SetMaterial(sr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Attack", ani);
+
+		TList.clear();
+		FrameTime.clear();
+	}
 }
