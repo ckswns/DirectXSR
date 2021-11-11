@@ -6,8 +6,6 @@
 
 namespace ce
 {
-	//class Material;
-
 	namespace UI 
 	{
 		enum class ButtonTranslation

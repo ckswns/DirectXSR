@@ -10,19 +10,20 @@ namespace ce
 
 	class AudioListener : public Component
 	{
-	public:	 explicit				AudioListener(GameObject* owner) noexcept;
-	public:	 virtual				~AudioListener(void) noexcept { __noop; }
+	public:		explicit				AudioListener(void) noexcept;
+	public:		virtual					~AudioListener(void) noexcept { __noop; }
+		
+	public:		void					Init(void) noexcept override;
+	public:		void					FixedUpdate(float) noexcept override { __noop; }
+	public:		void					Update(float) noexcept override { __noop; }
+	public:		void					LateUpdate(float) noexcept override;
+	public:		void					Render(void) noexcept override { __noop; }
+	public:		void					Release(void) noexcept override;
 			 
-	public:	 void					FixedUpdate(float) noexcept override;
-	public:	 void					Update(float) noexcept override;
-	public:	 void					LateUpdate(float) noexcept override;
-	public:	 void					Render(float) noexcept override;
-	public:	 void					Release(void) noexcept override;
+	private:	Transform*				_pTransform;
+	private:	FMOD::System*			_pSystem;
 			 
-	private: Transform*				_pTransform;
-	private: FMOD::System*			_pSystem;
-			 
-	private: static AudioListener*	_pListener;
+	private:	static AudioListener*	_pListener;
 	};
 }
 

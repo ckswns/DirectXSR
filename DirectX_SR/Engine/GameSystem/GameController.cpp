@@ -100,11 +100,11 @@ namespace ce
 	void GameController::Release(void) noexcept
 	{
 		SCENEMANAGER->Release();
+		ASSETMANAGER->Release();
 		D3D9DEVICE->Release();
 #ifdef __USE_FMOD__
 		FMODMANAGER->Release();
 #endif
-		ASSETMANAGER->Release();
 
 		MemoryPool<GameObject>::Release();
 

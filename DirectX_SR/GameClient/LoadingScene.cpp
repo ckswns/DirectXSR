@@ -9,6 +9,9 @@
 #include "Animator.h"
 #include "Button.h"
 #include "Text.h"
+#include "AudioAsset.h"
+#include "AudioSource.h"
+#include "AudioListener.h"
 
 using namespace ce::UI;
 
@@ -29,25 +32,28 @@ bool LoadingScene::Init(void) noexcept
 	_texProgressBarBack->Init(D3D9DEVICE->GetDevice(), "Asset/UI/slider_frame.png");
 
 	GameObject* obj = GameObject::Instantiate();
-	obj->AddComponent(new Text("test!!!!!", D3DCOLOR_ARGB(255, 255, 0, 0)));
-	RectTransform* rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
-	rt->SetWidth(100);
-	rt->SetHeight(30);
-	obj->SetSortOrder(10);
-	obj->GetTransform()->SetWorldPosition(100, 50, 0);
-
-	obj = GameObject::Instantiate();
 	obj->AddComponent(new Image(_texBg));
 	obj->SetSortOrder(0);
 
-	rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+	RectTransform* rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 	rt->SetWidth(WINCX);
 	rt->SetHeight(WINCY);
 
 	_imgProgressFront = static_cast<Image*>(new Image(_texProgressBarFront));
+
+	//obj = GameObject::Instantiate();
+	//obj->AddComponent(new Text("test!!!!!", D3DCOLOR_ARGB(255, 255, 0, 0)));
+	//rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+	//rt->SetWidth(100);
+	//rt->SetHeight(30);
+	//obj->SetSortOrder(10);
+	//obj->GetTransform()->SetWorldPosition(100, 50, 0);
+
+
 	obj = GameObject::Instantiate();
 	obj->AddComponent(_imgProgressFront);
 	obj->SetSortOrder(2);
+
 	rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 	rt->SetPivot(D3DXVECTOR2(0.5f, 0.5f));
 	rt->SetWidth(rt->GetWidth() * 0.35f);
@@ -57,6 +63,7 @@ bool LoadingScene::Init(void) noexcept
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new Image(_texProgressBarBack));
 	obj->SetSortOrder(1);
+
 	rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 	rt->SetPivot(D3DXVECTOR2(0.5f, 0.5f));
 	obj->GetTransform()->SetWorldPosition(WINCX / 2, WINCY - 150, 0);
@@ -81,7 +88,8 @@ bool LoadingScene::Init(void) noexcept
 
 	obj = GameObject::Instantiate();
 	Image* img = static_cast<Image*>(obj->AddComponent(new Image(_logo[0])));
-	Button<LoadingScene>* btn = static_cast<Button<LoadingScene>*>(obj->AddComponent(new Button<LoadingScene>(this)));
+	//Button<LoadingScene>* btn = static_cast<Button<LoadingScene>*>(obj->AddComponent(new Button<LoadingScene>(this)));
+	//btn->onMouseUp += &LoadingScene::Test;
 	obj->SetSortOrder(3);
 
 	Animator* animator =  static_cast<Animator*>(obj->AddComponent(new Animator(true)));
@@ -150,3 +158,12 @@ void LoadingScene::Release(void) noexcept
 	delete _texProgressBarFront;
 	delete _texProgressBarBack;
 }
+
+//void LoadingScene::Test(void) noexcept
+//{
+//	GameObject* obj = GameObject::Instantiate();
+//	AudioSource* as = static_cast<AudioSource*>(obj->AddComponent(new AudioSource()));
+//	as->LoadAudio(ASSETMANAGER->GetAudioData("Asset\\Audio\\DiabloInit.wav"));
+//	as->SetLoop(true);
+//	as->Play();
+//}

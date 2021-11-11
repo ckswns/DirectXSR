@@ -12,6 +12,9 @@ namespace ce
 	{
 		for (int i = 0; i < 255; i++)
 		{
+			if (_eState[i] == KeyState::PRESS && !(::GetAsyncKeyState(i) & 0x8000))
+				_eState[i] = KeyState::UP;
+
 			if (_eState[i] == KeyState::DOWN)
 				_eState[i] = KeyState::PRESS;
 		}
@@ -30,7 +33,7 @@ namespace ce
 
 	bool Input::GetKeyDown(uint8 key) noexcept
 	{
-		if (_eState[key] == KeyState::UP && (::GetAsyncKeyState(key) & 0x8000))
+		if ((_eState[key] == KeyState::UP || _eState[key] == KeyState::DOWN) && (::GetAsyncKeyState(key) & 0x8000))
 		{
 			_eState[key] = KeyState::DOWN;
 			return true;
@@ -44,10 +47,15 @@ namespace ce
 
 	bool Input::GetKeyStay(uint8 key) noexcept
 	{
-		if ((_eState[key] == KeyState::PRESS) && (::GetAsyncKeyState(key) & 0x8000))
+		if ((_eState[key] == KeyState::PRESS || _eState[key] == KeyState::DOWN) && (::GetAsyncKeyState(key) & 0x8000))
 			return true;
 
-		if (!::GetAsyncKeyState(key) & 0x8000)
+		else if (::GetAsyncKeyState(key) & 0x8000 && _eState[key] == KeyState::UP)
+		{
+			_eState[key] = KeyState::DOWN;
+		}
+
+		else if (!::GetAsyncKeyState(key) & 0x8000)
 			_eState[key] = KeyState::UP;
 
 		return false;

@@ -11,7 +11,8 @@ bool LoadingScene::Init(void) noexcept
 
 void LoadingScene::FixedUpdate(float fElapsedTime) noexcept
 {
-
+	if (ASSETMANAGER->GetLoadingProgress() == 1)
+		SCENEMANAGER->LoadScene("test");
 }
 
 void LoadingScene::Update(float fElapsedTime) noexcept

@@ -17,8 +17,8 @@
 #include <chrono>
 #include <unordered_set>
 
-//#include "../External/include/fmod.hpp"
-//#define __USE_FMOD__
+#include "../External/include/fmod.hpp"
+#define __USE_FMOD__
 
 #include "d3d9.h"
 #pragma comment(lib, "d3d9.lib")
