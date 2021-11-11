@@ -21,10 +21,19 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Image.h">
       <Filter>Image</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Button.hpp">
+      <Filter>Button</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Text.h">
+      <Filter>Text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Image.cpp">
       <Filter>Image</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Text.cpp">
+      <Filter>Text</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

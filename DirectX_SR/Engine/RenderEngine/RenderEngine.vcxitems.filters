@@ -7,9 +7,6 @@
     <Filter Include="Material">
       <UniqueIdentifier>{dc6e4fe4-ab72-4dfe-a55c-348b67cc4802}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Font">
-      <UniqueIdentifier>{8f4feff4-e09f-438b-bf82-ebb945451629}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Light">
       <UniqueIdentifier>{d1427d07-497b-45c5-a314-1cb326e2f0e7}</UniqueIdentifier>
     </Filter>

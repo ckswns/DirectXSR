@@ -7,11 +7,14 @@
 
 namespace ce
 {
+	HWND GameController::_hWnd = nullptr;
+
 	GameController::GameController() noexcept
 	{
+
 	}
 
-	bool GameController::Init(HWND hWnd, const Scene::KEY_VALUE_LIST& scenes, uint32 winX, uint32 winY) noexcept	
+	bool GameController::Init(HWND hWnd, const Scene::KEY_VALUE_LIST& scenes, uint32 winX, uint32 winY, const char* fontFilePath, const char* fontFaceName) noexcept
 	{
 		_hWnd = hWnd;
 
@@ -33,7 +36,6 @@ namespace ce
 			return false;
 		}
 #endif
-
 		if (scenes.empty())
 		{
 			CE_ASSERT("ckswns", "실행할 씬 목록은 비어 있을 수 업습니다");
