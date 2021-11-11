@@ -30,6 +30,13 @@ namespace ce
 	private:	void								RenderXXX(void) noexcept;
 	private:	void								ReleaseXXX(void) noexcept;
 
+	public:		virtual void						OnMouseEnterXXX(void) noexcept;
+	public:		virtual void						OnMouseLeaveXXX(void) noexcept;
+	public:		virtual void						OnMouseOverXXX(void) noexcept;
+	public:		virtual void						OnMouseDownXXX(void) noexcept;
+	public:		virtual void						OnMouseUpXXX(void) noexcept;
+	public:		virtual void						OnMouseHeldDownXXX(void) noexcept;
+
 	public:		void								SetDontDestroy(bool b) noexcept { _bDontDestroy = b; }
 	public:		bool								GetDontDestroy(void) const noexcept { return _bDontDestroy; }
 
