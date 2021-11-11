@@ -4,24 +4,35 @@
 namespace ce
 {
 	class Transform;
-	class Texture;
+	class Animator;
+	class SpriteRenderer;
 }
 
 class Skill;
+class PathFinding;
+class Node;
 class Player : public Behaviour
 {
 public:		explicit					Player() noexcept { __noop; }
+public:		explicit					Player(PathFinding* pf) noexcept:_pPathFinding(pf) { __noop; }
 public:		virtual					~Player(void) noexcept { __noop; }
 
 public:		virtual void				Start(void) noexcept;
 public:		virtual void				Update(float fElapsedTime) noexcept;
 
+private:		void						SetAnimation(SpriteRenderer* mr);
+
 public:		void						UsingSkill(SKILL_ID id);
 public:		void						Attack(D3DXVECTOR3 _vMonsterPos);
-public:		void						SetDestination(D3DXVECTOR3 dest) { _vDest = dest; _bMove = true; }
+public:		void						Move(D3DXVECTOR3 dest);
 
 private:		Transform*				_pTrans;
-private:		Texture*					_pTexture;
+private:		Animator*				_pAnimator;
+
+private:		bool						_bFind;
+private:		PathFinding*			_pPathFinding;
+private:	   std::list<Node*>		_pPath;
+
 private:		STAT						_tStat;
 private:		std::vector<Skill*>	_pSkills;
 

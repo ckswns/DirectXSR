@@ -1,15 +1,19 @@
 #include "pch.h"
 #include "Player.h"
-#include "MeshRenderer.h"
-#include "Quad.h"
 #include "Transform.h"
 #include "Texture.h"
+#include "Animation.h"
+#include "Animator.h"
 #include "Skill.h"
+#include "PathFinding.h"
+#include "Node.h"
 
+#include "SpriteRenderer.h"
 void Player::Start(void) noexcept
 {
 	_bAtt = false;
 	_bMove = false;
+	_bFind = false;
 
 	_fSpeed = 5.f;
 	_fRunSpeed = _fSpeed + 2.f;
@@ -18,27 +22,62 @@ void Player::Start(void) noexcept
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
-	_pTexture = new Texture();
-	_pTexture->Init(D3D9DEVICE->GetDevice(), "Asset/Player/Player.png");
-
-	Quad* quad = new Quad(4, 4);
+	/*Quad* quad = new Quad(4, 4);
 	quad->Open(D3D9DEVICE->GetDevice());
-
 	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), quad);
-	GetGameObject()->AddComponent(mr);
-	//텍스처 셋팅
-	mr->GetMaterialPTR()->SetTexture(_pTexture);
+	GetGameObject()->AddComponent(mr);*/
+
+	Texture* _texture = new ce::Texture();
+	_texture->Init(D3D9DEVICE->GetDevice(), "Asset/Player/Player.png");
+
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), _texture);
+	GetGameObject()->AddComponent(sr);
+
+	_pAnimator = new Animator(true);
+	GetGameObject()->AddComponent(_pAnimator);
+	SetAnimation(sr);
+
+	_pPath = (_pPathFinding->GetPath());
 }
 
 void Player::Update(float fElapsedTime) noexcept
 {
 	if (_bMove)
 	{
-		D3DXVECTOR3 vDir = _vDest - _pTrans->GetWorldPosition();
+		if (_bFind) 
+		{
+			if (!_pPath.empty())
+			{
+				std::list<Node*>::iterator iter = _pPath.begin();
 
-		if (D3DXVec3Length(&vDir) <= 1.f)
+				D3DXVECTOR3 vDir = (*iter)->GetPos() - _pTrans->GetWorldPosition();
+
+				if (D3DXVec3Length(&vDir) < 1.f)
+				{
+					_pPath.pop_front();
+				}
+				else
+				{
+					D3DXVec3Normalize(&vDir, &vDir);
+
+					_pTrans->Translate(vDir * _fSpeed * fElapsedTime);
+				}
+			}
+			else
+			{
+				_bFind = false;
+				_bMove = false;
+				_pAnimator->SetAnimation("Stand");
+				if (_bAtt)
+					Attack(_vDest);
+			}
+		}
+	//	D3DXVECTOR3 vDir = _vDest - _pTrans->GetWorldPosition();
+
+		/*if (D3DXVec3Length(&vDir) <= 1.f)
 		{
 			_bMove = false;
+			_pAnimator->SetAnimation("Stand");
 			if (_bAtt)
 				Attack(_vDest);
 		}
@@ -47,7 +86,78 @@ void Player::Update(float fElapsedTime) noexcept
 			D3DXVec3Normalize(&vDir, &vDir);
 
 			_pTrans->Translate(vDir * _fSpeed* fElapsedTime);
+		}*/
+	}
+}
+
+void Player::SetAnimation(SpriteRenderer* sr)
+{
+	std::vector<Texture*> TList;
+	std::vector<float>		FrameTime;
+	Texture* _pTexture;
+	Animation* ani;
+
+	//Stand
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/stand_8/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.5f);
 		}
+
+		ani = new Animation(FrameTime, TList, true);
+		ani->SetMaterial(sr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Stand", ani);
+
+		TList.clear();
+		FrameTime.clear();
+	}
+
+	//Walk
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/walk_8/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList, true);
+		ani->SetMaterial(sr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Walk", ani);
+
+		TList.clear();
+		FrameTime.clear();
+	}
+
+	//Attack
+	{
+		for (int i = 0; i < 19; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset/Player/attack_8/%d.png", i);
+			_pTexture = new Texture();
+			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+
+			TList.push_back(_pTexture);
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList, true);
+		ani->SetMaterial(sr->GetMaterialPTR());
+		_pAnimator->InsertAnimation("Attack", ani);
+
+		TList.clear();
+		FrameTime.clear();
 	}
 }
 
@@ -66,14 +176,26 @@ void Player::Attack(D3DXVECTOR3 _vMonsterPos)
 	{
 		// >> 공격
 		// 공격 애니메이션
+		_pAnimator->SetAnimation("Attack");
 		// 소리 
 		//충돌판정
 	}
 	else 
 	{
-		_bMove = true;
 		_vDest = _vMonsterPos;
-		//이동 애니메이션
+		_bMove = true;
+		_pAnimator->SetAnimation("Walk");
 	}
 
+}
+
+void Player::Move(D3DXVECTOR3 dest)
+{
+	_bAtt = false;
+	_vDest = dest; 
+	_bMove = true;
+	_pAnimator->SetAnimation("Walk");
+
+	_bFind =_pPathFinding->FindPath(_pTrans->GetWorldPosition(),dest);
+	_pPath = (_pPathFinding->GetPath());
 }

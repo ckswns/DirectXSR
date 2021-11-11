@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <queue>
 #include <chrono>
+#include <unordered_set>
 
 //#include "../External/include/fmod.hpp"
 //#define __USE_FMOD__

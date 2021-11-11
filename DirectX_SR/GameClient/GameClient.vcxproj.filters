@@ -58,6 +58,9 @@
     <Filter Include="00. Game\01. GameObject\InputHandle">
       <UniqueIdentifier>{b76ee25e-0318-4d9b-b18b-dcd49cdd3f43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\NeviMesh">
+      <UniqueIdentifier>{5cd9aee5-d1ed-4119-b307-4229ca098c2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -117,6 +120,18 @@
     <ClInclude Include="Game.h">
       <Filter>00. Game\00. Scene</Filter>
     </ClInclude>
+    <ClInclude Include="NeviMesh.h">
+      <Filter>00. Game\01. GameObject\NeviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>00. Game\01. GameObject\NeviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinding.h">
+      <Filter>00. Game\01. GameObject\NeviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="PriorityQueue.h">
+      <Filter>00. Game\01. GameObject\NeviMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -154,6 +169,12 @@
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>00. Game\00. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="NeviMesh.cpp">
+      <Filter>00. Game\01. GameObject\NeviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFinding.cpp">
+      <Filter>00. Game\01. GameObject\NeviMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

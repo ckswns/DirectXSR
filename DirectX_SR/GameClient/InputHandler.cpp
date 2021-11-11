@@ -25,10 +25,11 @@ void InputHandler::Update(float fElapsedTime) noexcept
 		//바닥인 경우 이동
 		_pMoveCommand->Execute(_pPlayer, MousePicking());
 		//아닌 경우 커맨드 
+//		_pLBCommand->Execute(_pPlayer, MousePicking());
 	}
 	else if (INPUT->GetKeyStay(KEY_RBUTTON))
 	{
-
+	//	_pMoveCommand->Execute(_pPlayer, MousePicking());
 	}
 
 
