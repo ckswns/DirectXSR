@@ -37,26 +37,26 @@ namespace ce
 
 	void GameObject::OnEnable(void) noexcept
 	{
-		for (int i = 0; i < _pBehaviours.size(); i++)
+		for (int i = 0; i < _pComponents.size(); i++)
 		{
-			_pBehaviours[i]->OnEnable();
+			_pComponents[i]->OnEnable();
 		}
 	}
 
 	void GameObject::OnDisable(void) noexcept
 	{
-		for (int i = 0; i < _pBehaviours.size(); i++)
+		for (int i = 0; i < _pComponents.size(); i++)
 		{
-			_pBehaviours[i]->OnDisable();
+			_pComponents[i]->OnDisable();
 		}
 	}
 
     void GameObject::FixedUpdateXXX(float fElapsedTime) noexcept
     {
-		//for (size_t i = 0; i < _pComponents.size(); i++)
-		//{
-		//	_pComponents[i]->FixedUpdate(fElapsedTime);
-		//}
+		for (size_t i = 0; i < _pComponents.size(); i++)
+		{
+			_pComponents[i]->FixedUpdate(fElapsedTime);
+		}
     }
 
     void GameObject::UpdateXXX(float fElapsedTime) noexcept
@@ -69,10 +69,10 @@ namespace ce
 
     void GameObject::LateUpdateXXX(float fElapsedTime) noexcept
     {
-		//for (size_t i = 0; i < _pComponents.size(); i++)
-		//{
-		//	_pComponents[i]->LateUpdate(fElapsedTime);
-		//}
+		for (size_t i = 0; i < _pComponents.size(); i++)
+		{
+			_pComponents[i]->LateUpdate(fElapsedTime);
+		}
     }
 
     void GameObject::RenderXXX(void) noexcept
@@ -92,6 +92,60 @@ namespace ce
 			_pComponents[i] = nullptr;
 		}
     }
+
+	void GameObject::OnMouseEnterXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseEnter();
+	}
+
+	void GameObject::OnMouseLeaveXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseLeave();
+	}
+
+	void GameObject::OnMouseOverXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseOver();
+	}
+
+	void GameObject::OnMouseDownXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseDown();
+	}
+
+	void GameObject::OnMouseUpXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseUp();
+	}
+
+	void GameObject::OnMouseHeldDownXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseHeldDown();
+	}
 
 	void GameObject::SetLayer(GameObjectLayer _layer) noexcept
 	{
@@ -249,6 +303,10 @@ namespace ce
 			(*iter)->GetGameObject()->SetWorldActive(_bWorldActive);
 		}
     }
+
+	void GameObject::OnAnimationEvent(int frame, std::string eventName)
+	{
+	}
 
 	GameObject* GameObject::Instantiate() noexcept
 	{

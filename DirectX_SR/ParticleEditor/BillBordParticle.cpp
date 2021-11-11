@@ -116,7 +116,7 @@ void BillBordParticle::Render(void) noexcept
 	_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-//	_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, false);
+	_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, false);
 
 	_pGraphicDev->SetTexture(0, _pTexture);
 
@@ -232,7 +232,7 @@ void BillBordParticle::Render(void) noexcept
 	}
 	_dwVbOffset += _dwVbBathSize;
 
-//	_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, true);
+	_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, true);
 	_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 
 	_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);

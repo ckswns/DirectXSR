@@ -39,11 +39,11 @@ namespace ce
 			{
 				rt = _owner->AddComponent(new RectTransform());		
 
-				if (_mainTex != nullptr)
+				if (_material.GetMainTexture() != nullptr)
 				{
 					_rtTransform = static_cast<RectTransform*>(rt);
-					_rtTransform->SetWidth(_mainTex->Width());
-					_rtTransform->SetHeight(_mainTex->Height());
+					_rtTransform->SetWidth(_material.GetMainTexture()->Width());
+					_rtTransform->SetHeight(_material.GetMainTexture()->Height());
 				}
 			}
 
@@ -53,14 +53,9 @@ namespace ce
 			_owner->SetLayer(GameObjectLayer::UI);
 		}
 
-		void Image::Update(float) noexcept
-		{
-			__noop;
-		}
-
 		void Image::Render(void) noexcept
 		{
-			if (_mainTex == nullptr)
+			if (_material.GetMainTexture() == nullptr)
 				return;
 
 			D3DXVECTOR3 pivot = _rtTransform->GetPivot();
@@ -78,18 +73,17 @@ namespace ce
 			world = scale * _transform->GetWorldMatrix();
 
 			_sprite->SetTransform(&world);
-			_sprite->Draw((LPDIRECT3DTEXTURE9)_mainTex->GetTexturePTR(), &_srcRect, &pivot, NULL, _color);
+			_sprite->Draw((LPDIRECT3DTEXTURE9)_material.GetMainTexture()->GetTexturePTR(), &_srcRect, &pivot, NULL, _material.GetColor());
 		}
 
 		void Image::Release(void) noexcept
 		{
 			_sprite = nullptr;
-			_mainTex = nullptr;
 		}
 
 		void Image::SetTexture(Texture* tex) noexcept
 		{
-			_mainTex = tex;
+			_material.SetMainTexture(tex);
 
 			if (tex == nullptr)
 			{

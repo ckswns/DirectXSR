@@ -59,6 +59,17 @@ namespace ce
 		END
 	};
 
+	enum class PICKING_STATE
+	{
+		NONE,
+		OVER,
+		DOWN,
+		HELDDOWN,
+		UP,
+		LEAVE,
+		END
+	};
+
 	typedef struct tagVertexColor
 	{
 		D3DXVECTOR3		vPosition;
@@ -99,8 +110,8 @@ namespace ce
 	typedef struct tagVertexCubeTextureNormal
 	{
 		D3DXVECTOR3		vPosition;
-		D3DXVECTOR3		vTexUV;
 		D3DXVECTOR3		vNormal;
+		D3DXVECTOR3		vTexUV;
 
 	}VTXCUBENORM;
 

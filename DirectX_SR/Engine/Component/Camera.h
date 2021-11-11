@@ -21,7 +21,9 @@ namespace ce
 	public:		virtual				~Camera() noexcept { __noop; }
 
 	public:		void				Init(void) noexcept override;
-	public:		void				Update(float fElapsedTime) noexcept override;
+	public:		void				FixedUpdate(float fElapsedTime) noexcept override { __noop; }
+	public:		void				Update(float fElapsedTime) noexcept override { __noop; }
+	public:		void				LateUpdate(float fElapsedTime) noexcept override;
 	public:		void				Release(void) noexcept override;
 	public:		void				Render(void) noexcept override { __noop; }
 

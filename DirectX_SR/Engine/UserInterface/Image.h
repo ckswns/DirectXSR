@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Material.h"
 
 namespace ce
 {
@@ -17,23 +18,25 @@ namespace ce
 		public:		virtual					~Image(void) noexcept { __noop; }
 
 		public:		void					Init(void) noexcept override;
-		public:		void					Update(float) noexcept override;
+		public:		void					FixedUpdate(float) noexcept override { __noop; }
+		public:		void					Update(float) noexcept override { __noop; }
+		public:		void					LateUpdate(float) noexcept override { __noop; }
 		public:		void					Render(void) noexcept override;
 		public:		void					Release(void) noexcept override;
 
-		public:		const Texture* const	GetTexture(void) const noexcept { return _mainTex; }
-		public:		D3DXCOLOR				GetColor(void) const noexcept { return _color; }
+		public:		const Texture* const	GetTexture(void) const noexcept { return _material.GetMainTexture(); }
+		public:		D3DXCOLOR				GetColor(void) const noexcept { return _material.GetColor(); }
 		public:		float					GetFillAmount(void) const noexcept { return _fillAmount; }
 
 		public:		void					SetTexture(Texture* tex) noexcept;
-		public:		void					SetColor(D3DXCOLOR c) noexcept { c = _color; }
+		public:		void					SetColor(D3DXCOLOR c) noexcept { _material.SetColor(c); }
 		public:		void					SetFillAmount(float rhs) noexcept;
+		public:		Material*				GetMaterialPTR(void) noexcept { return &_material; }
 
 		private:	uint32					_texWidth;
 		private:	uint32					_texHeight;
 
-		private:	Texture*				_mainTex = nullptr;
-		private:	D3DXCOLOR				_color = D3DCOLOR_ARGB(255, 255, 255, 255);
+		private:	Material				_material;
 
 		private:	LPD3DXSPRITE			_sprite = nullptr;
 		private:	RectTransform*			_rtTransform = nullptr;

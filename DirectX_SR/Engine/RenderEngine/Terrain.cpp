@@ -36,6 +36,8 @@ namespace ce
 
 		DWORD index = 0;
 
+		_pVtxPos = new D3DXVECTOR3[_nVtxCnt];
+
 		if (FAILED(_pVB->Lock(0, 0, (void**)&pVertex, 0)))
 			CE_ASSERT("ckswns", "VtxBuffer::Lock 함수 호출에 실패하였습니다");
 
@@ -47,6 +49,8 @@ namespace ce
 
 				pVertex[index].vPosition = D3DXVECTOR3((x * interval), 0.f, (z * interval));
 				pVertex[index].vTexUV = D3DXVECTOR2(float(z) / (_height - 1), float(x) / (_width - 1));
+
+				_pVtxPos[index] = pVertex[index].vPosition;
 			}
 		}
 

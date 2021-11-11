@@ -23,6 +23,8 @@ public:		void			LateUpdate(float fElapsedTime) noexcept override;
 public:		void			Render(float fElapsedTime) noexcept override;
 public:		void			Release(void) noexcept override;
 
+//public:		void			Test(void) noexcept;
+
 public:		ce::UI::Image*	_imgLogo;
 public:		ce::UI::Image*	_imgProgressFront;
 

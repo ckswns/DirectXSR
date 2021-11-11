@@ -6,14 +6,19 @@
 
 namespace ce
 {
-	AudioAsset::AudioAsset(FMOD::System* pSystem, bool is3DSound) noexcept :
+	AudioAsset::AudioAsset(FMOD::System* pSystem) noexcept :
 		Asset(AssetType::AUDIO),
-		_pFMODSystem(pSystem),
-		_b3DSound(is3DSound)
+		_pFMODSystem(pSystem)
 	{
 	}
 
-	bool AudioAsset::Load(std::string _filePath) noexcept
+	bool AudioAsset::ReLoad(bool is3D) noexcept
+	{
+		_is3D = is3D;
+		return Load(_filePath);
+	}
+
+	bool AudioAsset::Load(std::string filePath) noexcept
 	{
 		if (_pFMODSystem == nullptr)
 		{
@@ -21,24 +26,16 @@ namespace ce
 			return false;
 		}
 
+		_filePath = filePath;
+
 		FMOD::Sound* sound;
 
 		FMOD_RESULT fr;
-		FMOD_MODE mode;
-
-		if (_b3DSound)
-			mode |= FMOD_3D;
+		
+		if(_is3D)		
+			fr = _pFMODSystem->createStream(filePath.c_str(), FMOD_3D, nullptr, &sound);
 		else
-			mode |= FMOD_2D;
-
-		mode |= FMOD_CREATESTREAM;
-
-		if (_filePath.find("loop") == std::string::npos)
-			mode |= FMOD_LOOP_NORMAL;
-		else
-			mode |= FMOD_LOOP_OFF;
-
-		fr = _pFMODSystem->createStream(_filePath.c_str(), mode, nullptr, &sound);
+			fr = _pFMODSystem->createStream(filePath.c_str(), FMOD_DEFAULT, nullptr, &sound);
 
 		if (fr != FMOD_RESULT::FMOD_OK)
 		{

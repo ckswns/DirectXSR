@@ -30,7 +30,6 @@ namespace ce
 		else
 		{
 			_pNextScene = scene;
-			_pNextScene->Init();
 		}
 
 		return true;
@@ -56,8 +55,12 @@ namespace ce
 		if (_pNextScene)
 		{
 			_pActiveScene->Release();
+			_pActiveScene->ReleaseXXX();
+			
 			_pActiveScene = _pNextScene;
 			_pNextScene = nullptr;
+
+			_pActiveScene->Init();
 		}
 
 		if (_pActiveScene)

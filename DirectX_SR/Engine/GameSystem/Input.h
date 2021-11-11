@@ -6,6 +6,12 @@ namespace ce
 {
 	class Input final : public SingletonBase<Input>
 	{
+	public:		enum class KeyState
+				{
+					UP,
+					DOWN,
+					PRESS,
+				};
 	private:	explicit		Input(void) noexcept;
 	private:	virtual			~Input(void) noexcept { __noop; }
 
@@ -16,7 +22,7 @@ namespace ce
 
 	public:		void			GetWndMsgXXX(UINT message, WPARAM wParam, LPARAM lParam) noexcept;
 
-	private:	bool			_bState[255];
+	private:	KeyState		_eState[255] = {};
 
 	private:	friend			SingletonBase<Input>;
 	};

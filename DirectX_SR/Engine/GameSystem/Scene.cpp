@@ -6,6 +6,11 @@
 #ifndef _ALGORITH_
 #include <algorithm>
 #endif
+#include "RectTransform.h"
+#include "GameController.h"
+#include "ManagerDef.h"
+
+using namespace ce::UI;
 
 namespace ce
 {
@@ -16,12 +21,22 @@ namespace ce
 
 	void Scene::FixedUpdateXXX(float fElapsedTime) noexcept
 	{
+		if (_qGameObjWaitForInsert.empty() == false)
+		{
+			while (_qGameObjWaitForInsert.empty() == false)
+			{
+				GameObject* obj = _qGameObjWaitForInsert.front();
+				int layer = static_cast<int>(obj->_eLayer);
+				_vGameObjs[layer].emplace_back(obj);
+				_qGameObjWaitForInsert.pop();
+			}
+		}
+
 		if (_vLayerChangedObj.empty() == false)
 		{
 			for (int i = 0; i < _vLayerChangedObj.size(); i++)
 			{
 				int layer = static_cast<int>(_vLayerChangedObj[i].first);
-
 				auto iter = std::find(_vGameObjs[layer].begin(), _vGameObjs[layer].end(), _vLayerChangedObj[i].second);
 
 				if (iter != _vGameObjs[layer].end())
@@ -31,7 +46,15 @@ namespace ce
 					_vGameObjs[newLayer].emplace_back(_vLayerChangedObj[i].second);
 				}
 				else
-					CE_ASSERT("ckswns", "레이어 이동중에 게임오브젝트가 유실되었을 가능성이 있습니다\n개발자에게 문의하세요");
+				{
+					layer = static_cast<int>(_vLayerChangedObj[i].second->_eLayer);
+					auto iter2 = std::find(_vGameObjs[layer].begin(), _vGameObjs[layer].end(), _vLayerChangedObj[i].second);
+
+					if (iter2 == _vGameObjs[layer].end())
+					{
+						CE_ASSERT("ckswns", "레이어 이동중에 게임오브젝트가 유실되었을 가능성이 있습니다\n개발자에게 문의하세요");
+					}
+				}
 			}
 
 			_vLayerChangedObj.clear();
@@ -146,6 +169,8 @@ namespace ce
 				iter++;
 			}
 		}
+
+		CheckUIPicking();
 	}
 
 	void Scene::RenderXXX(float fElapsedTime) noexcept
@@ -207,12 +232,129 @@ namespace ce
 		}
 	}
 
+	void Scene::CheckUIPicking(void) noexcept
+	{
+		bool picked = false;
+		int layer = static_cast<int>(GameObjectLayer::UI);
+		
+		POINT cursor;
+		MOUSE_STATE mouseState = MOUSE_STATE::UP;
+
+		GetCursorPos(&cursor);
+		ScreenToClient(GameController::GetHandle(), &cursor);
+
+		if (INPUT->GetKeyUp(VK_LBUTTON))
+			mouseState = MOUSE_STATE::UP;
+		if (INPUT->GetKeyStay(VK_LBUTTON))
+			mouseState = MOUSE_STATE::HELD_DOWN;
+		if (INPUT->GetKeyDown(VK_LBUTTON))
+			mouseState = MOUSE_STATE::DOWN;
+
+		std::sort(_vGameObjs[layer].begin(), _vGameObjs[layer].end(),
+			[](const GameObject* lhs, const GameObject* rhs)
+			{
+				return (lhs->GetSortOrder() > rhs->GetSortOrder()) ? true : false;
+			});
+
+		for (auto iter = _vGameObjs[layer].begin(); iter != _vGameObjs[layer].end();)
+		{
+			if ((*iter)->GetActive() == false)
+			{
+				iter++;
+				continue;
+			}
+
+			RectTransform* rectTransform = static_cast<RectTransform*>((*iter)->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+
+			if (rectTransform->GetInteractive() == false)
+			{
+				iter++;
+				continue;
+			}
+
+			if (picked == false)
+			{
+				RECT rt = rectTransform->GetPickingRect();
+
+				if (PtInRect(&rt, cursor))
+				{
+					picked = true;
+
+					switch (mouseState)
+					{
+					case MOUSE_STATE::DOWN:
+						(*iter)->OnMouseDownXXX();
+						rectTransform->SetPrevPickingState(PICKING_STATE::DOWN);
+						break;
+					case MOUSE_STATE::HELD_DOWN:
+						if (rectTransform->GetPrevPickingState() == PICKING_STATE::DOWN || rectTransform->GetPrevPickingState() == PICKING_STATE::HELDDOWN)
+						{
+							(*iter)->OnMouseHeldDownXXX();
+							rectTransform->SetPrevPickingState(PICKING_STATE::HELDDOWN);
+						}
+						else
+						{
+							(*iter)->OnMouseOverXXX();
+							rectTransform->SetPrevPickingState(PICKING_STATE::OVER);
+						}
+						break;
+					case MOUSE_STATE::UP:
+						if (rectTransform->GetPrevPickingState() == PICKING_STATE::DOWN || rectTransform->GetPrevPickingState() == PICKING_STATE::HELDDOWN)
+						{
+							(*iter)->OnMouseUpXXX();
+							rectTransform->SetPrevPickingState(PICKING_STATE::UP);
+						}
+						else
+						{
+							(*iter)->OnMouseOverXXX();
+							rectTransform->SetPrevPickingState(PICKING_STATE::OVER);
+						}
+						break;
+					default:
+						(*iter)->OnMouseOverXXX();
+						rectTransform->SetPrevPickingState(PICKING_STATE::OVER);
+						break;
+					}
+				}
+
+				else
+				{
+					if (rectTransform->GetPrevPickingState() == PICKING_STATE::UP ||
+						rectTransform->GetPrevPickingState() == PICKING_STATE::DOWN ||
+						rectTransform->GetPrevPickingState() == PICKING_STATE::OVER ||
+						rectTransform->GetPrevPickingState() == PICKING_STATE::HELDDOWN)
+					{
+						(*iter)->OnMouseLeaveXXX();
+					}
+					rectTransform->SetPrevPickingState(PICKING_STATE::LEAVE);
+				}
+
+				iter++;
+				continue;
+			}
+
+			{
+				if (rectTransform->GetPrevPickingState() == PICKING_STATE::UP ||
+					rectTransform->GetPrevPickingState() == PICKING_STATE::DOWN ||
+					rectTransform->GetPrevPickingState() == PICKING_STATE::OVER ||
+					rectTransform->GetPrevPickingState() == PICKING_STATE::HELDDOWN)
+				{
+					(*iter)->OnMouseLeaveXXX();
+				}
+
+				rectTransform->SetPrevPickingState(PICKING_STATE::LEAVE);
+
+				iter++;
+			}
+		}
+	}
+
 	GameObject* Scene::InsertGameObject(GameObject* obj) noexcept
 	{
 		if (obj->_eLayer == GameObjectLayer::END)
 			obj->_eLayer = GameObjectLayer::OBJECT;
 
-		_vGameObjs[static_cast<int>(obj->_eLayer)].push_back(obj);
+		_qGameObjWaitForInsert.push(obj);
 
 		return obj;
 	}

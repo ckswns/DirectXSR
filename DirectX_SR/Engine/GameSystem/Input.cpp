@@ -5,45 +5,58 @@ namespace ce
 {
 	Input::Input(void) noexcept
 	{
-		ZeroMemory(_bState, sizeof(_bState));
+
 	}
 
 	void Input::Update(void) noexcept
 	{
+		for (int i = 0; i < 255; i++)
+		{
+			if (_eState[i] == KeyState::PRESS && !(::GetAsyncKeyState(i) & 0x8000))
+				_eState[i] = KeyState::UP;
+
+			if (_eState[i] == KeyState::DOWN)
+				_eState[i] = KeyState::PRESS;
+		}
 	}
 
 	bool Input::GetKeyUp(uint8 key) noexcept
 	{
-		if (_bState[key] && !(::GetAsyncKeyState(key) & 0x8000))
+		if (!(::GetAsyncKeyState(key) & 0x8000))
 		{
-			_bState[key] = !_bState[key];
+			_eState[key] = KeyState::UP;
 			return true;
 		}
-
-		if (!_bState[key] && (::GetAsyncKeyState(key) & 0x8000))
-			_bState[key] = !_bState[key];
 
 		return false;
 	}
 
 	bool Input::GetKeyDown(uint8 key) noexcept
 	{
-		if (!_bState[key] && (::GetAsyncKeyState(key) & 0x8000))
+		if ((_eState[key] == KeyState::UP || _eState[key] == KeyState::DOWN) && (::GetAsyncKeyState(key) & 0x8000))
 		{
-			_bState[key] = !_bState[key];
+			_eState[key] = KeyState::DOWN;
 			return true;
 		}
 
-		if (_bState[key] && !(::GetAsyncKeyState(key) & 0x8000))
-			_bState[key] = !_bState[key];
+		if (!::GetAsyncKeyState(key) & 0x8000)
+			_eState[key] = KeyState::UP;
 
 		return false;
 	}
 
 	bool Input::GetKeyStay(uint8 key) noexcept
 	{
-		if (::GetAsyncKeyState(key) & 0x8000)
+		if ((_eState[key] == KeyState::PRESS || _eState[key] == KeyState::DOWN) && (::GetAsyncKeyState(key) & 0x8000))
 			return true;
+
+		else if (::GetAsyncKeyState(key) & 0x8000 && _eState[key] == KeyState::UP)
+		{
+			_eState[key] = KeyState::DOWN;
+		}
+
+		else if (!::GetAsyncKeyState(key) & 0x8000)
+			_eState[key] = KeyState::UP;
 
 		return false;
 	}

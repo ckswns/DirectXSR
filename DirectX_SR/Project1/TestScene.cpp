@@ -8,6 +8,10 @@
 #include "Terrain.h"
 #include "MeshRenderer.h"
 #include "Quad.h"
+#include "SpriteRenderer.h"
+#include "AudioListener.h"
+#include "AudioSource.h"
+
 
 TestScene::TestScene(void) noexcept
 {
@@ -19,36 +23,18 @@ TestScene::~TestScene(void) noexcept
 
 bool TestScene::Init(void) noexcept
 {
-	_texture = new ce::Texture();
-	_texture->Init(D3D9DEVICE->GetDevice(), "Npc1_1.png");
-	
-	_texture2 = new ce::Texture();
-	_texture2->Init(D3D9DEVICE->GetDevice(), "test.jpg");
-
-	Mesh* terrain = new Terrain(40, 40);
-	terrain->Open(D3D9DEVICE->GetDevice());
-
 	GameObject* obj;
-	obj = GameObject::Instantiate();
-	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), terrain);
-	obj->AddComponent(mr);
-	mr->GetMaterialPTR()->SetTexture(_texture);
 
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new CubeObject());
-	obj->GetTransform()->SetLocalPosition(-1, 0, 0);
-	static_cast<MeshRenderer*>(obj->GetComponent(COMPONENT_ID::RENDERER))->GetMaterialPTR()->SetTexture(_texture);
-
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new CubeObject());
-	obj->GetTransform()->SetLocalPosition(1, 0, 0);
-	static_cast<MeshRenderer*>(obj->GetComponent(COMPONENT_ID::RENDERER))->GetMaterialPTR()->SetTexture(_texture2);
+	AudioSource* as = static_cast<AudioSource*>(obj->AddComponent(new AudioSource()));
+	as->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\DiabloInit.wav"));
+	as->SetLoop(true);
+	as->SetSoundWorld(true);
 
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new EditorCamera(g_hWnd));
-	obj->GetTransform()->SetLocalPosition(0, 1, 0);
-	obj->GetTransform()->SetLocalEulerAngle(0, 0, 0);
-	//GameObject::Instantiate(new DirectionLight());
+	obj->AddComponent(new AudioListener());
 
 	return true;
 }
@@ -75,9 +61,5 @@ void TestScene::Render(float fElapsedTime) noexcept
 
 void TestScene::Release(void) noexcept
 {
-	_texture->Release();
-	delete _texture;
 
-	_texture2->Release();
-	delete _texture2;
 }

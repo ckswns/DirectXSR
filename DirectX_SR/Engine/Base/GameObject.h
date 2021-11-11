@@ -30,6 +30,13 @@ namespace ce
 	private:	void								RenderXXX(void) noexcept;
 	private:	void								ReleaseXXX(void) noexcept;
 
+	public:		virtual void						OnMouseEnterXXX(void) noexcept;
+	public:		virtual void						OnMouseLeaveXXX(void) noexcept;
+	public:		virtual void						OnMouseOverXXX(void) noexcept;
+	public:		virtual void						OnMouseDownXXX(void) noexcept;
+	public:		virtual void						OnMouseUpXXX(void) noexcept;
+	public:		virtual void						OnMouseHeldDownXXX(void) noexcept;
+
 	public:		void								SetDontDestroy(bool b) noexcept { _bDontDestroy = b; }
 	public:		bool								GetDontDestroy(void) const noexcept { return _bDontDestroy; }
 
@@ -67,6 +74,8 @@ namespace ce
 	private:	bool								GetActiveChanged(void) noexcept { return _bActiveChanged; }
 	private:	void								SetActiveChanged(bool active) noexcept { _bActiveChanged = active; }
 
+	public:		void								OnAnimationEvent(int frame, std::string eventName);
+
 	public:		static GameObject*					Instantiate() noexcept;
 	public:		static void							Destroy(GameObject* obj) noexcept;
 
@@ -96,7 +105,7 @@ namespace ce
 
 	private:	Transform*							_pTransform;
 	private:	std::vector<Component*>				_pComponents;
-	private:	std::vector<Behaviour*>				_pBehaviours;
+
 	private:	COMPONENT_ID::ID					_hasComponentID;
 
 	private:	friend								SceneManager;

@@ -129,6 +129,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Animation.h">
       <Filter>Animation</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CETween.h">
+      <Filter>Interpolation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Matrix4x4.cpp">
@@ -158,11 +161,14 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerPrefs.cpp">
       <Filter>PlayerPrefs</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Animation.hpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Animation.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp">
       <Filter>MemoryPool</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CETween.cpp">
+      <Filter>Interpolation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

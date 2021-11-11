@@ -22,7 +22,8 @@ namespace ce
 			{
 				if (objs[i]->HasComponent(COMPONENT_ID::COLLIDER))
 				{
-					static_cast<Collider*>(objs[i]->GetComponent(COMPONENT_ID::COLLIDER))->CheckHitRaycast(ray, hit);
+					if (static_cast<Collider*>(objs[i]->GetComponent(COMPONENT_ID::COLLIDER))->CheckHitRaycast(ray, hit))
+						return true;
 				}
 			}
 

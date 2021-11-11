@@ -8,14 +8,16 @@ namespace ce
 	class AudioAsset : public Asset
 	{
 	public:		explicit		AudioAsset(void) = delete;
-	public:		explicit		AudioAsset(FMOD::System* pSystem, bool is3DSound = true) noexcept;
+	public:		explicit		AudioAsset(FMOD::System* pSystem) noexcept;
 	public:		virtual			~AudioAsset(void) noexcept { __noop; }
 
+	public:		bool			ReLoad(bool is3D) noexcept;
 	public:		bool			Load(std::string _filePath) noexcept override;
 	public:		void			Release(void) noexcept override;
 
+	private:	bool			_is3D = true;
 	private:	FMOD::System*	_pFMODSystem;
-	private:	bool			_b3DSound;
+	private:	std::string		_filePath;
 	};
 }
 

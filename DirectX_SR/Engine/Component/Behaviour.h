@@ -19,8 +19,8 @@ namespace ce
 	private:	virtual void				Render(void) noexcept override final;
 	private:	virtual void				Release(void) noexcept override final { OnDestroy(); }
 
-	public:		virtual void				OnEnable(void) noexcept { __noop; }
-	public:		virtual void				OnDisable(void) noexcept { __noop; }
+	public:		virtual void				OnEnable(void) noexcept override { __noop; }
+	public:		virtual void				OnDisable(void) noexcept override { __noop; }
 
 	public:		virtual void				Awake(void) noexcept { __noop; }
 	public:		virtual void				Start(void) noexcept PURE;
