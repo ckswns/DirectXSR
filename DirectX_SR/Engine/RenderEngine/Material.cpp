@@ -73,7 +73,12 @@ namespace ce
 		else
 		{
 			for (int i = 0; i < _textures.size(); i++)
-				pDevice->SetTexture(i, _textures[i]->GetTexturePTR());
+			{
+				if(_textures[i] == nullptr)
+					pDevice->SetTexture(i, nullptr);
+				else
+					pDevice->SetTexture(i, _textures[i]->GetTexturePTR());
+			}
 		}
 
 		pDevice->SetMaterial(&_mat);

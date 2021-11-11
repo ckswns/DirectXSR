@@ -7,6 +7,7 @@
 #include "GameController.h"
 #include "Scene.h"
 #include "TestScene.h"
+#include "LoadingScene.h"
 
 #define MAX_LOADSTRING 100
 
@@ -56,8 +57,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	pGameController = new GameController();
 
-	Scene* scene = new TestScene();
 	Scene::KEY_VALUE_LIST scenesList;
+	Scene* scene = new LoadingScene();
+	scenesList.push_back(std::make_pair("loading", scene));
+	scene = new TestScene();
 	scenesList.push_back(std::make_pair("test", scene));
 
 	pGameController->Init(g_hWnd, scenesList, WINCX, WINCY);

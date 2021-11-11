@@ -43,9 +43,48 @@ namespace ce
 		loading.detach();
 	}
 
+	AudioAsset* AssetManager::GetAudioAsset(std::string _key) noexcept
+	{
+		int index = static_cast<int>(AssetType::AUDIO);
+		auto iter = _mapAsset[index].find(_key);
+
+		if (iter == _mapAsset[index].end())
+			return nullptr;
+
+		return static_cast<AudioAsset*>(iter->second);
+	}
+
+	Texture* AssetManager::GetTextureData(std::string _key) noexcept
+	{
+		int index = static_cast<int>(AssetType::TEXTURE);
+		auto iter = _mapAsset[index].find(_key);
+
+		if (iter == _mapAsset[index].end())
+			return nullptr;
+
+		return reinterpret_cast<Texture*>(iter->second->GetData());
+	}
+
 	AssetManager::CONST_PTR_CSVDATA AssetManager::GetCSVData(std::string _key) noexcept
 	{
-		return CONST_PTR_CSVDATA();
+		int index = static_cast<int>(AssetType::TEXT);
+		auto iter = _mapAsset[index].find(_key);
+
+		if (iter == _mapAsset[index].end())
+			return nullptr;
+
+		return reinterpret_cast<CONST_PTR_CSVDATA>(iter->second->GetData());
+	}
+
+	FMOD::Sound* AssetManager::GetAudioData(std::string _key) noexcept
+	{
+		int index = static_cast<int>(AssetType::AUDIO);
+		auto iter = _mapAsset[index].find(_key);
+
+		if (iter == _mapAsset[index].end())
+			return nullptr;
+
+		return reinterpret_cast<FMOD::Sound*>(iter->second->GetData());
 	}
 
 	bool AssetManager::LoadAssetAsync(std::string _assetFolderPath, std::string* showingStr) noexcept

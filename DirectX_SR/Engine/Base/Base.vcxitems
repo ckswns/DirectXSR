@@ -20,6 +20,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Asset.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioAsset.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AutoDetectMemoryLeak.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CETween.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ConstValues.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)INoncopyable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Log.h" />
@@ -40,6 +41,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Animation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioAsset.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CEMath.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CETween.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Matrix4x4.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerPrefs.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Registry.cpp" />

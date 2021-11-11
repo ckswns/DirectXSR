@@ -4,6 +4,9 @@
 
 namespace ce
 {
+	class Texture;
+	class AudioAsset;
+
 	class AssetManager : public SingletonBase<AssetManager>
 	{
 	private:	explicit				AssetManager(void) noexcept;
@@ -20,13 +23,15 @@ namespace ce
 	public:		bool					GetLoadingState(void) const noexcept { return _bWhileLoading; }
 	public:		float					GetLoadingProgress(void) const noexcept { return _fLoadProgress; }
 
+	public:		AudioAsset*				GetAudioAsset(std::string _key) noexcept;
+
 	public:		const AssetMap&			GetCSVAssetMap(void) const noexcept { return _mapAsset[static_cast<int>(AssetType::TEXT)]; }
 	public:		const AssetMap&			GetAudioAssetMap(void) const noexcept { return _mapAsset[static_cast<int>(AssetType::AUDIO)]; }
-	public:		const AssetMap&			GetSpriteAssetMap(void) const noexcept { return _mapAsset[static_cast<int>(AssetType::TEXTURE)]; }
+	public:		const AssetMap&			GetTextureAssetMap(void) const noexcept { return _mapAsset[static_cast<int>(AssetType::TEXTURE)]; }
 
-	//public:		Sprite*					GetSpriteData(std::string _key) noexcept;
+	public:		Texture*				GetTextureData(std::string _key) noexcept;
 	public:		CONST_PTR_CSVDATA		GetCSVData(std::string _key) noexcept;
-	//public:		FMOD::Sound*			GetAudioData(std::string _key) noexcept;
+	public:		FMOD::Sound*			GetAudioData(std::string _key) noexcept;
 
 	private:	bool					LoadAssetAsync(std::string _assetFolderPath, std::string* showingStr) noexcept;
 		   
