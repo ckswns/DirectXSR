@@ -1,9 +1,15 @@
 #pragma once
 #include "Scene.h"
 
+namespace ce
+{
+	namespace UI
+	{
+		class Image;
+	}
+}
 class NeviMesh;
-class Game :
-    public Scene
+class Game : public Scene
 {
 public:		explicit		Game(void) noexcept;
 public:		virtual			~Game(void) noexcept { __noop; }
@@ -15,6 +21,10 @@ public:		void			LateUpdate(float fElapsedTime) noexcept override;
 public:		void			Render(float fElapsedTime) noexcept override;
 public:		void			Release(void) noexcept override;
 
-private:    NeviMesh* _pNeviMesh;
+private:		void			InitUI() noexcept;
+
+private:		UI::Image*		_imgStamina;
+
+private:		NeviMesh*	_pNeviMesh;
 };
 

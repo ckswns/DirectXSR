@@ -25,6 +25,8 @@ namespace ce
 		D3DXMatrixIdentity(&_matRotation);
 		D3DXMatrixIdentity(&_matScale);
 		D3DXMatrixIdentity(&_matWorld);
+
+		_owner = owner;
 	}
 
 	void Transform::Update(float) noexcept

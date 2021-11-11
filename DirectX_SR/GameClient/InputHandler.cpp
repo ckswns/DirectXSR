@@ -2,6 +2,9 @@
 #include "InputHandler.h"
 #include "AttackCommand.h"
 #include "MoveCommand.h"
+#include "SkillCommand.h"
+#include "GameObject.h"
+#include "Player.h"
 #include "Terrain.h"
 
 InputHandler::InputHandler(GameObject* player, Terrain* terrain) noexcept
@@ -12,26 +15,27 @@ InputHandler::InputHandler(GameObject* player, Terrain* terrain) noexcept
 void InputHandler::Start(void) noexcept
 {
 
-	_pLBCommand = new AttackCommand();
+//	_pLBCommand = new AttackCommand();
+	_pLBCommand = new SkillCommand();
+	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONDE_SPEAR);
 	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
 }
 
 void InputHandler::Update(float fElapsedTime) noexcept
 {
-	if (INPUT->GetKeyStay(KEY_LBUTTON))
+	if (INPUT->GetKeyDown(KEY_LBUTTON))
 	{
 		//마우스 피킹 
 		//바닥인 경우 이동
-		_pMoveCommand->Execute(_pPlayer, MousePicking());
+	//	_pMoveCommand->Execute(_pPlayer, MousePicking());
 		//아닌 경우 커맨드 
-//		_pLBCommand->Execute(_pPlayer, MousePicking());
+		_pLBCommand->Execute(_pPlayer, MousePicking());
 	}
 	else if (INPUT->GetKeyStay(KEY_RBUTTON))
 	{
-	//	_pMoveCommand->Execute(_pPlayer, MousePicking());
+		_pMoveCommand->Execute(_pPlayer, MousePicking());
 	}
-
 
 }
 
@@ -123,7 +127,7 @@ D3DXVECTOR3 InputHandler::MousePicking()
 			{
 				return D3DXVECTOR3(pTerrainVtxPos[dwVtxIdx[2]].x + (pTerrainVtxPos[dwVtxIdx[1]].x - pTerrainVtxPos[dwVtxIdx[2]].x) * fU,
 					0.f,
-					pTerrainVtxPos[dwVtxIdx[2]].z + (pTerrainVtxPos[dwVtxIdx[0]].z - pTerrainVtxPos[dwVtxIdx[1]].z) * fV);
+					pTerrainVtxPos[dwVtxIdx[2]].z + (pTerrainVtxPos[dwVtxIdx[0]].z - pTerrainVtxPos[dwVtxIdx[2]].z) * fV);
 			}
 		}
 	}

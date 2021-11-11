@@ -1,24 +1,40 @@
 #include "pch.h"
 #include "Player.h"
+
 #include "Transform.h"
+#include "SpriteRenderer.h"
 #include "Texture.h"
 #include "Animation.h"
 #include "Animator.h"
-#include "Skill.h"
+
 #include "PathFinding.h"
 #include "Node.h"
 
-#include "SpriteRenderer.h"
+#include "Skill.h"
+#include "RaiseSkeleton.h"
+#include "BoneSpear.h"
+
+Player::Player(PathFinding* pf) noexcept
+	:_pPathFinding(pf) 
+{
+	_tStat = new STAT(100, 100, 50);
+}
+
 void Player::Start(void) noexcept
 {
 	_bAtt = false;
 	_bMove = false;
 	_bFind = false;
 
-	_fSpeed = 5.f;
-	_fRunSpeed = _fSpeed + 2.f;
+	_bRun = false;
+	_fSpeed =3.f;
+	_fRunSpeed = 5.f;
 
-	_pSkills.resize(SKILL_END);
+	_pSkills.reserve(SKILL_END);
+	_pSkills.push_back(new RaiseSkeleton());
+	_pSkills.push_back(new BoneSpear());
+
+	GetGameObject()->SetDontDestroy(true);
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
@@ -36,12 +52,20 @@ void Player::Start(void) noexcept
 	_pAnimator = new Animator(true);
 	GetGameObject()->AddComponent(_pAnimator);
 	SetAnimation(sr);
-
-	_pPath = (_pPathFinding->GetPath());
 }
 
 void Player::Update(float fElapsedTime) noexcept
 {
+	if (INPUT->GetKeyDown('Z') || INPUT->GetKeyStay('Z'))
+	{
+		_bRun = true;
+	}
+	else 
+	{
+		if(_bRun)
+			_bRun = false;
+	}
+
 	if (_bMove)
 	{
 		if (_bFind) 
@@ -51,6 +75,7 @@ void Player::Update(float fElapsedTime) noexcept
 				std::list<Node*>::iterator iter = _pPath.begin();
 
 				D3DXVECTOR3 vDir = (*iter)->GetPos() - _pTrans->GetWorldPosition();
+				vDir.y = 0;
 
 				if (D3DXVec3Length(&vDir) < 1.f)
 				{
@@ -60,11 +85,32 @@ void Player::Update(float fElapsedTime) noexcept
 				{
 					D3DXVec3Normalize(&vDir, &vDir);
 
-					_pTrans->Translate(vDir * _fSpeed * fElapsedTime);
+					if (_bRun) 
+					{
+						//스태미나 게이지 감소
+						if (_tStat->_fStamina > 0)
+							_tStat->_fStamina -= fElapsedTime;
+	
+						if (_tStat->_fStamina <= 0)
+						{
+							_tStat->_fStamina = 0;
+							vDir *= (_fSpeed * fElapsedTime);
+						}
+						else
+							vDir *= (_fRunSpeed * fElapsedTime);
+					}
+					else
+					{
+						vDir *= (_fSpeed * fElapsedTime);
+					}
+
+					_pTrans->Translate(vDir );
 				}
 			}
 			else
 			{
+				_pPath.clear();
+
 				_bFind = false;
 				_bMove = false;
 				_pAnimator->SetAnimation("Stand");
@@ -72,9 +118,9 @@ void Player::Update(float fElapsedTime) noexcept
 					Attack(_vDest);
 			}
 		}
-	//	D3DXVECTOR3 vDir = _vDest - _pTrans->GetWorldPosition();
-
-		/*if (D3DXVec3Length(&vDir) <= 1.f)
+		/*
+		D3DXVECTOR3 vDir = _vDest - _pTrans->GetWorldPosition();
+		if (D3DXVec3Length(&vDir) <= 1.f)
 		{
 			_bMove = false;
 			_pAnimator->SetAnimation("Stand");
@@ -86,7 +132,8 @@ void Player::Update(float fElapsedTime) noexcept
 			D3DXVec3Normalize(&vDir, &vDir);
 
 			_pTrans->Translate(vDir * _fSpeed* fElapsedTime);
-		}*/
+		}
+		*/
 	}
 }
 
@@ -161,9 +208,19 @@ void Player::SetAnimation(SpriteRenderer* sr)
 	}
 }
 
-void Player::UsingSkill(SKILL_ID id)
+void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 {
-	_pSkills[id]->Using();
+	for (auto pSkill : _pSkills)
+	{
+		if (pSkill->GetSkillID() == id)
+		{
+			if (_tStat->_iMP >= pSkill->GetUsingMp())
+				pSkill->Using(vPos, _pTrans);
+
+			break;
+		}
+	}
+//	_pSkills[id]->Using(vPos,_pTrans);
 }
 
 void Player::Attack(D3DXVECTOR3 _vMonsterPos)

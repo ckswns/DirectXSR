@@ -61,6 +61,21 @@
     <Filter Include="00. Game\01. GameObject\NeviMesh">
       <UniqueIdentifier>{5cd9aee5-d1ed-4119-b307-4229ca098c2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton\Skeleton">
+      <UniqueIdentifier>{66b36543-9d4c-4d5d-bf73-d532a1ca8e24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Skill\BoneSpear">
+      <UniqueIdentifier>{15eb8947-dbc9-403c-b99f-ba9ac23c19d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Skill\BoneSpear\Projectile">
+      <UniqueIdentifier>{f44d461c-7461-403c-b8cd-3382488399d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Skill\BoneSpear\Projectile\Spear">
+      <UniqueIdentifier>{75c6815e-7b7d-4f71-853f-39a3d1536329}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Skill\BoneSpear\Projectile\Trail">
+      <UniqueIdentifier>{95c3ff3b-3e7e-4bb6-a52c-5191b8e3a18d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -111,9 +126,6 @@
     <ClInclude Include="MoveCommand.h">
       <Filter>00. Game\01. GameObject\00. Player\Command\MoveCommand</Filter>
     </ClInclude>
-    <ClInclude Include="Skeleton.h">
-      <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
-    </ClInclude>
     <ClInclude Include="InputHandler.h">
       <Filter>00. Game\01. GameObject\InputHandle</Filter>
     </ClInclude>
@@ -131,6 +143,21 @@
     </ClInclude>
     <ClInclude Include="PriorityQueue.h">
       <Filter>00. Game\01. GameObject\NeviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneSpear.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\BoneSpear</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\BoneSpear\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Spear.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\BoneSpear\Projectile\Spear</Filter>
+    </ClInclude>
+    <ClInclude Include="SpearTrail.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\BoneSpear\Projectile\Trail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +188,6 @@
     <ClCompile Include="MoveCommand.cpp">
       <Filter>00. Game\01. GameObject\00. Player\Command\MoveCommand</Filter>
     </ClCompile>
-    <ClCompile Include="Skeleton.cpp">
-      <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
-    </ClCompile>
     <ClCompile Include="InputHandler.cpp">
       <Filter>00. Game\01. GameObject\InputHandle</Filter>
     </ClCompile>
@@ -175,6 +199,21 @@
     </ClCompile>
     <ClCompile Include="PathFinding.cpp">
       <Filter>00. Game\01. GameObject\NeviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneSpear.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\BoneSpear</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\BoneSpear\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="Spear.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\BoneSpear\Projectile\Spear</Filter>
+    </ClCompile>
+    <ClCompile Include="SpearTrail.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\BoneSpear\Projectile\Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
