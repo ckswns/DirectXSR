@@ -65,6 +65,8 @@ void Player::Update(float fElapsedTime) noexcept
 			}
 			else
 			{
+				_pPath.clear();
+
 				_bFind = false;
 				_bMove = false;
 				_pAnimator->SetAnimation("Stand");
@@ -72,9 +74,9 @@ void Player::Update(float fElapsedTime) noexcept
 					Attack(_vDest);
 			}
 		}
-	//	D3DXVECTOR3 vDir = _vDest - _pTrans->GetWorldPosition();
-
-		/*if (D3DXVec3Length(&vDir) <= 1.f)
+		/*
+		D3DXVECTOR3 vDir = _vDest - _pTrans->GetWorldPosition();
+		if (D3DXVec3Length(&vDir) <= 1.f)
 		{
 			_bMove = false;
 			_pAnimator->SetAnimation("Stand");
@@ -86,7 +88,8 @@ void Player::Update(float fElapsedTime) noexcept
 			D3DXVec3Normalize(&vDir, &vDir);
 
 			_pTrans->Translate(vDir * _fSpeed* fElapsedTime);
-		}*/
+		}
+		*/
 	}
 }
 

@@ -11,9 +11,9 @@ public:	Node(bool walkAble, D3DXVECTOR3 center, int x, int y)
 }
 
 	  //fcost가 작은것이 우선순위가 높게 
-public:	bool						operator<(const Node n) const
+public:	bool						operator<(const Node& n) const
 {
-	return this->_fFCost > n._fFCost;
+	return this->_fFCost < n._fFCost;
 }
 
 public:	void						SetParent(Node* p) { _pParent = p; }

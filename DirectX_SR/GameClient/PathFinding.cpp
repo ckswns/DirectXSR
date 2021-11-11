@@ -15,7 +15,7 @@ bool PathFinding::FindPath(D3DXVECTOR3 vStartPos,D3DXVECTOR3 vTargetPos)
 	Node* targetNode = _pNevi->NodeFormPosition(vTargetPos);
 
 //	std::priority_queue<Node*,std::vector<Node*>,std::greater<Node*>> openSet;
-	PriorityQueue<Node*> openSet;
+	PriorityQueue<Node*,std::vector<Node*>, compare> openSet;
 	std::unordered_set<Node*> closedSet;
 	openSet.push(startNode);
 
@@ -56,7 +56,7 @@ bool PathFinding::FindPath(D3DXVECTOR3 vStartPos,D3DXVECTOR3 vTargetPos)
 			{
 				//오픈에 현재 노드가 있는 경우 수치 비교 후 경로 교체
 				//수치가 동일하면 g수치가 큰쪽으로 바꾼다 (갈길이 얼마 안남았다는 뜻)
-				if (n->GetFCost() > f || (n->GetFCost() == f && n->GetGCost() < g))
+				if (n->GetFCost() > f || ((n->GetFCost() == f && n->GetGCost() < g)))
 				{
 					n->SetCost(g,h);
 					n->SetParent(curNode);
@@ -84,20 +84,20 @@ void PathFinding::RetracePath(Node* startNode, Node* endNode)
 	_pPath = path;
 }
 
-int PathFinding::GetDistance(Node* A, Node* B)
+float PathFinding::GetDistance(Node* A, Node* B)
 {
-	int dstX = abs(A->GetX() - B->GetX());
-	float dstY = abs(A->GetY() - B->GetY());
+	//int dstX = abs(B->GetX() - A->GetX());
+	//float dstY = abs(B->GetY() - A->GetY());
 
 	//return (dstX + dstY);
 
-	if (dstX > dstY)
+	/*if (dstX > dstY)
 	{
 		return 14 * dstY + 10 * (dstX - dstY);
 	}
 
-	return 14 * dstX + 10 * (dstY - dstX);
+	return 14 * dstX + 10 * (dstY - dstX);*/
 
-//	D3DXVECTOR3 vDir = A->GetPos() - B->GetPos();
-//	return D3DXVec3Length(&vDir);
+	D3DXVECTOR3 vDir = B->GetPos() - A->GetPos();
+	return D3DXVec3Length(&vDir);
 }
