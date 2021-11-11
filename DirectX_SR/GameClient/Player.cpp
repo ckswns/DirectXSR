@@ -1,14 +1,24 @@
 #include "pch.h"
 #include "Player.h"
+
 #include "Transform.h"
 #include "SpriteRenderer.h"
 #include "Texture.h"
 #include "Animation.h"
 #include "Animator.h"
-#include "Skill.h"
+
 #include "PathFinding.h"
 #include "Node.h"
+
+#include "Skill.h"
 #include "RaiseSkeleton.h"
+#include "BoneSpear.h"
+
+Player::Player(PathFinding* pf) noexcept
+	:_pPathFinding(pf) 
+{
+	_tStat = new STAT(100, 100, 50);
+}
 
 void Player::Start(void) noexcept
 {
@@ -17,11 +27,14 @@ void Player::Start(void) noexcept
 	_bFind = false;
 
 	_bRun = false;
-	_fSpeed = 5.f;
-	_fRunSpeed = 7.f;
+	_fSpeed =3.f;
+	_fRunSpeed = 5.f;
 
 	_pSkills.reserve(SKILL_END);
 	_pSkills.push_back(new RaiseSkeleton());
+	_pSkills.push_back(new BoneSpear());
+
+	GetGameObject()->SetDontDestroy(true);
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
@@ -43,7 +56,15 @@ void Player::Start(void) noexcept
 
 void Player::Update(float fElapsedTime) noexcept
 {
-
+	if (INPUT->GetKeyDown('Z') || INPUT->GetKeyStay('Z'))
+	{
+		_bRun = true;
+	}
+	else 
+	{
+		if(_bRun)
+			_bRun = false;
+	}
 
 	if (_bMove)
 	{
@@ -54,6 +75,7 @@ void Player::Update(float fElapsedTime) noexcept
 				std::list<Node*>::iterator iter = _pPath.begin();
 
 				D3DXVECTOR3 vDir = (*iter)->GetPos() - _pTrans->GetWorldPosition();
+				vDir.y = 0;
 
 				if (D3DXVec3Length(&vDir) < 1.f)
 				{
@@ -66,14 +88,23 @@ void Player::Update(float fElapsedTime) noexcept
 					if (_bRun) 
 					{
 						//스태미나 게이지 감소
-
-						_pTrans->Translate(vDir * _fRunSpeed * fElapsedTime);
-				
+						if (_tStat->_fStamina > 0)
+							_tStat->_fStamina -= fElapsedTime;
+	
+						if (_tStat->_fStamina <= 0)
+						{
+							_tStat->_fStamina = 0;
+							vDir *= (_fSpeed * fElapsedTime);
+						}
+						else
+							vDir *= (_fRunSpeed * fElapsedTime);
 					}
 					else
 					{
-						_pTrans->Translate(vDir * _fSpeed * fElapsedTime);
+						vDir *= (_fSpeed * fElapsedTime);
 					}
+
+					_pTrans->Translate(vDir );
 				}
 			}
 			else
@@ -183,7 +214,9 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 	{
 		if (pSkill->GetSkillID() == id)
 		{
-			pSkill->Using(vPos, _pTrans);
+			if (_tStat->_iMP >= pSkill->GetUsingMp())
+				pSkill->Using(vPos, _pTrans);
+
 			break;
 		}
 	}

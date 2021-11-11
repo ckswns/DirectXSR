@@ -13,8 +13,8 @@ class PathFinding;
 class Node;
 class Player : public Behaviour
 {
-public:		explicit					Player() noexcept { __noop; }
-public:		explicit					Player(PathFinding* pf) noexcept:_pPathFinding(pf) { __noop; }
+public:		explicit					Player() noexcept = delete;
+public:		explicit					Player(PathFinding* pf) noexcept;
 public:		virtual					~Player(void) noexcept { __noop; }
 
 public:		virtual void				Start(void) noexcept;
@@ -35,7 +35,7 @@ private:		bool						_bFind;
 private:		PathFinding*			_pPathFinding;
 private:	   std::list<Node*>		_pPath;
 
-private:		STAT						_tStat;
+private:		STAT*						_tStat;
 private:		std::vector<Skill*>	_pSkills;
 
 private:		bool						_bAtt;

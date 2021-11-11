@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AttackCommand.h" />
+    <ClInclude Include="BoneSpear.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
@@ -175,15 +176,19 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerSelectScene.h" />
     <ClInclude Include="PriorityQueue.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="RaiseSkeleton.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Skill.h" />
     <ClInclude Include="SkillCommand.h" />
+    <ClInclude Include="Spear.h" />
+    <ClInclude Include="SpearTrail.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackCommand.cpp" />
+    <ClCompile Include="BoneSpear.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="InputHandler.cpp" />
@@ -199,9 +204,12 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerSelectScene.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RaiseSkeleton.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="SkillCommand.cpp" />
+    <ClCompile Include="Spear.cpp" />
+    <ClCompile Include="SpearTrail.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameClient.rc" />

@@ -17,8 +17,15 @@ void NeviMesh::Init() noexcept
 			D3DXVECTOR3 worldPoint = _TerrainVtx[terrainIdx];
 			worldPoint.x += 0.5f;
 			worldPoint.z += 0.5f;
-
-			bool walkable = true;
+			bool walkable;
+			if (z >= 10 && z<15) {
+				if (x < 5 || x >15)
+					walkable = true;
+				else
+					walkable = false;
+			}
+			else
+				walkable = true;
 			Grid[idx] = new Node(walkable, worldPoint, x, z);
 
 			/*

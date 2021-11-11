@@ -3,6 +3,8 @@
 #include "AttackCommand.h"
 #include "MoveCommand.h"
 #include "SkillCommand.h"
+#include "GameObject.h"
+#include "Player.h"
 #include "Terrain.h"
 
 InputHandler::InputHandler(GameObject* player, Terrain* terrain) noexcept
@@ -15,7 +17,7 @@ void InputHandler::Start(void) noexcept
 
 //	_pLBCommand = new AttackCommand();
 	_pLBCommand = new SkillCommand();
-	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::RAISE_SKELETON);
+	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONDE_SPEAR);
 	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
 }
@@ -33,16 +35,6 @@ void InputHandler::Update(float fElapsedTime) noexcept
 	else if (INPUT->GetKeyStay(KEY_RBUTTON))
 	{
 		_pMoveCommand->Execute(_pPlayer, MousePicking());
-	}
-
-	if (INPUT->GetKeyStay(KEY_Z))
-	{
-	
-	}
-	else if (INPUT->GetKeyUp(KEY_Z))
-	{
-
-	//	_bRun = false;
 	}
 
 }

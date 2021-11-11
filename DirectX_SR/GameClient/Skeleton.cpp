@@ -6,14 +6,14 @@
 #include "Animator.h"
 #include "Animation.h"
 
-Skeleton::Skeleton(Transform* ownerTrans) noexcept
-	: _pOwnerTrans(ownerTrans), _fSpeed(5.f), _fMaxDist(10.f)
-{	 
+Skeleton::Skeleton() noexcept
+	:_tStat(70,10,5)
+{
 }
 
 void Skeleton::Start(void) noexcept
 {
-	_bOnce = true;
+	_bOnce = false;
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
@@ -23,7 +23,7 @@ void Skeleton::Start(void) noexcept
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), _texture);
 	GetGameObject()->AddComponent(sr);
 
-	_pAnimator = new Animator(true);
+	_pAnimator = new Animator(false);
 	GetGameObject()->AddComponent(_pAnimator);
 	SetAnimation(sr);
 }
@@ -43,8 +43,7 @@ void Skeleton::Update(float fElapsedTime) noexcept
 	{
 		if (_pAnimator->GetCurrentAnimationEnd())
 		{
-			//없애는 판정 
-			//GetGameObject()->
+			GetGameObject()->SetActive(false);
 		}
 	}
 
@@ -62,6 +61,14 @@ void Skeleton::Update(float fElapsedTime) noexcept
 	//돌아다님
 	//몬스터 발견 시 공격(죽일때까지 공격)
 
+}
+
+void Skeleton::Create(Transform* trans)
+{
+	_pOwnerTrans = trans;
+	GetGameObject()->SetActive(true);
+	_bOnce = true;
+	_pAnimator->Play("Create");
 }
 
 void Skeleton::Destroy()
@@ -175,7 +182,7 @@ void Skeleton::SetAnimation(SpriteRenderer* sr)
 
 		ani = new Animation(FrameTime, TList, false);
 		ani->SetMaterial(sr->GetMaterialPTR());
-		_pAnimator->InsertAnimation("Attack", ani);
+		_pAnimator->InsertAnimation("Dead", ani);
 
 		TList.clear();
 		FrameTime.clear();
