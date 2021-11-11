@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "TerrainTex.h"
 #include "Texture.h"
+#include "FloorTerrain.h"
 
 class MapTab : public CDialog
 {
@@ -38,27 +39,30 @@ public:
 
 	void		Release();
 	afx_msg void OnBnClickedTerrainTextureLoad();
-	CListBox _TextureList;
+	/*CListBox _TextureList;*/
 
 	std::map<std::wstring, std::pair<std::string, Texture*>> _mapTex;
 
 	std::vector<Texture*> _vecTex;
 	afx_msg void OnLbnSelchangeSelectTexutrePath();
 
-	CEdit _EditMoveX;
-	CEdit _EditMoveZ;
-	CSpinButtonCtrl _SpinControlX;
-	CSpinButtonCtrl _SpinControlZ;
-	virtual BOOL OnInitDialog();
-	afx_msg void OnDeltaposMoveTerrainX(NMHDR* pNMHDR, LRESULT* pResult);
+	//CEdit _EditMoveX;
+	//CEdit _EditMoveZ;
+	//CSpinButtonCtrl _SpinControlX;
+	//CSpinButtonCtrl _SpinControlZ;
+	/*virtual BOOL OnInitDialog();*/
+	//afx_msg void OnDeltaposMoveTerrainX(NMHDR* pNMHDR, LRESULT* pResult);
+	//afx_msg void OnDeltaposTerrainMoveZ(NMHDR* pNMHDR, LRESULT* pResult);
 
 	//std::vector<std::pair<Texture*,GameObject*>>	_vecTerrain;
-	std::vector<GameObject*>	_vecTerrain;
+	/*std::vector<GameObject*>	_vecTerrain;*/
+	std::vector<Mesh*>			_vecTerrain;
 	int	_iIndex;
 
 	int	_iMoveX;
 	int	_iMoveZ;
-	afx_msg void OnDeltaposTerrainMoveZ(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedSaveTerrain();
 	afx_msg void OnBnClickedLoadTerrain();
+	afx_msg void OnBnClickedAllFileLoad();
+	afx_msg void OnBnClickedAllFileSave();
 };

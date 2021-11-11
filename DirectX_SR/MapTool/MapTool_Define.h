@@ -2,13 +2,13 @@
 #ifndef MapTool_Define_h__
 #define MapTool_Define_h__
 
-#define MAPWIDTH		32
-#define MAPHEIGHT		32
+//#define MAPWIDTH		32
+//#define MAPHEIGHT		32
 #define WINCX 800
 #define WINCY 600
 #define MAXTEXNUM		4
-#define TEXALPHASIZE	512
-#define MINIALPHASIZE	128
+//#define TEXALPHASIZE	512 // totla vertex /2 
+//#define MINIALPHASIZE	128	// total vertex /8
 
 #define SAFE_DELETE_(p)       {if(p) {delete (p);     (p)=NULL;}}
 #define SAFE_DELETE_ARRAY_(p) {if(p) {delete[] (p);   (p)=NULL;}}
@@ -18,9 +18,7 @@ extern	HWND			g_hWnd;
 extern	GameController*	g_pGameController;
 extern	bool			g_bInitGame;
 extern	RECT			g_rtMfc;
-extern	FLOAT			g_MousePosX;
-extern	FLOAT			g_MousePosY;
-
+extern CPoint			g_MousePos;
 
 template<typename T>
 void	Safe_Delete(T& Pointer)

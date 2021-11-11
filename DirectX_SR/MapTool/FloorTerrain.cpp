@@ -1,8 +1,11 @@
 #include "pch.h"
 #include "FloorTerrain.h"
-#include "Transform.h"
+#include "MainFrm.h"
+#include "CForm.h"
+#include "CubeTab.h"
+#include "MapTab.h"
 
-FloorTerrain::FloorTerrain(WORD wwidth, WORD whegiht, float flength)
+FloorTerrain::FloorTerrain(DWORD wwidth, DWORD whegiht, float flength)
 	:
 	 _wWidth(wwidth), _wHeight(whegiht)
 	, _wWidthVertices(0), _wHeightVertices(0)
@@ -20,6 +23,9 @@ FloorTerrain::FloorTerrain(WORD wwidth, WORD whegiht, float flength)
 {
 	for (int i = 0; i < 4; ++i)
 		_pDrawIndex[i] = i;
+
+	_TexAlphaSize = (uint64)((_wWidth * _wHeight) / 2 );
+	_MiniAlphaSize = 128;
 }
 FloorTerrain::~FloorTerrain(void)
 {
@@ -32,8 +38,8 @@ bool FloorTerrain::Open(LPDIRECT3DDEVICE9 pDevice) noexcept
 	if(!LoadTextures())
 		return MessageBoxA(nullptr, "LoadTextureErr", "Err", MB_OK);
 
-	if (CreateAlphaMaps() == 0)
-		return MessageBoxA(nullptr, "CreateAlphaMaps Err", "Err", MB_OK);
+	//if (CreateAlphaMaps() == 0)
+	//	return MessageBoxA(nullptr, "CreateAlphaMaps Err", "Err", MB_OK);
 
 	if (!TerrainInit(_wWidth,_wHeight,1.f))
 		return MessageBoxA(nullptr, "TerrainInit", "Err", MB_OK);
@@ -43,6 +49,10 @@ bool FloorTerrain::Open(LPDIRECT3DDEVICE9 pDevice) noexcept
 
 void FloorTerrain::Close(void) noexcept
 {
+	_vecFilepath.swap(std::vector<std::string>());
+	_vecFilepath.clear();
+	//_vecFilepath.shrink_to_fit();
+
 	SAFE_RELEASE_(_pBaseTexture);
 	for (int i = 0; i < MAXTEXNUM; ++i)
 	{
@@ -56,7 +66,17 @@ void FloorTerrain::Close(void) noexcept
 
 void FloorTerrain::Render(LPDIRECT3DDEVICE9 pDevice) noexcept
 {
-	PickingProcess(g_rtMfc, g_MousePosX, g_MousePosY);
+	_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
+
+	// Allow multiple passes to blend together correctly
+	// 여러 패스가 올바르게 혼합되도록 허용
+
+	_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	PickingProcess(g_rtMfc, g_MousePos);
 
 	if (_blClicked)
 		DrawAlphamaps(_nCurSelIndex);
@@ -66,9 +86,18 @@ void FloorTerrain::Render(LPDIRECT3DDEVICE9 pDevice) noexcept
 	MiniAlphaTextureRender();
 	DrawPickCircle(30, _fSmoothSize, 0xffffff00);
 	DrawPickCircle(30, _fBrushSize, 0xffff0000);
+
+	_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	_pGraphicDev->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
+	//_pGraphicDev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
+	//_pGraphicDev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
+	//_pGraphicDev->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
 }
 
-bool FloorTerrain::TerrainInit(WORD wWidth, WORD wHeight, float fLength)
+bool FloorTerrain::TerrainInit(DWORD wWidth, DWORD wHeight, float fLength)
 {
 	WORD x, y;
 
@@ -206,8 +235,6 @@ void FloorTerrain::TerrainRender()
 {
 	D3DXMATRIXA16 matTemp;
 
-	_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
-
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 
@@ -224,7 +251,7 @@ void FloorTerrain::TerrainRender()
 	_pGraphicDev->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 	_pGraphicDev->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 
-	D3DXMatrixScaling(&matTemp, _wWidth, _wHeight, 1.0f);
+	D3DXMatrixScaling(&matTemp, (float)_wWidth, (float)_wHeight, 1.0f);
 
 	_pGraphicDev->SetTransform(D3DTS_TEXTURE0, &matTemp);
 
@@ -244,32 +271,56 @@ void FloorTerrain::TerrainRender()
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
 }
 
+void FloorTerrain::SetAlphaTex(IDirect3DTexture9* pTexture, IDirect3DTexture9* pTextureAlpha, int i)
+{
+	_Tex[i].pTexture = pTexture;
+	_Tex[i].pAlphamap = pTextureAlpha;
+
+	//memcpy(_Tex[i].pTexture, pTexture, sizeof(IDirect3DTexture9)); 
+	//memcpy(_Tex[i].pAlphamap, pTextureAlpha, sizeof(IDirect3DTexture9));
+}
+
 bool FloorTerrain::LoadTextures()
 {
-	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile1.png", &_pBaseTexture))) {
+	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CForm* pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
+	MapTab* pMaptab = pFormView->m_pMapTab;
+
+
+	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev,"Resource/Tile1.png", &_pBaseTexture)))
+	{
 		MessageBoxA(NULL, "Failed to load 'Tile1.png'", "Error", MB_OK);
 		return FALSE;
 	}
+	_vecFilepath.emplace_back("Resource/Tile1.png");
 
-	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile2.png", &_Tex[0].pTexture))) {
-		MessageBoxA(NULL, "Failed to load 'Tile0.png'", "Error", MB_OK);
-		return FALSE;
-	}
-
-	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile0.png", &_Tex[1].pTexture))) {
+	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev,"Resource/Tile2.png", &_Tex[0].pTexture)))
+	{
 		MessageBoxA(NULL, "Failed to load 'Tile2.png'", "Error", MB_OK);
 		return FALSE;
 	}
+	_vecFilepath.emplace_back("Resource/Tile2.png");
 
-	//if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile3.png", &_Tex[2].pTexture))) {
-	//	MessageBoxA(NULL, "Failed to load 'Tile3.png'", "Error", MB_OK);
-	//	return FALSE;
-	//}
+	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile3.png", &_Tex[1].pTexture))) 
+	{
+		MessageBoxA(NULL, "Failed to load 'Tile3.png'", "Error", MB_OK);
+		return FALSE;
+	}
+	_vecFilepath.emplace_back("Resource/Tile3.png");
 
-	//if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile4.png", &_Tex[3].pTexture))) {
-	//	MessageBoxA(NULL, "Failed to load 'Tile4.png'", "Error", MB_OK);
-	//	return FALSE;
-	//}
+	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile4.png", &_Tex[2].pTexture))) 
+	{
+		MessageBoxA(NULL, "Failed to load 'Tile3.png'", "Error", MB_OK);
+		return FALSE;
+	}
+	_vecFilepath.emplace_back("Resource/Tile4.png");
+
+	if (FAILED(D3DXCreateTextureFromFileA(_pGraphicDev, "Resource/Tile5.png", &_Tex[3].pTexture))) 
+	{
+		MessageBoxA(NULL, "Failed to load 'Tile5.png'", "Error", MB_OK);
+		return FALSE;
+	}
+	_vecFilepath.emplace_back("Resource/Tile5.png");
 
 	CreateAlphaMaps();
 
@@ -280,9 +331,8 @@ BOOL FloorTerrain::CreateAlphaMaps()
 {
 	for (int i = 0; i < MAXTEXNUM; ++i)
 	{
-		if (FAILED(_pGraphicDev->CreateTexture(TEXALPHASIZE, TEXALPHASIZE, 1, 0, D3DFMT_A8R8G8B8,
+		if (FAILED(_pGraphicDev->CreateTexture((UINT)_TexAlphaSize, (UINT)_TexAlphaSize, 1, 0, D3DFMT_A8R8G8B8,
 			D3DPOOL_MANAGED, &_Tex[i].pAlphamap, NULL)))
-
 			return MessageBoxA(NULL, "alphaTexture make error", "Error", MB_OK);
 
 		D3DLOCKED_RECT		AlphaMap_Locked;
@@ -294,11 +344,11 @@ BOOL FloorTerrain::CreateAlphaMaps()
 
 		LPBYTE pDataDST = (LPBYTE)AlphaMap_Locked.pBits;
 
-		for (int j = 0; j < TEXALPHASIZE; ++j)
+		for (int j = 0; j < _TexAlphaSize; ++j)
 		{
 			LPDWORD pDWordDST = (LPDWORD)(pDataDST + j * AlphaMap_Locked.Pitch);
 
-			for (int i = 0; i < TEXALPHASIZE; ++i)
+			for (int i = 0; i < _TexAlphaSize; ++i)
 			{
 				*(pDWordDST + i) = 0x00000000;
 			}
@@ -362,7 +412,7 @@ BOOL FloorTerrain::IntersectTriangle(const D3DXVECTOR3& orig, const D3DXVECTOR3&
 	return TRUE;
 }
 
-void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
+void FloorTerrain::PickingProcess(RECT& rtRect, CPoint ptMouse/* float fCurPosX, float fCurPosY*/)
 {
 	D3DXVECTOR3 v, vOrg, vDir, vPicked;
 	D3DXMATRIXA16 matWorld, matView, matProj;
@@ -370,7 +420,6 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 	D3DXMatrixIdentity(&matView);
 	D3DXMatrixIdentity(&matProj);
 	
-	CPoint CpMouse = { (int)fCurPosX,(int)fCurPosY };
 	// Get Picking Ray.
 
 	_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
@@ -378,14 +427,15 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 
 	D3DXMatrixInverse(&matWorld, NULL, &matView);
 
+
 	/*rtRect.right = rtRect.right + 300;*/
-	rtRect.left = rtRect.left + 300;
+	/*rtRect.left = rtRect.left + 300;*/
 
 	FLOAT fWidth = FLOAT(rtRect.right - rtRect.left);
 	FLOAT fHeight = FLOAT(rtRect.bottom - rtRect.top);
 
-	v.x = (((fCurPosX * 2.0f / fWidth) - 1.0f)) / matProj._11;
-	v.y = (-((fCurPosY * 2.0f / fHeight) - 1.0f)) / matProj._22;
+	v.x = (((ptMouse.x * 2.0f / fWidth) - 1.0f)) / matProj._11;
+	v.y = (-((ptMouse.y * 2.0f / fHeight) - 1.0f)) / matProj._22;
 	v.z = 1.0f;
 
 
@@ -402,9 +452,9 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 	WORD x, y;
 	float fDist;
 
-	for (y = 0; y < MAPHEIGHT; ++y)
+	for (y = 0; y < _wHeight; ++y)
 	{
-		for (x = 0; x < MAPWIDTH; ++x)
+		for (x = 0; x < _wWidth; ++x)
 		{
 			v0 = D3DXVECTOR3(_pVertices[y * _wWidthVertices + x].vPosition.x,
 				_pVertices[y * _wWidthVertices + x].vPosition.y,
@@ -427,7 +477,7 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 				&fDist, &_fGetU, &_fGetV))
 			{
 				//_vGetPos = vOrg + vDir * fDist;
-				_vGetPos = PickingOnTerrain(CpMouse);
+				_vGetPos = PickingOnTerrain(ptMouse);
 				_blPickOK = TRUE;
 				break;
 			}
@@ -436,7 +486,7 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 				&fDist, &_fGetU, &_fGetV))
 			{
 				//_vGetPos = vOrg + vDir * fDist;
-				_vGetPos = PickingOnTerrain(CpMouse);
+				_vGetPos = PickingOnTerrain(ptMouse);
 				_blPickOK = TRUE;
 				break;
 			}
@@ -449,6 +499,10 @@ void FloorTerrain::PickingProcess(RECT& rtRect, float fCurPosX, float fCurPosY)
 
 D3DXVECTOR3 FloorTerrain::PickingOnTerrain(CPoint point)
 {
+	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CForm* pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
+	CubeTab* pCubetab = pFormView->m_pCubeTab;
+
 	//-----------------------------------------------------------------//
 	D3DVIEWPORT9		ViewPort;
 	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
@@ -503,9 +557,20 @@ D3DXVECTOR3 FloorTerrain::PickingOnTerrain(CPoint point)
 			if (D3DXIntersectTri(&_pVertices[dwVtxIndx[1]].vPosition, &_pVertices[dwVtxIndx[0]].vPosition, &_pVertices[dwVtxIndx[2]].vPosition
 				, &vRayPos, &vRayDir, &fU, &fV, &fDist))
 			{
-							return D3DXVECTOR3(_pVertices[dwVtxIndx[1]].vPosition.x + (_pVertices[dwVtxIndx[0]].vPosition.x - _pVertices[dwVtxIndx[1]].vPosition.x) * fU
-								, 0.f
-								, _pVertices[dwVtxIndx[1]].vPosition.z + (_pVertices[dwVtxIndx[2]].vPosition.z - _pVertices[dwVtxIndx[1]].vPosition.z) * fV);
+				if (pFormView->m_iTabIndex == 1)
+				{
+					int iFloor = pCubetab->iFloor;
+
+					return D3DXVECTOR3((_pVertices[dwVtxIndx[0]].vPosition.x + _pVertices[dwVtxIndx[2]].vPosition.x) * 0.5f
+						, ((float)iFloor - 0.5f)
+						, (_pVertices[dwVtxIndx[2]].vPosition.z + _pVertices[dwVtxIndx[1]].vPosition.z) * 0.5f);
+				}
+				else
+				{
+					return D3DXVECTOR3(_pVertices[dwVtxIndx[1]].vPosition.x + (_pVertices[dwVtxIndx[0]].vPosition.x - _pVertices[dwVtxIndx[1]].vPosition.x) * fU
+						, 0.f
+						, _pVertices[dwVtxIndx[1]].vPosition.z + (_pVertices[dwVtxIndx[2]].vPosition.z - _pVertices[dwVtxIndx[1]].vPosition.z) * fV);
+				}
 			}
 
 			dwVtxIndx[0] = dwIndex + VtxX;
@@ -515,9 +580,20 @@ D3DXVECTOR3 FloorTerrain::PickingOnTerrain(CPoint point)
 			if (D3DXIntersectTri(&_pVertices[dwVtxIndx[2]].vPosition, &_pVertices[dwVtxIndx[1]].vPosition, &_pVertices[dwVtxIndx[0]].vPosition
 				, &vRayPos, &vRayDir, &fU, &fV, &fDist))
 			{
-				return D3DXVECTOR3(_pVertices[dwVtxIndx[2]].vPosition.x + (_pVertices[dwVtxIndx[1]].vPosition.x - _pVertices[dwVtxIndx[2]].vPosition.x) * fU
-									, 0.f
-									, _pVertices[dwVtxIndx[2]].vPosition.z + (_pVertices[dwVtxIndx[0]].vPosition.z - _pVertices[dwVtxIndx[1]].vPosition.z) * fV);
+				if (pFormView->m_iTabIndex == 1)
+				{
+					int iFloor = pCubetab->iFloor;
+
+					return D3DXVECTOR3((_pVertices[dwVtxIndx[0]].vPosition.x + _pVertices[dwVtxIndx[1]].vPosition.x) * 0.5f
+						, ((float)iFloor - 0.5f)
+						, (_pVertices[dwVtxIndx[0]].vPosition.z + _pVertices[dwVtxIndx[2]].vPosition.z) * 0.5f);
+				}
+				else
+				{
+					return D3DXVECTOR3(_pVertices[dwVtxIndx[2]].vPosition.x + (_pVertices[dwVtxIndx[1]].vPosition.x - _pVertices[dwVtxIndx[2]].vPosition.x) * fU
+						, 0.f
+						, _pVertices[dwVtxIndx[2]].vPosition.z + (_pVertices[dwVtxIndx[0]].vPosition.z - _pVertices[dwVtxIndx[1]].vPosition.z) * fV);
+				}
 			}
 		}
 	}
@@ -529,7 +605,8 @@ bool FloorTerrain::DrawAlphamaps(int nIndex)
 	// 알파맵의 한 픽셀이 월드 상의 한점의 크기를 구한다.
 	// 1.0f <-현재 사각형1개만그렸으므로
 	//float		PixSize		= 1.0f/(float)TEXALPHASIZE;
-	float		PixSize = (float)MAPWIDTH / (float)TEXALPHASIZE;
+	//float		PixSize = (float)MAPWIDTH / (float)TEXALPHASIZE;
+	float		PixSize = (float)_wWidth / (float)_TexAlphaSize;
 
 	//전역브러시 와 전역스무스는 현재 브러쉬할원의 지름을 넣기대문에 반지름을 사용해야한다.
 	float 	    fHalfBrushSize = _fBrushSize / 2.0f;
@@ -539,18 +616,18 @@ bool FloorTerrain::DrawAlphamaps(int nIndex)
 	// 몇픽셀을 에디터 하는지 크기를 구한다.
 	float		EditSize = fHalfBrushSize / PixSize;
 
-	float	PosU = _vGetPos.x / (float)(MAPWIDTH);
-	float	PosV = 1 - _vGetPos.z / (float)(MAPHEIGHT);
+	float	PosU = _vGetPos.x / (float)(_wWidth);
+	float	PosV = 1 - _vGetPos.z / (float)(_wHeight);
 	//float	PosV = _vGetPos.z / (float)(MAPHEIGHT);
 
 
-	_nTexPosX = int(PosU * TEXALPHASIZE);
-	_nTexPosY = int(PosV * TEXALPHASIZE);
+	_nTexPosX = int(PosU * _TexAlphaSize);
+	_nTexPosY = int(PosV * _TexAlphaSize);
 
 	int StartPosX = int(((_nTexPosX - EditSize) < 0) ? 0 : _nTexPosX - EditSize);
 	int StartPosY = int(((_nTexPosY - EditSize) < 0) ? 0 : _nTexPosY - EditSize);
-	int EndPosX = int(((_nTexPosX + EditSize) >= TEXALPHASIZE) ? TEXALPHASIZE - 1 : _nTexPosX + EditSize);
-	int EndPosY = int(((_nTexPosY + EditSize) >= TEXALPHASIZE) ? TEXALPHASIZE - 1 : _nTexPosY + EditSize);
+	int EndPosX = int(((_nTexPosX + EditSize) >= _TexAlphaSize) ? _TexAlphaSize - 1 : _nTexPosX + EditSize);
+	int EndPosY = int(((_nTexPosY + EditSize) >= _TexAlphaSize) ? _TexAlphaSize - 1 : _nTexPosY + EditSize);
 
 	DWORD dwChangeColor = 0x00;
 	float Smooth = 0.0f;
@@ -647,6 +724,7 @@ void FloorTerrain::DrawPickCircle(int Count, float size, D3DCOLOR Col)
 
 		_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	}
+	_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 }
 
 void FloorTerrain::AlphaTextureRender()
@@ -680,7 +758,7 @@ void FloorTerrain::AlphaTextureRender()
 
 	D3DXMATRIXA16	matTemp;
 
-	D3DXMatrixScaling(&matTemp, _wWidth, _wHeight, 1.0f);
+	D3DXMatrixScaling(&matTemp, (float)_wWidth, (float)_wHeight, 1.0f);
 
 	_pGraphicDev->SetTransform(D3DTS_TEXTURE0, &matTemp);
 	_pGraphicDev->SetTransform(D3DTS_TEXTURE1, &matTemp);
@@ -711,10 +789,10 @@ void FloorTerrain::MiniAlphaTextureRender()
 {
 	static float MiniAlphaTex[4][6] =
 	{
-		{ WINCX - MINIALPHASIZE,			0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
+		{ WINCX - _MiniAlphaSize,			0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
 		{ WINCX,							0.0f, 0.0f, 1.0f, 1.0f, 0.0f },
-		{ WINCX - MINIALPHASIZE, MINIALPHASIZE,	  0.0f, 1.0f, 0.0f, 1.0f },
-		{ WINCX,			   MINIALPHASIZE,	  0.0f, 1.0f, 1.0f, 1.0f },
+		{ WINCX - _MiniAlphaSize, _MiniAlphaSize, 0.0f, 1.0f, 0.0f, 1.0f },
+		{ WINCX,			   _MiniAlphaSize,	  0.0f, 1.0f, 1.0f, 1.0f },
 	};
 
 	_pGraphicDev->SetFVF(D3DFVF_XYZRHW | D3DFVF_TEX1);

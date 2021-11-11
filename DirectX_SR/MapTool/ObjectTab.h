@@ -2,6 +2,8 @@
 
 
 // ObjectTab 대화 상자
+#include "GameObject.h"
+#include "Texture.h"
 
 class ObjectTab : public CDialog
 {
@@ -21,6 +23,16 @@ protected:
 
 	DECLARE_MESSAGE_MAP() 
 public:
-	CListBox _TextureList;
-	afx_msg void OnBnClickedObjectTextureLoad();
+
+	std::vector<std::pair<std::string,std::pair<GameObject*, Texture*>>> _vecSaveName;
+
+	afx_msg void OnBnClickedPositionSave();
+	afx_msg void OnBnClickedPositionLoad();
+	CListBox _PickingList;
+
+	CString _cstrKey;
+	afx_msg void OnEnChangekey();
+
+
+private: std::vector<std::string> Split(std::string input, char delimiter);
 };

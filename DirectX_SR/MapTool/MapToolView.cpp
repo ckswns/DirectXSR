@@ -21,6 +21,8 @@
 #include "Quad.h"
 #include "Texture.h"
 #include "MeshRenderer.h"
+#include "Input.h"
+#include "ObjectTab.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,6 +41,7 @@ BEGIN_MESSAGE_MAP(CMapToolView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 // CMapToolView 생성/소멸
@@ -154,45 +157,8 @@ void CMapToolView::OnInitialUpdate()
 	D3DXMatrixIdentity(&matWorld);
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-	//D3DXVECTOR3 vEyePt(float((MAPWIDTH) / 2), 20.0f, -10.0f);
-	//D3DXVECTOR3 vLookatPt(float((MAPWIDTH) / 2), 10.0f, 0.0f);
-	//D3DXVECTOR3 vUpVec(0.0f, 1.0f, 0.0f);
-
-	//D3DXMATRIXA16 matView;
-	//D3DXMatrixLookAtLH(&matView, &vEyePt, &vLookatPt, &vUpVec);
-	//m_pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
-
-	///// 프로젝션 행렬 설정
-	//D3DXMATRIXA16 matProj;
-	//FLOAT fWidth = WINCX;
-	//FLOAT fHeight = WINCY;
-	//D3DXMatrixPerspectiveFovLH(&matProj, D3DX_PI / 4.0f, fWidth / fHeight, 1.0f, 100.0f);
-	//m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 	pGameObject = GameObject::Instantiate();
-	pGameObject->AddComponent(new EditorCamera(g_hWnd,10));
-
-	//pGameObject = GameObject::Instantiate();
-	//ce::Texture* test = new ce::Texture();
-	//test->Init(m_pGraphicDev, "Resource/Tile0.png");
-	//Mesh* mesh = new Quad();
-	//mesh->Open(m_pGraphicDev);
-	//MeshRenderer* mr = new MeshRenderer(m_pGraphicDev, mesh);
-	//pGameObject->AddComponent(mr);
-	//mr->GetMaterialPTR()->SetTexture(test);
-
-	// Default Setting
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
-	// Allow multiple passes to blend together correctly
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
-	pGameObject = GameObject::Instantiate();
-	_mesh = new FloorTerrain(30, 30, 1.f);
-	_mesh->Open(m_pGraphicDev);
-	MeshRenderer* mr = new MeshRenderer(m_pGraphicDev, _mesh);
-	pGameObject->AddComponent(mr);
+	pGameObject->AddComponent(new EditorCamera(g_hWnd,2));
 }
 
 
@@ -200,163 +166,198 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-	static_cast<FloorTerrain*>(_mesh)->SetClicked(TRUE);
-
 	// 큐브 피킹----------------------------------------------------------------//
-	//CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	//CForm*		pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
-	//MapTab*		pMaptab = pFormView->m_pMapTab;
-	//CubeTab*	pCubetab = pFormView->m_pCubeTab;
-
-	//int TerrainIndex = pFormView->m_pMapTab->m_RoomList.GetCurSel();
-
-	//if (TerrainIndex == -1)
-	//{
-	//	MessageBoxA(nullptr, "룸번호를 선택해야 합니다.", "RoomNumber Error", MB_OK);
-	//	return;
-	//}
-
-	//CTerrain* pTerrainCom = static_cast<CTerrain*>(pMaptab->_vecTerrain[TerrainIndex]->GetComponent(COMPONENT_ID::BEHAVIOUR));
-	//Transform* pTransform = pMaptab->_vecTerrain[TerrainIndex]->GetTransform();
-	//D3DXVECTOR3 vPickingPos = PickingOnTerrain(point, pTerrainCom, pTransform, TerrainIndex);
-
-	//if (pFormView->m_iTabIndex == 1 && vPickingPos.x != 0 && vPickingPos.z != 0)
-	//{
-	//	int CubeIndex = pCubetab->_LoadList.GetCurSel();
-	//	CString cstrTextureName = L"Cube";
-	//	CString cstrIndex;
-	//	cstrIndex.Format(_T("%d"), CubeIndex);
-	//	cstrTextureName += cstrIndex;
-
-	//	auto iter = pCubetab->_mapTex.find(cstrTextureName.GetString());
-
-	//	if (iter != pCubetab->_mapTex.end())
-	//	{
-	//		GameObject* pGameObject = GameObject::Instantiate();
-	//		Texture* pTex = pCubetab->_mapTex[cstrTextureName.GetString()].second;
-	//		std::string filepath = pCubetab->_mapTex[cstrTextureName.GetString()].first;
-	//		pGameObject->AddComponent(new CubeObject(pTex));
-	//		pGameObject->GetTransform()->SetWorldPosition(vPickingPos);
-
-	//		_vecCube.emplace_back(std::make_pair(pGameObject,std::make_pair(filepath, TerrainIndex)));
-	//	}
-	//	else
-	//		return;
-	//}
-}
-
-D3DXVECTOR3 CMapToolView::PickingOnTerrain(CPoint point, CTerrain* pTerrainCom,Transform* pTransform,const int& iIndx)
-{
 	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	CForm* pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
-	CubeTab* pCubeTab = pFormView->m_pCubeTab;
+	CForm*		pFormView = static_cast<CForm*>(pMain->m_tMainSplitter.GetPane(0, 0));
+	CubeTab*	pCubetab = pFormView->m_pCubeTab;
+	ObjectTab*	pObjtab = pFormView->m_pObjectTab;
 
-	//-----------------------------------------------------------------//
-	D3DVIEWPORT9		ViewPort;
-	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+	D3DXVECTOR3 vPickingPos = static_cast<FloorTerrain*>(_mesh)->Get_PickingPos();
 
-	D3DXVECTOR3 vMousePos;
-	D3D9DEVICE->GetDevice()->GetViewport(&ViewPort);
-
-	vMousePos.x =(point.x) / (ViewPort.Width * 0.5f) - 1.f;
-	vMousePos.y = point.y / -(ViewPort.Height * 0.5f) + 1.f;
-	vMousePos.z = 0.f;
-
-	D3DXMATRIX	matPorj;
-	D3D9DEVICE->GetDevice()->GetTransform(D3DTS_PROJECTION, &matPorj);
-	D3DXMatrixInverse(&matPorj, NULL, &matPorj);
-	D3DXVec3TransformCoord(&vMousePos, &vMousePos, &matPorj);
-
-	D3DXVECTOR3 vRayPos, vRayDir;
-
-	vRayPos = D3DXVECTOR3(0.f, 0.f, 0.f);
-	vRayDir = vMousePos - vRayPos;
-
-	D3DXMATRIX	matView;
-	D3D9DEVICE->GetDevice()->GetTransform(D3DTS_VIEW, &matView);
-	D3DXMatrixInverse(&matView, NULL, &matView);
-
-	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matView);
-	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
-
-	D3DXMATRIX	matWorld;
-	matWorld = pTransform->GetWorldMatrix();
-	D3DXMatrixInverse(&matWorld, NULL, &matWorld);
-	
-	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matWorld);
-	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matWorld);
-
-	DWORD VtxX = pTerrainCom->Get_VtxCntX();
-	DWORD VtxZ = pTerrainCom->Get_VtxCntZ();
-
-	const D3DXVECTOR3* pTerrainVtxPos = pTerrainCom->Get_VtxPos();
-
-	DWORD dwVtxIndx[3];
-	float fU, fV, fDist;
-
-	for (DWORD z = 0; z < VtxZ - 1; ++z)
+	if (pFormView->m_iTabIndex == 1)
 	{
-		for (DWORD x = 0; x < VtxX - 1; ++x)
+		// Cube Picking
+		int CubeIndex = pCubetab->_LoadList.GetCurSel();
+		CString cstrTextureName = L"Cube";
+		CString cstrIndex;
+		cstrIndex.Format(_T("%d"), CubeIndex);
+		cstrTextureName += cstrIndex;
+
+		auto iter = pCubetab->_mapTex.find(cstrTextureName.GetString());
+
+		if (iter != pCubetab->_mapTex.end())
 		{
-			DWORD dwIndex = z * VtxX + x;
+			GameObject* pGameObject = GameObject::Instantiate();
+			Texture* pTex = pCubetab->_mapTex[cstrTextureName.GetString()].second;
+			std::string filepath = pCubetab->_mapTex[cstrTextureName.GetString()].first;
+			pGameObject->AddComponent(new CubeObject(pTex));
+			pGameObject->GetTransform()->SetWorldPosition(vPickingPos);
 
-			dwVtxIndx[0] = dwIndex + VtxX;
-			dwVtxIndx[1] = dwIndex + VtxX + 1;
-			dwVtxIndx[2] = dwIndex + 1;
-
-			if (D3DXIntersectTri(&pTerrainVtxPos[dwVtxIndx[1]], &pTerrainVtxPos[dwVtxIndx[0]], &pTerrainVtxPos[dwVtxIndx[2]]
-								, &vRayPos, &vRayDir, &fU, &fV, &fDist))
-			{
-	/*			return D3DXVECTOR3(pTerrainVtxPos[dwVtxIndx[1]].x + (pTerrainVtxPos[dwVtxIndx[0]].x - pTerrainVtxPos[dwVtxIndx[1]].x) * fU
-					, 0.f
-					, pTerrainVtxPos[dwVtxIndx[1]].z + (pTerrainVtxPos[dwVtxIndx[2]].z - pTerrainVtxPos[dwVtxIndx[1]].z) * fV);*/
-
-				int iFloor = pCubeTab->iFloor;
-
-				return D3DXVECTOR3((pTerrainVtxPos[dwVtxIndx[0]].x + pTerrainVtxPos[dwVtxIndx[2]].x) * 0.5f
-					, ((float)iFloor - 0.5f)
-					, (pTerrainVtxPos[dwVtxIndx[2]].z + pTerrainVtxPos[dwVtxIndx[1]].z) * 0.5f);
-			}
-
-			dwVtxIndx[0] = dwIndex + VtxX;
-			dwVtxIndx[1] = dwIndex + 1;
-			dwVtxIndx[2] = dwIndex;
-
-			if (D3DXIntersectTri(&pTerrainVtxPos[dwVtxIndx[2]], &pTerrainVtxPos[dwVtxIndx[1]], &pTerrainVtxPos[dwVtxIndx[0]]
-				, &vRayPos, &vRayDir, &fU, &fV, &fDist))
-			{
-				//return D3DXVECTOR3(pTerrainVtxPos[dwVtxIndx[2]].x + (pTerrainVtxPos[dwVtxIndx[1]].x - pTerrainVtxPos[dwVtxIndx[2]].x) * fU
-				//					, 0.f
-				//					, pTerrainVtxPos[dwVtxIndx[2]].z + (pTerrainVtxPos[dwVtxIndx[0]].z - pTerrainVtxPos[dwVtxIndx[1]].z) * fV);
-
-				int iFloor = pCubeTab->iFloor;
-
-				return D3DXVECTOR3((pTerrainVtxPos[dwVtxIndx[0]].x + pTerrainVtxPos[dwVtxIndx[1]].x) * 0.5f
-									, ((float)iFloor - 0.5f)
-									, (pTerrainVtxPos[dwVtxIndx[0]].z + pTerrainVtxPos[dwVtxIndx[2]].z) * 0.5f);
-			}
+			_vecCube.emplace_back(pGameObject, filepath);
 		}
 	}
-	return D3DXVECTOR3(0.f,0.f,0.f);
-}
+	else if (pFormView->m_iTabIndex == 2)
+	{
+		// Object Picking
 
+		GameObject* pGameObject = GameObject::Instantiate();
+		Texture* pTex = new Texture();
+		pTex->Init(D3D9DEVICE->GetDevice(), "Resource/Tile1.png");
+
+		std::string strSavename = CT2CA(pObjtab->_cstrKey);
+		
+		int icnt = pObjtab->_vecSaveName.size();
+
+		if (strcmp("", strSavename.c_str()) == 0)
+		{
+			MessageBoxA(nullptr, "섹션키가 입력되있지 않습니다.", "Picking Err", MB_OK);
+			return;
+		}
+
+		for (int i = 0; i < icnt; ++i)
+		{
+			if (strcmp(strSavename.c_str(), pObjtab->_vecSaveName[i].first.c_str()) == 0)
+			{
+				CString cstr;
+				cstr.Format(_T("%d"), (_iETC + 1));
+
+				UpdateData(TRUE);
+				strSavename = CT2CA(pObjtab->_cstrKey + cstr);
+				UpdateData(FALSE);
+				_iETC++;
+			}
+		}
+		Mesh* mesh = new Quad();
+		mesh->Open(D3D9DEVICE->GetDevice());
+		MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), mesh);
+		mr->GetMaterialPTR()->SetTexture(pTex);
+		pGameObject->GetTransform()->SetWorldPosition(vPickingPos);
+		pGameObject->GetTransform()->Translate(0.f, 0.5f, 0.f);
+		pGameObject->AddComponent(mr);
+		pObjtab->_vecSaveName.emplace_back(std::make_pair(strSavename, std::make_pair(pGameObject, pTex)));
+	}
+	else
+	{
+		// Terrain Splatting 
+		static_cast<FloorTerrain*>(_mesh)->SetClicked(TRUE);
+	}
+
+}
 
 void CMapToolView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-	g_MousePosX = point.x;
-	g_MousePosY = point.y;
+	g_MousePos = point;
 
+	Invalidate(FALSE);
 	//CView::OnMouseMove(nFlags, point);
 }
-
 
 void CMapToolView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-	static_cast<FloorTerrain*>(_mesh)->SetClicked(FALSE);
+	if(_mesh != nullptr)
+		static_cast<FloorTerrain*>(_mesh)->SetClicked(FALSE);
 
 	CView::OnLButtonUp(nFlags, point);
+}
+
+
+void CMapToolView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	if (INPUT->GetKeyDown('Z') || INPUT->GetKeyDown('z'))
+	{
+		float BrushSize = static_cast<FloorTerrain*>(_mesh)->GetBrushSize();
+		float SmoothSize = static_cast<FloorTerrain*>(_mesh)->GetSmoothSize();
+		BrushSize -= 1.0f;
+		static_cast<FloorTerrain*>(_mesh)->SetBrushSize(BrushSize);
+		if (1.0f > BrushSize)
+			static_cast<FloorTerrain*>(_mesh)->SetBrushSize(1.0f);
+
+		if (BrushSize < SmoothSize)
+			static_cast<FloorTerrain*>(_mesh)->SetBrushSize(SmoothSize);
+	}
+
+	if (INPUT->GetKeyDown('X') || INPUT->GetKeyDown('X'))
+	{
+		float BrushSize = static_cast<FloorTerrain*>(_mesh)->GetBrushSize();
+		BrushSize += 1.0f;
+		static_cast<FloorTerrain*>(_mesh)->SetBrushSize(BrushSize);
+		if (5.0f < BrushSize)
+			static_cast<FloorTerrain*>(_mesh)->SetBrushSize(5.0f);
+	}
+
+	if (INPUT->GetKeyDown('1'))
+	{
+		static_cast<FloorTerrain*>(_mesh)->SetCurSelIndex(0);
+		for (int i = 0; i < MAXTEXNUM; ++i)
+		{
+			int* pIndex = static_cast<FloorTerrain*>(_mesh)->GetDrawIndex();
+
+			if (i > 0 && static_cast<FloorTerrain*>(_mesh)->GetCurSelIndex() == pIndex[i])
+			{
+				int nTemp = pIndex[i];
+				pIndex[i] = pIndex[i - 1];
+				pIndex[i - 1] = nTemp;
+				break;
+			}
+		}
+	}
+	if (INPUT->GetKeyDown('2'))
+	{
+		static_cast<FloorTerrain*>(_mesh)->SetCurSelIndex(1);
+		for (int i = 0; i < MAXTEXNUM; ++i)
+		{
+			int* pIndex = static_cast<FloorTerrain*>(_mesh)->GetDrawIndex();
+
+			if (i > 0 && static_cast<FloorTerrain*>(_mesh)->GetCurSelIndex() == pIndex[i])
+			{
+				int nTemp = pIndex[i];
+				pIndex[i] = pIndex[i - 1];
+				pIndex[i - 1] = nTemp;
+				break;
+			}
+		}
+	}
+	if (INPUT->GetKeyDown('3'))
+	{
+		static_cast<FloorTerrain*>(_mesh)->SetCurSelIndex(2);
+		for (int i = 0; i < MAXTEXNUM; ++i)
+		{
+			int* pIndex = static_cast<FloorTerrain*>(_mesh)->GetDrawIndex();
+
+			if (i > 0 && static_cast<FloorTerrain*>(_mesh)->GetCurSelIndex() == pIndex[i])
+			{
+				int nTemp = pIndex[i];
+				pIndex[i] = pIndex[i - 1];
+				pIndex[i - 1] = nTemp;
+				break;
+			}
+		}
+	}
+	if (INPUT->GetKeyDown('4'))
+	{
+		static_cast<FloorTerrain*>(_mesh)->SetCurSelIndex(3);
+		for (int i = 0; i < MAXTEXNUM; ++i)
+		{
+			int* pIndex = static_cast<FloorTerrain*>(_mesh)->GetDrawIndex();
+
+			if (i > 0 && static_cast<FloorTerrain*>(_mesh)->GetCurSelIndex() == pIndex[i])
+			{
+				int nTemp = pIndex[i];
+				pIndex[i] = pIndex[i - 1];
+				pIndex[i - 1] = nTemp;
+				break;
+			}
+		}
+	}
+
+
+	Invalidate(false);
+
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }

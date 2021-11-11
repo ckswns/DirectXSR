@@ -410,7 +410,7 @@ void CubeTab::OnBnClickedPickingSave()
 
 		std::string strSection;
 		strSection = CT2CA(strName);
-		std::string filepath = pMapToolview->_vecCube[i].second.first;
+		std::string filepath = pMapToolview->_vecCube[i].second;
 		INIMANAGER->AddData(strSection, "filePath", filepath);
 
 		D3DXVECTOR3 vScale = pMapToolview->_vecCube[i].first->GetTransform()->GetLocalScale();
@@ -439,9 +439,9 @@ void CubeTab::OnBnClickedPickingSave()
 		strworldposZ = (std::to_string(vworldpos.z));
 		INIMANAGER->AddData(strSection, "worldposZ", strworldposZ);
 
-		std::string strRoomnumber;
-		strRoomnumber = (std::to_string(pMapToolview->_vecCube[i].second.second));
-		INIMANAGER->AddData(strSection, "Room", strRoomnumber);
+		//std::string strRoomnumber;
+		//strRoomnumber = (std::to_string(pMapToolview->_vecCube[i].second.second));
+		//INIMANAGER->AddData(strSection, "Room", strRoomnumber);
 	}
 	INIMANAGER->SaveIni("Data/PickingCube");
 	MessageBoxA(nullptr, "PickingCube 저장 성공!", "PickingCube Save Success", MB_OK);
@@ -482,8 +482,8 @@ void CubeTab::OnBnClickedPickingLoad()
 		vworldpos.y = stof(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "worldposY"));
 		vworldpos.z = stof(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "worldposZ"));
 
-		int	Roomnumber;
-		Roomnumber = stoi(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "Room"));
+		//int	Roomnumber;
+		//Roomnumber = stoi(INIMANAGER->LoadDataString("Data/PickingCube", strsection, "Room"));
 
 		GameObject* pGameObject = GameObject::Instantiate();
 		pGameObject = GameObject::Instantiate();
@@ -506,7 +506,7 @@ void CubeTab::OnBnClickedPickingLoad()
 		pGameObject->GetTransform()->SetWorldPosition(vworldpos);
 
 		/*_vecObject.emplace_back(pGameObject, Roomnumber);*/
-		pMapToolview->_vecCube.emplace_back(pGameObject, std::make_pair(strfilepath, Roomnumber));
+		pMapToolview->_vecCube.emplace_back(pGameObject, strfilepath);
 
 		iKeyNumber++;
 	}

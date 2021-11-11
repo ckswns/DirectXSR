@@ -197,7 +197,6 @@
     <ClInclude Include="CubeTab.h" />
     <ClInclude Include="FloorTerrain.h" />
     <ClInclude Include="MapTab.h" />
-    <ClInclude Include="MapToolSubView.h" />
     <ClInclude Include="MapTool_Define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
@@ -219,7 +218,6 @@
     <ClCompile Include="MapTab.cpp" />
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MapToolDoc.cpp" />
-    <ClCompile Include="MapToolSubView.cpp" />
     <ClCompile Include="MapToolView.cpp" />
     <ClCompile Include="ObjectTab.cpp" />
     <ClCompile Include="pch.cpp">

@@ -59,15 +59,17 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	D3DXVECTOR3	 PickingOnTerrain(CPoint point, CTerrain* pTerrainCom, Transform* pTransform, const int& iIndx);
 
-	std::vector<std::pair<GameObject*,std::pair<std::string,int>>> _vecCube;
-
-private: Mesh* _mesh = nullptr;
+	std::vector<std::pair<GameObject*,std::string>> _vecCube;
+	Mesh* _mesh = nullptr;
+	
+	CString _cstrPreKey;
+	int _iETC = 0;
 
 public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // MapToolView.cpp의 디버그 버전

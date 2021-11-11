@@ -34,8 +34,7 @@ GameController* g_pGameController;
 bool			g_bInitGame = false;
 
 RECT			g_rtMfc;
-FLOAT			g_MousePosX = 0.0f;
-FLOAT			g_MousePosY = 0.0f;
+CPoint			g_MousePos = {0,0};
 
 CMapToolApp::CMapToolApp() noexcept
 {

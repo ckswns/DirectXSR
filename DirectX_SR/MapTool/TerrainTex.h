@@ -17,8 +17,8 @@ public:	virtual void Start(void) noexcept override;
 public: virtual void Update(float) noexcept;
 public: virtual void DbgRender(void) noexcept override;
 
-public: void					Set_Textureinfo(Texture* pTexture, std::string strfilepath);
-public: void					MoveCheck(bool bCheck);
+public: void						Set_Textureinfo(Texture* pTexture, std::string strfilepath);
+public: void						MoveCheck(bool bCheck);
 
 public: inline const int&			Get_VtxCntX() const { return m_dwVtxCntX; }
 public: inline const int&			Get_VtxCntZ() const { return m_dwVtxCntZ; }

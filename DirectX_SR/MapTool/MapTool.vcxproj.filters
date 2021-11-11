@@ -44,9 +44,6 @@
     <Filter Include="01.MainView\Form\Cube">
       <UniqueIdentifier>{c89d4802-ff06-4bba-98ba-ea77c862469a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.SubView">
-      <UniqueIdentifier>{db4bf9bd-536b-410a-828c-32f21814865e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.GameObject\00.Terrain\00.BaseTerrain">
       <UniqueIdentifier>{3360dd55-7852-426e-b3d1-6fda3f4b063d}</UniqueIdentifier>
     </Filter>
@@ -97,9 +94,6 @@
     <ClInclude Include="CubeTab.h">
       <Filter>01.MainView\Form\Cube</Filter>
     </ClInclude>
-    <ClInclude Include="MapToolSubView.h">
-      <Filter>04.SubView</Filter>
-    </ClInclude>
     <ClInclude Include="FloorTerrain.h">
       <Filter>03.GameObject\00.Terrain\00.BaseTerrain</Filter>
     </ClInclude>
@@ -134,9 +128,6 @@
     </ClCompile>
     <ClCompile Include="CubeTab.cpp">
       <Filter>01.MainView\Form\Cube</Filter>
-    </ClCompile>
-    <ClCompile Include="MapToolSubView.cpp">
-      <Filter>04.SubView</Filter>
     </ClCompile>
     <ClCompile Include="FloorTerrain.cpp">
       <Filter>03.GameObject\00.Terrain\00.BaseTerrain</Filter>
