@@ -24,6 +24,8 @@ namespace ce
 			static constexpr ID BEHAVIOUR		= (1 << 10);
 			static constexpr ID RECT_TRANSFORM	= (1 << 11);
 			static constexpr ID IMAGE			= (1 << 12);
+			static constexpr ID BUTTON			= (1 << 13);
+			static constexpr ID TEXT			= (1 << 14);
 		}
 
 		namespace KEY_CODES

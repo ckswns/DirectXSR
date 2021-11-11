@@ -29,6 +29,13 @@ namespace ce
 	public:		virtual void			OnEnable(void) noexcept { __noop; }
 	public:		virtual void			OnDisable(void) noexcept { __noop; }
 
+	public:		virtual void			OnMouseEnter(void) noexcept { __noop; }
+	public:		virtual void			OnMouseLeave(void) noexcept { __noop; }
+	public:		virtual void			OnMouseOver(void) noexcept { __noop; }
+	public:		virtual void			OnMouseDown(void) noexcept { __noop; }
+	public:		virtual void			OnMouseUp(void) noexcept { __noop; }
+	public:		virtual void			OnMouseHeldDown(void) noexcept { __noop; }
+
 	public:		COMPONENT_ID::ID		GetID(void) const noexcept { return _identification; }
 	public:		COMPONENT_ID::ID		GetDependencyID(void) const noexcept { return _dependencyID; }
 

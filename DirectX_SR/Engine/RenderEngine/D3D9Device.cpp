@@ -12,7 +12,7 @@ namespace ce
 		__noop;
 	}
 
-	bool D3D9Device::Init(HWND hWnd, uint16 winWidth, uint16 winHeight, D3DXCOLOR clearColor) noexcept
+	bool D3D9Device::Init(HWND hWnd, uint16 winWidth, uint16 winHeight, D3DXCOLOR clearColor, const char* fontFilePath, const char* fontFaceName) noexcept
 	{
 		_pSDK = Direct3DCreate9(D3D_SDK_VERSION);
 
@@ -74,6 +74,19 @@ namespace ce
 			return false;
 		}
 
+		AddFontResourceA(fontFilePath);
+
+		D3DXFONT_DESCA tDesc;
+		ZeroMemory(&tDesc, sizeof(D3DXFONT_DESCA));
+		tDesc.Height = 15;
+		tDesc.Width = 12;
+		tDesc.Weight = 500;
+		tDesc.CharSet = HANGUL_CHARSET;
+		memcpy(tDesc.FaceName, fontFaceName, strlen(fontFaceName) + 1);
+
+		if (FAILED(D3DXCreateFontIndirectA(_pDevice, &tDesc, &_pFont)))
+			return false;
+
 		_nClearColor = clearColor;
 
 		return true;
@@ -109,6 +122,8 @@ namespace ce
 
 	void D3D9Device::Release(void) noexcept
 	{
+		if (_pFont)
+			_pFont->Release();
 		if (_pSprite)
 			_pSprite->Release();
 		if (_pDevice)

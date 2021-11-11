@@ -10,7 +10,8 @@ namespace ce
 	private:	explicit			D3D9Device() noexcept;
 	private:	virtual				~D3D9Device() noexcept { __noop; }
 
-	public:		bool				Init(HWND hWnd, uint16 winWidth, uint16 winHeight, D3DXCOLOR clearColor = D3DCOLOR_ARGB(255, 0, 0, 255)) noexcept;
+	public:		bool				Init(HWND hWnd, uint16 winWidth, uint16 winHeight, D3DXCOLOR clearColor = D3DCOLOR_ARGB(255, 0, 0, 255),
+											const char* fontFilePath = "", const char* fontFaceName = "") noexcept;
 	public:		void				Begin(void) noexcept;
 	public:		void				End(void) noexcept;
 	public:		void				UIBegin(void) noexcept;
@@ -25,10 +26,12 @@ namespace ce
 	public:		POINT				GetWindowSize(void) const noexcept { return POINT{ (long)_windowWidth, (long)_windowHeight }; }
 	
 	public:		LPD3DXSPRITE		GetSprite(void) noexcept { return _pSprite; }
+	public:		LPD3DXFONT			GetFont(void) noexcept { return _pFont; }
 
 	private:	LPDIRECT3D9			_pSDK;
 	private:	LPDIRECT3DDEVICE9	_pDevice;
 	private:	LPD3DXSPRITE		_pSprite;
+	private:	LPD3DXFONT			_pFont;
 
 	private:	D3DXCOLOR			_nClearColor = D3DCOLOR_ARGB(255, 0, 0, 255);
 

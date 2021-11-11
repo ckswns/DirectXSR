@@ -7,6 +7,8 @@
 #include "Transform.h"
 #include "Animation.h"
 #include "Animator.h"
+#include "Button.h"
+#include "Text.h"
 
 using namespace ce::UI;
 
@@ -27,10 +29,18 @@ bool LoadingScene::Init(void) noexcept
 	_texProgressBarBack->Init(D3D9DEVICE->GetDevice(), "Asset/UI/slider_frame.png");
 
 	GameObject* obj = GameObject::Instantiate();
+	obj->AddComponent(new Text("test!!!!!", D3DCOLOR_ARGB(255, 255, 0, 0)));
+	RectTransform* rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+	rt->SetWidth(100);
+	rt->SetHeight(30);
+	obj->SetSortOrder(10);
+	obj->GetTransform()->SetWorldPosition(100, 50, 0);
+
+	obj = GameObject::Instantiate();
 	obj->AddComponent(new Image(_texBg));
 	obj->SetSortOrder(0);
 
-	RectTransform* rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+	rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 	rt->SetWidth(WINCX);
 	rt->SetHeight(WINCY);
 
@@ -63,7 +73,7 @@ bool LoadingScene::Init(void) noexcept
 		_logo[i - 1] = new Texture();
 		_logo[i - 1]->Init(D3D9DEVICE->GetDevice(), str);
 
-		vf.push_back(0.07f);
+		vf.push_back(0.05f);
 		vt.push_back(_logo[i - 1]);
 	}
 
@@ -71,6 +81,7 @@ bool LoadingScene::Init(void) noexcept
 
 	obj = GameObject::Instantiate();
 	Image* img = static_cast<Image*>(obj->AddComponent(new Image(_logo[0])));
+	Button<LoadingScene>* btn = static_cast<Button<LoadingScene>*>(obj->AddComponent(new Button<LoadingScene>(this)));
 	obj->SetSortOrder(3);
 
 	Animator* animator =  static_cast<Animator*>(obj->AddComponent(new Animator(true)));

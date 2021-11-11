@@ -93,6 +93,60 @@ namespace ce
 		}
     }
 
+	void GameObject::OnMouseEnterXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseEnter();
+	}
+
+	void GameObject::OnMouseLeaveXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseLeave();
+	}
+
+	void GameObject::OnMouseOverXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseOver();
+	}
+
+	void GameObject::OnMouseDownXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseDown();
+	}
+
+	void GameObject::OnMouseUpXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseUp();
+	}
+
+	void GameObject::OnMouseHeldDownXXX(void) noexcept
+	{
+		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
+		if (cp == nullptr)
+			return;
+
+		cp->OnMouseHeldDown();
+	}
+
 	void GameObject::SetLayer(GameObjectLayer _layer) noexcept
 	{
 		if (_eLayer == _layer)
