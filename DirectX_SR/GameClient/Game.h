@@ -21,12 +21,12 @@ public:		void				LateUpdate(float fElapsedTime) noexcept override;
 public:		void				Render(float fElapsedTime) noexcept override;
 public:		void				Release(void) noexcept override;
 
-private:		void				InitUI() noexcept;
+private:	void				InitUI() noexcept;
 
-private:		UI::Image*		_imgStamina;
-private:		UI::Image*		_imgHP;
-private:		UI::Image*		_imgMP;
-private:		Player*			_pPlayer;
+private:	UI::Image*			_imgStamina;
+private:	UI::Image*			_imgHP;
+private:	UI::Image*			_imgMP;
+private:	Player*				_pPlayer;
 
 };
 

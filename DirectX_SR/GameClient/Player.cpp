@@ -3,6 +3,7 @@
 
 #include "Transform.h"
 #include "SpriteRenderer.h"
+#include "Material.h"
 #include "Animation.h"
 #include "Animator.h"
 #include "AudioListener.h"
@@ -29,10 +30,8 @@ Player::Player(PathFinding* pf) noexcept
 
 void Player::Start(void) noexcept
 {
-	_bAtt = false;
-	_bMove = false;
+	_fRecovery = 1.f;
 
-	_bRun = false;
 	_fSpeed =3.f;
 	_fRunSpeed = 5.f;
 
@@ -40,7 +39,7 @@ void Player::Start(void) noexcept
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
-	gameObject->AddComponent(new AudioListener());
+	//gameObject->AddComponent(new AudioListener());
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"));
 	gameObject->AddComponent(sr);
@@ -50,12 +49,14 @@ void Player::Start(void) noexcept
 	InitAnimation(sr);
 
 	InitState();
-	SetState(PLAYER_STAND);
+	SetState(PLAYER_STAND,FRONT);
 }
 
 void Player::Update(float fElapsedTime) noexcept
 {
 	_pFSM[_eCurState]->Update(fElapsedTime);
+
+	_tStat->Recovery(_fRecovery * fElapsedTime);
 }
 
 void Player::OnDestroy(void) noexcept
@@ -87,62 +88,77 @@ void Player::OnDestroy(void) noexcept
 void Player::InitAnimation(SpriteRenderer* sr)
 {
 	std::vector<Texture*> TList;
-	std::vector<float>		FrameTime;
-	Texture* _pTexture;
+	std::vector<float>	FrameTime;
+	Material* material = sr->GetMaterialPTR();
 	Animation* ani;
 
-	//Stand
-	{
+	for (int folder = 0; folder < 15; folder += 2) {
+
+		//Stand
 		for (int i = 0; i < 8; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Player\\stand_8\\%d.png", i);
+			sprintf_s(str, 256, "Asset\\Player\\stand_%d\\%d.png", folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.5f);
 		}
 
 		ani = new Animation(FrameTime, TList, true);
-		ani->SetMaterial(sr->GetMaterialPTR());
-		_pAnimator->InsertAnimation("Stand", ani);
+		ani->SetMaterial(material);
+		std::string name = "Stand_" + std::to_string(folder);
+		_pAnimator->InsertAnimation(name, ani);
 
 		TList.clear();
 		FrameTime.clear();
-	}
 
-	//Walk
-	{
+		//Walk
 		for (int i = 0; i < 8; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Player\\walk_8\\%d.png", i);
+			sprintf_s(str, 256, "Asset\\Player\\walk_%d\\%d.png",folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
 		}
 
 		ani = new Animation(FrameTime, TList, true);
-		ani->SetMaterial(sr->GetMaterialPTR());
-		_pAnimator->InsertAnimation("Walk", ani);
+		ani->SetMaterial(material);
+		_pAnimator->InsertAnimation("Walk_" + std::to_string(folder), ani);
 
 		TList.clear();
 		FrameTime.clear();
-	}
 
-	//Attack
-	{
+		//Run
+		for (int i = 0; i < 8; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset\\Player\\dash_%d\\%d.png", folder, i);
+
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList, true);
+		ani->SetMaterial(material);
+		_pAnimator->InsertAnimation("Run_" + std::to_string(folder), ani);
+
+		TList.clear();
+		FrameTime.clear();
+
+		//Attack
 		for (int i = 0; i < 19; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Player\\attack_8\\%d.png", i);
+			sprintf_s(str, 256, "Asset\\Player\\attack_%d\\%d.png",folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
 		}
 
 		ani = new Animation(FrameTime, TList);
-		ani->SetMaterial(sr->GetMaterialPTR());
-		_pAnimator->InsertAnimation("Attack", ani);
+		ani->SetMaterial(material);
+		_pAnimator->InsertAnimation("Attack_" + std::to_string(folder), ani);
 
 		TList.clear();
 		FrameTime.clear();
@@ -157,7 +173,7 @@ void Player::InitState()
 	_pFSM.push_back(new PlayerAttack(this,_pAnimator, _pTrans));
 }
 
-void Player::SetState(PLAYER_STATE newState, D3DXVECTOR3 vTarget, bool bAtt)
+void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget, bool bAtt)
 {
 	_eCurState = newState;
 	
@@ -169,6 +185,7 @@ void Player::SetState(PLAYER_STATE newState, D3DXVECTOR3 vTarget, bool bAtt)
 		static_cast<PlayerMove*>(_pFSM[_eCurState])->SetAtt();
 	}
 
+	_pFSM[_eCurState]->SetDir(eDir);
 	_pFSM[_eCurState]->Start();
 	
 }
@@ -180,10 +197,10 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 		if (pSkill->GetSkillID() == id)
 		{
 			int SkillMp = pSkill->GetUsingMp();
-			if (_tStat->_iMP >= SkillMp)
+			if (_tStat->_fMP >= SkillMp)
 			{
 				pSkill->Using(vPos, _pTrans);
-				_tStat->_iMP -= SkillMp;
+				_tStat->_fMP -= SkillMp;
 			}
 			break;
 		}
@@ -195,7 +212,6 @@ bool Player::IsRunning(float fElapsedTime)
 	float after = _tStat->_fStamina - (fElapsedTime * _fRunSpeed);
 	if (after < 0) 
 	{
-		//_tStat->_fStamina = 0;
 		return false;
 	}
 	_tStat->_fStamina = after;
@@ -211,8 +227,8 @@ float Player::GetHPPer()
 
 float Player::GetMPPer()
 {
-	float per = 1.f / (_tStat->_iMaxMp);
-	per *= _tStat->_iMP;
+	float per = 1.f / (_tStat->_fMaxMp);
+	per *= _tStat->_fMP;
 	return per;
 }
 

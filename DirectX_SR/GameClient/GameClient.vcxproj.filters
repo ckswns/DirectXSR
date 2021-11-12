@@ -201,6 +201,9 @@
     <ClInclude Include="TargetCamera.h">
       <Filter>00. Game\01. GameObject\01. TargetCamera</Filter>
     </ClInclude>
+    <ClInclude Include="Game_Math.h">
+      <Filter>00. Game\98.Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -271,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="TargetCamera.cpp">
       <Filter>00. Game\01. GameObject\01. TargetCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMState.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

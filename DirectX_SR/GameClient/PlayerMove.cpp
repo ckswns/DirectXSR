@@ -14,7 +14,12 @@ PlayerMove::PlayerMove(Player* owner, Animator* pAnim, Transform* trans, PathFin
 
 void PlayerMove::Start() noexcept
 {
-	_pAnimator->SetAnimation("Walk");
+	_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
+	_iDir = (int)_eDir * 2;
+	_strRun = "Run_" + std::to_string(_iDir);
+	_strWalk = "Walk_" + std::to_string(_iDir);
+
+	_pAnimator->SetAnimation(_strWalk);
 	_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget);
 	_pPath = (_pPathFinding->GetPath());
 }
@@ -38,7 +43,7 @@ void PlayerMove::Update(float fElapsedTime) noexcept
 		D3DXVECTOR3 vDir = (*iter)->GetPos() - _pTrans->GetWorldPosition();
 		vDir.y = 0;
 
-		if (D3DXVec3Length(&vDir) < 1.f)
+		if (D3DXVec3Length(&vDir) < 0.5f)
 		{
 			_pPath.pop_front();
 		}
@@ -48,11 +53,16 @@ void PlayerMove::Update(float fElapsedTime) noexcept
 			
 			if (_bRun&& _pOwner->IsRunning(fElapsedTime))
 			{
+				if (_pAnimator->GetCurrentAnimationName() != _strRun)
+					_pAnimator->SetAnimation(_strRun);
 				vDir *= (_fRunSpeed * fElapsedTime);
 			}
 			else
+			{
+				if (_pAnimator->GetCurrentAnimationName() != _strWalk)
+					_pAnimator->SetAnimation(_strWalk);
 				vDir *= (_fSpeed * fElapsedTime);
-
+			}
 			_pTrans->Translate(vDir);
 		}
 	}
@@ -64,10 +74,10 @@ void PlayerMove::Update(float fElapsedTime) noexcept
 		if (_bAtt) 
 		{
 			_bAtt = false;
-			_pOwner->SetState(PLAYER_ATTACK);
+			_pOwner->SetState(PLAYER_ATTACK,_eDir,_vTarget);
 		}
 		else
-			_pOwner->SetState(PLAYER_STAND);
+			_pOwner->SetState(PLAYER_STAND,_eDir);
 
 	}
 }

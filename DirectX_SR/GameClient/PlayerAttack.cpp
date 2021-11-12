@@ -7,16 +7,23 @@
 void PlayerAttack::Start() noexcept
 {
 	D3DXVECTOR3 vDir = _vTarget - _pTrans->GetWorldPosition();
-	if (D3DXVec3Length(&vDir) <= 2.f)
+	if (D3DXVec3Length(&vDir) <= 1.5f)
 	{
-		_pAnimator->SetAnimation("Attack");
+		if (_eDir != PLAYER_END) 
+		{
+			_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
+			_iDir = (int)_eDir * 2;
+		}
+		_pAnimator->SetAnimation("Attack_"+ std::to_string(_iDir));
+
 		// 소리 
 		//충돌판정
 	}
 	else
 	{
 		//이동으로 바꿈 
-		_pOwner->SetState(PLAYER_MOVE, _vTarget, true);
+		_pOwner->SetState(PLAYER_MOVE,_eDir,_vTarget, true);
+		_eDir = DIR_END;
 	}
 }
 
@@ -25,6 +32,6 @@ void PlayerAttack::Update(float fElapsedTime) noexcept
 	if (_pAnimator->GetCurrentAnimationEnd())
 	{
 		//Stand로 변경 
-		_pOwner->SetState(PLAYER_STAND);
+		_pOwner->SetState(PLAYER_STAND, _eDir);
 	}
 }

@@ -1,11 +1,9 @@
 #include "pch.h"
 #include "Spear.h"
-#include "Transform.h"
 #include "Texture.h"
 #include "SpriteRenderer.h"
 #include "Animator.h"
 #include "Animation.h"
-#include "SpearTrail.h"
 
 void Spear::Start(void) noexcept
 {
@@ -36,9 +34,5 @@ void Spear::Start(void) noexcept
 	FrameTime.clear();
 }
 
-void Spear::Update(float fElapsedTime) noexcept
-{
-	
-}
 
 

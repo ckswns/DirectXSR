@@ -4,5 +4,5 @@
 
 void PlayerStand::Start() noexcept
 {
-	_pAnimator->SetAnimation("Stand");
+	_pAnimator->SetAnimation("Stand_" + std::to_string(_iDir));
 }
