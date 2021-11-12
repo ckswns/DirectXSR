@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "NeviMesh.h"
+#include "NaviMesh.h"
 #include "Node.h"
 
-NeviMesh::~NeviMesh() noexcept
+NaviMesh::~NaviMesh() noexcept
 {
 	Release();
 }
 
-void NeviMesh::Init() noexcept
+void NaviMesh::Init() noexcept
 {
 	int count = (_iSizeX-1) * (_iSizeY-1);
 	Grid.resize(count);
@@ -30,7 +30,7 @@ void NeviMesh::Init() noexcept
 	SetNeighbours();
 }
 
-void NeviMesh::SetNeighbours() noexcept
+void NaviMesh::SetNeighbours() noexcept
 {
 	for (int z = 0; z < (_iSizeY-1); z++)
 	{
@@ -72,7 +72,7 @@ void NeviMesh::SetNeighbours() noexcept
 	}
 }
 
-void NeviMesh::Release() noexcept
+void NaviMesh::Release() noexcept
 {
 	for (size_t i = 0; i < Grid.size(); ++i)
 	{
@@ -85,7 +85,7 @@ void NeviMesh::Release() noexcept
 	Grid.clear();
 }
 
-Node* NeviMesh::NodeFormPosition(D3DXVECTOR3 Pos) noexcept
+Node* NaviMesh::NodeFormPosition(D3DXVECTOR3 Pos) noexcept
 {
 	int x = floor(Pos.x);
 	int z = floor(Pos.z);

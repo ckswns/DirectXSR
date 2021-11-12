@@ -5,10 +5,10 @@ namespace ce
 	class Transform;
 }
 #include "Node.h"
-class NeviMesh;
+class NaviMesh;
 class PathFinding 
 {
-public:		explicit		PathFinding(NeviMesh* nevi) noexcept;
+public:		explicit		PathFinding(NaviMesh* nevi) noexcept;
 public:		virtual		~PathFinding() noexcept;
 
 public:		virtual void				Start() noexcept { __noop; }
@@ -21,7 +21,7 @@ private:		void						Release() noexcept;
 public:		std::list<Node*>		GetPath() { return _pPath; }
 
 private:		Transform*				_pTrans;
-private:		NeviMesh*				_pNevi;
+private:		NaviMesh*				_pNavi;
 private:		std::list<Node*>		_pPath;
 
 

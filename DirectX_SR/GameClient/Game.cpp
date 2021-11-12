@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "Transform.h"
 
-#include "NeviMesh.h"
+#include "NaviMesh.h"
 #include "PathFinding.h"
 
 #include "EditorCamera.h"
@@ -41,13 +41,13 @@ bool Game::Init(void) noexcept
     mr->GetMaterialPTR()->SetTextures(TList);
     pGameObj->GetTransform()->SetLocalPosition(-2, 0, -1);
 
-    _pNeviMesh = new NeviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
-    _pNeviMesh->Init();
+    NaviMesh* _pNaviMesh = new NaviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
+    _pNaviMesh->Init();
 
     //Player
     GameObject* pPlayerObj = GameObject::Instantiate();
     pPlayerObj = GameObject::Instantiate();
-    PathFinding* pf = new PathFinding(_pNeviMesh);
+    PathFinding* pf = new PathFinding(_pNaviMesh);
     _pPlayer = new Player(pf);
     pPlayerObj->AddComponent(_pPlayer);
     pPlayerObj->GetTransform()->SetLocalPosition(0, 1, 0);

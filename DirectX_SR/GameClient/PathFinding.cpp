@@ -2,11 +2,11 @@
 #include "PathFinding.h"
 #include "Transform.h"
 #include "Node.h"
-#include "NeviMesh.h"
+#include "NaviMesh.h"
 #include "PriorityQueue.h"
 
-PathFinding::PathFinding(NeviMesh* nevi) noexcept
-	:_pNevi(nevi)
+PathFinding::PathFinding(NaviMesh* nevi) noexcept
+	:_pNavi(nevi)
 {
 }
 PathFinding::~PathFinding() noexcept
@@ -15,8 +15,8 @@ PathFinding::~PathFinding() noexcept
 }
 bool PathFinding::FindPath(D3DXVECTOR3 vStartPos,D3DXVECTOR3 vTargetPos)
 {
-	Node* startNode = _pNevi->NodeFormPosition(vStartPos);
-	Node* targetNode = _pNevi->NodeFormPosition(vTargetPos);
+	Node* startNode = _pNavi->NodeFormPosition(vStartPos);
+	Node* targetNode = _pNavi->NodeFormPosition(vTargetPos);
 
 	PriorityQueue<Node*,std::vector<Node*>, compare> openSet;
 	std::unordered_set<Node*> closedSet;
