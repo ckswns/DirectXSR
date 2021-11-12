@@ -3,37 +3,38 @@
 
 #include "Transform.h"
 #include "SpriteRenderer.h"
-#include "Texture.h"
 #include "Animation.h"
 #include "Animator.h"
 #include "AudioListener.h"
 
 #include "PathFinding.h"
-#include "Node.h"
+#include "FSMState.h"
+#include "PlayerStand.h"
+#include "PlayerMove.h"
+#include "PlayerAttack.h"
 
 #include "Skill.h"
 #include "RaiseSkeleton.h"
 #include "BoneSpear.h"
 
 Player::Player(PathFinding* pf) noexcept
-	:_pPathFinding(pf) 
+	:_pPathFinding(pf),_eCurState(PLAYER_END)
 {
 	_tStat = new STAT(100, 100, 50);
+
+	_pSkills.reserve(SKILL_END);
+	_pSkills.push_back(new RaiseSkeleton());
+	_pSkills.push_back(new BoneSpear());
 }
 
 void Player::Start(void) noexcept
 {
 	_bAtt = false;
 	_bMove = false;
-	_bFind = false;
 
 	_bRun = false;
 	_fSpeed =3.f;
 	_fRunSpeed = 5.f;
-
-	_pSkills.reserve(SKILL_END);
-	_pSkills.push_back(new RaiseSkeleton());
-	_pSkills.push_back(new BoneSpear());
 
 	GetGameObject()->SetDontDestroy(true);
 
@@ -47,73 +48,14 @@ void Player::Start(void) noexcept
 	_pAnimator = new Animator(true);
 	GetGameObject()->AddComponent(_pAnimator);
 	InitAnimation(sr);
+
+	InitState();
+	SetState(PLAYER_STAND);
 }
 
 void Player::Update(float fElapsedTime) noexcept
 {
-	if (INPUT->GetKeyDown('Z') || INPUT->GetKeyStay('Z'))
-	{
-		_bRun = true;
-	}
-	else 
-	{
-		if(_bRun)
-			_bRun = false;
-	}
-
-	if (_bMove)
-	{
-		if (_bFind) 
-		{
-			if (!_pPath.empty())
-			{
-				std::list<Node*>::iterator iter = _pPath.begin();
-
-				D3DXVECTOR3 vDir = (*iter)->GetPos() - _pTrans->GetWorldPosition();
-				vDir.y = 0;
-
-				if (D3DXVec3Length(&vDir) < 1.f)
-				{
-					_pPath.pop_front();
-				}
-				else
-				{
-					D3DXVec3Normalize(&vDir, &vDir);
-
-					if (_bRun) 
-					{
-						//스태미나 게이지 감소
-						if (_tStat->_fStamina > 0)
-							_tStat->_fStamina -= fElapsedTime;
-	
-						if (_tStat->_fStamina <= 0)
-						{
-							_tStat->_fStamina = 0;
-							vDir *= (_fSpeed * fElapsedTime);
-						}
-						else
-							vDir *= (_fRunSpeed * fElapsedTime);
-					}
-					else
-					{
-						vDir *= (_fSpeed * fElapsedTime);
-					}
-
-					_pTrans->Translate(vDir );
-				}
-			}
-			else
-			{
-				_pPath.clear();
-
-				_bFind = false;
-				_bMove = false;
-				_pAnimator->SetAnimation("Stand");
-				if (_bAtt)
-					Attack(_vDest);
-			}
-		}
-	}
+	_pFSM[_eCurState]->Update(fElapsedTime);
 }
 
 void Player::OnDestroy(void) noexcept
@@ -129,6 +71,17 @@ void Player::OnDestroy(void) noexcept
 			_pSkills[i] = nullptr;
 		}
 	}
+	_pSkills.clear();
+
+	for (size_t i = 0; i < _pFSM.size(); ++i)
+	{
+		if (_pFSM[i] != nullptr)
+		{
+			delete _pFSM[i];
+			_pFSM[i] = nullptr;
+		}
+	}
+	_pFSM.clear();
 }
 
 void Player::InitAnimation(SpriteRenderer* sr)
@@ -187,13 +140,37 @@ void Player::InitAnimation(SpriteRenderer* sr)
 			FrameTime.push_back(0.1f);
 		}
 
-		ani = new Animation(FrameTime, TList, true);
+		ani = new Animation(FrameTime, TList);
 		ani->SetMaterial(sr->GetMaterialPTR());
 		_pAnimator->InsertAnimation("Attack", ani);
 
 		TList.clear();
 		FrameTime.clear();
 	}
+}
+
+void Player::InitState()
+{
+	_pFSM.reserve(PLAYER_END);
+	_pFSM.push_back(new PlayerStand(_pAnimator));
+	_pFSM.push_back(new PlayerMove(this,_pAnimator, _pTrans, _pPathFinding, _fSpeed));
+	_pFSM.push_back(new PlayerAttack(this,_pAnimator, _pTrans));
+}
+
+void Player::SetState(PLAYER_STATE newState, D3DXVECTOR3 vTarget, bool bAtt)
+{
+	_eCurState = newState;
+	
+	if (vTarget != D3DXVECTOR3(0, -5, 0))
+		_pFSM[_eCurState]->SetTarget(vTarget);
+
+	if (bAtt)
+	{
+		static_cast<PlayerMove*>(_pFSM[_eCurState])->SetAtt();
+	}
+
+	_pFSM[_eCurState]->Start();
+	
 }
 
 void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
@@ -211,41 +188,18 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			break;
 		}
 	}
-//	_pSkills[id]->Using(vPos,_pTrans);
 }
 
-void Player::Attack(D3DXVECTOR3 _vMonsterPos)
-{	
-	_bAtt = true;
-
-//적과 거리가 가까운가?
-	D3DXVECTOR3 vDir = _vMonsterPos - _pTrans->GetWorldPosition();
-	if (D3DXVec3Length(&vDir) <= 2.f)
-	{
-		// >> 공격
-		// 공격 애니메이션
-		_pAnimator->SetAnimation("Attack");
-		// 소리 
-		//충돌판정
-	}
-	else 
-	{
-		_vDest = _vMonsterPos;
-		_bMove = true;
-		_pAnimator->SetAnimation("Walk");
-	}
-
-}
-
-void Player::Move(D3DXVECTOR3 dest)
+bool Player::IsRunning(float fElapsedTime)
 {
-	_bAtt = false;
-	_vDest = dest; 
-	_bMove = true;
-	_pAnimator->SetAnimation("Walk");
-
-	_bFind =_pPathFinding->FindPath(_pTrans->GetWorldPosition(),dest);
-	_pPath = (_pPathFinding->GetPath());
+	float after = _tStat->_fStamina - (fElapsedTime * _fRunSpeed);
+	if (after < 0) 
+	{
+		//_tStat->_fStamina = 0;
+		return false;
+	}
+	_tStat->_fStamina = after;
+	return true;
 }
 
 float Player::GetHPPer()

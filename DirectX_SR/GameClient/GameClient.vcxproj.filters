@@ -43,18 +43,6 @@
     <Filter Include="00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton">
       <UniqueIdentifier>{b223a755-5cf3-41ec-bc01-912ec3e20478}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\00. Player\Command">
-      <UniqueIdentifier>{5af0d014-8f4b-427b-8f61-196c5cbb979a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\00. Player\Command\SkillCommand">
-      <UniqueIdentifier>{b91db208-2c78-4d8c-b033-e08a030a4e2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\00. Player\Command\AttackCommand">
-      <UniqueIdentifier>{fa4e8722-89e6-4f8e-ab53-49329322cec9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\00. Player\Command\MoveCommand">
-      <UniqueIdentifier>{e19d1efa-3196-4ded-9f0e-fe945e3fff7d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Game\01. GameObject\InputHandle">
       <UniqueIdentifier>{b76ee25e-0318-4d9b-b18b-dcd49cdd3f43}</UniqueIdentifier>
     </Filter>
@@ -78,6 +66,30 @@
     </Filter>
     <Filter Include="00. Game\00. Scene\02.Town">
       <UniqueIdentifier>{41d97535-a300-41fc-92aa-6d0b59b7cccc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State">
+      <UniqueIdentifier>{888de545-66a6-437a-b478-710c5e72501f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\PlayerStand">
+      <UniqueIdentifier>{9cd7cc9d-906b-43ec-8ea4-2dee2c72ce33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\PlayerAttack">
+      <UniqueIdentifier>{dd4f2f14-4695-4cd4-8345-a5b5bd0277a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\PlayerMove">
+      <UniqueIdentifier>{c5a301cf-5a6b-40e9-9b9e-31b1f62445d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\InputHandle\Command">
+      <UniqueIdentifier>{5af0d014-8f4b-427b-8f61-196c5cbb979a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\InputHandle\Command\SkillCommand">
+      <UniqueIdentifier>{b91db208-2c78-4d8c-b033-e08a030a4e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\InputHandle\Command\AttackCommand">
+      <UniqueIdentifier>{fa4e8722-89e6-4f8e-ab53-49329322cec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\InputHandle\Command\MoveCommand">
+      <UniqueIdentifier>{e19d1efa-3196-4ded-9f0e-fe945e3fff7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,19 +127,19 @@
       <Filter>00. Game\98.Include</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
-      <Filter>00. Game\01. GameObject\00. Player\Command</Filter>
+      <Filter>00. Game\01. GameObject\InputHandle\Command</Filter>
     </ClInclude>
     <ClInclude Include="RaiseSkeleton.h">
       <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
     </ClInclude>
     <ClInclude Include="SkillCommand.h">
-      <Filter>00. Game\01. GameObject\00. Player\Command\SkillCommand</Filter>
+      <Filter>00. Game\01. GameObject\InputHandle\Command\SkillCommand</Filter>
     </ClInclude>
     <ClInclude Include="AttackCommand.h">
-      <Filter>00. Game\01. GameObject\00. Player\Command\AttackCommand</Filter>
+      <Filter>00. Game\01. GameObject\InputHandle\Command\AttackCommand</Filter>
     </ClInclude>
     <ClInclude Include="MoveCommand.h">
-      <Filter>00. Game\01. GameObject\00. Player\Command\MoveCommand</Filter>
+      <Filter>00. Game\01. GameObject\InputHandle\Command\MoveCommand</Filter>
     </ClInclude>
     <ClInclude Include="InputHandler.h">
       <Filter>00. Game\01. GameObject\InputHandle</Filter>
@@ -165,6 +177,18 @@
     <ClInclude Include="TownScene_01.h">
       <Filter>00. Game\00. Scene\02.Town</Filter>
     </ClInclude>
+    <ClInclude Include="FSMState.h">
+      <Filter>00. Game\01. GameObject\00. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStand.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\PlayerStand</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAttack.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMove.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\PlayerMove</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -186,13 +210,13 @@
       <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
     </ClCompile>
     <ClCompile Include="SkillCommand.cpp">
-      <Filter>00. Game\01. GameObject\00. Player\Command\SkillCommand</Filter>
+      <Filter>00. Game\01. GameObject\InputHandle\Command\SkillCommand</Filter>
     </ClCompile>
     <ClCompile Include="AttackCommand.cpp">
-      <Filter>00. Game\01. GameObject\00. Player\Command\AttackCommand</Filter>
+      <Filter>00. Game\01. GameObject\InputHandle\Command\AttackCommand</Filter>
     </ClCompile>
     <ClCompile Include="MoveCommand.cpp">
-      <Filter>00. Game\01. GameObject\00. Player\Command\MoveCommand</Filter>
+      <Filter>00. Game\01. GameObject\InputHandle\Command\MoveCommand</Filter>
     </ClCompile>
     <ClCompile Include="InputHandler.cpp">
       <Filter>00. Game\01. GameObject\InputHandle</Filter>
@@ -223,6 +247,15 @@
     </ClCompile>
     <ClCompile Include="TownScene_01.cpp">
       <Filter>00. Game\00. Scene\02.Town</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStand.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\PlayerStand</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAttack.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMove.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\PlayerMove</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

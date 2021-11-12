@@ -167,6 +167,7 @@
     <ClInclude Include="BoneSpear.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="FSMState.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClient.h" />
     <ClInclude Include="Game_Enum.h" />
@@ -179,7 +180,10 @@
     <ClInclude Include="PathFinding.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerAttack.h" />
     <ClInclude Include="PlayerSelectScene.h" />
+    <ClInclude Include="PlayerStand.h" />
+    <ClInclude Include="PlayerMove.h" />
     <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RaiseSkeleton.h" />
@@ -209,7 +213,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerAttack.cpp" />
     <ClCompile Include="PlayerSelectScene.cpp" />
+    <ClCompile Include="PlayerStand.cpp" />
+    <ClCompile Include="PlayerMove.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RaiseSkeleton.cpp" />
     <ClCompile Include="Skeleton.cpp" />
