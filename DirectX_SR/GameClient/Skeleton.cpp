@@ -17,15 +17,12 @@ void Skeleton::Start(void) noexcept
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
-	Texture* _texture = new ce::Texture();
-	_texture->Init(D3D9DEVICE->GetDevice(), "Asset/Player/Skeleton.png");
-
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), _texture);
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skeleton.png"));
 	GetGameObject()->AddComponent(sr);
 
 	_pAnimator = new Animator(false);
 	GetGameObject()->AddComponent(_pAnimator);
-	SetAnimation(sr);
+	InitAnimation(sr);
 }
 
 void Skeleton::Update(float fElapsedTime) noexcept
@@ -77,7 +74,7 @@ void Skeleton::Destroy()
 	_pAnimator->Play("Dead");
 }
 
-void Skeleton::SetAnimation(SpriteRenderer* sr)
+void Skeleton::InitAnimation(SpriteRenderer* sr)
 {
 	std::vector<Texture*> TList;
 	std::vector<float>		FrameTime;
@@ -89,11 +86,9 @@ void Skeleton::SetAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 12; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset/Player/Skeleton/create/%d.png", i);
-			_pTexture = new Texture();
-			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\create\\%d.png", i);
 
-			TList.push_back(_pTexture);
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
 		}
 
@@ -110,11 +105,9 @@ void Skeleton::SetAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 8; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset/Player/Skeleton/stand_8/stand_%d.png", i);
-			_pTexture = new Texture();
-			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\stand_8\\stand_%d.png", i);
 
-			TList.push_back(_pTexture);
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.5f);
 		}
 
@@ -131,11 +124,9 @@ void Skeleton::SetAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 8; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset/Player/Skeleton/walk_8/%d.png", i);
-			_pTexture = new Texture();
-			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\walk_8\\%d.png", i);
 
-			TList.push_back(_pTexture);
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
 		}
 
@@ -152,11 +143,9 @@ void Skeleton::SetAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 16; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset/Player/Skeleton/attack_8/%d.png", i);
-			_pTexture = new Texture();
-			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\attack_8\\%d.png", i);
 
-			TList.push_back(_pTexture);
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
 		}
 
@@ -172,11 +161,9 @@ void Skeleton::SetAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 19; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset/Player/Skeleton/death/%d.png", i);
-			_pTexture = new Texture();
-			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\death\\%d.png", i);
 
-			TList.push_back(_pTexture);
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
 		}
 

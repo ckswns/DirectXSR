@@ -8,6 +8,7 @@ namespace ce
 		class Image;
 	}
 }
+class Player;
 class NeviMesh;
 class Game : public Scene
 {
@@ -24,7 +25,10 @@ public:		void			Release(void) noexcept override;
 private:		void			InitUI() noexcept;
 
 private:		UI::Image*		_imgStamina;
+private:		UI::Image* _imgHP;
+private:		UI::Image* _imgMP;
+private:		Player* _pPlayer;
 
-private:		NeviMesh*	_pNeviMesh;
+private:		NeviMesh*		_pNeviMesh;
 };
 

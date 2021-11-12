@@ -2,6 +2,11 @@
 #include "NeviMesh.h"
 #include "Node.h"
 
+NeviMesh::~NeviMesh() noexcept
+{
+	Release();
+}
+
 void NeviMesh::Init() noexcept
 {
 	int count = (_iSizeX-1) * (_iSizeY-1);
@@ -17,48 +22,8 @@ void NeviMesh::Init() noexcept
 			D3DXVECTOR3 worldPoint = _TerrainVtx[terrainIdx];
 			worldPoint.x += 0.5f;
 			worldPoint.z += 0.5f;
-			bool walkable;
-			if (z >= 10 && z<15) {
-				if (x < 5 || x >15)
-					walkable = true;
-				else
-					walkable = false;
-			}
-			else
-				walkable = true;
+			bool walkable = true;
 			Grid[idx] = new Node(walkable, worldPoint, x, z);
-
-			/*
-			if (x > 0)
-			{
-				Grid[idx]->AddNeighbor(Grid[(idx - 1)]);
-
-				if (idx < (_iSizeX-1))
-					Grid[(idx - 1)]->AddNeighbor(Grid[idx]);
-			}
-			if (z > 0)
-			{
-				Grid[idx]->AddNeighbor(Grid[(idx - (_iSizeX))]);
-				if (z < (_iSizeY - 1))
-	
-				Grid[(idx - (_iSizeX))]->AddNeighbor(Grid[idx]);
-*/
-
-
-			//		if (x != 0)
-			//		{
-			//			//왼 대각선 아래 
-			//			Grid[idx]->AddNeighbor(Grid[(idx - (_iSizeX + 1))]);
-			//			Grid[(idx - (_iSizeX + 1))]->AddNeighbor(Grid[idx]);
-
-			//			//오른 대각 아래
-			//			if (idx < (_iSizeX - 2)) 
-			//			{
-			//				Grid[idx]->AddNeighbor(Grid[(idx - (_iSizeX - 1))]);
-			//				Grid[(idx - (_iSizeX - 1))]->AddNeighbor(Grid[idx]);
-			//			}
-			//		}
-			//}
 		}
 	}
 
@@ -105,6 +70,19 @@ void NeviMesh::SetNeighbours() noexcept
 			}
 		}
 	}
+}
+
+void NeviMesh::Release() noexcept
+{
+	for (size_t i = 0; i < Grid.size(); ++i)
+	{
+		if (Grid[i] != nullptr)
+		{
+			delete Grid[i];
+			Grid[i] = nullptr;
+		}
+	}
+	Grid.clear();
 }
 
 Node* NeviMesh::NodeFormPosition(D3DXVECTOR3 Pos) noexcept

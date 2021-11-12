@@ -45,18 +45,16 @@ bool Game::Init(void) noexcept
     _pNeviMesh->Init();
 
     //Player
-    GameObject* pPlayer = GameObject::Instantiate();
+    GameObject* pPlayerObj = GameObject::Instantiate();
+    pPlayerObj = GameObject::Instantiate();
     PathFinding* pf = new PathFinding(_pNeviMesh);
-    pPlayer->AddComponent(new Player(pf));
-    pPlayer->GetTransform()->SetLocalPosition(0, 1, 0);
-
-    //GameObject* pSkeleton = GameObject::Instantiate();
-    //pSkeleton->AddComponent(new Skeleton(pPlayer->GetTransform()));
-    //pSkeleton->GetTransform()->SetWorldPosition(1,1,0);
+    _pPlayer = new Player(pf);
+    pPlayerObj->AddComponent(_pPlayer);
+    pPlayerObj->GetTransform()->SetLocalPosition(0, 1, 0);
 
     //InputHandler
     pGameObj = GameObject::Instantiate();
-    pGameObj->AddComponent(new InputHandler(pPlayer, terrain));
+    pGameObj->AddComponent(new InputHandler(pPlayerObj, terrain));
 
     //EditorCamera
     pGameObj = GameObject::Instantiate();
@@ -73,6 +71,11 @@ void Game::FixedUpdate(float fElapsedTime) noexcept
 
 void Game::Update(float fElapsedTime) noexcept
 {
+    //세로로 변경해야함
+    _imgHP->SetFillAmount(_pPlayer->GetHPPer());
+    _imgMP->SetFillAmount(_pPlayer->GetMPPer());
+
+    _imgStamina->SetFillAmount(_pPlayer->GetStaminaPer());
 }
 
 void Game::LateUpdate(float fElapsedTime) noexcept
@@ -89,21 +92,27 @@ void Game::Release(void) noexcept
 
 void Game::InitUI() noexcept
 {
-    Texture* texStatusBar = new Texture();
-    texStatusBar->Init(D3D9DEVICE->GetDevice(), "Asset/UI/Game/StatusBar.png");
-
     GameObject* pObj = GameObject::Instantiate();
-    pObj->AddComponent(new Image(texStatusBar));
-   // RectTransform* rt = static_cast<RectTransform*>(pObj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+    pObj->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\StatusBar.png")));
     pObj->SetSortOrder(0);
     pObj->GetTransform()->SetWorldPosition(240, 617, 0);
 
-    Texture* texStamina = new Texture();
-    texStamina->Init(D3D9DEVICE->GetDevice(), "Asset/UI/Game/Stamina.png");
-    _imgStamina = new Image(texStamina);
+    _imgStamina = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Stamina.png"));
     pObj = GameObject::Instantiate();
     pObj->AddComponent(_imgStamina);
-    // RectTransform* rt = static_cast<RectTransform*>(pObj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
     pObj->SetSortOrder(0);
     pObj->GetTransform()->SetWorldPosition(513, 694, 0);
+
+    _imgHP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\HPBall.png"));
+    pObj = GameObject::Instantiate();
+    pObj->AddComponent(_imgHP);
+    pObj->SetSortOrder(0);
+    pObj->GetTransform()->SetWorldPosition(270, 630, 0);
+
+    _imgMP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\MPBall.png"));
+    pObj = GameObject::Instantiate();
+    pObj->AddComponent(_imgMP);
+    pObj->SetSortOrder(0);
+    pObj->GetTransform()->SetWorldPosition(930, 630, 0);
+
 }

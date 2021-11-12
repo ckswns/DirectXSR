@@ -9,12 +9,15 @@ PathFinding::PathFinding(NeviMesh* nevi) noexcept
 	:_pNevi(nevi)
 {
 }
+PathFinding::~PathFinding() noexcept
+{
+	Release();
+}
 bool PathFinding::FindPath(D3DXVECTOR3 vStartPos,D3DXVECTOR3 vTargetPos)
 {
 	Node* startNode = _pNevi->NodeFormPosition(vStartPos);
 	Node* targetNode = _pNevi->NodeFormPosition(vTargetPos);
 
-//	std::priority_queue<Node*,std::vector<Node*>,std::greater<Node*>> openSet;
 	PriorityQueue<Node*,std::vector<Node*>, compare> openSet;
 	std::unordered_set<Node*> closedSet;
 	openSet.push(startNode);
@@ -86,18 +89,22 @@ void PathFinding::RetracePath(Node* startNode, Node* endNode)
 
 float PathFinding::GetDistance(Node* A, Node* B)
 {
-	//int dstX = abs(B->GetX() - A->GetX());
-	//float dstY = abs(B->GetY() - A->GetY());
-
-	//return (dstX + dstY);
-
-	/*if (dstX > dstY)
-	{
-		return 14 * dstY + 10 * (dstX - dstY);
-	}
-
-	return 14 * dstX + 10 * (dstY - dstX);*/
-
 	D3DXVECTOR3 vDir = B->GetPos() - A->GetPos();
 	return D3DXVec3Length(&vDir);
+}
+
+void PathFinding::Release() noexcept
+{
+	std::list<Node*>::iterator iter = _pPath.begin();
+	while (iter != _pPath.end())
+	{
+		if ((*iter) != nullptr)
+		{
+			delete (*iter);
+			(*iter) = nullptr;
+		}
+		iter++;
+	}
+
+	_pPath.clear();
 }

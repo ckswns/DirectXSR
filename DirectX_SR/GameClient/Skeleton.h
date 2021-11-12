@@ -33,7 +33,7 @@ public:		virtual void				Update(float fElapsedTime) noexcept;
 public:		void						Create(Transform* trans);
 public:		void						Destroy();
 
-private:		void						SetAnimation(SpriteRenderer* sr);
+private:		void						InitAnimation(SpriteRenderer* sr);
 
 private:		Transform*				_pTrans;
 private:		Transform*				_pOwnerTrans;

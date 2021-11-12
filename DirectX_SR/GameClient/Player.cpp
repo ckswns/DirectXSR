@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "Animation.h"
 #include "Animator.h"
+#include "AudioListener.h"
 
 #include "PathFinding.h"
 #include "Node.h"
@@ -38,20 +39,14 @@ void Player::Start(void) noexcept
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
-	/*Quad* quad = new Quad(4, 4);
-	quad->Open(D3D9DEVICE->GetDevice());
-	MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), quad);
-	GetGameObject()->AddComponent(mr);*/
+	GetGameObject()->AddComponent(new AudioListener());
 
-	Texture* _texture = new ce::Texture();
-	_texture->Init(D3D9DEVICE->GetDevice(), "Asset/Player/Player.png");
-
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), _texture);
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"));
 	GetGameObject()->AddComponent(sr);
 
 	_pAnimator = new Animator(true);
 	GetGameObject()->AddComponent(_pAnimator);
-	SetAnimation(sr);
+	InitAnimation(sr);
 }
 
 void Player::Update(float fElapsedTime) noexcept
@@ -118,26 +113,25 @@ void Player::Update(float fElapsedTime) noexcept
 					Attack(_vDest);
 			}
 		}
-		/*
-		D3DXVECTOR3 vDir = _vDest - _pTrans->GetWorldPosition();
-		if (D3DXVec3Length(&vDir) <= 1.f)
-		{
-			_bMove = false;
-			_pAnimator->SetAnimation("Stand");
-			if (_bAtt)
-				Attack(_vDest);
-		}
-		else 
-		{
-			D3DXVec3Normalize(&vDir, &vDir);
-
-			_pTrans->Translate(vDir * _fSpeed* fElapsedTime);
-		}
-		*/
 	}
 }
 
-void Player::SetAnimation(SpriteRenderer* sr)
+void Player::OnDestroy(void) noexcept
+{
+	delete _tStat;
+	_tStat = nullptr;
+
+	for (size_t i = 0; i < _pSkills.size(); ++i)
+	{
+		if (_pSkills[i] != nullptr)
+		{
+			delete _pSkills[i];
+			_pSkills[i] = nullptr;
+		}
+	}
+}
+
+void Player::InitAnimation(SpriteRenderer* sr)
 {
 	std::vector<Texture*> TList;
 	std::vector<float>		FrameTime;
@@ -149,11 +143,9 @@ void Player::SetAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 8; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset/Player/stand_8/%d.png", i);
-			_pTexture = new Texture();
-			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+			sprintf_s(str, 256, "Asset\\Player\\stand_8\\%d.png", i);
 
-			TList.push_back(_pTexture);
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.5f);
 		}
 
@@ -170,11 +162,9 @@ void Player::SetAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 8; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset/Player/walk_8/%d.png", i);
-			_pTexture = new Texture();
-			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+			sprintf_s(str, 256, "Asset\\Player\\walk_8\\%d.png", i);
 
-			TList.push_back(_pTexture);
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
 		}
 
@@ -191,11 +181,9 @@ void Player::SetAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 19; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset/Player/attack_8/%d.png", i);
-			_pTexture = new Texture();
-			_pTexture->Init(D3D9DEVICE->GetDevice(), str);
+			sprintf_s(str, 256, "Asset\\Player\\attack_8\\%d.png", i);
 
-			TList.push_back(_pTexture);
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
 		}
 
@@ -214,9 +202,12 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 	{
 		if (pSkill->GetSkillID() == id)
 		{
-			if (_tStat->_iMP >= pSkill->GetUsingMp())
+			int SkillMp = pSkill->GetUsingMp();
+			if (_tStat->_iMP >= SkillMp)
+			{
 				pSkill->Using(vPos, _pTrans);
-
+				_tStat->_iMP -= SkillMp;
+			}
 			break;
 		}
 	}
@@ -255,4 +246,25 @@ void Player::Move(D3DXVECTOR3 dest)
 
 	_bFind =_pPathFinding->FindPath(_pTrans->GetWorldPosition(),dest);
 	_pPath = (_pPathFinding->GetPath());
+}
+
+float Player::GetHPPer()
+{
+	float per = 1.f / (_tStat->_fMaxHp);
+	per *= _tStat->_fHp;
+	return per;
+}
+
+float Player::GetMPPer()
+{
+	float per = 1.f / (_tStat->_iMaxMp);
+	per *= _tStat->_iMP;
+	return per;
+}
+
+float Player::GetStaminaPer()
+{
+	float per = 1.f / (_tStat->_fMaxStamina);
+	per *= _tStat->_fStamina;
+	return per;
 }

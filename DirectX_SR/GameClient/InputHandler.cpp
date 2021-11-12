@@ -39,6 +39,13 @@ void InputHandler::Update(float fElapsedTime) noexcept
 
 }
 
+void InputHandler::OnDestroy(void) noexcept
+{
+	delete _pLBCommand;
+	delete _pRBCommand;
+	delete _pMoveCommand;
+}
+
 D3DXVECTOR3 InputHandler::MousePicking()
 {
 	POINT		ptMouse{};

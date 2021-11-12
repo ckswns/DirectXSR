@@ -19,14 +19,17 @@ public:		virtual					~Player(void) noexcept { __noop; }
 
 public:		virtual void				Start(void) noexcept;
 public:		virtual void				Update(float fElapsedTime) noexcept;
+public:		virtual void				OnDestroy(void) noexcept;
 
-private:		void						SetAnimation(SpriteRenderer* mr);
+private:		void						InitAnimation(SpriteRenderer* mr);
 
 public:		void						UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 public:		void						Attack(D3DXVECTOR3 _vMonsterPos);
 public:		void						Move(D3DXVECTOR3 dest);
 
-public:		void						SetRun(bool run) { _bRun = run; }
+public:		float						GetHPPer();
+public:		float						GetMPPer();
+public:		float						GetStaminaPer();
 
 private:		Transform*				_pTrans;
 private:		Animator*				_pAnimator;

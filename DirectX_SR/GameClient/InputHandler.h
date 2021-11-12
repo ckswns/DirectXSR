@@ -15,6 +15,7 @@ public:		virtual					~InputHandler(void) noexcept { __noop; }
 
 public:		virtual void				Start(void) noexcept;
 public:		virtual void				Update(float fElapsedTime) noexcept;
+public:		virtual void				OnDestroy(void) noexcept;
 
 private:		D3DXVECTOR3		MousePicking();
 

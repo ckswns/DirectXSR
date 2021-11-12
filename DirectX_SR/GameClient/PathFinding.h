@@ -9,13 +9,15 @@ class NeviMesh;
 class PathFinding 
 {
 public:		explicit		PathFinding(NeviMesh* nevi) noexcept;
-public:		virtual		~PathFinding() noexcept { __noop; }
+public:		virtual		~PathFinding() noexcept;
 
 public:		virtual void				Start() noexcept { __noop; }
 
 public:		bool						FindPath(D3DXVECTOR3 vStartPos,D3DXVECTOR3 vTargetPos);
 private:		void						RetracePath(Node* startNode, Node* endNode);
-private:		float							GetDistance(Node* A, Node* B);
+private:		float						GetDistance(Node* A, Node* B);
+private:		void						Release() noexcept;
+
 public:		std::list<Node*>		GetPath() { return _pPath; }
 
 private:		Transform*				_pTrans;
