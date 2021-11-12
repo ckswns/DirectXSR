@@ -23,16 +23,19 @@ namespace ce
 	public:		bool					GetLoadingState(void) const noexcept { return _bWhileLoading; }
 	public:		float					GetLoadingProgress(void) const noexcept { return _fLoadProgress; }
 
+#ifdef __USE_FMOD__
 	public:		AudioAsset*				GetAudioAsset(std::string _key) noexcept;
-
+#endif
 	public:		const AssetMap&			GetCSVAssetMap(void) const noexcept { return _mapAsset[static_cast<int>(AssetType::TEXT)]; }
 	public:		const AssetMap&			GetAudioAssetMap(void) const noexcept { return _mapAsset[static_cast<int>(AssetType::AUDIO)]; }
 	public:		const AssetMap&			GetTextureAssetMap(void) const noexcept { return _mapAsset[static_cast<int>(AssetType::TEXTURE)]; }
 
 	public:		Texture*				GetTextureData(std::string _key) noexcept;
 	public:		CONST_PTR_CSVDATA		GetCSVData(std::string _key) noexcept;
-	public:		FMOD::Sound*			GetAudioData(std::string _key) noexcept;
 
+#ifdef __USE_FMOD__
+	public:		FMOD::Sound*			GetAudioData(std::string _key) noexcept;
+#endif
 	private:	bool					LoadAssetAsync(std::string _assetFolderPath, std::string* showingStr) noexcept;
 		   
 	private:	AssetMap				_mapAsset[static_cast<int>(AssetType::END)];

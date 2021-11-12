@@ -116,7 +116,7 @@ void CubeTab::OnBnClickedScaleReset()
 	else
 	{
 		MeshRenderer* renderer = static_cast<MeshRenderer*>(_pGameObject->GetComponent(COMPONENT_ID::RENDERER));
-		renderer->GetMaterialPTR()->SetTexture(_pTexture);
+		renderer->GetMaterialPTR()->SetMainTexture(_pTexture);
 	}
 	
 	UpdateData(FALSE);
@@ -168,7 +168,7 @@ void CubeTab::OnBnClickedDataLoad()
 	if (_pGameObject)
 	{
 		MeshRenderer* renderer = static_cast<MeshRenderer*>(_pGameObject->GetComponent(COMPONENT_ID::RENDERER));
-		renderer->GetMaterialPTR()->SetTexture(nullptr);
+		renderer->GetMaterialPTR()->SetMainTexture(nullptr);
 	}
 
 	if (_vecObject.empty() == false)
@@ -303,7 +303,7 @@ void CubeTab::OnBnClickedLoadTextureList()
 	if (_pGameObject)
 	{
 		MeshRenderer* renderer = static_cast<MeshRenderer*>(_pGameObject->GetComponent(COMPONENT_ID::RENDERER));
-		renderer->GetMaterialPTR()->SetTexture(nullptr);
+		renderer->GetMaterialPTR()->SetMainTexture(nullptr);
 	}
 
 	if (_mapTex.empty() == false)

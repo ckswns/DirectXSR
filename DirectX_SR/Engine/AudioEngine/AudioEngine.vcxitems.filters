@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="AudioListener">
+      <UniqueIdentifier>{28ee2c37-e838-4dfa-a86a-4d96c1c7c17d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AudioSource">
+      <UniqueIdentifier>{bbff5c41-bbdd-461b-b3d3-ac8e682eb24a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FMODManager">
+      <UniqueIdentifier>{53042cea-269d-4092-89b5-4d796546c6cd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioListener.cpp">
+      <Filter>AudioListener</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioSource.cpp">
+      <Filter>AudioSource</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FMODManager.cpp">
+      <Filter>FMODManager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioListener.h">
+      <Filter>AudioListener</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioSource.h">
+      <Filter>AudioSource</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FMODManager.h">
+      <Filter>FMODManager</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

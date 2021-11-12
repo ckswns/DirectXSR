@@ -19,7 +19,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CubeObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DirectionLight.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EditorCamera.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)FMODManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)INIManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ManagerDef.h" />
@@ -35,7 +34,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)CubeObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DirectionLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EditorCamera.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)FMODManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameController.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)INIManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Input.cpp" />

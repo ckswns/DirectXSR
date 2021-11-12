@@ -11,6 +11,7 @@ namespace ce
 	public:		void					SetColor(D3DXCOLOR c) noexcept;
 	public:		void					SetColor(D3DCOLORVALUE c) noexcept { _mat.Diffuse = c; }
 	public:		D3DXCOLOR				GetColor(void) const noexcept;
+	public:		void					SetIntensity(float rhs) noexcept { _mat.Power = rhs; }
 
 	public:		void					SetTextures(const Texture::TList& textures) noexcept;
 	public:		Texture*				GetTexture(uint32 index) noexcept;
@@ -23,6 +24,7 @@ namespace ce
 	public:		const D3DMATERIAL9&		GetNativeMaterial(void) const noexcept { return _mat; }
 
 	public:		void					Render(LPDIRECT3DDEVICE9 pDevice) noexcept;
+	public:		void					Render(LPDIRECT3DDEVICE9 pDevice, int index) noexcept;
 
 	private:	D3DMATERIAL9			_mat;
 	private:	Texture::TList			_textures;

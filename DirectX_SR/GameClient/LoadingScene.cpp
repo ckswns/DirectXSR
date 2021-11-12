@@ -119,17 +119,8 @@ void LoadingScene::Update(float fElapsedTime) noexcept
 	a += fElapsedTime * 0.5f;
 	_imgProgressFront->SetFillAmount(/*ASSETMANAGER->GetLoadingProgress()*/a);
 
-	//_aniTime += fElapsedTime;
-
-	//if (_aniTime > 0.05f)
-	//{
-	//	_aniIndex++;
-	//	if (_aniIndex > 14)
-	//		_aniIndex = 0;
-
-	//	_imgLogo->SetTexture(_logo[_aniIndex]);
-	//	_aniTime = 0;
-	//}
+	if (a >= 1 && !ASSETMANAGER->GetLoadingState())
+		SCENEMANAGER->LoadScene("Town_01");
 }
 
 void LoadingScene::LateUpdate(float fElapsedTime) noexcept
@@ -144,19 +135,35 @@ void LoadingScene::Render(float fElapsedTime) noexcept
 
 void LoadingScene::Release(void) noexcept
 {
-	_texProgressBarBack->Release();
-	_texProgressBarFront->Release();
-	_texBg->Release();
-
-	for (int i = 0; i < 15; i++)
+	if (_texProgressBarBack)
 	{
-		_logo[i]->Release();
-		delete _logo[i];
+		_texProgressBarBack->Release();
+		delete _texProgressBarBack;
+		_texProgressBarBack = nullptr;
 	}
 
-	delete _texBg;
-	delete _texProgressBarFront;
-	delete _texProgressBarBack;
+	if (_texProgressBarFront)
+	{
+		_texProgressBarFront->Release();
+		delete _texProgressBarFront;
+		_texProgressBarFront = nullptr;
+	}
+
+	if (_texBg)
+	{
+		_texBg->Release();
+		delete _texBg;
+		_texBg = nullptr;
+	}
+	for (int i = 0; i < 15; i++)
+	{
+		if (_logo[i])
+		{
+			_logo[i]->Release();
+			delete _logo[i];
+			_logo[i] = nullptr;
+		}
+	}
 }
 
 //void LoadingScene::Test(void) noexcept

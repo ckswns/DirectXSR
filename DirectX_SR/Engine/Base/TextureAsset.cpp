@@ -12,9 +12,11 @@ namespace ce
 
 	bool TextureAsset::Load(std::string _filePath) noexcept
 	{
-		_data = new Texture();
+		Texture* tex = new Texture();
+		bool result = tex->Init(D3D9Device::Instance()->GetDevice(), _filePath.c_str());
+		_data = (void*)tex;
 
-		return reinterpret_cast<Texture*>(_data)->Init(D3D9Device::Instance()->GetDevice(), _filePath.c_str());
+		return result;
 	}
 
 	void TextureAsset::Release(void) noexcept

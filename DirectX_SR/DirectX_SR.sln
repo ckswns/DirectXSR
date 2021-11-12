@@ -39,9 +39,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AnimationTool", "AnimationT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationTool", "AnimationTool\AnimationTool.csproj", "{2DDAB95E-AC57-4E9C-B0E6-E9370FB509DC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AudioEngine", "Engine\AudioEngine\AudioEngine.vcxitems", "{E3CBB9A2-5990-4EC7-8908-16E10A2A255A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Engine\Base\Base.vcxitems*{067c1003-9c41-4524-ac51-5eac5921d62e}*SharedItemsImports = 9
+		Engine\AudioEngine\AudioEngine.vcxitems*{71013861-a19a-4cc9-b5d2-59986e15d383}*SharedItemsImports = 4
 		Engine\Base\Base.vcxitems*{71013861-a19a-4cc9-b5d2-59986e15d383}*SharedItemsImports = 4
 		Engine\Component\Component.vcxitems*{71013861-a19a-4cc9-b5d2-59986e15d383}*SharedItemsImports = 4
 		Engine\GameSystem\GameSystem.vcxitems*{71013861-a19a-4cc9-b5d2-59986e15d383}*SharedItemsImports = 4
@@ -54,6 +57,7 @@ Global
 		Engine\Component\Component.vcxitems*{c7066174-8323-4476-a48e-5d061f4a6ee3}*SharedItemsImports = 4
 		Engine\GameSystem\GameSystem.vcxitems*{c7066174-8323-4476-a48e-5d061f4a6ee3}*SharedItemsImports = 4
 		Engine\RenderEngine\RenderEngine.vcxitems*{c7066174-8323-4476-a48e-5d061f4a6ee3}*SharedItemsImports = 4
+		Engine\AudioEngine\AudioEngine.vcxitems*{caf7dd69-6a6d-4468-b04a-a19fb7317842}*SharedItemsImports = 4
 		Engine\Base\Base.vcxitems*{caf7dd69-6a6d-4468-b04a-a19fb7317842}*SharedItemsImports = 4
 		Engine\Component\Component.vcxitems*{caf7dd69-6a6d-4468-b04a-a19fb7317842}*SharedItemsImports = 4
 		Engine\GameSystem\GameSystem.vcxitems*{caf7dd69-6a6d-4468-b04a-a19fb7317842}*SharedItemsImports = 4
@@ -63,6 +67,7 @@ Global
 		Engine\Component\Component.vcxitems*{d98a7372-9439-47f6-b3cf-eba4fd6cc6f3}*SharedItemsImports = 4
 		Engine\GameSystem\GameSystem.vcxitems*{d98a7372-9439-47f6-b3cf-eba4fd6cc6f3}*SharedItemsImports = 4
 		Engine\RenderEngine\RenderEngine.vcxitems*{d98a7372-9439-47f6-b3cf-eba4fd6cc6f3}*SharedItemsImports = 4
+		Engine\AudioEngine\AudioEngine.vcxitems*{e3cbb9a2-5990-4ec7-8908-16e10a2a255a}*SharedItemsImports = 9
 		Engine\RenderEngine\RenderEngine.vcxitems*{edcd1e12-b017-438e-b699-8256b7924533}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +152,7 @@ Global
 		{71013861-A19A-4CC9-B5D2-59986E15D383} = {2022811C-05B6-4A11-9473-B5D3AB673127}
 		{9704DDD1-CE2D-424D-B459-AC6939F042AA} = {9299F781-E035-4E3D-8CEA-C4705759AFB1}
 		{2DDAB95E-AC57-4E9C-B0E6-E9370FB509DC} = {9704DDD1-CE2D-424D-B459-AC6939F042AA}
+		{E3CBB9A2-5990-4EC7-8908-16E10A2A255A} = {7143FD9F-17E9-45E7-B014-81F2A4B909EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24EA95B6-1733-40BC-B106-E9EB7E3182F4}

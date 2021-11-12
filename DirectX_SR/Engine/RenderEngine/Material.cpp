@@ -83,4 +83,20 @@ namespace ce
 
 		pDevice->SetMaterial(&_mat);
 	}
+
+	void Material::Render(LPDIRECT3DDEVICE9 pDevice, int index) noexcept
+	{
+		if (pDevice == nullptr)
+			CE_ASSERT("ckswns", "Devcie객체가 nullptr입니다");
+
+		if (_textures.size() <= index)
+			CE_ASSERT("ckswns", "인덱스가 배열의 범위를 벗어났습니다.");
+
+		if (_textures[index] == nullptr)
+			pDevice->SetTexture(index, nullptr);
+		else
+			pDevice->SetTexture(index, _textures[index]->GetTexturePTR());
+
+		pDevice->SetMaterial(&_mat);
+	}
 }

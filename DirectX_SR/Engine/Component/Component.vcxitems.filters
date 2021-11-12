@@ -10,9 +10,6 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{49d5f4da-9924-4938-a067-52826cfa68de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AudioListener">
-      <UniqueIdentifier>{7b1083e3-33e2-40b4-8400-3eb23e33a44b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Renderer">
       <UniqueIdentifier>{8a1c49f7-b8d1-4c10-89b5-d28df887f685}</UniqueIdentifier>
     </Filter>
@@ -34,9 +31,6 @@
     <Filter Include="Physics\PhysicsMaterial">
       <UniqueIdentifier>{ec65d20c-e859-4100-a6d7-53fa7cea588f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AudioSource">
-      <UniqueIdentifier>{69bc0672-8077-4b2e-80d9-515103720476}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Behaviour">
       <UniqueIdentifier>{4a77d7a8-21bb-46b1-a734-e3f1f1831fe5}</UniqueIdentifier>
     </Filter>
@@ -55,6 +49,9 @@
     <Filter Include="Physics\Collider\BoxCollider">
       <UniqueIdentifier>{3debf6d4-a6ce-43b9-9939-a60daa0076cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderer\TerrainRenderer">
+      <UniqueIdentifier>{e6e02ee2-f6a3-4ca1-a364-8c8ef688be4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h">
@@ -63,12 +60,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Component.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h">
       <Filter>Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)AudioSource.h">
-      <Filter>AudioSource</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)AudioListener.h">
-      <Filter>AudioListener</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Renderer.h">
       <Filter>Renderer</Filter>
@@ -106,6 +97,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RigidBody.h">
       <Filter>Physics\Rigidbody</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TerrainRenderer.h">
+      <Filter>Renderer\TerrainRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
@@ -113,12 +107,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Camera.cpp">
       <Filter>Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)AudioSource.cpp">
-      <Filter>AudioSource</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)AudioListener.cpp">
-      <Filter>AudioListener</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Renderer.cpp">
       <Filter>Renderer</Filter>
@@ -155,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)RigidBody.cpp">
       <Filter>Physics\Rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TerrainRenderer.cpp">
+      <Filter>Renderer\TerrainRenderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -28,7 +28,7 @@ namespace ce
 		{
 			if (_pComponents[i] != nullptr)
 			{
-				_pComponents[i]->Release();
+				_pComponents[i]->Release(); 
 				delete _pComponents[i];
 				_pComponents[i] = nullptr;
 			}
@@ -278,11 +278,11 @@ namespace ce
 		}
     }
 
-  //  void GameObject::Destroy(void) noexcept
-  //  {
-		//if (_bDontDestroy == false)
-		//	_bWillDestroy = true;
-  //  }
+	void GameObject::Destroy(void) noexcept
+	{
+		if (_bDontDestroy == false)
+			_bWillDestroy = true;
+	}
 
     void GameObject::SetWorldActive(bool active) noexcept
     {
@@ -318,7 +318,8 @@ namespace ce
 
 	void GameObject::Destroy(GameObject* obj) noexcept
 	{
-
+		if (obj->_bDontDestroy == false)
+			obj->_bWillDestroy = true;
 	}
 
 	GameObject* GameObject::FindObjectByName(std::string name) noexcept

@@ -5,7 +5,9 @@
 #include "TextureAsset.h"
 #include "TextAsset.h"
 #include <thread>
+#ifdef __USE_FMOD__
 #include "FMODManager.h"
+#endif
 #include "Assertion.h"
 
 namespace fs = std::filesystem;
@@ -43,6 +45,7 @@ namespace ce
 		loading.detach();
 	}
 
+#ifdef __USE_FMOD__
 	AudioAsset* AssetManager::GetAudioAsset(std::string _key) noexcept
 	{
 		int index = static_cast<int>(AssetType::AUDIO);
@@ -53,7 +56,7 @@ namespace ce
 
 		return static_cast<AudioAsset*>(iter->second);
 	}
-
+#endif
 	Texture* AssetManager::GetTextureData(std::string _key) noexcept
 	{
 		int index = static_cast<int>(AssetType::TEXTURE);
@@ -75,7 +78,7 @@ namespace ce
 
 		return reinterpret_cast<CONST_PTR_CSVDATA>(iter->second->GetData());
 	}
-
+#ifdef __USE_FMOD__
 	FMOD::Sound* AssetManager::GetAudioData(std::string _key) noexcept
 	{
 		int index = static_cast<int>(AssetType::AUDIO);
@@ -86,7 +89,7 @@ namespace ce
 
 		return reinterpret_cast<FMOD::Sound*>(iter->second->GetData());
 	}
-
+#endif
 	bool AssetManager::LoadAssetAsync(std::string _assetFolderPath, std::string* showingStr) noexcept
 	{
 #ifdef __USE_FMOD__
@@ -149,7 +152,7 @@ namespace ce
 			switch (type)
 			{
 			case AssetType::TEXTURE:
-				asset = new TextAsset();
+				asset = new TextureAsset();
 
 				if (static_cast<TextureAsset*>(asset)->Load(entry.path().u8string()) == false)
 				{

@@ -107,6 +107,16 @@ namespace ce
 
 	constexpr DWORD		FVF_TEX_NORM = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1;
 
+	typedef struct tagVertexAlphaTextureNormal
+	{
+		D3DXVECTOR3		vPosition;
+		D3DXVECTOR3		vNormal;
+		D3DXVECTOR2		vAlphaUV;
+		D3DXVECTOR2		vTexUV;
+	}VTXALPHATEXNORM;
+
+	constexpr DWORD		FVF_ALPHA_TEX_NORM = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 | D3DFVF_TEX2;
+
 	typedef struct tagVertexCubeTextureNormal
 	{
 		D3DXVECTOR3		vPosition;

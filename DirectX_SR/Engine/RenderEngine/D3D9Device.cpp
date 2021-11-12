@@ -100,6 +100,8 @@ namespace ce
 		_pDevice->SetRenderState(D3DRS_LIGHTING, true);
 		_pDevice->SetRenderState(D3DRS_AMBIENT, 0x00202020);
 		_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+		_pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+		_pDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
 	}
 
 	void D3D9Device::End(void) noexcept

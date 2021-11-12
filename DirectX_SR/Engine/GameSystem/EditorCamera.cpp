@@ -24,7 +24,7 @@ namespace ce
 		c.r = 1;
 		c.g = 1;
 		c.b = 1;
-		gameObject->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
+		gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 10));
 		GetCursorPos(&_ptPrevMousePos);
 	}
 

@@ -14,10 +14,10 @@ namespace ce
 
 	bool Terrain::Open(LPDIRECT3DDEVICE9 pDevice) noexcept
 	{
-		_nFVF = FVF_TEX_NORM;
+		_nFVF = FVF_ALPHA_TEX_NORM;
 		_nTriCnt = (_width - 1) * (_height - 1) * 2;
 		_nVtxCnt = _width * _height;
-		_nVtxSize = sizeof(VTXTEXNORM);
+		_nVtxSize = sizeof(VTXALPHATEXNORM);
 
 		_idxFmt = D3DFMT_INDEX32;
 		_nIdxSize = sizeof(INDEX32);
@@ -29,7 +29,7 @@ namespace ce
 			CE_ASSERT("ckswns", "Mesh::Open에 실패하였습니다");
 		}
 
-		VTXTEXNORM* pVertex = nullptr;
+		VTXALPHATEXNORM* pVertex = nullptr;
 
 		D3DXVECTOR3 e0, e1;
 		D3DXVECTOR3 normal;
@@ -47,8 +47,9 @@ namespace ce
 			{
 				index = z * _width + x;
 
-				pVertex[index].vPosition = D3DXVECTOR3((x * interval), 0.f, (z * interval));
-				pVertex[index].vTexUV = D3DXVECTOR2(float(z) / (_height - 1), float(x) / (_width - 1));
+				pVertex[index].vPosition	= D3DXVECTOR3((x * interval), 0.f, (z * interval));
+				pVertex[index].vTexUV		= D3DXVECTOR2(float(x) / _width, 1 - (float(z) / _height));
+				pVertex[index].vAlphaUV		= D3DXVECTOR2(float(x) / _width, 1 - (float(z) / _height));
 
 				_pVtxPos[index] = pVertex[index].vPosition;
 			}
@@ -77,6 +78,8 @@ namespace ce
 				triCnt++;
 			}
 		}
+
+		//_nTriCnt = triCnt;
 
 		for (DWORD i = 0; i < triCnt; i++)
 		{

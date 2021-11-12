@@ -18,7 +18,7 @@ namespace ce
 	protected:	uint64					_nFVF;
 	protected:	uint64					_nIdxSize;
 
-	private:	bool					_bOpen = false;
+	protected:	bool					_bOpen = false;
 	protected:	float					_scaleFactor = 1;
 
 	protected:	D3DFORMAT				_idxFmt;

@@ -145,7 +145,7 @@ void ObjectTab::OnBnClickedPositionLoad()
 		pMesh->Open(D3D9DEVICE->GetDevice());
 
 		MeshRenderer* pMr = new MeshRenderer(D3D9DEVICE->GetDevice(), pMesh);
-		pMr->GetMaterialPTR()->SetTexture(pTex);
+		pMr->GetMaterialPTR()->SetMainTexture(pTex);
 
 		float worldX = 0;
 		float worldY = 0;

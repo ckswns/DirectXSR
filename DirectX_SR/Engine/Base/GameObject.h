@@ -67,6 +67,7 @@ namespace ce
 	public:		void								SetActive(bool active) noexcept;
 
 	private:	bool								GetWillDestroy(void) const noexcept { return _bWillDestroy; }
+	public:		void								Destroy(void) noexcept;
 
 	private:	void								SetWorldActive(bool active) noexcept;
 	private:	bool								GetLocalActive(void) const noexcept { return _bLocalActive; }
