@@ -28,14 +28,16 @@ namespace ce
 
 		_pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 
+		//알파 블렌딩
 		_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 		_pDevice->SetMaterial(&_material.GetNativeMaterial());
 		D3DXMATRIXA16 matTemp;
 
+		//_pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+		_pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 		_pDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-		_pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 
 		_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 		_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
@@ -46,6 +48,8 @@ namespace ce
 
 		_pDevice->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT2);
 		_pDevice->SetTextureStageState(0, D3DTSS_TEXCOORDINDEX, 0);
+
+		//텍스쳐 맵핑모드 
 		_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 		_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 
@@ -67,8 +71,10 @@ namespace ce
 		_pDevice->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
 
 		// Texture: take the color from the texture, take the alpha from the previous stage
-		_pDevice->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+	//	_pDevice->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_SELECTARG1); 
+		_pDevice->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_MODULATE);
 		_pDevice->SetTextureStageState(1, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+
 		_pDevice->SetTextureStageState(1, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 		_pDevice->SetTextureStageState(1, D3DTSS_ALPHAARG1, D3DTA_CURRENT);
 
