@@ -22,7 +22,7 @@ CubeTab::CubeTab(CWnd* pParent /*=nullptr*/)
 	, _fScaleY(1.f)
 	, _fScaleZ(1.f)
 	, _CubeNumber(0)
-	, iFloor(1)
+	, iFloor(1.f)
 {
 }
 
@@ -81,18 +81,6 @@ void CubeTab::OnBnClickedCreateCube()
 
 	UpdateData(FALSE);
 }
-
-//void CubeTab::OnBnClickedScaleApply()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//
-//	UpdateData(TRUE);
-//	
-//	_pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
-//
-//	UpdateData(FALSE);
-//}
-
 
 void CubeTab::OnBnClickedScaleReset()
 {
@@ -208,6 +196,7 @@ void CubeTab::OnBnClickedDataLoad()
 		_fScaleY = stof(strLoadScaleY);
 		_fScaleZ = stof(strLoadScaleZ);
 
+		_vScale = { _fScaleX,_fScaleY,_fScaleZ };
 		size_t split;
 		split = strLoadFilePath.find('\\');
 
@@ -273,28 +262,6 @@ void CubeTab::OnBnClickedScaleApply()
 
 	UpdateData(FALSE);
 }
-
-
-//void CubeTab::OnBnClickedScaleReset()
-//{
-//	// TODO: Scale 초기화
-//	UpdateData(TRUE);
-//
-//	if (_pGameObject == nullptr)
-//	{
-//		MessageBoxA(nullptr, "오브젝트가 없습니다.", "Scale Reset Error", MB_OK);
-//		return;
-//	}
-//
-//	_fScaleX = 1.f;
-//	_fScaleY = 1.f;
-//	_fScaleZ = 1.f;
-//
-//	_pGameObject->GetTransform()->SetLocalScale(_fScaleX, _fScaleY, _fScaleZ);
-//
-//	UpdateData(FALSE);
-//}
-
 
 void CubeTab::OnBnClickedLoadTextureList()
 {
@@ -524,8 +491,4 @@ void CubeTab::OnEnChangeCubeFloor()
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	UpdateData(TRUE);
-
-	iFloor;
-
-	UpdateData(FALSE);
 }

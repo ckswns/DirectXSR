@@ -158,7 +158,9 @@ void CMapToolView::OnInitialUpdate()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	pGameObject = GameObject::Instantiate();
-	pGameObject->AddComponent(new EditorCamera(g_hWnd,2));
+	pGameObject->GetTransform()->SetLocalEulerAngle(45, 0, 0);
+	pGameObject->GetTransform()->SetWorldPosition(0, 3, 0);
+	pGameObject->AddComponent(new EditorCamera(g_hWnd,0.5f));
 }
 
 
@@ -191,6 +193,7 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 			Texture* pTex = pCubetab->_mapTex[cstrTextureName.GetString()].second;
 			std::string filepath = pCubetab->_mapTex[cstrTextureName.GetString()].first;
 			pGameObject->AddComponent(new CubeObject(pTex));
+			pGameObject->GetTransform()->SetLocalScale(pCubetab->_vScale.x, pCubetab->_vScale.y, pCubetab->_vScale.z);
 			pGameObject->GetTransform()->SetWorldPosition(vPickingPos);
 
 			_vecCube.emplace_back(pGameObject, filepath);
@@ -246,22 +249,15 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CMapToolView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
 	g_MousePos = point;
 
 	Invalidate(FALSE);
-	//CView::OnMouseMove(nFlags, point);
 }
 
 void CMapToolView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
 	if(_mesh != nullptr)
 		static_cast<FloorTerrain*>(_mesh)->SetClicked(FALSE);
-
-	CView::OnLButtonUp(nFlags, point);
 }
 
 
@@ -354,6 +350,46 @@ void CMapToolView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				break;
 			}
 		}
+	}
+	
+	if (GetAsyncKeyState(VK_UP) & 0x8000)
+	{
+		for (int i = 0; i < MAXTEXNUM; ++i)
+		{
+			int* pIndex = static_cast<FloorTerrain*>(_mesh)->GetDrawIndex();
+
+			if (i > 0 && static_cast<FloorTerrain*>(_mesh)->GetCurSelIndex() == pIndex[i])
+			{
+				int nTemp = pIndex[i];
+				pIndex[i] = pIndex[i - 1];
+				pIndex[i - 1] = nTemp;
+				break;
+			}
+		}
+	}
+
+	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	{
+		for (int i = 0; i < MAXTEXNUM; ++i)
+		{
+			int* pIndex = static_cast<FloorTerrain*>(_mesh)->GetDrawIndex();
+
+			if (i < MAXTEXNUM - 1 && static_cast<FloorTerrain*>(_mesh)->GetCurSelIndex() == pIndex[i])
+			{
+				int nTemp = pIndex[i];
+				pIndex[i] = pIndex[i + 1];
+				pIndex[i + 1] = nTemp;
+				break;
+			}
+		}
+	}
+
+	if (INPUT->GetKeyDown('I') || INPUT->GetKeyDown('i'))
+	{
+		if (g_bWireMode)
+			g_bWireMode = false;
+		else
+			g_bWireMode = true;
 	}
 
 

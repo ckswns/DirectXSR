@@ -66,12 +66,14 @@ void FloorTerrain::Close(void) noexcept
 
 void FloorTerrain::Render(LPDIRECT3DDEVICE9 pDevice) noexcept
 {
-	_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	if (g_bWireMode)
+		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	else
+		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
+	_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
 	_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
-
-	// Allow multiple passes to blend together correctly
-	// 여러 패스가 올바르게 혼합되도록 허용
-
 	_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -92,9 +94,6 @@ void FloorTerrain::Render(LPDIRECT3DDEVICE9 pDevice) noexcept
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 	_pGraphicDev->SetTextureStageState(0, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
-	//_pGraphicDev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
-	//_pGraphicDev->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
-	//_pGraphicDev->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
 }
 
 bool FloorTerrain::TerrainInit(DWORD wWidth, DWORD wHeight, float fLength)
@@ -275,9 +274,6 @@ void FloorTerrain::SetAlphaTex(IDirect3DTexture9* pTexture, IDirect3DTexture9* p
 {
 	_Tex[i].pTexture = pTexture;
 	_Tex[i].pAlphamap = pTextureAlpha;
-
-	//memcpy(_Tex[i].pTexture, pTexture, sizeof(IDirect3DTexture9)); 
-	//memcpy(_Tex[i].pAlphamap, pTextureAlpha, sizeof(IDirect3DTexture9));
 }
 
 bool FloorTerrain::LoadTextures()

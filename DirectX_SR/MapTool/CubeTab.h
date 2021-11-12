@@ -50,5 +50,7 @@ public:
 	afx_msg void OnBnClickedPickingSave();
 	afx_msg void OnBnClickedPickingLoad();
 	afx_msg void OnEnChangeCubeFloor();
-	int iFloor;
+	float iFloor;
+
+	D3DXVECTOR3 _vScale;
 };

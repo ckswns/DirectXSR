@@ -35,6 +35,7 @@ bool			g_bInitGame = false;
 
 RECT			g_rtMfc;
 CPoint			g_MousePos = {0,0};
+bool			g_bWireMode = false;
 
 CMapToolApp::CMapToolApp() noexcept
 {
