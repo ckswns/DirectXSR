@@ -10,8 +10,8 @@
 #include "PathFinding.h"
 
 #include "EditorCamera.h"
+#include "TargetCamera.h"
 #include "Terrain.h"
-#include "Texture.h"
 #include "MeshRenderer.h"
 
 #include "Image.h"
@@ -25,9 +25,6 @@ bool Game::Init(void) noexcept
 {
     InitUI();
 
-    Texture* _pTexture = new Texture();
-    _pTexture->Init(D3D9DEVICE->GetDevice(), "Asset/Tile.png");
-
     //Terrain
     GameObject*  pGameObj = GameObject::Instantiate();
     Terrain* terrain = new Terrain(20,20);
@@ -37,7 +34,7 @@ bool Game::Init(void) noexcept
     pGameObj->AddComponent(mr);
 
     std::vector<Texture*> TList;
-    TList.push_back(_pTexture);
+    TList.push_back(ASSETMANAGER->GetTextureData("Asset\\Tile.png"));
     mr->GetMaterialPTR()->SetTextures(TList);
     pGameObj->GetTransform()->SetLocalPosition(-2, 0, -1);
 
@@ -56,11 +53,9 @@ bool Game::Init(void) noexcept
     pGameObj = GameObject::Instantiate();
     pGameObj->AddComponent(new InputHandler(pPlayerObj, terrain));
 
-    //EditorCamera
+    //TargetCamera
     pGameObj = GameObject::Instantiate();
-    pGameObj->AddComponent(new EditorCamera(g_hWnd));
-    pGameObj->GetTransform()->SetLocalPosition(7, 8, -8);
-    pGameObj->GetTransform()->SetLocalEulerAngle(-50, 0, 0);
+    pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
 
     return false;
 }
@@ -107,12 +102,12 @@ void Game::InitUI() noexcept
     pObj = GameObject::Instantiate();
     pObj->AddComponent(_imgHP);
     pObj->SetSortOrder(0);
-    pObj->GetTransform()->SetWorldPosition(270, 630, 0);
+    pObj->GetTransform()->SetWorldPosition(270, 627, 0);
 
     _imgMP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\MPBall.png"));
     pObj = GameObject::Instantiate();
     pObj->AddComponent(_imgMP);
     pObj->SetSortOrder(0);
-    pObj->GetTransform()->SetWorldPosition(930, 630, 0);
+    pObj->GetTransform()->SetWorldPosition(930, 627, 0);
 
 }

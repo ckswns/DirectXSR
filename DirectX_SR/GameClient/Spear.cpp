@@ -10,10 +10,10 @@
 void Spear::Start(void) noexcept
 {
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\BoneSpear\\Spear\\0.png"));
-	GetGameObject()->AddComponent(sr);
+	gameObject ->AddComponent(sr);
 
 	Animator* pAnimator = new Animator(true);
-	GetGameObject()->AddComponent(pAnimator);
+	gameObject->AddComponent(pAnimator);
 
 	std::vector<Texture*> TList;
 	std::vector<float>		FrameTime;

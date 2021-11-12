@@ -193,6 +193,7 @@
     <ClInclude Include="SkillCommand.h" />
     <ClInclude Include="Spear.h" />
     <ClInclude Include="SpearTrail.h" />
+    <ClInclude Include="TargetCamera.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TownScene_01.h" />
   </ItemGroup>
@@ -223,6 +224,7 @@
     <ClCompile Include="SkillCommand.cpp" />
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="SpearTrail.cpp" />
+    <ClCompile Include="TargetCamera.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
   </ItemGroup>
   <ItemGroup>

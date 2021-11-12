@@ -40,13 +40,13 @@ void Player::Start(void) noexcept
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
-	GetGameObject()->AddComponent(new AudioListener());
+	gameObject->AddComponent(new AudioListener());
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"));
-	GetGameObject()->AddComponent(sr);
+	gameObject->AddComponent(sr);
 
 	_pAnimator = new Animator(true);
-	GetGameObject()->AddComponent(_pAnimator);
+	gameObject ->AddComponent(_pAnimator);
 	InitAnimation(sr);
 
 	InitState();

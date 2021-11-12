@@ -27,7 +27,6 @@ private:		void						InitState();
 public:		void						SetState(PLAYER_STATE newState,D3DXVECTOR3 vTarget = D3DXVECTOR3(0,-5,0),bool bAtt = false);
 public:		void						UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 
-
 public:		bool						IsRunning(float fElapsedTime);
 
 public:		float						GetHPPer();

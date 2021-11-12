@@ -27,7 +27,7 @@ public:	const int				GetX() const { return _iX; }
 public:	const int				GetY() const { return _iY; }
 public:	const float				GetGCost() const { return _fGCost; }
 public:	const float				GetFCost() const { return _fFCost; }
-public:	Node*			GetParent() const { return _pParent; }
+public:	Node*					GetParent() const { return _pParent; }
 public:	const LIST_NODE	GetNeighbours() const { return _pNeighbours; }
 public:	D3DXVECTOR3		GetPos() { return  _vCenter; }
 
