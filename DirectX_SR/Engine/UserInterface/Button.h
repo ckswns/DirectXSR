@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include "Component.h"
 #include "Assertion.h"
 #include "Material.h"
