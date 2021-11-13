@@ -15,6 +15,8 @@
 
 #include "Image.h"
 #include "Button.h"
+
+#include "Skeleton.h"
 using namespace ce::UI;
 Game::Game(void) noexcept
 {
@@ -54,6 +56,13 @@ bool Game::Init(void) noexcept
     //TargetCamera
     pGameObj = GameObject::Instantiate();
     pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
+
+    //for (int i = 0; i < 20; i++)
+    //{
+    //    pGameObj = GameObject::Instantiate();
+    //    pGameObj->AddComponent(new Skeleton());
+    //}
+
 
     InitUI();
 

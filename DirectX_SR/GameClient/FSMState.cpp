@@ -33,8 +33,7 @@ DIR FSMState::GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd)
 	D3DXVECTOR3 vCross = *D3DXVec3Cross(&vCross, &vDir, &vLook);
 	float dotValue = D3DXVec3Dot(&vCross, &vUp);
 	if (!bFront)
-	{
-		
+	{	
 		if (dotValue > 0) //По
 		{
 			if (bSide) return LEFT;
@@ -48,8 +47,6 @@ DIR FSMState::GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd)
 	}
 	else
 	{
-		//D3DXVECTOR3 vCross = *D3DXVec3Cross(&vCross, &vDir, &vLook);
-		//float dotValue = D3DXVec3Dot(&vUp, &vCross);
 		if (dotValue > 0) //По
 		{
 			if (bSide) return LEFT;

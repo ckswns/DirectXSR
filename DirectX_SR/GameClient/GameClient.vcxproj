@@ -190,6 +190,11 @@
     <ClInclude Include="RaiseSkeleton.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="SkeletonCreate.h" />
+    <ClInclude Include="SkeletonDead.h" />
+    <ClInclude Include="SkeletoneAttack.h" />
+    <ClInclude Include="SkeletonMove.h" />
+    <ClInclude Include="SkeletonStand.h" />
     <ClInclude Include="Skill.h" />
     <ClInclude Include="SkillCommand.h" />
     <ClInclude Include="Spear.h" />
@@ -223,6 +228,11 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RaiseSkeleton.cpp" />
     <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="SkeletonCreate.cpp" />
+    <ClCompile Include="SkeletonDead.cpp" />
+    <ClCompile Include="SkeletoneAttack.cpp" />
+    <ClCompile Include="SkeletonMove.cpp" />
+    <ClCompile Include="SkeletonStand.cpp" />
     <ClCompile Include="SkillCommand.cpp" />
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="SpearTrail.cpp" />

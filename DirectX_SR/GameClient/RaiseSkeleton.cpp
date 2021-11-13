@@ -5,7 +5,7 @@
 #include"Transform.h"
 
 RaiseSkeleton::RaiseSkeleton() noexcept
-    :Skill(SKILL_ID::RAISE_SKELETON,30), _iMaxSkeleton(2), _iCount(0), _iIdx(0)
+    :Skill(SKILL_ID::RAISE_SKELETON,30), _iMaxSkeleton(20), _iCount(0), _iIdx(0)
 {
     for (int i = 0; i < (_iMaxSkeleton + 1); i++)
     {
@@ -25,7 +25,7 @@ bool RaiseSkeleton::Using(D3DXVECTOR3 vPos, Transform* pTrans) noexcept
         
         //ÇÏ³ª ¾ø¾Ú
         Skeleton* sk = _Skeletones[index];
-        sk->Destroy();
+        sk->SetState(SK_DEAD);
 
         _iCount = 1;
 
@@ -37,9 +37,17 @@ bool RaiseSkeleton::Using(D3DXVECTOR3 vPos, Transform* pTrans) noexcept
 
     _iCount++;
     _iIdx++;
-    if (_iIdx == 3)
+    if (_iIdx == _iMaxSkeleton+1)
         _iIdx = 0;
 
     return true;
+}
+
+void RaiseSkeleton::SetPathFinding(PathFinding* pf)
+{
+    for (size_t i= 0; i < _Skeletones.size(); i++)
+    {
+        _Skeletones[i]->SetPathFinding(pf);
+    }
 }
 

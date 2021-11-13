@@ -1,12 +1,14 @@
 #pragma once
 #include "Behaviour.h"
 
-namespace ce 
+namespace ce
 {
 	class Transform;
 	class Animator;
 	class SpriteRenderer;
 }
+class FSMState;
+class PathFinding;
 class Skeleton : public Behaviour
 {
 public:		typedef struct SkeletonStat
@@ -24,24 +26,31 @@ public:		typedef struct SkeletonStat
 				float		_fSpeed;
 			}SK_STAT;
 
-public:		explicit			Skeleton() noexcept;
-public:		virtual			~Skeleton(void) noexcept { __noop; }
+public:		explicit				Skeleton() noexcept;
+public:		virtual					~Skeleton(void) noexcept { __noop; }
 
-public:		virtual void		Start(void) noexcept;
-public:		virtual void		Update(float fElapsedTime) noexcept;
+public:		virtual void			Start(void) noexcept;
+public:		virtual void			Update(float fElapsedTime) noexcept;
 
-public:		void				Create(Transform* trans);
-public:		void				Destroy();
+public:		void					Create(Transform* trans);
+public:		void					SetState(SK_STATE newState, DIR eDir = DIR_END, D3DXVECTOR3 vTarget= D3DXVECTOR3(0, -5, 0), bool bAtt = false);
+public:		void					SetPathFinding(PathFinding* pf);
 
-private:	void				InitAnimation(SpriteRenderer* sr);
+private:	void					InitAnimation(SpriteRenderer* sr);
+private:	void					InitState();
 
-private:	Transform*		_pTrans;
-private:	Transform*		_pOwnerTrans;
-private:	Animator*		_pAnimator;
-private:	bool			_bOnce;
-private:	bool			_bDestroy;
+private:	Transform*				_pTrans;
+private:	Transform*				_pOwnerTrans;
+private:	Animator*				_pAnimator;
+private:	PathFinding*			_pPathFinding;
 
-private:	SK_STAT			_tStat;
-private:	float			_fMaxDist;
+private:	std::vector<FSMState*>	_pFSM;
+private:	SK_STATE				_eCurState;
+
+private:	bool					_bOnce;
+
+private:	SK_STAT					_tStat;
+private:	float					_fMaxDist;
+private:	float					_fSpeed;
 };
 

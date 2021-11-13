@@ -3,7 +3,7 @@
 class PlayerStand :	public FSMState
 {
 public:		explicit			PlayerStand() noexcept = delete;
-public:		explicit			PlayerStand(Animator* pAnim) noexcept :FSMState(nullptr,pAnim) { __noop; }
+public:		explicit			PlayerStand(Animator* pAnim) noexcept :FSMState(pAnim) { __noop; }
 public:		virtual				~PlayerStand() noexcept { __noop; }
 
 public:		virtual void		Start() noexcept;
