@@ -22,11 +22,14 @@ public:		void				Render(float fElapsedTime) noexcept override;
 public:		void				Release(void) noexcept override;
 
 private:	void				InitUI() noexcept;
+public:	void				RClick();
 
 private:	UI::Image*			_imgStamina;
 private:	UI::Image*			_imgHP;
 private:	UI::Image*			_imgMP;
 private:	Player*				_pPlayer;
+
+private:	GameObject* btnTest;
 
 };
 

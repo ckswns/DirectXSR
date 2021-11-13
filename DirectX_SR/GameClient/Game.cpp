@@ -9,13 +9,12 @@
 #include "NaviMesh.h"
 #include "PathFinding.h"
 
-#include "EditorCamera.h"
 #include "TargetCamera.h"
 #include "Terrain.h"
 #include "MeshRenderer.h"
 
 #include "Image.h"
-#include "RectTransform.h"
+#include "Button.h"
 using namespace ce::UI;
 Game::Game(void) noexcept
 {
@@ -110,4 +109,21 @@ void Game::InitUI() noexcept
     pObj->SetSortOrder(0);
     pObj->GetTransform()->SetWorldPosition(930, 627, 0);
 
+    pObj = GameObject::Instantiate();
+    Image* img = static_cast<Image*>(pObj->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\30.png"))));
+    pObj->GetTransform()->SetWorldPosition(875, 675, 0);
+    Button<Game>* btnR = static_cast<Button<Game>*>(pObj->AddComponent(new Button<Game>(this)));
+    btnR->onMouseDown += &Game::RClick;
+    pObj->SetName("test");
+
+    btnTest = GameObject::Instantiate();
+    img = static_cast<Image*>(btnTest->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\30.png"))));
+    btnTest->GetTransform()->SetWorldPosition(875, 627, 0);
+    //Button<Game>* btn = static_cast<Button<Game>*>(btnTest->AddComponent(new Button<Game>(this)));
+    btnTest->SetActive(false);
+}
+
+void Game::RClick()
+{
+    btnTest->SetActive(true);
 }
