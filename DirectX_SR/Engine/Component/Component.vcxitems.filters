@@ -94,7 +94,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BoxCollider.h">
       <Filter>Physics\Collider\BoxCollider</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)RigidBody.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Rigidbody.h">
       <Filter>Physics\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TerrainRenderer.h">
@@ -141,7 +141,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BoxCollider.cpp">
       <Filter>Physics\Collider\BoxCollider</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)RigidBody.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Rigidbody.cpp">
       <Filter>Physics\Rigidbody</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TerrainRenderer.cpp">

@@ -9,7 +9,8 @@ namespace ce
 {
 	uint16 Light::_lightIDBuff = 0;
 
-	Light::Light(Light::Type type, LPDIRECT3DDEVICE9 pDevice, IN const D3DCOLORVALUE& color, float range, float attenuation, float theta, float phi, float fallOff) :
+	Light::Light(Light::Type type, LPDIRECT3DDEVICE9 pDevice, IN const D3DCOLORVALUE& color, float range, 
+				float attenuation0, float attenuation1, float attenuation2, float theta, float phi, float fallOff) :
 		Component(COMPONENT_ID::LIGHT),
 		_type(type),
 		_color(color),
@@ -22,13 +23,15 @@ namespace ce
 			break;
 		case Light::Type::POINT:
 			_light.Type = D3DLIGHTTYPE::D3DLIGHT_POINT;
-			_light.Attenuation0 = attenuation;
+			_light.Attenuation0 = attenuation0;
+			_light.Attenuation1 = attenuation1;
+			_light.Attenuation2 = attenuation2;
 			break;
 		case Light::Type::SPOT:
 			_light.Type = D3DLIGHTTYPE::D3DLIGHT_SPOT;
-			_light.Attenuation0 = attenuation;
-			_light.Attenuation1 = attenuation;
-			_light.Attenuation2 = attenuation;
+			_light.Attenuation0 = attenuation0;
+			_light.Attenuation1 = attenuation1;
+			_light.Attenuation2 = attenuation2;
 			_light.Theta = theta;
 			_light.Phi = phi;
 			_light.Falloff = fallOff;

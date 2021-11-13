@@ -20,6 +20,7 @@ bool TownScene_01::Init(void) noexcept
 	obj = GameObject::Instantiate();
 	TerrainRenderer* tr = static_cast<TerrainRenderer*>(obj->AddComponent(new TerrainRenderer(D3D9DEVICE->GetDevice(), terrain)));
 	Material* mat = tr->GetAlphaMaterial();
+	obj->SetLayer(GameObjectLayer::BACKGROUND);
 
 	std::vector<Texture*> vt;
 
@@ -66,6 +67,7 @@ bool TownScene_01::Init(void) noexcept
 		Transform* tr = obj->GetTransform();
 		tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
 		tr->SetWorldPosition(stof(px), stof(py), stof(pz));
+		obj->SetLayer(GameObjectLayer::BACKGROUND);
 	}
 
 	obj = GameObject::Instantiate();

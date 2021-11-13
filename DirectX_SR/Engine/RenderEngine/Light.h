@@ -19,7 +19,8 @@ namespace ce
 				};
 
 	public:		explicit				Light(void) = delete;
-	public:		explicit				Light(Light::Type type, LPDIRECT3DDEVICE9 pDevice, IN const D3DCOLORVALUE& color, float range, float attenuation = 0, float theta = 0, float phi = 0, float fallOff = 0);
+	public:		explicit				Light(Light::Type type, LPDIRECT3DDEVICE9 pDevice, IN const D3DCOLORVALUE& color, 
+											float range = 0, float attenuation0 = 0, float attenuation1 = 0, float attenuation2 = 0, float theta = 0, float phi = 0, float fallOff = 0);
 	public:		virtual					~Light(void) noexcept { __noop; }
 
 	public:		void					Init(void) noexcept override;

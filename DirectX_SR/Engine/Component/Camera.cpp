@@ -10,7 +10,7 @@ namespace ce
 {
 	Camera* Camera::mainCamera = nullptr;
 
-	Camera::Camera(LPDIRECT3DDEVICE9 pDevice, ECAMERA_TYPE type) noexcept :
+	Camera::Camera(LPDIRECT3DDEVICE9 pDevice, Type type) noexcept :
 		Component(COMPONENT_ID::CAMERA),
 		_pDevice(pDevice)
 	{
