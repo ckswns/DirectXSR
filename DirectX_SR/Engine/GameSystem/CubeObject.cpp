@@ -5,6 +5,7 @@
 #include "Cube.h"
 #include "Transform.h"
 #include "D3D9Device.h"
+#include "BoxCollider.h"
 
 namespace ce
 {
@@ -12,7 +13,6 @@ namespace ce
 		_scaleFactor(scaleFactor),
 		_color(color)
 	{
-
 	}
 
 	CubeObject::CubeObject(Texture* texure, D3DCOLORVALUE color, float scaleFactor) noexcept :
@@ -36,6 +36,9 @@ namespace ce
 
 		meshRenderer->GetMaterialPTR()->SetColor(_color);
 		gameObject->AddComponent(meshRenderer);
+
+		BoxCollider* coll = new BoxCollider(D3DXVECTOR3(1, 1, 1));
+		gameObject->AddComponent(coll);
 	}
 
 	void CubeObject::Update(float fElapsedTime) noexcept

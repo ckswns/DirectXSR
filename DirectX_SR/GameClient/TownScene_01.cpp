@@ -6,6 +6,8 @@
 #include "AudioListener.h"
 #include "Transform.h"
 #include "CubeObject.h"
+#include "SphereCollider.h"
+#include "RigidBody.h"
 
 TownScene_01::TownScene_01(void) noexcept
 {
@@ -73,8 +75,10 @@ bool TownScene_01::Init(void) noexcept
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new EditorCamera(g_hWnd));
 	obj->AddComponent(new AudioListener());
-	obj->GetTransform()->SetWorldPosition(0, 10, 0);
+	obj->GetTransform()->SetWorldPosition(10, 10, 10);
 	obj->GetTransform()->SetLocalEulerAngle(45, 0, 0);
+	obj->AddComponent(new SphereCollider(5));
+	obj->AddComponent(new Rigidbody());
 
 	return true;
 }
@@ -96,7 +100,19 @@ void TownScene_01::LateUpdate(float fElapsedTime) noexcept
 
 void TownScene_01::Render(float fElapsedTime) noexcept
 {
+	auto device = D3D9DEVICE->GetDevice();
 
+	float a = 0.f;
+	float b = 30.f;
+
+	device->SetRenderState(D3DRS_FOGENABLE, TRUE);
+	device->SetRenderState(D3DRS_RANGEFOGENABLE, true);
+	device->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR);
+	device->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
+
+	device->SetRenderState(D3DRS_FOGCOLOR, D3DCOLOR_ARGB(0, 50, 50, 50));
+	device->SetRenderState(D3DRS_FOGSTART, *(DWORD *)(&a));
+	device->SetRenderState(D3DRS_FOGEND, *(DWORD*)(&b));
 }
 
 void TownScene_01::Release(void) noexcept

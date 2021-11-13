@@ -11,24 +11,29 @@ namespace ce
 
 	}
 
-	bool TerrainCollider::CheckCollision(Collider* rhs) noexcept
+	bool TerrainCollider::CheckCollision(Collider* rhs) const noexcept
 	{
-		return true;
+		return false;
 	}
 
-	bool TerrainCollider::CheckHitRaycast(const Ray& ray, RaycastHit& hit) noexcept
+	bool TerrainCollider::CheckHitRaycast(const Ray& ray, RaycastHit& hit) const noexcept
 	{
-
-		return true;
-	}
-
-	void TerrainCollider::Update(float) noexcept
-	{
-
+		return false;
 	}
 
 	void TerrainCollider::Render(void) noexcept
 	{
 
 	}
+
+	void TerrainCollider::Open(void) noexcept
+	{
+
+	}
+
+	void TerrainCollider::Close(void) noexcept
+	{
+
+	}
+
 }

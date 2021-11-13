@@ -24,7 +24,7 @@ namespace ce
 				};
 
 	public:		explicit			Camera() = delete;
-	public:		explicit			Camera(LPDIRECT3DDEVICE9 pDevice, Type type = Type::PERSPECTIVE) noexcept;
+	public:		explicit			Camera(LPDIRECT3DDEVICE9 pDevice, Type type = Type::PERSPECTIVE, ClearOption = ClearOption::SOLID_COLOR, Texture* skyboxTex = nullptr) noexcept;
 	public:		virtual				~Camera() noexcept { __noop; }
 
 	public:		void				Init(void) noexcept override;
@@ -32,11 +32,14 @@ namespace ce
 	public:		void				Update(float fElapsedTime) noexcept override { __noop; }
 	public:		void				LateUpdate(float fElapsedTime) noexcept override;
 	public:		void				Release(void) noexcept override;
-	public:		void				Render(void) noexcept override { __noop; }
+	public:		void				Render(void) noexcept override;
+
+	public:		void				SetSkyBoxTexture(Texture* tex) noexcept;
 
 	public:		Transform*			GetTransform(void) noexcept;
 
 	private:	Type				_type;
+	private:	ClearOption			_clearOption;
 
 	private:	D3DXMATRIX			_matView;
 	private:	D3DXMATRIX			_matProj;

@@ -85,7 +85,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RectTransform.h">
       <Filter>Transform\RectTransform</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ParticleRendererr.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)ParticleRenderer.h">
       <Filter>Renderer\ParticleRenderer</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TerrainCollider.h">
@@ -132,7 +132,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)RectTransform.cpp">
       <Filter>Transform\RectTransform</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ParticleRendererr.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)ParticleRenderer.cpp">
       <Filter>Renderer\ParticleRenderer</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TerrainCollider.cpp">

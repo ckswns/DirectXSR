@@ -10,11 +10,12 @@ namespace ce
 	public:		explicit		TerrainCollider(Terrain* terrain) noexcept;
 	public:		virtual			~TerrainCollider(void) noexcept { __noop; }
 
-	public:		void			Update(float) noexcept override;
 	public:		void			Render(void) noexcept override;
 
-	public:		bool			CheckCollision(Collider* rhs) noexcept override;
-	public:		bool			CheckHitRaycast(const Ray& ray, RaycastHit& hit) noexcept override;
+	public:		void			Open(void) noexcept override;
+	public:		void			Close(void) noexcept override;
+	public:		bool			CheckCollision(Collider* rhs) const noexcept override;
+	public:		bool			CheckHitRaycast(const Ray& ray, RaycastHit& hit) const noexcept override;
 
 	private:	Terrain*		_terrain;
 	};

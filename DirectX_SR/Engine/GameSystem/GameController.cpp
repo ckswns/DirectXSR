@@ -4,6 +4,7 @@
 #include "Assertion.h"
 #include "MemoryPool.h"
 #include "GameObject.h"
+#include "PhysicsManager.h"
 
 namespace ce
 {
@@ -16,7 +17,7 @@ namespace ce
 
 	bool GameController::Init(HWND hWnd, const Scene::KEY_VALUE_LIST& scenes, uint32 winX, uint32 winY, const char* fontFilePath, const char* fontFaceName) noexcept
 	{
-		//_CrtSetBreakAlloc(7141);
+		//_CrtSetBreakAlloc(1250);
 		_hWnd = hWnd;
 
 		if (D3D9DEVICE->Init(hWnd, winX, winY, D3DCOLOR_ARGB(255, 50, 50, 50)) == false)
@@ -73,6 +74,7 @@ namespace ce
 		INPUT->Update();
 
 		SCENEMANAGER->FixedUpdate(deltaTime);
+		PhysicsManager::Instance()->Update();
 		SCENEMANAGER->Update(deltaTime);
 		SCENEMANAGER->LateUpdate(deltaTime);
 #ifdef __USE_FMOD__

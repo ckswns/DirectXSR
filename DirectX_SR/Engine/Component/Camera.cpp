@@ -5,16 +5,19 @@
 #include "Assertion.h"
 #include "D3D9Device.h"
 #include "../Base/CEMath.h"
+#include "SkyBox.h"
 
 namespace ce
 {
 	Camera* Camera::mainCamera = nullptr;
 
-	Camera::Camera(LPDIRECT3DDEVICE9 pDevice, Type type) noexcept :
+	Camera::Camera(LPDIRECT3DDEVICE9 pDevice, Type type, ClearOption clearOption, Texture* skyboxTex) noexcept :
 		Component(COMPONENT_ID::CAMERA),
+		_clearOption(clearOption),
 		_pDevice(pDevice)
 	{
-
+		_skybox = new SkyBox(_pDevice);
+		_skybox->SetTexture(skyboxTex);
 	}
 
 	void Camera::Init(void) noexcept
@@ -45,6 +48,8 @@ namespace ce
 		D3DXMatrixPerspectiveFovLH(&_matProj, CE_MATH::PI_4, winSize.x / float(winSize.y), 0.1f, 1000.0f);
 
 		_pDevice->SetTransform(D3DTS_PROJECTION, &_matProj);
+
+		_skybox->SetTransform(transform);
 	}
 
 	void Camera::LateUpdate(float fElapsedTime) noexcept
@@ -67,6 +72,25 @@ namespace ce
 
 	void Camera::Release(void) noexcept
 	{
+		if (_skybox)
+		{
+			_skybox->Release();
+			delete _skybox;
+			_skybox = nullptr;
+		}
+	}
+
+	void Camera::Render(void) noexcept
+	{
+		if(_skybox && _clearOption == ClearOption::SKYBOX)
+			_skybox->Render();
+	}
+
+	void Camera::SetSkyBoxTexture(Texture* tex) noexcept
+	{
+		if (_skybox == nullptr)
+			return;
+		_skybox->SetTexture(tex);
 	}
 
 	Transform* Camera::GetTransform(void) noexcept

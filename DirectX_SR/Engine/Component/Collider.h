@@ -20,15 +20,21 @@ namespace ce
 	public:		virtual				~Collider(void) noexcept { __noop; }
 
 	public:		using				TList = std::vector<Collider*>;
+	public:		using				CPTR = const Collider* const;
 
 	public:		void				Init(void) noexcept override final;
 	public:		void				Release(void) noexcept override final;
 
+	public:		void				FixedUpdate(float) noexcept override final { __noop; }
+	public:		void				Update(float) noexcept override final;
+	public:		void				LateUpdate(float) noexcept override final { __noop; }
+
+
 	public:		virtual void		Open(void) noexcept PURE;
 	public:		virtual	void		Close(void) noexcept PURE;
 
-	public:		virtual bool		CheckCollision(Collider* rhs) noexcept PURE;
-	public:		virtual bool		CheckHitRaycast(const Ray& ray, RaycastHit& hit) noexcept PURE;
+	public:		virtual bool		CheckCollision(Collider* rhs) const noexcept PURE;
+	public:		virtual bool		CheckHitRaycast(const Ray& ray, RaycastHit& hit) const noexcept PURE;
 
 	public:		Collider::Type		GetType(void) const noexcept { return _type; }
 	public:		Transform*			GetTransform(void) noexcept { return _transform; }
@@ -40,5 +46,10 @@ namespace ce
 	protected:	Collider::Type		_type;
 
 	protected:	Transform*			_transform;
+
+#ifdef _DEBUG
+	protected:	bool				_showDbg = false;
+	protected:	D3DMATERIAL9		_material;
+#endif
 	};
 }

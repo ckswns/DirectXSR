@@ -28,6 +28,10 @@ namespace ce
 	public:		virtual void				LateUpdate(float fElapsedTime) noexcept { __noop; }
 	public:		virtual void				OnDestroy(void) noexcept { __noop; }
 
+	public:		virtual void				OnCollisionEnter(Collider* mine, Collider* other) noexcept { __noop; }
+	public:		virtual void				OnCollisionStay(Collider* mine, Collider* other) noexcept { __noop; }
+	public:		virtual void				OnCollisionExit(Collider* mine, Collider* other) noexcept { __noop; }
+
 	public:		virtual void				DbgRender(void) noexcept { __noop; } // call debug mode only
 
 	protected:	Transform*					transform;

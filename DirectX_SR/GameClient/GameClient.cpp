@@ -7,6 +7,7 @@
 #include "GameController.h"
 #include "Scene.h"
 
+#include "Game.h"
 #include "LoadingScene.h"
 #include "TownScene_01.h"
 
