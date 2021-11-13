@@ -11,7 +11,7 @@ SpearTrail::SpearTrail(float AniTime) noexcept
 }
 void SpearTrail::Start(void) noexcept
 {
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\BoneSpear\\Trail\\0.png"));
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skill\\BoneSpear\\Trail\\0.png"));
 	gameObject->AddComponent(sr);
 
 	Animator* pAnimator = new Animator(true);
@@ -24,7 +24,7 @@ void SpearTrail::Start(void) noexcept
 	for (int i = 0; i < 9; i++)
 	{
 		char str[256];
-		sprintf_s(str, 256, "Asset\\Player\\BoneSpear\\Trail\\%d.png", i);
+		sprintf_s(str, 256, "Asset\\Player\\Skill\\BoneSpear\\Trail\\%d.png", i);
 
 		TList.push_back(ASSETMANAGER->GetTextureData(str));
 		FrameTime.push_back(_fAniTime);

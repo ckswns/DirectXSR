@@ -30,10 +30,11 @@ DIR FSMState::GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd)
 
 	//https://sulinep.blogspot.com/2020/07/blog-post_23.html
 	D3DXVECTOR3 vUp(0, 1, 0);
+	D3DXVECTOR3 vCross = *D3DXVec3Cross(&vCross, &vDir, &vLook);
+	float dotValue = D3DXVec3Dot(&vCross, &vUp);
 	if (!bFront)
 	{
-		D3DXVECTOR3 vCross = *D3DXVec3Cross(&vCross, &vDir, &vLook);
-		float dotValue = D3DXVec3Dot(&vCross, &vUp);
+		
 		if (dotValue > 0) //По
 		{
 			if (bSide) return LEFT;
@@ -47,8 +48,8 @@ DIR FSMState::GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd)
 	}
 	else
 	{
-		D3DXVECTOR3 vCross = *D3DXVec3Cross(&vCross, &vDir, &vLook);
-		float dotValue = D3DXVec3Dot(&vUp, &vCross);
+		//D3DXVECTOR3 vCross = *D3DXVec3Cross(&vCross, &vDir, &vLook);
+		//float dotValue = D3DXVec3Dot(&vUp, &vCross);
 		if (dotValue > 0) //По
 		{
 			if (bSide) return LEFT;

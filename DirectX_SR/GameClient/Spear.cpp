@@ -7,7 +7,7 @@
 
 void Spear::Start(void) noexcept
 {
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\BoneSpear\\Spear\\0.png"));
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skill\\BoneSpear\\Spear\\0.png"));
 	gameObject ->AddComponent(sr);
 
 	Animator* pAnimator = new Animator(true);
@@ -20,7 +20,7 @@ void Spear::Start(void) noexcept
 	for (int i = 0; i < 6; i++)
 	{
 		char str[256];
-		sprintf_s(str, 256, "Asset\\Player\\BoneSpear\\Spear\\%d.png", i);;
+		sprintf_s(str, 256, "Asset\\Player\\Skill\\BoneSpear\\Spear\\%d.png", i);;
 
 		TList.push_back(ASSETMANAGER->GetTextureData(str));
 		FrameTime.push_back(0.1f);

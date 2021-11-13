@@ -15,9 +15,9 @@ InputHandler::InputHandler(GameObject* player, Terrain* terrain) noexcept
 void InputHandler::Start(void) noexcept
 {
 
-	_pLBCommand = new AttackCommand();
-//	_pLBCommand = new SkillCommand();
-//	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONDE_SPEAR);
+//	_pLBCommand = new AttackCommand();
+	_pLBCommand = new SkillCommand();
+	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONDE_SPEAR);
 //	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
 }

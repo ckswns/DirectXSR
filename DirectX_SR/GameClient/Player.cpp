@@ -119,7 +119,7 @@ void Player::InitAnimation(SpriteRenderer* sr)
 			sprintf_s(str, 256, "Asset\\Player\\walk_%d\\%d.png",folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
-			FrameTime.push_back(0.1f);
+			FrameTime.push_back(0.07f);
 		}
 
 		ani = new Animation(FrameTime, TList, true);
@@ -136,7 +136,7 @@ void Player::InitAnimation(SpriteRenderer* sr)
 			sprintf_s(str, 256, "Asset\\Player\\dash_%d\\%d.png", folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
-			FrameTime.push_back(0.1f);
+			FrameTime.push_back(0.05f);
 		}
 
 		ani = new Animation(FrameTime, TList, true);
@@ -200,7 +200,7 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			if (_tStat->_fMP >= SkillMp)
 			{
 				pSkill->Using(vPos, _pTrans);
-				_tStat->_fMP -= SkillMp;
+		//		_tStat->_fMP -= SkillMp;
 			}
 			break;
 		}
