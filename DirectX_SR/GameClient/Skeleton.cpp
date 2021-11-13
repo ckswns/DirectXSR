@@ -49,8 +49,8 @@ void Skeleton::Update(float fElapsedTime) noexcept
 	if (D3DXVec3Length(&vDir) >= 10.f)
 	{
 		//많이 멀어진 경우 주변으로 순간이동 
-		float fX = CE_MATH::Random(-3,3) + _pOwnerTrans->GetWorldPosition().x;
-		float fZ = CE_MATH::Random(-3,3) + _pOwnerTrans->GetWorldPosition().z;
+		float fX = CE_MATH::Random(-2,2) + _pOwnerTrans->GetWorldPosition().x;
+		float fZ = CE_MATH::Random(-2,2) + _pOwnerTrans->GetWorldPosition().z;
 
 		_pTrans->SetWorldPosition(fX, _pOwnerTrans->GetWorldPosition().y, fZ);
 	}
@@ -83,10 +83,11 @@ void Skeleton::InitAnimation(SpriteRenderer* sr)
 
 	//Create
 	{
-		for (int i = 0; i < 12; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\create\\%d.png", i);
+			sprintf_s(str, 256, "Asset\\Player\\Skill\\Skeleton\\stand_8\\00%d.bmp", i);
+			//sprintf_s(str, 256, "Asset\\Player\\Skill\\Skeleton\\create\\%d.tga", i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
@@ -105,7 +106,7 @@ void Skeleton::InitAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 8; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\stand_8\\stand_%d.png", i);
+			sprintf_s(str, 256, "Asset\\Player\\Skill\\Skeleton\\stand_8\\stand_%d.png", i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.5f);
@@ -124,7 +125,7 @@ void Skeleton::InitAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 8; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\walk_8\\%d.png", i);
+			sprintf_s(str, 256, "Asset\\Player\\Skill\\Skeleton\\walk_8\\%d.png", i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
@@ -143,7 +144,7 @@ void Skeleton::InitAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 16; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\attack_8\\%d.png", i);
+			sprintf_s(str, 256, "Asset\\Player\\Skill\\Skeleton\\attack_8\\%d.png", i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
@@ -161,7 +162,7 @@ void Skeleton::InitAnimation(SpriteRenderer* sr)
 		for (int i = 0; i < 19; i++)
 		{
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Player\\Skeleton\\death\\%d.png", i);
+			sprintf_s(str, 256, "Asset\\Player\\Skill\\Skeleton\\death\\%d.png", i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);

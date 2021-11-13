@@ -200,7 +200,7 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			if (_tStat->_fMP >= SkillMp)
 			{
 				pSkill->Using(vPos, _pTrans);
-		//		_tStat->_fMP -= SkillMp;
+				_tStat->_fMP -= SkillMp;
 			}
 			break;
 		}
