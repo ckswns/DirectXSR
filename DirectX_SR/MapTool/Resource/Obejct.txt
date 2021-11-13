@@ -1,0 +1,2 @@
+Npc,Npc1,Npc2
+TreeA,TreeB,TreeC 로 나눠서 이미지파일 Tree폴더에 넣어놨어~
