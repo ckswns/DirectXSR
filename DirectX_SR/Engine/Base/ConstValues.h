@@ -9,7 +9,7 @@ namespace ce
 	{
 		namespace COMPONENT_ID
 		{
-			using ID = unsigned __int16;
+			using ID = unsigned __int32;
 
 			static constexpr ID TRANSFORM		= (1 << 0);
 			static constexpr ID ANIMATOR		= (1 << 1);

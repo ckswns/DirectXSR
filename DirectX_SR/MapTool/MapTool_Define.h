@@ -19,6 +19,7 @@ extern	GameController*	g_pGameController;
 extern	bool			g_bInitGame;
 extern	RECT			g_rtMfc;
 extern CPoint			g_MousePos;
+extern	bool			g_bWireMode;
 
 template<typename T>
 void	Safe_Delete(T& Pointer)

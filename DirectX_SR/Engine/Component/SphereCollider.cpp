@@ -20,7 +20,7 @@ namespace ce
 				SphereCollider* sphere = static_cast<SphereCollider*>(rhs);
 				float diameter = _radius + sphere->_radius;
 
-				Vector3 world = _owner->GetTransform()->GetWorldPosition();
+				Vector3 world = _transform->GetWorldPosition();
 				Vector3 rhsWorld = rhs->GetTransform()->GetWorldPosition();
 
 				if ((world - rhsWorld).SqrLength() <= diameter * diameter)
@@ -62,11 +62,6 @@ namespace ce
 		return true;
 	}
 
-	void SphereCollider::Init(void) noexcept
-	{
-
-	}
-
 	void SphereCollider::Update(float) noexcept
 	{
 
@@ -76,10 +71,4 @@ namespace ce
 	{
 
 	}
-
-	void SphereCollider::Release(void) noexcept
-	{
-
-	}
-
 }

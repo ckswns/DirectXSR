@@ -22,22 +22,12 @@ namespace ce
 		return true;
 	}
 
-	void TerrainCollider::Init(void) noexcept
-	{
-
-	}
-
 	void TerrainCollider::Update(float) noexcept
 	{
 
 	}
 
 	void TerrainCollider::Render(void) noexcept
-	{
-
-	}
-
-	void TerrainCollider::Release(void) noexcept
 	{
 
 	}

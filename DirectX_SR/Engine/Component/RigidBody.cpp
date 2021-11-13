@@ -1,30 +1,30 @@
 #include "pch.h"
-#include "RigidBody.h"
+#include "Rigidbody.h"
 
 namespace ce
 {
-	RigidBody::RigidBody(void) noexcept :
+	Rigidbody::Rigidbody(void) noexcept :
 		Component(COMPONENT_ID::RIGIDBODY)
 	{
 
 	}
 
-	void RigidBody::Init(void) noexcept
+	void Rigidbody::Init(void) noexcept
 	{
 
 	}
 
-	void RigidBody::Update(float) noexcept
+	void Rigidbody::Update(float) noexcept
 	{
 
 	}
 
-	void RigidBody::Render(void) noexcept
+	void Rigidbody::Render(void) noexcept
 	{
 
 	}
 
-	void RigidBody::Release(void) noexcept
+	void Rigidbody::Release(void) noexcept
 	{
 
 	}

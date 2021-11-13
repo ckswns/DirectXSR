@@ -7,17 +7,24 @@ namespace ce
 { 
 	class Transform;
 	class GameObject;
-
-	enum class ECAMERA_TYPE
-	{
-		PERSPECTIVE,
-		ORTHO
-	};
+	class SkyBox;
 
 	class Camera : public Component
 	{
+	public:		enum class Type
+				{
+					PERSPECTIVE,
+					ORTHO
+				};
+
+	public:		enum class ClearOption
+				{
+					SOLID_COLOR,
+					SKYBOX
+				};
+
 	public:		explicit			Camera() = delete;
-	public:		explicit			Camera(LPDIRECT3DDEVICE9 pDevice, ECAMERA_TYPE type = ECAMERA_TYPE::PERSPECTIVE) noexcept;
+	public:		explicit			Camera(LPDIRECT3DDEVICE9 pDevice, Type type = Type::PERSPECTIVE) noexcept;
 	public:		virtual				~Camera() noexcept { __noop; }
 
 	public:		void				Init(void) noexcept override;
@@ -29,12 +36,14 @@ namespace ce
 
 	public:		Transform*			GetTransform(void) noexcept;
 
-	private:	ECAMERA_TYPE		_type;
+	private:	Type				_type;
 
 	private:	D3DXMATRIX			_matView;
 	private:	D3DXMATRIX			_matProj;
 
 	private:	LPDIRECT3DDEVICE9	_pDevice;
+
+	private:	SkyBox*				_skybox;
 
 	public:		static Camera*		GetMainCamera(void) noexcept { return mainCamera; }
 	private:	static Camera*		mainCamera;

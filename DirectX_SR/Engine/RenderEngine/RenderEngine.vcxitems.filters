@@ -25,6 +25,9 @@
     <Filter Include="Mesh\Terrain">
       <UniqueIdentifier>{42d10eca-43a7-4d7a-ab6f-1b958141d2a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SkyBox">
+      <UniqueIdentifier>{8d06d660-5807-4da0-afc0-ea1793830e48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)D3D9Device.h">
@@ -51,6 +54,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Light.h">
       <Filter>Light</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyBox.h">
+      <Filter>SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)D3D9Device.cpp">
@@ -76,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Light.cpp">
       <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyBox.cpp">
+      <Filter>SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
