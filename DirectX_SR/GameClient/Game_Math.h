@@ -11,5 +11,35 @@ inline int CompareFloatAbsoulte(float a, float b, float absTolerance = 0.3f)
 	return (diff > 0) ? 1 : -1;
 }
 
+inline float SignedRandomf(float max)noexcept
+{
+	if (max < 1) return max;
+
+	float f = ce::CE_MATH::Random(1000);
+	f *= 0.001f;
+
+	float value = ce::CE_MATH::Random(-max,max);
+	if (value <0)
+	{
+		value -= f;
+	}
+	else
+		value += f;
+	return value;
+
+}
+
+//부호없는 float 랜덤
+inline float UnsignedRandomf(float max)noexcept
+{
+	if (max < 1) return max;
+
+	float f = ce::CE_MATH::Random(1000);
+	f *= 0.001f;
+
+	float value = ce::CE_MATH::Random(max);
+
+	return value + f;
+}
 
 #endif // !__GAME_MATH_H__

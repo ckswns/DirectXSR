@@ -26,6 +26,8 @@ Player::Player(PathFinding* pf) noexcept
 	_pSkills.reserve(SKILL_END);
 	_pSkills.push_back(new RaiseSkeleton());
 	_pSkills.push_back(new BoneSpear());
+
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(pf);
 }
 
 void Player::Start(void) noexcept
@@ -119,7 +121,7 @@ void Player::InitAnimation(SpriteRenderer* sr)
 			sprintf_s(str, 256, "Asset\\Player\\walk_%d\\%d.png",folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
-			FrameTime.push_back(0.1f);
+			FrameTime.push_back(0.07f);
 		}
 
 		ani = new Animation(FrameTime, TList, true);
@@ -136,7 +138,7 @@ void Player::InitAnimation(SpriteRenderer* sr)
 			sprintf_s(str, 256, "Asset\\Player\\dash_%d\\%d.png", folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
-			FrameTime.push_back(0.1f);
+			FrameTime.push_back(0.05f);
 		}
 
 		ani = new Animation(FrameTime, TList, true);
@@ -169,8 +171,8 @@ void Player::InitState()
 {
 	_pFSM.reserve(PLAYER_END);
 	_pFSM.push_back(new PlayerStand(_pAnimator));
-	_pFSM.push_back(new PlayerMove(this,_pAnimator, _pTrans, _pPathFinding, _fSpeed));
-	_pFSM.push_back(new PlayerAttack(this,_pAnimator, _pTrans));
+	_pFSM.push_back(new PlayerMove(_pAnimator, _pTrans, _pPathFinding, _fSpeed));
+	_pFSM.push_back(new PlayerAttack(_pAnimator, _pTrans));
 }
 
 void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget, bool bAtt)
@@ -200,7 +202,7 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			if (_tStat->_fMP >= SkillMp)
 			{
 				pSkill->Using(vPos, _pTrans);
-				_tStat->_fMP -= SkillMp;
+			//	_tStat->_fMP -= SkillMp;
 			}
 			break;
 		}

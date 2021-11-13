@@ -5,13 +5,13 @@
 #include "SpriteRenderer.h"
 #include "Animator.h"
 #include "Animation.h"
-SpearTrail::SpearTrail(float AniTime) noexcept
-	:_fAniTime(AniTime)
+SpearTrail::SpearTrail(float AniTime, DIR eDir) noexcept
+	:_fAniTime(AniTime), _eDir(eDir)
 {
 }
 void SpearTrail::Start(void) noexcept
 {
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\BoneSpear\\Trail\\0.png"));
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skill\\BoneSpear\\Trail\\0\\0.png"));
 	gameObject->AddComponent(sr);
 
 	Animator* pAnimator = new Animator(true);
@@ -20,11 +20,12 @@ void SpearTrail::Start(void) noexcept
 	std::vector<Texture*> TList;
 	std::vector<float>		FrameTime;
 	Animation* ani;
-	//Spear
+
+	int folder = ((int)_eDir * 2);
 	for (int i = 0; i < 9; i++)
 	{
 		char str[256];
-		sprintf_s(str, 256, "Asset\\Player\\BoneSpear\\Trail\\%d.png", i);
+		sprintf_s(str, 256, "Asset\\Player\\Skill\\BoneSpear\\Trail\\%d\\%d.png", folder, i);
 
 		TList.push_back(ASSETMANAGER->GetTextureData(str));
 		FrameTime.push_back(_fAniTime);
@@ -32,8 +33,9 @@ void SpearTrail::Start(void) noexcept
 
 	ani = new Animation(FrameTime, TList, true);
 	ani->SetMaterial(sr->GetMaterialPTR());
-	pAnimator->InsertAnimation("Trail", ani);
+	pAnimator->InsertAnimation("Trail_" + std::to_string(folder), ani);
 
 	TList.clear();
 	FrameTime.clear();
 }
+

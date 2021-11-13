@@ -67,15 +67,6 @@
     <Filter Include="00. Game\01. GameObject\00. Player\State">
       <UniqueIdentifier>{888de545-66a6-437a-b478-710c5e72501f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\00. Player\State\PlayerStand">
-      <UniqueIdentifier>{9cd7cc9d-906b-43ec-8ea4-2dee2c72ce33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\00. Player\State\PlayerAttack">
-      <UniqueIdentifier>{dd4f2f14-4695-4cd4-8345-a5b5bd0277a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\00. Player\State\PlayerMove">
-      <UniqueIdentifier>{c5a301cf-5a6b-40e9-9b9e-31b1f62445d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Game\01. GameObject\InputHandle\Command">
       <UniqueIdentifier>{5af0d014-8f4b-427b-8f61-196c5cbb979a}</UniqueIdentifier>
     </Filter>
@@ -99,6 +90,36 @@
     </Filter>
     <Filter Include="00. Game\01. GameObject\01. TargetCamera">
       <UniqueIdentifier>{c228790c-daf7-45d7-ab2a-2c051c7b0d62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Player">
+      <UniqueIdentifier>{22ba50c6-d2cb-4583-8394-53614245d479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Skeleton">
+      <UniqueIdentifier>{82c2ee3c-20f3-48d6-aa34-6dbeffd09f71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Player\00. Stand">
+      <UniqueIdentifier>{9cd7cc9d-906b-43ec-8ea4-2dee2c72ce33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Player\01. Move">
+      <UniqueIdentifier>{c5a301cf-5a6b-40e9-9b9e-31b1f62445d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Player\02. Attack">
+      <UniqueIdentifier>{dd4f2f14-4695-4cd4-8345-a5b5bd0277a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Skeleton\01. Stand">
+      <UniqueIdentifier>{ed60212f-38a9-4c8f-bb25-cfc7cc0619e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Skeleton\02. Move">
+      <UniqueIdentifier>{c2ec3578-4c41-4dcd-8e80-27dbef7c5598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Skeleton\03. Attack">
+      <UniqueIdentifier>{c6a15ae7-0a3b-4b64-b18d-17cfe5312357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Skeleton\04. Dead">
+      <UniqueIdentifier>{38c1d23f-cae8-48e4-8be6-ae95635f51c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Skeleton\00. Create">
+      <UniqueIdentifier>{5d0eab5d-c08f-40ea-8a63-03ced6b2cc33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -181,13 +202,13 @@
       <Filter>00. Game\01. GameObject\00. Player\State</Filter>
     </ClInclude>
     <ClInclude Include="PlayerStand.h">
-      <Filter>00. Game\01. GameObject\00. Player\State\PlayerStand</Filter>
+      <Filter>00. Game\01. GameObject\00. Player\State\Player\00. Stand</Filter>
     </ClInclude>
     <ClInclude Include="PlayerAttack.h">
-      <Filter>00. Game\01. GameObject\00. Player\State\PlayerAttack</Filter>
+      <Filter>00. Game\01. GameObject\00. Player\State\Player\02. Attack</Filter>
     </ClInclude>
     <ClInclude Include="PlayerMove.h">
-      <Filter>00. Game\01. GameObject\00. Player\State\PlayerMove</Filter>
+      <Filter>00. Game\01. GameObject\00. Player\State\Player\01. Move</Filter>
     </ClInclude>
     <ClInclude Include="NaviMesh.h">
       <Filter>00. Game\01. GameObject\NaviMesh</Filter>
@@ -203,6 +224,21 @@
     </ClInclude>
     <ClInclude Include="Game_Math.h">
       <Filter>00. Game\98.Include</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletoneAttack.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\03. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonMove.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\02. Move</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonStand.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\01. Stand</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonDead.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\04. Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonCreate.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\00. Create</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,13 +294,13 @@
       <Filter>00. Game\00. Scene\02.Town</Filter>
     </ClCompile>
     <ClCompile Include="PlayerStand.cpp">
-      <Filter>00. Game\01. GameObject\00. Player\State\PlayerStand</Filter>
+      <Filter>00. Game\01. GameObject\00. Player\State\Player\00. Stand</Filter>
     </ClCompile>
     <ClCompile Include="PlayerAttack.cpp">
-      <Filter>00. Game\01. GameObject\00. Player\State\PlayerAttack</Filter>
+      <Filter>00. Game\01. GameObject\00. Player\State\Player\02. Attack</Filter>
     </ClCompile>
     <ClCompile Include="PlayerMove.cpp">
-      <Filter>00. Game\01. GameObject\00. Player\State\PlayerMove</Filter>
+      <Filter>00. Game\01. GameObject\00. Player\State\Player\01. Move</Filter>
     </ClCompile>
     <ClCompile Include="NaviMesh.cpp">
       <Filter>00. Game\01. GameObject\NaviMesh</Filter>
@@ -277,6 +313,21 @@
     </ClCompile>
     <ClCompile Include="FSMState.cpp">
       <Filter>00. Game\01. GameObject\00. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletoneAttack.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\03. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonMove.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\02. Move</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonStand.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\01. Stand</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonDead.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\04. Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonCreate.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\00. Create</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

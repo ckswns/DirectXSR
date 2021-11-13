@@ -16,9 +16,9 @@ void InputHandler::Start(void) noexcept
 {
 
 	_pLBCommand = new AttackCommand();
-//	_pLBCommand = new SkillCommand();
-//	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONDE_SPEAR);
-//	_pRBCommand = new AttackCommand();
+	_pLBCommand = new SkillCommand();
+	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONE_SPEAR);
+	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
 }
 
@@ -32,9 +32,10 @@ void InputHandler::Update(float fElapsedTime) noexcept
 		//아닌 경우 커맨드 
 		_pLBCommand->Execute(_pPlayer, MousePicking());
 	}
-	else if (INPUT->GetKeyStay(KEY_RBUTTON))
+	else if (INPUT->GetKeyDown(KEY_RBUTTON))
 	{
-		_pMoveCommand->Execute(_pPlayer, MousePicking());
+		//_pMoveCommand->Execute(_pPlayer, MousePicking());
+		_pRBCommand -> Execute(_pPlayer, MousePicking());
 	}
 
 }
@@ -42,8 +43,39 @@ void InputHandler::Update(float fElapsedTime) noexcept
 void InputHandler::OnDestroy(void) noexcept
 {
 	delete _pLBCommand;
+	_pLBCommand = nullptr;
 	delete _pRBCommand;
+	_pRBCommand = nullptr;
 	delete _pMoveCommand;
+	_pMoveCommand = nullptr;
+}
+
+void InputHandler::SetLB(SKILL_ID id) noexcept
+{
+//	delete _pLBCommand;
+//	_pLBCommand = nullptr;
+
+	if(id == SKILL_END)
+		_pLBCommand = new AttackCommand();
+	else
+	{
+		_pLBCommand = new SkillCommand();
+	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(id);
+	}
+}
+
+void InputHandler::SetRB(SKILL_ID id) noexcept
+{
+//	delete _pRBCommand;
+//	_pRBCommand = nullptr;
+
+	if (id == SKILL_END)
+		_pRBCommand = new AttackCommand();
+	else 
+	{
+		_pRBCommand = new SkillCommand();
+		static_cast<SkillCommand*>(_pRBCommand)->SetSkill(id);
+	}
 }
 
 D3DXVECTOR3 InputHandler::MousePicking()
