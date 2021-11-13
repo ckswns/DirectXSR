@@ -46,6 +46,9 @@
     <Filter Include="Ray">
       <UniqueIdentifier>{c958efde-4446-4f75-adac-2e79b1497e91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\PhysicsManager">
+      <UniqueIdentifier>{95be7e57-85cc-4d51-a744-0b1ab50eb7ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameController.h">
@@ -87,6 +90,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Ray.h">
       <Filter>Ray</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PhysicsManager.h">
+      <Filter>Manager\PhysicsManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameController.cpp">
@@ -124,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Ray.cpp">
       <Filter>Ray</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PhysicsManager.cpp">
+      <Filter>Manager\PhysicsManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

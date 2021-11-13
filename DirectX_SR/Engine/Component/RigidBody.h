@@ -3,10 +3,10 @@
 
 namespace ce
 {
-	class RigidBody : public Component
+	class Rigidbody : public Component
 	{
-	public:		explicit		RigidBody(void) noexcept;
-	public:		virtual			~RigidBody(void) noexcept { __noop; }
+	public:		explicit		Rigidbody(void) noexcept;
+	public:		virtual			~Rigidbody(void) noexcept { __noop; }
 
 	public:		void			Init(void) noexcept override;
 	public:		void			Update(float) noexcept override;

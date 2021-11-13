@@ -19,24 +19,24 @@ namespace ce
 		{
 		public:		class Event
 					{
-					public:		explicit Event() noexcept { __noop; }
-					public:				~Event() noexcept { __noop; }
+					public:				explicit Event() noexcept { __noop; }
+					public:						~Event() noexcept { __noop; }
 
-					public:		void operator+=(std::function<void(T&)> _fp)
-								{
-									_callbacks.emplace_back(_fp);
-								}
+					public:				void operator+=(std::function<void(T&)> _fp)
+										{
+											_callbacks.emplace_back(_fp);
+										}
 
-					private:	void Notify(T* listener)
-								{
-									for (int i = 0; i < _callbacks.size(); i++)
-									{
-										_callbacks[i](*listener);
-									}
-								}
+					private:			void Notify(T* listener)
+										{
+											for (int i = 0; i < _callbacks.size(); i++)
+											{
+												_callbacks[i](*listener);
+											}
+										}
 
-					private:	std::vector<std::function<void(T&)>> _callbacks;
-					private:	friend Button<T>;
+					private:			std::vector<std::function<void(T&)>> _callbacks;
+					private:			friend Button<T>;
 					};
 
 		public:		explicit			Button(T* listener) noexcept;
