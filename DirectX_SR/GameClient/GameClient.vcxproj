@@ -167,19 +167,24 @@
     <ClInclude Include="BoneSpear.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="FSMState.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClient.h" />
     <ClInclude Include="Game_Enum.h" />
+    <ClInclude Include="Game_Math.h" />
     <ClInclude Include="Game_Struct.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MoveCommand.h" />
-    <ClInclude Include="NeviMesh.h" />
+    <ClInclude Include="NaviMesh.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PathFinding.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerAttack.h" />
     <ClInclude Include="PlayerSelectScene.h" />
+    <ClInclude Include="PlayerStand.h" />
+    <ClInclude Include="PlayerMove.h" />
     <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RaiseSkeleton.h" />
@@ -189,18 +194,20 @@
     <ClInclude Include="SkillCommand.h" />
     <ClInclude Include="Spear.h" />
     <ClInclude Include="SpearTrail.h" />
+    <ClInclude Include="TargetCamera.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TownScene_01.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackCommand.cpp" />
     <ClCompile Include="BoneSpear.cpp" />
+    <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
-    <ClCompile Include="NeviMesh.cpp" />
+    <ClCompile Include="NaviMesh.cpp" />
     <ClCompile Include="PathFinding.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -209,13 +216,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerAttack.cpp" />
     <ClCompile Include="PlayerSelectScene.cpp" />
+    <ClCompile Include="PlayerStand.cpp" />
+    <ClCompile Include="PlayerMove.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RaiseSkeleton.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="SkillCommand.cpp" />
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="SpearTrail.cpp" />
+    <ClCompile Include="TargetCamera.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
   </ItemGroup>
   <ItemGroup>

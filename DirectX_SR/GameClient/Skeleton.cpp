@@ -18,10 +18,10 @@ void Skeleton::Start(void) noexcept
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skeleton.png"));
-	GetGameObject()->AddComponent(sr);
+	gameObject->AddComponent(sr);
 
 	_pAnimator = new Animator(false);
-	GetGameObject()->AddComponent(_pAnimator);
+	gameObject->AddComponent(_pAnimator);
 	InitAnimation(sr);
 }
 

@@ -9,26 +9,27 @@ namespace ce
 	}
 }
 class Player;
-class NeviMesh;
 class Game : public Scene
 {
-public:		explicit		Game(void) noexcept;
+public:		explicit			Game(void) noexcept;
 public:		virtual			~Game(void) noexcept { __noop; }
 
-public:		bool			Init(void) noexcept override;
-public:		void			FixedUpdate(float fElapsedTime) noexcept override;
-public:		void			Update(float fElapsedTime) noexcept override;
-public:		void			LateUpdate(float fElapsedTime) noexcept override;
-public:		void			Render(float fElapsedTime) noexcept override;
-public:		void			Release(void) noexcept override;
+public:		bool				Init(void) noexcept override;
+public:		void				FixedUpdate(float fElapsedTime) noexcept override;
+public:		void				Update(float fElapsedTime) noexcept override;
+public:		void				LateUpdate(float fElapsedTime) noexcept override;
+public:		void				Render(float fElapsedTime) noexcept override;
+public:		void				Release(void) noexcept override;
 
-private:		void			InitUI() noexcept;
+private:	void				InitUI() noexcept;
+public:	void				RClick();
 
-private:		UI::Image*		_imgStamina;
-private:		UI::Image* _imgHP;
-private:		UI::Image* _imgMP;
-private:		Player* _pPlayer;
+private:	UI::Image*			_imgStamina;
+private:	UI::Image*			_imgHP;
+private:	UI::Image*			_imgMP;
+private:	Player*				_pPlayer;
 
-private:		NeviMesh*		_pNeviMesh;
+private:	GameObject* btnTest;
+
 };
 

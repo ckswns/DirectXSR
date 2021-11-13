@@ -10,44 +10,43 @@ namespace ce
 
 class Skill;
 class PathFinding;
-class Node;
+class FSMState;
 class Player : public Behaviour
 {
-public:		explicit					Player() noexcept = delete;
-public:		explicit					Player(PathFinding* pf) noexcept;
+public:		explicit				Player() noexcept = delete;
+public:		explicit				Player(PathFinding* pf) noexcept;
 public:		virtual					~Player(void) noexcept { __noop; }
 
-public:		virtual void				Start(void) noexcept;
-public:		virtual void				Update(float fElapsedTime) noexcept;
-public:		virtual void				OnDestroy(void) noexcept;
+public:		virtual void			Start(void) noexcept;
+public:		virtual void			Update(float fElapsedTime) noexcept;
+public:		virtual void			OnDestroy(void) noexcept;
 
-private:		void						InitAnimation(SpriteRenderer* mr);
+private:	void					InitAnimation(SpriteRenderer* mr);
+private:	void					InitState();
 
-public:		void						UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
-public:		void						Attack(D3DXVECTOR3 _vMonsterPos);
-public:		void						Move(D3DXVECTOR3 dest);
+public:		void					SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget = D3DXVECTOR3(0,-5,0),bool bAtt = false);
+public:		void					UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 
-public:		float						GetHPPer();
-public:		float						GetMPPer();
-public:		float						GetStaminaPer();
+public:		bool					IsRunning(float fElapsedTime);
 
-private:		Transform*				_pTrans;
-private:		Animator*				_pAnimator;
+public:		float					GetHPPer();
+public:		float					GetMPPer();
+public:		float					GetStaminaPer();
 
-private:		bool						_bFind;
-private:		PathFinding*			_pPathFinding;
-private:	   std::list<Node*>		_pPath;
+private:	Transform*				_pTrans;
+private:	Animator*				_pAnimator;
 
-private:		STAT*						_tStat;
-private:		std::vector<Skill*>	_pSkills;
+private:	std::vector<FSMState*>	_pFSM;
+private:	PLAYER_STATE			_eCurState;
 
-private:		bool						_bAtt;
-private:		bool						_bMove;
-private:		D3DXVECTOR3		_vDest;
+private:	PathFinding*			_pPathFinding;
 
-private:		bool						_bRun;
-private:		float						_fSpeed;
-private:		float						_fRunSpeed;
+private:	STAT*					_tStat;
+private:	std::vector<Skill*>		_pSkills;
+
+private:	float					_fRecovery;
+private:	float					_fSpeed;
+private:	float					_fRunSpeed;
 
 };
 

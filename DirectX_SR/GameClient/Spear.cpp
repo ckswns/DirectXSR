@@ -1,19 +1,17 @@
 #include "pch.h"
 #include "Spear.h"
-#include "Transform.h"
 #include "Texture.h"
 #include "SpriteRenderer.h"
 #include "Animator.h"
 #include "Animation.h"
-#include "SpearTrail.h"
 
 void Spear::Start(void) noexcept
 {
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\BoneSpear\\Spear\\0.png"));
-	GetGameObject()->AddComponent(sr);
+	gameObject ->AddComponent(sr);
 
 	Animator* pAnimator = new Animator(true);
-	GetGameObject()->AddComponent(pAnimator);
+	gameObject->AddComponent(pAnimator);
 
 	std::vector<Texture*> TList;
 	std::vector<float>		FrameTime;
@@ -36,9 +34,5 @@ void Spear::Start(void) noexcept
 	FrameTime.clear();
 }
 
-void Spear::Update(float fElapsedTime) noexcept
-{
-	
-}
 
 

@@ -6,16 +6,15 @@
 #include "Player.h"
 #include "Transform.h"
 
-#include "NeviMesh.h"
+#include "NaviMesh.h"
 #include "PathFinding.h"
 
-#include "EditorCamera.h"
+#include "TargetCamera.h"
 #include "Terrain.h"
-#include "Texture.h"
 #include "MeshRenderer.h"
 
 #include "Image.h"
-#include "RectTransform.h"
+#include "Button.h"
 using namespace ce::UI;
 Game::Game(void) noexcept
 {
@@ -24,9 +23,6 @@ Game::Game(void) noexcept
 bool Game::Init(void) noexcept
 {
     InitUI();
-
-    Texture* _pTexture = new Texture();
-    _pTexture->Init(D3D9DEVICE->GetDevice(), "Asset/Tile.png");
 
     //Terrain
     GameObject*  pGameObj = GameObject::Instantiate();
@@ -37,17 +33,17 @@ bool Game::Init(void) noexcept
     pGameObj->AddComponent(mr);
 
     std::vector<Texture*> TList;
-    TList.push_back(_pTexture);
+    TList.push_back(ASSETMANAGER->GetTextureData("Asset\\Tile.png"));
     mr->GetMaterialPTR()->SetTextures(TList);
     pGameObj->GetTransform()->SetLocalPosition(-2, 0, -1);
 
-    _pNeviMesh = new NeviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
-    _pNeviMesh->Init();
+    NaviMesh* _pNaviMesh = new NaviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
+    _pNaviMesh->Init();
 
     //Player
     GameObject* pPlayerObj = GameObject::Instantiate();
     pPlayerObj = GameObject::Instantiate();
-    PathFinding* pf = new PathFinding(_pNeviMesh);
+    PathFinding* pf = new PathFinding(_pNaviMesh);
     _pPlayer = new Player(pf);
     pPlayerObj->AddComponent(_pPlayer);
     pPlayerObj->GetTransform()->SetLocalPosition(0, 1, 0);
@@ -56,11 +52,9 @@ bool Game::Init(void) noexcept
     pGameObj = GameObject::Instantiate();
     pGameObj->AddComponent(new InputHandler(pPlayerObj, terrain));
 
-    //EditorCamera
+    //TargetCamera
     pGameObj = GameObject::Instantiate();
-    pGameObj->AddComponent(new EditorCamera(g_hWnd));
-    pGameObj->GetTransform()->SetLocalPosition(7, 8, -8);
-    pGameObj->GetTransform()->SetLocalEulerAngle(-50, 0, 0);
+    pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
 
     return false;
 }
@@ -107,12 +101,29 @@ void Game::InitUI() noexcept
     pObj = GameObject::Instantiate();
     pObj->AddComponent(_imgHP);
     pObj->SetSortOrder(0);
-    pObj->GetTransform()->SetWorldPosition(270, 630, 0);
+    pObj->GetTransform()->SetWorldPosition(270, 627, 0);
 
     _imgMP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\MPBall.png"));
     pObj = GameObject::Instantiate();
     pObj->AddComponent(_imgMP);
     pObj->SetSortOrder(0);
-    pObj->GetTransform()->SetWorldPosition(930, 630, 0);
+    pObj->GetTransform()->SetWorldPosition(930, 627, 0);
 
+    pObj = GameObject::Instantiate();
+    Image* img = static_cast<Image*>(pObj->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\30.png"))));
+    pObj->GetTransform()->SetWorldPosition(875, 675, 0);
+    Button<Game>* btnR = static_cast<Button<Game>*>(pObj->AddComponent(new Button<Game>(this)));
+    btnR->onMouseDown += &Game::RClick;
+    pObj->SetName("test");
+
+    btnTest = GameObject::Instantiate();
+    img = static_cast<Image*>(btnTest->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\30.png"))));
+    btnTest->GetTransform()->SetWorldPosition(875, 627, 0);
+    //Button<Game>* btn = static_cast<Button<Game>*>(btnTest->AddComponent(new Button<Game>(this)));
+    btnTest->SetActive(false);
+}
+
+void Game::RClick()
+{
+    btnTest->SetActive(true);
 }

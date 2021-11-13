@@ -40,7 +40,7 @@ void Projectile::Start(void) noexcept
 void Projectile::Update(float fElapsedTime) noexcept
 {
 	if (_fDist >= _fMaxDist)
-		GetGameObject()->Destroy(GetGameObject());
+		gameObject->Destroy(GetGameObject());
 	else
 	{
 		_fDist += (fElapsedTime * _fSpeed);

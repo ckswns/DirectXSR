@@ -4,14 +4,14 @@
 
 typedef struct tagStat
 {
-	tagStat(float fMaxHp, int iMaxMp, float fMaxStamina)
+	tagStat(float fMaxHp, float fMaxMp, float fMaxStamina)
 	{
 		_fMaxHp = fMaxHp;
-		_iMaxMp = iMaxMp;
+		_fMaxMp = fMaxMp;
 		_fMaxStamina = fMaxStamina;
 
 		_fHp = _fMaxHp;
-		_iMP = _iMaxMp;
+		_fMP = _fMaxMp;
 		_fStamina = _fMaxStamina;
 
 		_iStr = 15;
@@ -21,11 +21,11 @@ typedef struct tagStat
 	}
 
 	float		_fMaxHp;
-	int			_iMaxMp;
+	float		_fMaxMp;
 	float		_fMaxStamina;
 
 	float		_fHp;
-	int			_iMP;
+	float		_fMP;
 	float		_fStamina;
 
 	int			_iStr;
@@ -36,6 +36,31 @@ typedef struct tagStat
 	float		_fDamage = _iStr * 0.01f;
 	float		_fAttRating = _iDex * 5.f;
 	float		_fDef = _iDex * 0.25f;
+
+	void		Recovery(float fAmount)
+	{
+		if (_fHp < _fMaxHp)
+		{
+			_fHp += fAmount;
+		
+			if (_fHp > _fMaxHp)
+				_fHp = _fMaxHp;
+		}
+		if (_fMP < _fMaxMp) 
+		{
+			_fMP += fAmount;
+
+			if (_fMP > _fMaxMp)
+				_fMP = _fMaxMp;
+		}
+		if (_fStamina < _fMaxStamina) 
+		{
+			_fStamina += fAmount;
+
+			if (_fStamina > _fMaxStamina)
+				_fStamina = _fMaxStamina;
+		}
+	}
 
 }STAT;
 
