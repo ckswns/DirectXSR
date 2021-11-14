@@ -4,31 +4,31 @@
 #include "Spear.h"
 #include "SpearTrail.h"
 
-Projectile::Projectile(D3DXVECTOR3 dir) noexcept
-	:_fMaxDist(7.f), _fDist(0), _fSpeed(3.f), _vDir(dir), _bRot(true)
+Projectile::Projectile(D3DXVECTOR3 dir, bool isDir) noexcept
+	:_fMaxDist(7.f), _fDist(0), _fSpeed(3.f), _vDir(dir), _bRot(true), _bDir(isDir)
 {	__noop;	}
 
 void Projectile::Start(void) noexcept
 {
 	_pTrans = GetGameObject()->GetTransform();
-	_vDir -= _pTrans->GetWorldPosition();
-	_vDir.y = 0;
-	D3DXVec3Normalize(&_vDir, &_vDir);
 
-	D3DXVECTOR3 vLook(0, 0, 1);
-	float angle = D3DXVec3Dot(&vLook, &_vDir);
+	DIR eDir = BACK;
+	float angle = 0;
+	if (!_bDir) 
+	{
+		_vDir -= _pTrans->GetWorldPosition();
+		_vDir.y = 0;
+		D3DXVec3Normalize(&_vDir, &_vDir);
 
-	DIR eDir;
-	// ÁÂ È¤Àº ÈÄ 
-	if (CompareFloatAbsoulte(angle, 0) == 0)
-	{
-		_bRot = false;
-	}
-	else
-	{
-		eDir = BACK;
-	}
-	angle = acosf(angle);
+		D3DXVECTOR3 vLook(0, 0, 1);
+		angle = D3DXVec3Dot(&vLook, &_vDir);
+
+		// ÁÂ È¤Àº ÈÄ 
+		if (CompareFloatAbsoulte(angle, 0) == 0)
+			_bRot = false;
+		else
+			eDir = BACK;
+		angle = acosf(angle);
 
 	D3DXVECTOR3 vUp(0, 1, 0);
 	D3DXVECTOR3 vCross = *D3DXVec3Cross(&vCross, &_vDir, &vLook);
@@ -40,6 +40,7 @@ void Projectile::Start(void) noexcept
 		angle *= -1;
 	}
 	else if (!_bRot) eDir = RIGHT;
+	}
 
 	_pSpear = GameObject::Instantiate();
 	_pSpear->AddComponent(new Spear());

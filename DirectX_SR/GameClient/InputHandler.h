@@ -21,11 +21,11 @@ public:		virtual void	Update(float fElapsedTime) noexcept;
 public:		virtual void	OnDestroy(void) noexcept;
 
 public:		void			SetMouseBtn(bool isLeft, SKILL_ID id);
-//public:		void			SetLB(SKILL_ID id) noexcept;
-//public:		void			SetRB(SKILL_ID id) noexcept;
 
-private:	D3DXVECTOR3		MousePicking();
+//private:	D3DXVECTOR3		MousePicking();
 
+private:	bool			_bLBSkill;
+private:	bool			_bRBSkill;
 private:	Command*		_pLBCommand;
 private:	Command*		_pRBCommand;
 private:	Command*		_pMoveCommand;
@@ -39,9 +39,9 @@ private:	TargetCamera*	_pTargetCamera;
 private:	Transform*		_pCameraTrans;
 
 private:	bool			_bFPV;
-private:	int				_iSide;
-private:	D3DXVECTOR3		_vDir;
 private:	bool			_bDown;
+private:	bool			_bAtt;
+private:	D3DXVECTOR3		_vDir;
 private:	POINT			_ptStart;
 };
 

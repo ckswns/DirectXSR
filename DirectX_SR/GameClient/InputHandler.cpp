@@ -10,11 +10,13 @@
 #include "Terrain.h"
 
 #include "Camera.h"
+#include "SphereCollider.h"
 #include "Transform.h"
 #include "TargetCamera.h"
 
 InputHandler::InputHandler(GameObject* player, Terrain* terrain) noexcept
-	:_pPlayerObj(player), _pTerrain(terrain), _bFPV(false), _vDir(0, 0, 0)
+	:_pPlayerObj(player), _pTerrain(terrain), _vDir(0, 0, 0),
+	_bFPV(false), _bAtt(false), _bDown(false), _bLBSkill(false), _bRBSkill(false)
 {
 	_pPlayerTrans = _pPlayerObj->GetTransform();
 	_pPlayer = static_cast<Player*>(_pPlayerObj->GetComponent(COMPONENT_ID::BEHAVIOUR));
@@ -22,9 +24,9 @@ InputHandler::InputHandler(GameObject* player, Terrain* terrain) noexcept
 
 void InputHandler::Start(void) noexcept
 {
-	_pTargetCamera = static_cast<TargetCamera*>(Camera::GetMainCamera()->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
 	_pCameraTrans = Camera::GetMainCamera()->GetTransform();
-
+	_pTargetCamera = static_cast<TargetCamera*>(_pCameraTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
+	
 	_pLBCommand = new AttackCommand();
 	//_pLBCommand = new SkillCommand();
 	//static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONE_SPEAR);
@@ -50,18 +52,41 @@ void InputHandler::Update(float fElapsedTime) noexcept
 		if (INPUT->GetKeyDown(KEY_LBUTTON))
 		{
 			//마우스 피킹 
-			//바닥인 경우 이동
-		//	_pMoveCommand->Execute(_pPlayer, MousePicking());
-			//아닌 경우 커맨드 
-			_pLBCommand->Execute(_pPlayerObj, MousePicking());
+			Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
+			RaycastHit hit;
+			if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
+			{
+				if (_bLBSkill)	//스킬인 경우
+					_pLBCommand->Execute(_pPlayerObj, hit.point);
+				else
+					_pMoveCommand->Execute(_pPlayerObj, hit.point);
+			}
+			else if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
+			{
+				//아닌 경우 커맨드 
+				_pLBCommand->Execute(_pPlayerObj, hit.point);
+			}
 		}
 		else if (INPUT->GetKeyDown(KEY_RBUTTON))
 		{
-			//_pMoveCommand->Execute(_pPlayer, MousePicking());
-			_pRBCommand->Execute(_pPlayerObj, MousePicking());
+			Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
+			RaycastHit hit;
+			if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
+			{
+				if (_bRBSkill)	//스킬인 경우
+					_pRBCommand->Execute(_pPlayerObj, hit.point);
+				else
+					_pMoveCommand->Execute(_pPlayerObj, hit.point);
+			}
+			else if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
+			{
+				//아닌 경우 커맨드 
+				_pRBCommand->Execute(_pPlayerObj, hit.point);
+			}
 		}
 	}
-	else //1인칭 조작
+	//1인칭 조작
+	else 
 	{
 		D3DXVECTOR3 vLook;
 		vLook.x = _pPlayerTrans->GetWorldMatrix()._31;
@@ -93,44 +118,49 @@ void InputHandler::Update(float fElapsedTime) noexcept
 		else
 			_bDown = false;
 
+		//---------------- 공격 (스킬사용) ---------------------//
 		if (INPUT->GetKeyDown(KEY_LBUTTON))
 		{
+			_bAtt = true;
 			_pLBCommand->Execute(_pPlayerObj, vLook);
 		}
 		else if (INPUT->GetKeyDown(KEY_RBUTTON))
 		{
+			_bAtt = true;
 			_pRBCommand->Execute(_pPlayerObj, vLook);
 		}
-		//--------------- 캐릭터 이동 --------------------//
-		_vDir = D3DXVECTOR3(0, 0, 0);
-
-		if (INPUT->GetKeyStay('W'))
-			_vDir = vLook;
-		else if (INPUT->GetKeyStay('S'))
-			_vDir = -vLook;
 		else
+		{
+			//--------------- 캐릭터 이동 --------------------//
 			_vDir = D3DXVECTOR3(0, 0, 0);
 
-		if (INPUT->GetKeyStay('A')) 
-		{
-		//	_iSide = -1;
-			_vDir -= vRight;
-		}
-		else if (INPUT->GetKeyStay('D')) 
-		{
-	//		_iSide = 1;
-			_vDir += vRight;
-		}
-	
-		if (D3DXVec3Length(&_vDir) > 0) 
-		{
-			D3DXVec3Normalize(&_vDir, &_vDir);
-			_pMoveCommand->Execute(_pPlayerObj, _vDir);
-		}
-		else
-			_pPlayer->SetState(PLAYER_STAND, BACK);
-		//-----------------------------------------------//
+			if (INPUT->GetKeyStay('W'))
+				_vDir = vLook;
+			else if (INPUT->GetKeyStay('S'))
+				_vDir = -vLook;
+			else
+				_vDir = D3DXVECTOR3(0, 0, 0);
 
+			if (INPUT->GetKeyStay('A'))
+			{
+				_vDir -= vRight;
+			}
+			else if (INPUT->GetKeyStay('D'))
+			{
+				_vDir += vRight;
+			}
+
+			if (D3DXVec3Length(&_vDir) > 0)
+			{
+				_bAtt = false;
+				D3DXVec3Normalize(&_vDir, &_vDir);
+				_pMoveCommand->Execute(_pPlayerObj, _vDir);
+			}
+			else if (!_bAtt)
+			{
+				_pPlayer->SetState(PLAYER_STAND, BACK);
+			}
+		}
 	}
 
 
@@ -150,26 +180,34 @@ void InputHandler::SetMouseBtn(bool isLeft, SKILL_ID id)
 {
 	if (id == SKILL_END)
 	{
-		if(isLeft)
+		if (isLeft) 
+		{
+			_bLBSkill = false;
 			_pLBCommand = new AttackCommand();
-		else
+		}
+		else 
+		{
+			_bRBSkill = false;
 			_pRBCommand = new AttackCommand();
+		}
 	}
 	else
 	{
 		if (isLeft) 
 		{
+			_bLBSkill = true;
 			_pLBCommand = new SkillCommand();
 			static_cast<SkillCommand*>(_pLBCommand)->SetSkill(id);
 		}
 		else
 		{
+			_bRBSkill = true;
 			_pRBCommand = new SkillCommand();
 			static_cast<SkillCommand*>(_pRBCommand)->SetSkill(id);
 		}
 	}
 }
-
+/*
 D3DXVECTOR3 InputHandler::MousePicking()
 {
 	POINT		ptMouse{};
@@ -209,12 +247,12 @@ D3DXVECTOR3 InputHandler::MousePicking()
 	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
 
 	// 월드 영역의 좌표를 로컬 스페이스 좌표로 변환
-	/*D3DXMATRIX		matWorld;
-	pTerrainTransCom->Get_WorldMatrix(&matWorld);
-	D3DXMatrixInverse(&matWorld, NULL, &matWorld);
+	//D3DXMATRIX		matWorld;
+	//pTerrainTransCom->Get_WorldMatrix(&matWorld);
+	//D3DXMatrixInverse(&matWorld, NULL, &matWorld);
 
-	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matWorld);
-	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matWorld);*/
+	//D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matWorld);
+	//D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matWorld);
 
 	unsigned long		dwCntX = _pTerrain->Get_VtxCntX();
 	unsigned long		dwCntZ = _pTerrain->Get_VtxCntZ();
@@ -265,3 +303,4 @@ D3DXVECTOR3 InputHandler::MousePicking()
 
 	return D3DXVECTOR3(0.f, 0.f, 0.f);
 }
+*/

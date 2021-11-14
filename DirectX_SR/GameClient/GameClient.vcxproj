@@ -173,7 +173,7 @@
     <ClInclude Include="Game_Enum.h" />
     <ClInclude Include="Game_Math.h" />
     <ClInclude Include="Game_Struct.h" />
-    <ClInclude Include="InGameUI.h" />
+    <ClInclude Include="StatusBar.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MouseBtnUI.h" />
@@ -212,7 +212,7 @@
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
-    <ClCompile Include="InGameUI.cpp" />
+    <ClCompile Include="StatusBar.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="MouseBtnUI.cpp" />

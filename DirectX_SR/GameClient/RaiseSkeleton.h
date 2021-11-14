@@ -8,7 +8,7 @@ class RaiseSkeleton :	public Skill
 public:		explicit 				RaiseSkeleton() noexcept;
 public:		virtual 				~RaiseSkeleton() noexcept { __noop; }
 
-public:		virtual bool			Using(D3DXVECTOR3 vPos, Transform* pTrans)noexcept;
+public:		virtual bool			Using(D3DXVECTOR3 vPos, Transform* pTrans,bool isDir)noexcept;
 public:		void					SetPathFinding(PathFinding* pf);
 
 private:	int							_iMaxSkeleton;

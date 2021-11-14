@@ -43,9 +43,6 @@
     <Filter Include="00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton">
       <UniqueIdentifier>{b223a755-5cf3-41ec-bc01-912ec3e20478}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\InputHandle">
-      <UniqueIdentifier>{b76ee25e-0318-4d9b-b18b-dcd49cdd3f43}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton\Skeleton">
       <UniqueIdentifier>{66b36543-9d4c-4d5d-bf73-d532a1ca8e24}</UniqueIdentifier>
     </Filter>
@@ -66,18 +63,6 @@
     </Filter>
     <Filter Include="00. Game\01. GameObject\00. Player\State">
       <UniqueIdentifier>{888de545-66a6-437a-b478-710c5e72501f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\InputHandle\Command">
-      <UniqueIdentifier>{5af0d014-8f4b-427b-8f61-196c5cbb979a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\InputHandle\Command\SkillCommand">
-      <UniqueIdentifier>{b91db208-2c78-4d8c-b033-e08a030a4e2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\InputHandle\Command\AttackCommand">
-      <UniqueIdentifier>{fa4e8722-89e6-4f8e-ab53-49329322cec9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\InputHandle\Command\MoveCommand">
-      <UniqueIdentifier>{e19d1efa-3196-4ded-9f0e-fe945e3fff7d}</UniqueIdentifier>
     </Filter>
     <Filter Include="00. Game\01. GameObject\NaviMesh">
       <UniqueIdentifier>{5cd9aee5-d1ed-4119-b307-4229ca098c2c}</UniqueIdentifier>
@@ -121,11 +106,29 @@
     <Filter Include="00. Game\01. GameObject\00. Player\State\Skeleton\00. Create">
       <UniqueIdentifier>{5d0eab5d-c08f-40ea-8a63-03ced6b2cc33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\UI">
+    <Filter Include="00. Game\01. GameObject\02. UI">
       <UniqueIdentifier>{17122b34-fba8-4a83-a474-289c364b1b8b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\UI\MouseBtnUI">
+    <Filter Include="00. Game\01. GameObject\02. UI\StatusBar">
+      <UniqueIdentifier>{6b3f6249-12cf-48ca-a59b-b2bdb86821ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\02. UI\StatusBar\MouseBtnUI">
       <UniqueIdentifier>{2c9f6bdb-10a0-47b0-a6ef-bb49f824efac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\03. InputHandle">
+      <UniqueIdentifier>{b76ee25e-0318-4d9b-b18b-dcd49cdd3f43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\03. InputHandle\Command">
+      <UniqueIdentifier>{5af0d014-8f4b-427b-8f61-196c5cbb979a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\03. InputHandle\Command\SkillCommand">
+      <UniqueIdentifier>{b91db208-2c78-4d8c-b033-e08a030a4e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\03. InputHandle\Command\AttackCommand">
+      <UniqueIdentifier>{fa4e8722-89e6-4f8e-ab53-49329322cec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\03. InputHandle\Command\MoveCommand">
+      <UniqueIdentifier>{e19d1efa-3196-4ded-9f0e-fe945e3fff7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,22 +166,22 @@
       <Filter>00. Game\98.Include</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
-      <Filter>00. Game\01. GameObject\InputHandle\Command</Filter>
+      <Filter>00. Game\01. GameObject\03. InputHandle\Command</Filter>
     </ClInclude>
     <ClInclude Include="RaiseSkeleton.h">
       <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
     </ClInclude>
     <ClInclude Include="SkillCommand.h">
-      <Filter>00. Game\01. GameObject\InputHandle\Command\SkillCommand</Filter>
+      <Filter>00. Game\01. GameObject\03. InputHandle\Command\SkillCommand</Filter>
     </ClInclude>
     <ClInclude Include="AttackCommand.h">
-      <Filter>00. Game\01. GameObject\InputHandle\Command\AttackCommand</Filter>
+      <Filter>00. Game\01. GameObject\03. InputHandle\Command\AttackCommand</Filter>
     </ClInclude>
     <ClInclude Include="MoveCommand.h">
-      <Filter>00. Game\01. GameObject\InputHandle\Command\MoveCommand</Filter>
+      <Filter>00. Game\01. GameObject\03. InputHandle\Command\MoveCommand</Filter>
     </ClInclude>
     <ClInclude Include="InputHandler.h">
-      <Filter>00. Game\01. GameObject\InputHandle</Filter>
+      <Filter>00. Game\01. GameObject\03. InputHandle</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>00. Game\00. Scene</Filter>
@@ -249,11 +252,11 @@
     <ClInclude Include="PlayerFSMState.h">
       <Filter>00. Game\01. GameObject\00. Player\State\Player</Filter>
     </ClInclude>
-    <ClInclude Include="InGameUI.h">
-      <Filter>00. Game\01. GameObject\UI</Filter>
-    </ClInclude>
     <ClInclude Include="MouseBtnUI.h">
-      <Filter>00. Game\01. GameObject\UI\MouseBtnUI</Filter>
+      <Filter>00. Game\01. GameObject\02. UI\StatusBar\MouseBtnUI</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusBar.h">
+      <Filter>00. Game\01. GameObject\02. UI\StatusBar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -276,16 +279,16 @@
       <Filter>00. Game\01. GameObject\00. Player\Skill\RaiseSkeleton</Filter>
     </ClCompile>
     <ClCompile Include="SkillCommand.cpp">
-      <Filter>00. Game\01. GameObject\InputHandle\Command\SkillCommand</Filter>
+      <Filter>00. Game\01. GameObject\03. InputHandle\Command\SkillCommand</Filter>
     </ClCompile>
     <ClCompile Include="AttackCommand.cpp">
-      <Filter>00. Game\01. GameObject\InputHandle\Command\AttackCommand</Filter>
+      <Filter>00. Game\01. GameObject\03. InputHandle\Command\AttackCommand</Filter>
     </ClCompile>
     <ClCompile Include="MoveCommand.cpp">
-      <Filter>00. Game\01. GameObject\InputHandle\Command\MoveCommand</Filter>
+      <Filter>00. Game\01. GameObject\03. InputHandle\Command\MoveCommand</Filter>
     </ClCompile>
     <ClCompile Include="InputHandler.cpp">
-      <Filter>00. Game\01. GameObject\InputHandle</Filter>
+      <Filter>00. Game\01. GameObject\03. InputHandle</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>00. Game\00. Scene</Filter>
@@ -347,11 +350,11 @@
     <ClCompile Include="PlayerFSMState.cpp">
       <Filter>00. Game\01. GameObject\00. Player\State\Player</Filter>
     </ClCompile>
-    <ClCompile Include="InGameUI.cpp">
-      <Filter>00. Game\01. GameObject\UI</Filter>
-    </ClCompile>
     <ClCompile Include="MouseBtnUI.cpp">
-      <Filter>00. Game\01. GameObject\UI\MouseBtnUI</Filter>
+      <Filter>00. Game\01. GameObject\02. UI\StatusBar\MouseBtnUI</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusBar.cpp">
+      <Filter>00. Game\01. GameObject\02. UI\StatusBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

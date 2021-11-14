@@ -28,8 +28,12 @@ void PlayerAttack::Start() noexcept
 			_eDir = DIR_END;
 		}
 	}
-	else
+	else 
+	{
 		_pAnimator->SetAnimation("Attack_0");
+		// 소리 
+		//충돌판정
+	}
 }
 
 void PlayerAttack::Update(float fElapsedTime) noexcept

@@ -17,7 +17,7 @@ RaiseSkeleton::RaiseSkeleton() noexcept
    }
 }
 
-bool RaiseSkeleton::Using(D3DXVECTOR3 vPos, Transform* pTrans) noexcept
+bool RaiseSkeleton::Using(D3DXVECTOR3 vPos, Transform* pTrans, bool isDir) noexcept
 {
     if (_iCount == _iMaxSkeleton)
     {
@@ -29,10 +29,13 @@ bool RaiseSkeleton::Using(D3DXVECTOR3 vPos, Transform* pTrans) noexcept
 
         _iCount = 1;
 
-    }
+    } 
     //클릭한 시체 위치에 스켈레톤 생성 
     GameObject* pSkeleton = _Skeletones[_iIdx]->GetGameObject();
-    pSkeleton->GetTransform()->SetWorldPosition(vPos);
+    if(!isDir)
+        pSkeleton->GetTransform()->SetWorldPosition(vPos);
+    else
+        pSkeleton->GetTransform()->SetWorldPosition(pTrans->GetWorldPosition()+vPos);
     _Skeletones[_iIdx]->Create(pTrans);
 
     _iCount++;

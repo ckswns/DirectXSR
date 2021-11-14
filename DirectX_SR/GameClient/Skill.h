@@ -12,7 +12,7 @@ public:		virtual 			~Skill() noexcept { __noop; }
 
 public:		const SKILL_ID		GetSkillID() const { return _eID; }
 public:		const	 float		GetUsingMp() const { return _fMp; }
-public:		virtual bool		Using(D3DXVECTOR3 vPos, Transform* pTrans)noexcept PURE;
+public:		virtual bool		Using(D3DXVECTOR3 vPos, Transform* pTrans,bool isDir)noexcept PURE;
 
 private:	SKILL_ID			_eID;
 protected:	float				_fMp;

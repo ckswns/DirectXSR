@@ -12,14 +12,14 @@ BoneSpear::BoneSpear() noexcept
 {
 }
 
-bool BoneSpear::Using(D3DXVECTOR3 vPos, Transform* pTrans) noexcept
+bool BoneSpear::Using(D3DXVECTOR3 vPos, Transform* pTrans,bool isDir) noexcept
 {
-    D3DXMATRIX  world = pTrans->GetWorldMatrix();
-    D3DXVECTOR3 look = D3DXVECTOR3(world.m[2][0], world.m[2][1], world.m[2][2]);
-    float angle = D3DXVec3Dot(&look, &vPos);
-
     GameObject* pBoneSpear = GameObject::Instantiate();
-    pBoneSpear->GetTransform()->SetWorldPosition(pTrans->GetWorldPosition());
-    pBoneSpear->AddComponent(new Projectile(vPos));
-     return true;
+    if(isDir)
+        pBoneSpear->GetTransform()->SetWorldPosition(pTrans->GetWorldPosition()+ vPos);
+    else
+        pBoneSpear->GetTransform()->SetWorldPosition(pTrans->GetWorldPosition());
+
+    pBoneSpear->AddComponent(new Projectile(vPos,isDir));
+    return true;
 }

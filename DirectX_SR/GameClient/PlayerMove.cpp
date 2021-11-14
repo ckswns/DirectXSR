@@ -52,7 +52,7 @@ void PlayerMove::TPVUpdate(float fElapsedTime)
 	{
 		D3DXVECTOR3 vDir = _vTarget - _pTrans->GetWorldPosition();
 		vDir.y = 0;
-		if (D3DXVec3Length(&vDir) < 0.5f)
+		if (D3DXVec3Length(&vDir) < 0.1f)
 		{
 			//공격이였으면 공격으로 돌아가기
 			if (_bAtt)
@@ -75,7 +75,7 @@ void PlayerMove::TPVUpdate(float fElapsedTime)
 		D3DXVECTOR3 vDir = (*iter)->GetPos() - _pTrans->GetWorldPosition();
 		vDir.y = 0;
 
-		if (D3DXVec3Length(&vDir) < 0.5f)
+		if (D3DXVec3Length(&vDir) < 0.1f)
 		{
 			_pPath.pop_front();
 			if (_pPath.empty())
