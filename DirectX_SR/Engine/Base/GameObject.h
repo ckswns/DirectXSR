@@ -15,6 +15,7 @@ namespace ce
 	class SceneManager;
 	class Scene;
 	class Behaviour;
+	class Collider;
 
 	class GameObject final //: public MemoryPool<GameObject>
 	{
@@ -30,12 +31,16 @@ namespace ce
 	private:	void								RenderXXX(void) noexcept;
 	private:	void								ReleaseXXX(void) noexcept;
 
-	public:		virtual void						OnMouseEnterXXX(void) noexcept;
-	public:		virtual void						OnMouseLeaveXXX(void) noexcept;
-	public:		virtual void						OnMouseOverXXX(void) noexcept;
-	public:		virtual void						OnMouseDownXXX(void) noexcept;
-	public:		virtual void						OnMouseUpXXX(void) noexcept;
-	public:		virtual void						OnMouseHeldDownXXX(void) noexcept;
+	public:		void								OnMouseEnterXXX(void) noexcept;
+	public:		void								OnMouseLeaveXXX(void) noexcept;
+	public:		void								OnMouseOverXXX(void) noexcept;
+	public:		void								OnMouseDownXXX(void) noexcept;
+	public:		void								OnMouseUpXXX(void) noexcept;
+	public:		void								OnMouseHeldDownXXX(void) noexcept;
+
+	public:		void								OnCollisionEnterXXX(Collider* mine, Collider* other) noexcept;
+	public:		void								OnCollisionStayXXX(Collider* mine, Collider* other) noexcept;
+	public:		void								OnCollisionExitXXX(Collider* mine, Collider* other) noexcept;
 
 	public:		void								SetDontDestroy(bool b) noexcept { _bDontDestroy = b; }
 	public:		bool								GetDontDestroy(void) const noexcept { return _bDontDestroy; }

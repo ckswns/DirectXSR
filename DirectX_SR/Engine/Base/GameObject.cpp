@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Behaviour.h"
+#include "Collider.h"
 
 namespace ce
 {
@@ -145,6 +146,42 @@ namespace ce
 			return;
 
 		cp->OnMouseHeldDown();
+	}
+
+	void GameObject::OnCollisionEnterXXX(Collider* mine, Collider* other) noexcept
+	{
+		if (HasComponent(COMPONENT_ID::BEHAVIOUR) == false)
+			return;
+
+		for (int i = 0; i < _pComponents.size(); i++)
+		{
+			if (_pComponents[i]->GetID() == COMPONENT_ID::BEHAVIOUR)
+				static_cast<Behaviour*>(_pComponents[i])->OnCollisionEnter(mine, other);
+		}
+	}
+
+	void GameObject::OnCollisionStayXXX(Collider* mine, Collider* other) noexcept
+	{
+		if (HasComponent(COMPONENT_ID::BEHAVIOUR) == false)
+			return;
+
+		for (int i = 0; i < _pComponents.size(); i++)
+		{
+			if (_pComponents[i]->GetID() == COMPONENT_ID::BEHAVIOUR)
+				static_cast<Behaviour*>(_pComponents[i])->OnCollisionStay(mine, other);
+		}
+	}
+
+	void GameObject::OnCollisionExitXXX(Collider* mine, Collider* other) noexcept
+	{
+		if (HasComponent(COMPONENT_ID::BEHAVIOUR) == false)
+			return;
+
+		for (int i = 0; i < _pComponents.size(); i++)
+		{
+			if (_pComponents[i]->GetID() == COMPONENT_ID::BEHAVIOUR)
+				static_cast<Behaviour*>(_pComponents[i])->OnCollisionExit(mine, other);
+		}
 	}
 
 	void GameObject::SetLayer(GameObjectLayer _layer) noexcept

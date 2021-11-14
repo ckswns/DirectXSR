@@ -11,7 +11,8 @@
 #include "SpriteRenderer.h"
 #include "AudioListener.h"
 #include "AudioSource.h"
-
+#include "SphereCollider.h"
+#include "RigidBody.h"
 
 TestScene::TestScene(void) noexcept
 {
@@ -35,6 +36,8 @@ bool TestScene::Init(void) noexcept
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new EditorCamera(g_hWnd));
 	obj->AddComponent(new AudioListener());
+	obj->AddComponent(new SphereCollider(2));
+	obj->AddComponent(new Rigidbody());
 
 	return true;
 }

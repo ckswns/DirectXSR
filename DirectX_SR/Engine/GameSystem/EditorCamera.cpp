@@ -5,7 +5,7 @@
 #include "ManagerDef.h"
 #include "Light.h"
 #include "CEMath.h"
-
+#include "Collider.h"
 namespace ce
 {
 	EditorCamera::EditorCamera(HWND hWnd, float velocity) noexcept :
@@ -18,6 +18,17 @@ namespace ce
 
 	void EditorCamera::Start(void) noexcept
 	{
+#ifdef __USE_FMOD__
+		gameObject->AddComponent(new Camera(D3D9DEVICE->GetDevice(), Camera::Type::PERSPECTIVE, Camera::ClearOption::SKYBOX, ASSETMANAGER->GetTextureData("Asset\\SkyBox\\Night1.dds")));
+		D3DCOLORVALUE c;
+		c.a = 1;
+		c.r = 1;
+		c.g = 1;
+		c.b = 1;
+		gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 20, 0, 0, 0.02f));
+		gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 100, 2.f));
+		GetCursorPos(&_ptPrevMousePos);
+#else
 		gameObject->AddComponent(new Camera(D3D9DEVICE->GetDevice()));
 		D3DCOLORVALUE c;
 		c.a = 1;
@@ -27,6 +38,7 @@ namespace ce
 		gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 20, 0, 0, 0.02f));
 		gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 100, 2.f));
 		GetCursorPos(&_ptPrevMousePos);
+#endif
 	}
 
 	void EditorCamera::Update(float fElapsedTime) noexcept
@@ -124,4 +136,10 @@ namespace ce
 		//	_bMBMiddleDown = false;
 		//}
 	}
+
+	//void EditorCamera::OnCollisionEnter(Collider* mine, Collider* other) noexcept
+	//{
+	//	other->GetGameObject()->Destroy();
+	//}
+
 }
