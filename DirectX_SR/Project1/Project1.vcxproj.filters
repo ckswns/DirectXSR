@@ -19,14 +19,14 @@
     <Filter Include="Game\Scene">
       <UniqueIdentifier>{1b4d6ab0-76a6-40f7-ac5b-37787c275a30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameObject">
-      <UniqueIdentifier>{7a5b84a2-d88c-4d85-bceb-1fb8e9c79b10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Scene\LoadingScene">
       <UniqueIdentifier>{20bafaf0-21c4-44da-9659-c6060b791034}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Scene\TestScene">
       <UniqueIdentifier>{046f2619-8fa7-43b1-9ec7-ede1e8bb2833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Behaviour">
+      <UniqueIdentifier>{7a5b84a2-d88c-4d85-bceb-1fb8e9c79b10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +51,9 @@
     <ClInclude Include="LoadingScene.h">
       <Filter>Game\Scene\LoadingScene</Filter>
     </ClInclude>
+    <ClInclude Include="BillboardTest.h">
+      <Filter>Game\Behaviour</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project1.cpp">
@@ -64,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="LoadingScene.cpp">
       <Filter>Game\Scene\LoadingScene</Filter>
+    </ClCompile>
+    <ClCompile Include="BillboardTest.cpp">
+      <Filter>Game\Behaviour</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

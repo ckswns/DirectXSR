@@ -40,6 +40,8 @@ namespace ce
 	private:	void				UIRenderXXX(float fElapsedTime) noexcept;
 	private:	void				ReleaseXXX(void) noexcept;
 
+	private:	void				SortObjByCamera(GameObjectLayer layer) noexcept;
+
 	private:	void				CheckUIPicking(void) noexcept;
 
 	public:		const TList&		GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer layer) const noexcept { return _vGameObjs[static_cast<int>(layer)]; }

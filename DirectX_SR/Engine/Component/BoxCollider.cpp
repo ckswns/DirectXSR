@@ -93,8 +93,8 @@ namespace ce
 		float t5 = (min.z - ray._origin.z) / ray._dir.z;
 		float t6 = (max.z - ray._origin.z) / ray._dir.z;
 
-		float tmin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
-		float tmax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
+		float tmin = max(max(min(t1, t2), min(t3, t4)), min(t5, t6));
+		float tmax = min(min(max(t1, t2), max(t3, t4)), max(t5, t6));
 
 		// if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behing us
 		if (tmax < 0) {

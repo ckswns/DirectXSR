@@ -9,6 +9,10 @@
 #include "RectTransform.h"
 #include "GameController.h"
 #include "ManagerDef.h"
+#include "Camera.h"
+#include "Transform.h"
+#include "Vector3.h"
+
 
 using namespace ce::UI;
 
@@ -175,6 +179,9 @@ namespace ce
 
 	void Scene::RenderXXX(float fElapsedTime) noexcept
 	{
+		//SortObjByCamera(GameObjectLayer::OBJECT);
+		SortObjByCamera(GameObjectLayer::ALPHA);
+
 		for (int i = 0; i < static_cast<int>(GameObjectLayer::UI); i++)
 		{
 			for (size_t j = 0; j < _vGameObjs[i].size(); j++)
@@ -230,6 +237,24 @@ namespace ce
 				iter = _vGameObjs[i].erase(iter);
 			}
 		}
+	}
+
+	void Scene::SortObjByCamera(GameObjectLayer layer) noexcept
+	{
+		D3DXVECTOR3 position;
+		int index = static_cast<int>(layer);
+
+		if (Camera::GetMainCamera() != nullptr)
+			position = Camera::GetMainCamera()->GetTransform()->GetWorldPosition();
+		else
+			position = D3DXVECTOR3(0, 0, 0);
+
+		std::sort(_vGameObjs[index].begin(), _vGameObjs[index].end(), [&](GameObject* lhs, GameObject* rhs) {
+			Vector3 a = (position - lhs->GetTransform()->GetWorldPosition());
+			Vector3 b = (position - rhs->GetTransform()->GetWorldPosition());
+
+			return (a.SqrLength() > b.SqrLength());
+			});
 	}
 
 	void Scene::CheckUIPicking(void) noexcept

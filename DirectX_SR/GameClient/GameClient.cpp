@@ -59,7 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Scene::KEY_VALUE_LIST scenesList;
 	Scene* scene = new LoadingScene();
 	scenesList.push_back(std::make_pair("Loading", scene));
-	scene = new TownScene_01();
+	scene = new Game();
 	scenesList.push_back(std::make_pair("Town_01", scene));
 
 	pGameController->Init(g_hWnd, scenesList, WINCX, WINCY);

@@ -20,6 +20,7 @@ namespace ce
 	void TerrainRenderer::Init(void) noexcept
 	{
 		_pTransform = _owner->GetTransform();
+		_owner->SetLayer(GameObjectLayer::BACKGROUND);
 	}
 
 	void TerrainRenderer::Render(void) noexcept
@@ -115,7 +116,7 @@ namespace ce
 
 		// 멀티텍스쳐 0,1번 셋팅을 사용을 중지 한다.
 		//_pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_DISABLE);
-		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
+		//_pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
 		_pDevice->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
 		_pDevice->SetTextureStageState(1, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
 

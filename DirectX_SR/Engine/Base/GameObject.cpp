@@ -391,7 +391,7 @@ namespace ce
 				return vObjects_UI[i];
 		}
 
-		const std::vector<GameObject*>& vObjects_EFFECT = SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer::EFFECT);
+		const std::vector<GameObject*>& vObjects_EFFECT = SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer::ALPHA);
 
 		for (int i = 0; i < vObjects_EFFECT.size(); i++)
 		{
@@ -428,7 +428,7 @@ namespace ce
 				return vObjects_UI[i];
 		}
 
-		const std::vector<GameObject*>& vObjects_EFFECT = SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer::EFFECT);
+		const std::vector<GameObject*>& vObjects_EFFECT = SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer::ALPHA);
 
 		for (int i = 0; i < vObjects_EFFECT.size(); i++)
 		{
@@ -473,7 +473,7 @@ namespace ce
 				result.emplace_back(vObjects_UI[i]);
 		}
 
-		const std::vector<GameObject*>& vObjects_EFFECT = SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer::EFFECT);
+		const std::vector<GameObject*>& vObjects_EFFECT = SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer::ALPHA);
 
 		for (int i = 0; i < vObjects_EFFECT.size(); i++)
 		{
@@ -518,7 +518,7 @@ namespace ce
 				result.emplace_back(vObjects_UI[i]);
 		}
 
-		const std::vector<GameObject*>& vObjects_EFFECT = SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer::EFFECT);
+		const std::vector<GameObject*>& vObjects_EFFECT = SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer::ALPHA);
 
 		for (int i = 0; i < vObjects_EFFECT.size(); i++)
 		{

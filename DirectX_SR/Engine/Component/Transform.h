@@ -7,6 +7,10 @@
 #define IN
 #endif
 
+#ifndef OUT
+#define OUT
+#endif
+
 namespace ce
 {
 	class Transform final : public Component
@@ -64,6 +68,9 @@ namespace ce
 	public:		void							SetLocalScale(float x, float y, float z) noexcept;
 
 	public:		const D3DXMATRIX&				GetWorldMatrix(void) const noexcept { return _matWorld; }
+
+	public:		D3DXVECTOR3						GetBillboardEulerAngle (void) const noexcept;
+	public:		D3DXVECTOR3						GetBillboardEulerAngleY(void) const noexcept;
 
 	private:	bool							RemoveChild(const Transform* child) noexcept;
 	private:	void							SetChild(IN const Transform* child) noexcept;

@@ -33,7 +33,7 @@ namespace ce
 	{
 		BACKGROUND,
 		OBJECT,
-		EFFECT,
+		ALPHA,
 		UI,
 		END
 	};

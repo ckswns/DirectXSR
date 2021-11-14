@@ -14,6 +14,7 @@
 #include "SphereCollider.h"
 #include "RigidBody.h"
 #include "Camera.h"
+#include "BillboardTest.h"
 
 TestScene::TestScene(void) noexcept
 {
@@ -32,10 +33,9 @@ bool TestScene::Init(void) noexcept
 		for (int j = 0; j < 10; j++)
 		{
 			obj = GameObject::Instantiate();
-			obj->AddComponent(new CubeObject());
-			obj->GetTransform()->SetWorldPosition(i, 0, j);
-			obj->AddComponent(new SphereCollider(1));
-			obj->SetLayer(GameObjectLayer::OBJECT);
+			obj->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\test.jpg")));
+			obj->AddComponent(new BillboardTest());
+			obj->GetTransform()->SetWorldPosition(i * 5, j * 5, 0);
 		}
 	}
 

@@ -303,6 +303,72 @@ namespace ce
 		SetLocalScale(D3DXVECTOR3(x, y, z));
 	}
 
+	D3DXVECTOR3 Transform::GetBillboardEulerAngle(void) const noexcept
+	{
+		D3DXVECTOR3 euler;
+		D3DXMATRIX temp = _matRotation;
+
+		D3DXMatrixInverse(&temp, 0, &temp);
+
+		if (temp._11 == 1.0f)
+		{
+			euler.y = atan2f(temp._13, temp._34);
+			euler.x = 0;
+			euler.z = 0;
+
+		}
+		else if (temp._11 == -1.0f)
+		{
+			euler.y = atan2f(temp._13, temp._34);
+			euler.x = 0;
+			euler.z = 0;
+		}
+		else
+		{
+			euler.y = atan2(-temp._31, temp._11);
+			euler.x = atan2(-temp._23, temp._22);
+			euler.z = asin(temp._21);
+		}
+
+		return euler;
+	}
+
+	D3DXVECTOR3 Transform::GetBillboardEulerAngleY(void) const noexcept
+	{
+		D3DXVECTOR3 euler;
+		D3DXMATRIX temp;
+		D3DXMatrixIdentity(&temp);
+
+		temp._11 = _matRotation._11;
+		temp._13 = _matRotation._13;
+		temp._31 = _matRotation._31;
+		temp._33 = _matRotation._33;
+
+		D3DXMatrixInverse(&temp, 0, &temp);
+		
+		if (temp._11 == 1.0f)
+		{
+			euler.y = atan2f(temp._13, temp._34);
+			euler.x = 0;
+			euler.z = 0;
+
+		}
+		else if (temp._11 == -1.0f)
+		{
+			euler.y = atan2f(temp._13, temp._34);
+			euler.x = 0;
+			euler.z = 0;
+		}
+		else
+		{
+			euler.y = atan2(-temp._31, temp._11);
+			euler.x = atan2(-temp._23, temp._22);
+			euler.z = asin(temp._21);
+		}
+
+		return euler;
+	}
+
 	bool Transform::RemoveChild(const Transform* child) noexcept
 	{
 		_vecChild.erase(std::remove(_vecChild.begin(), _vecChild.end(), child), _vecChild.end());

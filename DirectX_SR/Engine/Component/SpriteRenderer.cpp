@@ -16,6 +16,8 @@ namespace ce
 
 	void SpriteRenderer::Init(void) noexcept
 	{
+		_owner->SetLayer(GameObjectLayer::ALPHA);
+
 		float x = 1, y = 1;
 
 		if (_material.GetMainTexture() != nullptr)
