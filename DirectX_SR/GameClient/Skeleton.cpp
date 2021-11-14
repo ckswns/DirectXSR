@@ -43,6 +43,9 @@ void Skeleton::Create(Transform* trans)
 	_pOwnerTrans = trans;
 	gameObject->SetActive(true);
 
+	_pFSM[SK_STAND] = new SkeletonStand(_pAnimator, _pTrans, _pOwnerTrans);
+	_pFSM[SK_MOVE] = new SkeletonMove(_pAnimator, _pTrans, _pOwnerTrans, _pPathFinding, _fSpeed);
+
 	SetState(SK_CREATE);
 }
 

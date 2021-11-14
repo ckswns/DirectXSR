@@ -16,9 +16,9 @@ void SkeletonMove::Start() noexcept
 
 	if (_vTarget.y == 5)
 	{
-		_vTarget.x = SignedRandomf(3.f);
+		_vTarget.x = SignedRandomf(1.f);
 		_vTarget.y = 0;
-		_vTarget.z = SignedRandomf(3.f);
+		_vTarget.z = SignedRandomf(1.f);
 	}
 
 	_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
@@ -32,17 +32,17 @@ void SkeletonMove::Start() noexcept
 
 void SkeletonMove::Update(float fElapsedTime) noexcept
 {
-	////플레이어와 거리확인
-	//D3DXVECTOR3 vDir = _pPlayerTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
-	//if (D3DXVec3Length(&vDir) >= 10.f)
-	//{
-	//	//많이 멀어진 경우 주변으로 순간이동 
-	//	float fX = CE_MATH::Random(-2, 2) + _pPlayerTrans->GetWorldPosition().x;
-	//	float fZ = CE_MATH::Random(-2, 2) + _pPlayerTrans->GetWorldPosition().z;
+	//플레이어와 거리확인
+	D3DXVECTOR3 vDir = _pPlayerTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
+	if (D3DXVec3Length(&vDir) >= 10.f)
+	{
+		//많이 멀어진 경우 주변으로 순간이동 
+		float fX = CE_MATH::Random(-1, 1) + _pPlayerTrans->GetWorldPosition().x;
+		float fZ = CE_MATH::Random(-1, 1) + _pPlayerTrans->GetWorldPosition().z;
 
-	//	_pTrans->SetWorldPosition(fX, _pPlayerTrans->GetWorldPosition().y, fZ);
-	//	_pSk->SetState(SK_STAND, _eDir);
-	//}
+		_pTrans->SetWorldPosition(fX, _pPlayerTrans->GetWorldPosition().y, fZ);
+		_pSk->SetState(SK_STAND, _eDir);
+	}
 
 	if (!_bAtt)
 	{
