@@ -6,7 +6,7 @@ namespace ce
 	class BoxCollider : public Collider
 	{
 	public:		explicit		BoxCollider(void) noexcept = delete;
-	public:		explicit		BoxCollider(const D3DXVECTOR3& size, const D3DXVECTOR3& center = D3DXVECTOR3(0, 0, 0)) noexcept;
+	public:		explicit		BoxCollider(const D3DXVECTOR3& size, const D3DXVECTOR3& center = D3DXVECTOR3(0, 0, 0), std::string tag = "") noexcept;
 	public:		virtual			~BoxCollider(void) noexcept { __noop; }
 
 	public:		void			Open(void) noexcept override;

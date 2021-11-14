@@ -16,7 +16,8 @@ namespace ce
 										END
 									};
 
-	public:		explicit			Collider(Collider::Type type) noexcept : Component(COMPONENT_ID::COLLIDER) { _type = type; }
+	public:		explicit			Collider(Collider::Type type, std::string tag) noexcept : 
+										Component(COMPONENT_ID::COLLIDER), _type(type), _tag(tag) { __noop; }
 	public:		virtual				~Collider(void) noexcept { __noop; }
 
 	public:		using				TList = std::vector<Collider*>;
@@ -29,6 +30,8 @@ namespace ce
 	public:		void				Update(float) noexcept override final;
 	public:		void				LateUpdate(float) noexcept override final { __noop; }
 
+	public:		void				SetTag(std::string tag) noexcept { _tag = tag; }
+	public:		const std::string&	GetTag(void) const noexcept { return _tag; }
 
 	public:		virtual void		Open(void) noexcept PURE;
 	public:		virtual	void		Close(void) noexcept PURE;
@@ -46,7 +49,7 @@ namespace ce
 	protected:	Collider::Type		_type;
 
 	protected:	Transform*			_transform;
-
+	protected:	std::string			_tag;
 #ifdef _DEBUG
 	protected:	bool				_showDbg = false;
 	protected:	D3DMATERIAL9		_material;

@@ -5,7 +5,7 @@
 namespace ce
 {
 	TerrainCollider::TerrainCollider(Terrain* terrain) noexcept :
-		Collider(Collider::Type::TERRAIN),
+		Collider(Collider::Type::TERRAIN, ""),
 		_terrain(terrain)
 	{
 

@@ -9,8 +9,8 @@
 
 namespace ce
 {
-	BoxCollider::BoxCollider(const D3DXVECTOR3& size, const D3DXVECTOR3& center) noexcept :
-		Collider(Collider::Type::BOX),
+	BoxCollider::BoxCollider(const D3DXVECTOR3& size, const D3DXVECTOR3& center, std::string tag) noexcept :
+		Collider(Collider::Type::BOX, tag),
 		_center(center),
 		_size(size)
 	{

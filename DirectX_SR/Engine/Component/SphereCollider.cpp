@@ -9,8 +9,8 @@
 
 namespace ce
 {
-	SphereCollider::SphereCollider(float radius) noexcept :
-		Collider(Collider::Type::SPHERE),
+	SphereCollider::SphereCollider(float radius, std::string tag) noexcept :
+		Collider(Collider::Type::SPHERE, tag),
 		_radius(radius)
 	{
 
@@ -109,11 +109,13 @@ namespace ce
 			DWORD state = 0;
 			auto device = D3D9DEVICE->GetDevice();
 			device->GetRenderState(D3DRS_FILLMODE, &state);
+			device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 			device->SetTransform(D3DTS_WORLD, &_transform->GetWorldMatrix());
 			device->SetMaterial(&_material);
 			_dbgMesh->DrawSubset(0);
 			device->SetRenderState(D3DRS_FILLMODE, state);
+			device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 		}
 #endif
 	}
