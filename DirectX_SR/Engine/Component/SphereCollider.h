@@ -8,7 +8,7 @@ namespace ce
 	class SphereCollider : public Collider
 	{
 	public:		explicit		SphereCollider(void) noexcept = delete;
-	public:		explicit		SphereCollider(float radius) noexcept;
+	public:		explicit		SphereCollider(float radius, std::string tag = "") noexcept;
 	public:		virtual			~SphereCollider(void) noexcept { __noop; }
 	
 	public:		void			Open(void) noexcept override final;

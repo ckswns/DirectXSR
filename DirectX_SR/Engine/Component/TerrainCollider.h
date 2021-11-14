@@ -7,7 +7,7 @@ namespace ce
 
 	class TerrainCollider : public Collider
 	{
-	public:		explicit		TerrainCollider(Terrain* terrain) noexcept;
+	public:		explicit		TerrainCollider(Terrain* terrain, std::string tag = "") noexcept;
 	public:		virtual			~TerrainCollider(void) noexcept { __noop; }
 
 	public:		void			Render(void) noexcept override;

@@ -61,6 +61,15 @@ namespace ce
 		return false;
 	}
 
+	D3DXVECTOR3 Input::GetMousePosition(void) const noexcept
+	{
+		POINT pt;
+		GetCursorPos(&pt);
+		ScreenToClient(_hWnd, &pt);
+
+		return D3DXVECTOR3(pt.x, pt.y, 0);
+	}
+
 	void Input::GetWndMsgXXX(UINT message, WPARAM wParam, LPARAM lParam) noexcept
 	{
 

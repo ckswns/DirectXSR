@@ -12,17 +12,22 @@ namespace ce
 					DOWN,
 					PRESS,
 				};
-	private:	explicit		Input(void) noexcept;
-	private:	virtual			~Input(void) noexcept { __noop; }
 
+	private:	explicit		Input(void) noexcept;
+	private:	virtual			~Input(void) noexcept { _hWnd = nullptr; }
+
+	public:		void			Init(HWND hWnd) noexcept { _hWnd = hWnd; }
 	public:		void			Update(void) noexcept;
 	public:		bool			GetKeyUp(uint8 key) noexcept;
 	public:		bool			GetKeyDown(uint8 key) noexcept;
 	public:		bool			GetKeyStay(uint8 key) noexcept;
 
+	public:		D3DXVECTOR3		GetMousePosition(void) const noexcept;
+
 	public:		void			GetWndMsgXXX(UINT message, WPARAM wParam, LPARAM lParam) noexcept;
 
 	private:	KeyState		_eState[255] = {};
+	private:	HWND			_hWnd;
 
 	private:	friend			SingletonBase<Input>;
 	};

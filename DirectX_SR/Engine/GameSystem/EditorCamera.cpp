@@ -137,9 +137,9 @@ namespace ce
 		//}
 	}
 
-	//void EditorCamera::OnCollisionEnter(Collider* mine, Collider* other) noexcept
-	//{
-	//	other->GetGameObject()->Destroy();
-	//}
+	void EditorCamera::OnCollisionEnter(Collider* mine, Collider* other) noexcept
+	{
+		other->GetGameObject()->Destroy();
+	}
 
 }

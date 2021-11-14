@@ -28,6 +28,7 @@ namespace ce
 
 	namespace Physics
 	{
+		bool Raycast(Ray ray, OUT RaycastHit& hit, GameObjectLayer layer = GameObjectLayer::OBJECT);
 		bool Raycast(D3DXVECTOR3 origin, D3DXVECTOR3 direction, OUT RaycastHit& hit, float length = 1000.f, GameObjectLayer layer = GameObjectLayer::OBJECT);
 	}
 }
