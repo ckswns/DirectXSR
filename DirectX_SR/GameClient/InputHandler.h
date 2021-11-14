@@ -20,8 +20,9 @@ public:		virtual void	Start(void) noexcept;
 public:		virtual void	Update(float fElapsedTime) noexcept;
 public:		virtual void	OnDestroy(void) noexcept;
 
-public:		void			SetLB(SKILL_ID id) noexcept;
-public:		void			SetRB(SKILL_ID id) noexcept;
+public:		void			SetMouseBtn(bool isLeft, SKILL_ID id);
+//public:		void			SetLB(SKILL_ID id) noexcept;
+//public:		void			SetRB(SKILL_ID id) noexcept;
 
 private:	D3DXVECTOR3		MousePicking();
 

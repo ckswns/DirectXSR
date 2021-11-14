@@ -26,8 +26,9 @@ void InputHandler::Start(void) noexcept
 	_pCameraTrans = Camera::GetMainCamera()->GetTransform();
 
 	_pLBCommand = new AttackCommand();
-	_pLBCommand = new SkillCommand();
-	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONE_SPEAR);
+	//_pLBCommand = new SkillCommand();
+	//static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONE_SPEAR);
+
 	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
 }
@@ -38,13 +39,13 @@ void InputHandler::Update(float fElapsedTime) noexcept
 	if (INPUT->GetKeyDown(VK_TAB))
 	{
 		if (_bFPV) _bFPV = false;
-		else		_bFPV = true;
+		else	   _bFPV = true;
 
 		_pPlayer->SetFPV();
 		_pTargetCamera->ChangeView();
 	}
 
-	if (!_bFPV) 
+	if (!_bFPV) //3ÀÎÄª Á¶ÀÛ
 	{
 		if (INPUT->GetKeyDown(KEY_LBUTTON))
 		{
@@ -60,7 +61,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			_pRBCommand->Execute(_pPlayerObj, MousePicking());
 		}
 	}
-	else
+	else //1ÀÎÄª Á¶ÀÛ
 	{
 		D3DXVECTOR3 vLook;
 		vLook.x = _pPlayerTrans->GetWorldMatrix()._31;
@@ -145,31 +146,27 @@ void InputHandler::OnDestroy(void) noexcept
 	_pMoveCommand = nullptr;
 }
 
-void InputHandler::SetLB(SKILL_ID id) noexcept
+void InputHandler::SetMouseBtn(bool isLeft, SKILL_ID id)
 {
-//	delete _pLBCommand;
-//	_pLBCommand = nullptr;
-
-	if(id == SKILL_END)
-		_pLBCommand = new AttackCommand();
+	if (id == SKILL_END)
+	{
+		if(isLeft)
+			_pLBCommand = new AttackCommand();
+		else
+			_pRBCommand = new AttackCommand();
+	}
 	else
 	{
-		_pLBCommand = new SkillCommand();
-	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(id);
-	}
-}
-
-void InputHandler::SetRB(SKILL_ID id) noexcept
-{
-//	delete _pRBCommand;
-//	_pRBCommand = nullptr;
-
-	if (id == SKILL_END)
-		_pRBCommand = new AttackCommand();
-	else 
-	{
-		_pRBCommand = new SkillCommand();
-		static_cast<SkillCommand*>(_pRBCommand)->SetSkill(id);
+		if (isLeft) 
+		{
+			_pLBCommand = new SkillCommand();
+			static_cast<SkillCommand*>(_pLBCommand)->SetSkill(id);
+		}
+		else
+		{
+			_pRBCommand = new SkillCommand();
+			static_cast<SkillCommand*>(_pRBCommand)->SetSkill(id);
+		}
 	}
 }
 

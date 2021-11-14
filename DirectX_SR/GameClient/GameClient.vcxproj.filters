@@ -121,6 +121,12 @@
     <Filter Include="00. Game\01. GameObject\00. Player\State\Skeleton\00. Create">
       <UniqueIdentifier>{5d0eab5d-c08f-40ea-8a63-03ced6b2cc33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\UI">
+      <UniqueIdentifier>{17122b34-fba8-4a83-a474-289c364b1b8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\UI\MouseBtnUI">
+      <UniqueIdentifier>{2c9f6bdb-10a0-47b0-a6ef-bb49f824efac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -243,6 +249,12 @@
     <ClInclude Include="PlayerFSMState.h">
       <Filter>00. Game\01. GameObject\00. Player\State\Player</Filter>
     </ClInclude>
+    <ClInclude Include="InGameUI.h">
+      <Filter>00. Game\01. GameObject\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseBtnUI.h">
+      <Filter>00. Game\01. GameObject\UI\MouseBtnUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -334,6 +346,12 @@
     </ClCompile>
     <ClCompile Include="PlayerFSMState.cpp">
       <Filter>00. Game\01. GameObject\00. Player\State\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="InGameUI.cpp">
+      <Filter>00. Game\01. GameObject\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseBtnUI.cpp">
+      <Filter>00. Game\01. GameObject\UI\MouseBtnUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -173,8 +173,10 @@
     <ClInclude Include="Game_Enum.h" />
     <ClInclude Include="Game_Math.h" />
     <ClInclude Include="Game_Struct.h" />
+    <ClInclude Include="InGameUI.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="LoadingScene.h" />
+    <ClInclude Include="MouseBtnUI.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="NaviMesh.h" />
     <ClInclude Include="Node.h" />
@@ -210,8 +212,10 @@
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
+    <ClCompile Include="InGameUI.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
+    <ClCompile Include="MouseBtnUI.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="NaviMesh.cpp" />
     <ClCompile Include="PathFinding.cpp" />
