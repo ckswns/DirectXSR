@@ -1,9 +1,10 @@
 #pragma once
-#include "FSMState.h"
-class PlayerStand :	public FSMState
+#include "PlayerFSMState.h"
+
+class PlayerStand :	public PlayerFSMState
 {
 public:		explicit			PlayerStand() noexcept = delete;
-public:		explicit			PlayerStand(Animator* pAnim) noexcept :FSMState(pAnim) { __noop; }
+public:		explicit			PlayerStand(Animator* pAnim) noexcept :PlayerFSMState(nullptr,pAnim) { __noop; }
 public:		virtual				~PlayerStand() noexcept { __noop; }
 
 public:		virtual void		Start() noexcept;

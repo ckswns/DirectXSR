@@ -6,10 +6,12 @@
 #include "Material.h"
 #include "Animation.h"
 #include "Animator.h"
+#include "BoxCollider.h"
 #include "AudioListener.h"
+#include "BoxCollider.h"
 
 #include "PathFinding.h"
-#include "FSMState.h"
+#include "PlayerFSMState.h"
 #include "PlayerStand.h"
 #include "PlayerMove.h"
 #include "PlayerAttack.h"
@@ -19,7 +21,7 @@
 #include "BoneSpear.h"
 
 Player::Player(PathFinding* pf) noexcept
-	:_pPathFinding(pf),_eCurState(PLAYER_END)
+	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
 {
 	_tStat = new STAT(100, 100, 50);
 
@@ -42,6 +44,8 @@ void Player::Start(void) noexcept
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
 	//gameObject->AddComponent(new AudioListener());
+	_pCollider = new BoxCollider(D3DXVECTOR3(1, 1, 0.5f));
+	gameObject->AddComponent(_pCollider);
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"));
 	gameObject->AddComponent(sr);
@@ -171,25 +175,54 @@ void Player::InitState()
 {
 	_pFSM.reserve(PLAYER_END);
 	_pFSM.push_back(new PlayerStand(_pAnimator));
-	_pFSM.push_back(new PlayerMove(_pAnimator, _pTrans, _pPathFinding, _fSpeed));
-	_pFSM.push_back(new PlayerAttack(_pAnimator, _pTrans));
+	_pFSM.push_back(new PlayerMove(this,_pAnimator, _pTrans, _pPathFinding, _fSpeed));
+	_pFSM.push_back(new PlayerAttack(this,_pAnimator, _pTrans));
+}
+
+void Player::SetFPV()
+{
+	//1ÀÎÄª > 3ÀÎÄª
+	if (_bFPV)
+	{
+		_bFPV = false;
+		_pTrans->SetLocalEulerAngle(0, 0, 0);
+	}
+	else //3ÀÎÄª > 1ÀÎÄª
+	{
+		SetState(_eCurState, BACK);
+		_pFSM[_eCurState]->Start();
+		_bFPV = true;
+	}
+
+	for (int i = 0; i < PLAYER_END; i++)
+	{
+		if(_bFPV)
+			_pFSM[i]->SetDir(BACK);
+
+		_pFSM[i]->SetFPV(_bFPV);
+	}
+		
 }
 
 void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget, bool bAtt)
 {
-	_eCurState = newState;
-	
 	if (vTarget != D3DXVECTOR3(0, -5, 0))
-		_pFSM[_eCurState]->SetTarget(vTarget);
+		_pFSM[newState]->SetTarget(vTarget);
 
 	if (bAtt)
 	{
-		static_cast<PlayerMove*>(_pFSM[_eCurState])->SetAtt();
+		static_cast<PlayerMove*>(_pFSM[newState])->SetAtt();
 	}
 
-	_pFSM[_eCurState]->SetDir(eDir);
-	_pFSM[_eCurState]->Start();
+	if(!_bFPV)
+		_pFSM[newState]->SetDir(eDir);
 	
+	if (_eCurState != newState) 
+	{
+		_eCurState = newState;
+		_pFSM[_eCurState]->Start();
+	}
+
 }
 
 void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)

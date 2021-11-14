@@ -16,9 +16,9 @@ void SkeletonMove::Start() noexcept
 
 	if (_vTarget.y == 5)
 	{
-		_vTarget.x = SignedRandomf(1.f);
-		_vTarget.y = 0;
-		_vTarget.z = SignedRandomf(1.f);
+		_vTarget.x = _pTrans->GetWorldPosition().x +SignedRandomf(1.f);
+		_vTarget.y = _pTrans->GetWorldPosition().y;
+		_vTarget.z = _pTrans->GetWorldPosition().z + SignedRandomf(1.f);
 	}
 
 	_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
@@ -55,8 +55,9 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 	{
 		D3DXVECTOR3 vDir = _vTarget - _pTrans->GetWorldPosition();
 		vDir.y = 0;
-		if (D3DXVec3Length(&vDir) < 0.5f)
+		if (D3DXVec3Length(&vDir) < 0.7f)
 		{
+			_vTarget.y = 5;
 			//공격이였으면 공격으로 돌아가기
 			if (_bAtt)
 			{

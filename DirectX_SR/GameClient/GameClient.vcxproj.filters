@@ -240,6 +240,9 @@
     <ClInclude Include="SkeletonCreate.h">
       <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\00. Create</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerFSMState.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -328,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="SkeletonCreate.cpp">
       <Filter>00. Game\01. GameObject\00. Player\State\Skeleton\00. Create</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFSMState.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

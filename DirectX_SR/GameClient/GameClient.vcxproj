@@ -182,6 +182,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerAttack.h" />
+    <ClInclude Include="PlayerFSMState.h" />
     <ClInclude Include="PlayerSelectScene.h" />
     <ClInclude Include="PlayerStand.h" />
     <ClInclude Include="PlayerMove.h" />
@@ -222,6 +223,7 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAttack.cpp" />
+    <ClCompile Include="PlayerFSMState.cpp" />
     <ClCompile Include="PlayerSelectScene.cpp" />
     <ClCompile Include="PlayerStand.cpp" />
     <ClCompile Include="PlayerMove.cpp" />

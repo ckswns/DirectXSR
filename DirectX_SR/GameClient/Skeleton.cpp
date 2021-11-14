@@ -38,6 +38,19 @@ void Skeleton::Update(float fElapsedTime) noexcept
 	_pFSM[_eCurState]->Update(fElapsedTime);
 }
 
+void Skeleton::OnDestroy(void) noexcept
+{
+	for (size_t i = 0; i < _pFSM.size(); ++i)
+	{
+		if (_pFSM[i] != nullptr)
+		{
+			delete _pFSM[i];
+			_pFSM[i] = nullptr;
+		}
+	}
+	_pFSM.clear();
+}
+
 void Skeleton::Create(Transform* trans)
 {
 	_pOwnerTrans = trans;
@@ -79,7 +92,6 @@ void Skeleton::InitAnimation(SpriteRenderer* sr)
 {
 	std::vector<Texture*> TList;
 	std::vector<float>		FrameTime;
-	Texture* _pTexture;
 	Animation* ani;
 
 	//Create

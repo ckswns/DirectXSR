@@ -5,7 +5,7 @@ namespace ce
 	class Transform;
 	class Animator;
 }
-class Player;
+
 class FSMState abstract
 {
 public:		explicit			FSMState() noexcept = delete;
@@ -19,7 +19,7 @@ public:		virtual void		Update(float fElapsedTime) noexcept =0;
 public:		void				SetTarget(D3DXVECTOR3 target) { _vTarget = target; }
 public:		void				SetDir(DIR eDir) { _eDir = eDir; _iDir = (int)_eDir * 2; }
 
-protected:	DIR GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd);
+protected:	DIR					GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd);
 
 protected:	Animator*			_pAnimator;
 protected:	Transform*			_pTrans;

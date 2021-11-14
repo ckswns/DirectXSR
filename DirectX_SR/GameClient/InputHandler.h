@@ -5,8 +5,11 @@ namespace ce
 {
 	class GameObject;
 	class Terrain;
+	class Transform;
 }
 class Command;
+class Player;
+class TargetCamera;
 class InputHandler : public Behaviour
 {
 public:		explicit		InputHandler() = delete;
@@ -26,8 +29,18 @@ private:	Command*		_pLBCommand;
 private:	Command*		_pRBCommand;
 private:	Command*		_pMoveCommand;
 
-private:	GameObject*		_pPlayer;
-private:	Terrain*		_pTerrain;
+private:	GameObject*		_pPlayerObj;
+private:	Player*			_pPlayer;
+private:	Transform*		_pPlayerTrans;
 
+private:	Terrain*		_pTerrain;
+private:	TargetCamera*	_pTargetCamera;
+private:	Transform*		_pCameraTrans;
+
+private:	bool			_bFPV;
+private:	int				_iSide;
+private:	D3DXVECTOR3		_vDir;
+private:	bool			_bDown;
+private:	POINT			_ptStart;
 };
 

@@ -1,19 +1,29 @@
 #include "pch.h"
 #include "InputHandler.h"
+
 #include "AttackCommand.h"
 #include "MoveCommand.h"
 #include "SkillCommand.h"
+
 #include "GameObject.h"
 #include "Player.h"
 #include "Terrain.h"
 
+#include "Camera.h"
+#include "Transform.h"
+#include "TargetCamera.h"
+
 InputHandler::InputHandler(GameObject* player, Terrain* terrain) noexcept
-	:_pPlayer(player), _pTerrain(terrain)
+	:_pPlayerObj(player), _pTerrain(terrain), _bFPV(false), _vDir(0, 0, 0)
 {
+	_pPlayerTrans = _pPlayerObj->GetTransform();
+	_pPlayer = static_cast<Player*>(_pPlayerObj->GetComponent(COMPONENT_ID::BEHAVIOUR));
 }
 
 void InputHandler::Start(void) noexcept
 {
+	_pTargetCamera = static_cast<TargetCamera*>(Camera::GetMainCamera()->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
+	_pCameraTrans = Camera::GetMainCamera()->GetTransform();
 
 	_pLBCommand = new AttackCommand();
 	_pLBCommand = new SkillCommand();
@@ -24,19 +34,104 @@ void InputHandler::Start(void) noexcept
 
 void InputHandler::Update(float fElapsedTime) noexcept
 {
-	if (INPUT->GetKeyDown(KEY_LBUTTON))
+	//시점 변경
+	if (INPUT->GetKeyDown(VK_TAB))
 	{
-		//마우스 피킹 
-		//바닥인 경우 이동
-	//	_pMoveCommand->Execute(_pPlayer, MousePicking());
-		//아닌 경우 커맨드 
-		_pLBCommand->Execute(_pPlayer, MousePicking());
+		if (_bFPV) _bFPV = false;
+		else		_bFPV = true;
+
+		_pPlayer->SetFPV();
+		_pTargetCamera->ChangeView();
 	}
-	else if (INPUT->GetKeyDown(KEY_RBUTTON))
+
+	if (!_bFPV) 
 	{
-		//_pMoveCommand->Execute(_pPlayer, MousePicking());
-		_pRBCommand -> Execute(_pPlayer, MousePicking());
+		if (INPUT->GetKeyDown(KEY_LBUTTON))
+		{
+			//마우스 피킹 
+			//바닥인 경우 이동
+		//	_pMoveCommand->Execute(_pPlayer, MousePicking());
+			//아닌 경우 커맨드 
+			_pLBCommand->Execute(_pPlayerObj, MousePicking());
+		}
+		else if (INPUT->GetKeyDown(KEY_RBUTTON))
+		{
+			//_pMoveCommand->Execute(_pPlayer, MousePicking());
+			_pRBCommand->Execute(_pPlayerObj, MousePicking());
+		}
 	}
+	else
+	{
+		D3DXVECTOR3 vLook;
+		vLook.x = _pPlayerTrans->GetWorldMatrix()._31;
+		vLook.y = _pPlayerTrans->GetWorldMatrix()._32;
+		vLook.z = _pPlayerTrans->GetWorldMatrix()._33;
+
+		D3DXVECTOR3 vRight;
+		vRight.x = _pPlayerTrans->GetWorldMatrix()._11;
+		vRight.y = _pPlayerTrans->GetWorldMatrix()._12;
+		vRight.z = _pPlayerTrans->GetWorldMatrix()._13;
+		//----------------- 좌우 회전 ----------------------//
+		if (INPUT->GetKeyDown(VK_MBUTTON))
+		{
+			_bDown = true;
+			GetCursorPos(&_ptStart);
+		}
+		else if (INPUT->GetKeyStay(VK_MBUTTON) && _bDown)
+		{
+			POINT ptEnd;
+			GetCursorPos(&ptEnd);
+
+			int dx = ptEnd.x - _ptStart.x;
+
+			_pPlayerTrans->Rotate(0, dx * fElapsedTime, 0);
+			_pCameraTrans->Rotate(0, dx * fElapsedTime, 0);
+
+			_ptStart = ptEnd;
+		}
+		else
+			_bDown = false;
+
+		if (INPUT->GetKeyDown(KEY_LBUTTON))
+		{
+			_pLBCommand->Execute(_pPlayerObj, vLook);
+		}
+		else if (INPUT->GetKeyDown(KEY_RBUTTON))
+		{
+			_pRBCommand->Execute(_pPlayerObj, vLook);
+		}
+		//--------------- 캐릭터 이동 --------------------//
+		_vDir = D3DXVECTOR3(0, 0, 0);
+
+		if (INPUT->GetKeyStay('W'))
+			_vDir = vLook;
+		else if (INPUT->GetKeyStay('S'))
+			_vDir = -vLook;
+		else
+			_vDir = D3DXVECTOR3(0, 0, 0);
+
+		if (INPUT->GetKeyStay('A')) 
+		{
+		//	_iSide = -1;
+			_vDir -= vRight;
+		}
+		else if (INPUT->GetKeyStay('D')) 
+		{
+	//		_iSide = 1;
+			_vDir += vRight;
+		}
+	
+		if (D3DXVec3Length(&_vDir) > 0) 
+		{
+			D3DXVec3Normalize(&_vDir, &_vDir);
+			_pMoveCommand->Execute(_pPlayerObj, _vDir);
+		}
+		else
+			_pPlayer->SetState(PLAYER_STAND, BACK);
+		//-----------------------------------------------//
+
+	}
+
 
 }
 
@@ -126,7 +221,7 @@ D3DXVECTOR3 InputHandler::MousePicking()
 
 	unsigned long		dwCntX = _pTerrain->Get_VtxCntX();
 	unsigned long		dwCntZ = _pTerrain->Get_VtxCntZ();
-	const	 D3DXVECTOR3* pTerrainVtxPos = _pTerrain->Get_VtxPos();
+	const D3DXVECTOR3*  pTerrainVtxPos = _pTerrain->Get_VtxPos();
 
 	unsigned long 	dwVtxIdx[3];
 	float	fU, fV, fDist;

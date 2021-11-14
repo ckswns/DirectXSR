@@ -46,14 +46,14 @@ bool Game::Init(void) noexcept
     pPlayerObj->AddComponent(_pPlayer);
     pPlayerObj->GetTransform()->SetLocalPosition(0, 1, 0);
 
+    //TargetCamera
+    pGameObj = GameObject::Instantiate();
+    pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
+
     //InputHandler
     pGameObj = GameObject::Instantiate();
     _pInputHandler = new InputHandler(pPlayerObj, terrain);
     pGameObj->AddComponent(_pInputHandler);
-
-    //TargetCamera
-    pGameObj = GameObject::Instantiate();
-    pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
 
     InitUI();
 

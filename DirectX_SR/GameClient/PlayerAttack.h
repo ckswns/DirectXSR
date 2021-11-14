@@ -1,17 +1,14 @@
 #pragma once
-#include "FSMState.h"
+#include "PlayerFSMState.h"
 
-class Player;
-class PlayerAttack :  public FSMState
+class PlayerAttack :  public PlayerFSMState
 {
 public:		explicit			PlayerAttack() noexcept = delete;
-public:		explicit			PlayerAttack(Animator* pAnim, Transform* trans = nullptr) noexcept
-														:FSMState(pAnim,trans) { __noop; }
+public:		explicit			PlayerAttack(Player* player,Animator* pAnim, Transform* trans) noexcept
+														:PlayerFSMState(player,pAnim,trans) { __noop; }
 public:		virtual				~PlayerAttack() noexcept { __noop; }
 
 public:		virtual void		Start() noexcept;
 public:		virtual void		Update(float fElapsedTime) noexcept;
-
-private:	Player* _pPlayer;
 };
 

@@ -31,6 +31,7 @@ public:		virtual					~Skeleton(void) noexcept { __noop; }
 
 public:		virtual void			Start(void) noexcept;
 public:		virtual void			Update(float fElapsedTime) noexcept;
+public:		virtual void			OnDestroy(void) noexcept;
 
 public:		void					Create(Transform* trans);
 public:		void					SetState(SK_STATE newState, DIR eDir = DIR_END, D3DXVECTOR3 vTarget= D3DXVECTOR3(0, -5, 0), bool bAtt = false);

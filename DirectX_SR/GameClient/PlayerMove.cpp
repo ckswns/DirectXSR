@@ -6,22 +6,23 @@
 #include "PathFinding.h"
 #include "Node.h"
 
-PlayerMove::PlayerMove(Animator* pAnim, Transform* trans, PathFinding* pf, float speed) noexcept
-	:FSMState(pAnim, trans), _pPathFinding(pf), _fSpeed(speed), _fRunSpeed(_fSpeed + 2)
+PlayerMove::PlayerMove(Player* player, Animator* pAnim, Transform* trans, PathFinding* pf, float speed) noexcept
+	:PlayerFSMState(player, pAnim, trans), _pPathFinding(pf), _fSpeed(speed),
+	_fRunSpeed(_fSpeed + 2), _bAtt(false), _bFinding(false), _bRun(false)
 {
 	__noop;
 }
 
 void PlayerMove::Start() noexcept
 {
-	_bFinding = false;
-
-	_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
-	_iDir = (int)_eDir * 2;
+	if (!_bFPV)
+	{
+		_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
+		_iDir = (int)_eDir * 2;
+	}
 	_strRun = "Run_" + std::to_string(_iDir);
 	_strWalk = "Walk_" + std::to_string(_iDir);
 
-	_pPlayer = static_cast<Player*>(_pTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
 	_pAnimator->SetAnimation(_strWalk);
 //	_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget);
 //	_pPath = (_pPathFinding->GetPath());
@@ -39,7 +40,14 @@ void PlayerMove::Update(float fElapsedTime) noexcept
 			_bRun = false;
 	}
 
-	// 추후 장애물이 있을경우만 A* 사용으로 변경해야함 
+	if (_bFPV)
+		Move(_vTarget, fElapsedTime);
+	else
+		TPVUpdate(fElapsedTime);
+}
+
+void PlayerMove::TPVUpdate(float fElapsedTime)
+{
 	if (!_bFinding)
 	{
 		D3DXVECTOR3 vDir = _vTarget - _pTrans->GetWorldPosition();
@@ -55,7 +63,7 @@ void PlayerMove::Update(float fElapsedTime) noexcept
 			else
 				_pPlayer->SetState(PLAYER_STAND, _eDir);
 		}
-		else 
+		else
 		{
 			Move(*D3DXVec3Normalize(&vDir, &vDir), fElapsedTime);
 		}
@@ -70,7 +78,7 @@ void PlayerMove::Update(float fElapsedTime) noexcept
 		if (D3DXVec3Length(&vDir) < 0.5f)
 		{
 			_pPath.pop_front();
-			if (_pPath.empty()) 
+			if (_pPath.empty())
 			{
 				_pPath.clear();
 				_bFinding = false;
@@ -78,10 +86,9 @@ void PlayerMove::Update(float fElapsedTime) noexcept
 		}
 		else
 		{
-			Move(*D3DXVec3Normalize(&vDir, &vDir),fElapsedTime);
+			Move(*D3DXVec3Normalize(&vDir, &vDir), fElapsedTime);
 		}
 	}
-
 }
 
 void PlayerMove::Move(D3DXVECTOR3 vDir, float fElapsedTime)
