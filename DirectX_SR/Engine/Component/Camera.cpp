@@ -39,11 +39,9 @@ namespace ce
 		look = world + look;
 		D3DXVECTOR3 up = transform->GetUp();
 
-		D3DXMATRIX matView;
+		D3DXMatrixLookAtLH(&_matView, &world, &look, &up);
 
-		D3DXMatrixLookAtLH(&matView, &world, &look, &up);
-
-		_pDevice->SetTransform(D3DTS_VIEW, &matView);
+		_pDevice->SetTransform(D3DTS_VIEW, &_matView);
 
 		D3DXMatrixPerspectiveFovLH(&_matProj, CE_MATH::PI_4, winSize.x / float(winSize.y), 0.1f, 1000.0f);
 
@@ -63,11 +61,9 @@ namespace ce
 		look = world + look;
 		D3DXVECTOR3 up = transform->GetUp();
 
-		D3DXMATRIX matView;
+		D3DXMatrixLookAtLH(&_matView, &world, &look, &up);
 
-		D3DXMatrixLookAtLH(&matView, &world, &look, &up);
-
-		_pDevice->SetTransform(D3DTS_VIEW, &matView);
+		_pDevice->SetTransform(D3DTS_VIEW, &_matView);
 	}
 
 	void Camera::Release(void) noexcept
@@ -96,5 +92,44 @@ namespace ce
 	Transform* Camera::GetTransform(void) noexcept
 	{
 		return _owner->GetTransform();
+	}
+
+	Ray Camera::ScreenPointToRay(D3DXVECTOR3 point) noexcept
+	{
+		Ray ray;
+		D3DVIEWPORT9		ViewPort;
+		ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+
+		D3D9DEVICE->GetDevice()->GetViewport(&ViewPort);
+
+		// 윈도우 좌표에 상태에 있는 마우스를 투영 좌표로 변환
+		point.x = point.x / (ViewPort.Width * 0.5f) - 1.f;
+		point.y = point.y / -(ViewPort.Height * 0.5f) + 1.f;
+		point.z = 0.f;
+
+		// 투영 좌표를 뷰 스페이스 좌표로 변환
+		D3DXMATRIX		matProj;
+		D3D9DEVICE->GetDevice()->GetTransform(D3DTS_PROJECTION, &matProj);
+		D3DXMatrixInverse(&matProj, NULL, &matProj);
+		D3DXVec3TransformCoord(&point, &point, &matProj);
+
+		// 뷰스페이스 좌표를 월드 좌표로 변환
+		D3DXVECTOR3		vRayPos, vRayDir;
+
+		vRayPos = D3DXVECTOR3(0.f, 0.f, 0.f);
+		vRayDir = point - vRayPos;
+
+		D3DXMATRIX		matView;
+		D3D9DEVICE->GetDevice()->GetTransform(D3DTS_VIEW, &matView);
+		D3DXMatrixInverse(&matView, NULL, &matView);
+
+		D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matView);
+		D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
+
+		ray._origin = vRayPos;
+		ray._dir = vRayDir;
+		ray._length = 1000;
+
+		return ray;
 	}
 }

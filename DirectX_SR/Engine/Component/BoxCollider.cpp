@@ -7,6 +7,7 @@
 #endif
 #include "SphereCollider.h"
 
+
 namespace ce
 {
 	BoxCollider::BoxCollider(const D3DXVECTOR3& size, const D3DXVECTOR3& center, std::string tag) noexcept :
@@ -82,7 +83,40 @@ namespace ce
 
 	bool BoxCollider::CheckHitRaycast(const Ray& ray, RaycastHit& hit) const noexcept
 	{
-		return false;
+		D3DXVECTOR3 min = GetMin();
+		D3DXVECTOR3 max = GetMax();
+
+		float t1 = (min.x - ray._origin.x) / ray._dir.x;
+		float t2 = (max.x - ray._origin.x) / ray._dir.x;
+		float t3 = (min.y - ray._origin.y) / ray._dir.y;
+		float t4 = (max.y - ray._origin.y) / ray._dir.y;
+		float t5 = (min.z - ray._origin.z) / ray._dir.z;
+		float t6 = (max.z - ray._origin.z) / ray._dir.z;
+
+		float tmin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
+		float tmax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
+
+		// if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behing us
+		if (tmax < 0) {
+			return false;
+		}
+
+		// if tmin > tmax, ray doesn't intersect AABB
+		if (tmin > tmax) {
+			return false;
+		}
+
+		if (tmin < 0.f) {
+			hit.collider = const_cast<BoxCollider*>(this);
+			hit.transform = _transform;
+			hit.point = ray._origin + tmax * ray._dir;
+			return true;
+		}
+
+		hit.collider = const_cast<BoxCollider*>(this);
+		hit.transform = _transform;
+		hit.point = ray._origin + tmin * ray._dir;
+		return true;
 	}
 
 	void BoxCollider::Render(void) noexcept
