@@ -1,7 +1,7 @@
 #pragma once
-
 #include "Component.h"
 #include "../Base/TypeDefine.h"
+#include "Ray.h"
 
 namespace ce
 { 
@@ -37,6 +37,8 @@ namespace ce
 	public:		void				SetSkyBoxTexture(Texture* tex) noexcept;
 
 	public:		Transform*			GetTransform(void) noexcept;
+
+	public:		Ray					ScreenPointToRay(D3DXVECTOR3 point) noexcept;
 
 	private:	Type				_type;
 	private:	ClearOption			_clearOption;

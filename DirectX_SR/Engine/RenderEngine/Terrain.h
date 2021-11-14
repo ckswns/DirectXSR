@@ -4,6 +4,7 @@
 
 namespace ce
 {
+	class TerrainCollider;
 	class Terrain : public Mesh
 	{
 	public:		explicit				Terrain(uint64 width, uint64 height, float scaleFactor = 1) noexcept;
@@ -27,5 +28,6 @@ namespace ce
 	private:	uint64					_height;
 
 	private:	D3DXVECTOR3*			_pVtxPos;
+	private:	friend					TerrainCollider;
 	};
 }

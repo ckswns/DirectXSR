@@ -42,8 +42,8 @@ namespace ce
 
 		fileName = str + fileName;
 
-		char* data = new char[64];
-		GetPrivateProfileStringA(section.c_str(), key.c_str(), "", data, 64, fileName.c_str());
+		char* data = new char[512];
+		GetPrivateProfileStringA(section.c_str(), key.c_str(), "", data, 512, fileName.c_str());
 
 		std::string result = data;
 		delete data;

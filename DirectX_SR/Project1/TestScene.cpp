@@ -13,6 +13,7 @@
 #include "AudioSource.h"
 #include "SphereCollider.h"
 #include "RigidBody.h"
+#include "Camera.h"
 
 TestScene::TestScene(void) noexcept
 {
@@ -26,18 +27,23 @@ bool TestScene::Init(void) noexcept
 {
 	GameObject* obj;
 
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new CubeObject());
-	AudioSource* as = static_cast<AudioSource*>(obj->AddComponent(new AudioSource()));
-	as->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\DiabloInit.wav"));
-	as->SetLoop(true);
-	as->SetSoundWorld(true);
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			obj = GameObject::Instantiate();
+			obj->AddComponent(new CubeObject());
+			obj->GetTransform()->SetWorldPosition(i, 0, j);
+			obj->AddComponent(new SphereCollider(1));
+			obj->SetLayer(GameObjectLayer::OBJECT);
+		}
+	}
 
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new EditorCamera(g_hWnd));
-	obj->AddComponent(new AudioListener());
-	obj->AddComponent(new SphereCollider(2));
-	obj->AddComponent(new Rigidbody());
+	//obj->AddComponent(new AudioListener());
+	//obj->AddComponent(new SphereCollider(2));
+	//obj->AddComponent(new Rigidbody());
 
 	return true;
 }
@@ -49,7 +55,19 @@ void TestScene::FixedUpdate(float fElapsedTime) noexcept
 
 void TestScene::Update(float fElapsedTime) noexcept
 {
+	if (INPUT->GetKeyDown(VK_LBUTTON))
+	{
+		if (Camera::GetMainCamera() == nullptr)
+			CE_ASSERT("ckswns", "main camera does not exits");
+		Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
+		RaycastHit hit;
 
+		if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
+		{
+			if(hit.collider->GetGameObject() != Camera::GetMainCamera()->GetGameObject())
+				hit.collider->GetGameObject()->Destroy();
+		}
+	}
 }
 
 void TestScene::LateUpdate(float fElapsedTime) noexcept

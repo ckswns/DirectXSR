@@ -9,8 +9,8 @@
 
 namespace ce
 {
-	SphereCollider::SphereCollider(float radius) noexcept :
-		Collider(Collider::Type::SPHERE),
+	SphereCollider::SphereCollider(float radius, std::string tag) noexcept :
+		Collider(Collider::Type::SPHERE, tag),
 		_radius(radius)
 	{
 
@@ -82,23 +82,40 @@ namespace ce
 
 	bool SphereCollider::CheckHitRaycast(const Ray& ray, RaycastHit& hit) const noexcept
 	{
-		Vector3 q = _transform->GetWorldPosition() - ray._origin;
-		float c = q.SqrLength();
-		Vector3 dir = ray._dir;
-		
-		float v = Vector3::Dot(q, dir);
+		D3DXVECTOR3 oc = ray._origin - _transform->GetWorldPosition();
+		float a = D3DXVec3Dot(&ray._dir, &ray._dir);
+		float b = 2.0f * D3DXVec3Dot(&oc, &ray._dir);
+		float c = D3DXVec3Dot(&oc, &oc) - _radius * _radius;
+		float discriminant = b * b - 4 * a * c;
 
-		float d = _radius * _radius - (c - (v * v));
-
-		if (d < 0.0f)
+		if (discriminant < 0.0) {
 			return false;
-
-		hit.collider = const_cast<SphereCollider*>(this);
-		hit.transform = _transform;
-		hit.distance = v - ::sqrt(d);
-		hit.point = ray._origin + (ray._dir * hit.distance);
-
-		return true;
+		}
+		else 
+		{
+			float numerator = -b - sqrt(discriminant);
+			if (numerator > 0.0f)
+			{
+				float t = numerator / (2.0f * a);
+				hit.collider = const_cast<SphereCollider*>(this);
+				hit.transform = _transform;
+				hit.point = ray._origin + t * ray._dir;
+				return true;
+				//return numerator / (2.0f * a);
+			}
+			numerator = -b + sqrt(discriminant);
+			if (numerator > 0.0f)
+			{
+				float t = numerator / (2.0f * a);
+				hit.collider = const_cast<SphereCollider*>(this);
+				hit.transform = _transform;
+				hit.point = ray._origin + t * ray._dir;
+				return true;
+				//return numerator / (2.0 * a);
+			}
+			else
+				return false;
+		}
 	}
 
 	void SphereCollider::Render(void) noexcept
@@ -109,11 +126,13 @@ namespace ce
 			DWORD state = 0;
 			auto device = D3D9DEVICE->GetDevice();
 			device->GetRenderState(D3DRS_FILLMODE, &state);
+			device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 			device->SetTransform(D3DTS_WORLD, &_transform->GetWorldMatrix());
 			device->SetMaterial(&_material);
 			_dbgMesh->DrawSubset(0);
 			device->SetRenderState(D3DRS_FILLMODE, state);
+			device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 		}
 #endif
 	}

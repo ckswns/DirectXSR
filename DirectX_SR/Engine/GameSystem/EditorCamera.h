@@ -13,7 +13,7 @@ namespace ce
 
 	public:		void		Start(void) noexcept override;
 	public:		void		Update(float fElapsedTime) noexcept override;
-	//public:		void OnCollisionEnter(Collider* mine, Collider* other) noexcept override;
+	public:		void		OnCollisionEnter(Collider* mine, Collider* other) noexcept override;
 	private:	float		_velocity;
 	private:	bool		_bMBRightDown = false;
 	private:	bool		_bMBMiddleDown = false;
