@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "Light.h"
+#include "CETween.h"
 
 TargetCamera::TargetCamera(Transform* target) noexcept
 	:_pTrans(nullptr), _pTargetTrans(target), _bFPV(false),
@@ -50,6 +51,13 @@ void TargetCamera::Update(float fElapsedTime) noexcept
 	}
 	else
 	{
+		_fDelta +=	fElapsedTime;
+		if (_fDelta <= 1)
+		{
+			float ang = CETween::Lerp(_fAngle, 0, _fDelta, CETween::EaseType::easeInBack);
+			_pTrans->SetLocalEulerAngle(ang, 0, 0);
+		}
+
 		D3DXVECTOR3 vPos = _pTargetTrans->GetWorldPosition();
 		vPos.x -= _pTargetTrans->GetWorldMatrix()._31;
 		vPos.y += _fFPVHeight;
@@ -76,9 +84,7 @@ void TargetCamera::ChangeView()
 	else //1인칭으로 변경
 	{
 		_bFPV = true;
-
-		//_pTrans->Rotate(-_fAngle, 0, 0);
-		_pTrans->SetLocalEulerAngle(0, 0, 0);
+		_fDelta = 0;
 
 		//D3DXVECTOR3 vPos = _pTargetTrans->GetWorldPosition();
 		//vPos.y += _fFPVHeight;
