@@ -145,6 +145,12 @@
     <Filter Include="00. Game\01. GameObject\00. Player\State\Player\03.Skill">
       <UniqueIdentifier>{5f1bdd1c-587b-4e77-8b37-fb3f1221c14f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Skill\PoisonNova">
+      <UniqueIdentifier>{3bec1880-b58d-4b7f-9a77-d48986fb9403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\Skill\PoisonNova\PoisonProjectile">
+      <UniqueIdentifier>{d0b38a18-c45d-4e77-ba37-7171afedcfac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -282,6 +288,12 @@
     <ClInclude Include="PlayerSkill.h">
       <Filter>00. Game\01. GameObject\00. Player\State\Player\03.Skill</Filter>
     </ClInclude>
+    <ClInclude Include="PoisonNova.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\PoisonNova</Filter>
+    </ClInclude>
+    <ClInclude Include="PoisonProjectile.h">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\PoisonNova\PoisonProjectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -388,6 +400,12 @@
     </ClCompile>
     <ClCompile Include="PlayerSkill.cpp">
       <Filter>00. Game\01. GameObject\00. Player\State\Player\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="PoisonNova.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\PoisonNova</Filter>
+    </ClCompile>
+    <ClCompile Include="PoisonProjectile.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\Skill\PoisonNova\PoisonProjectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

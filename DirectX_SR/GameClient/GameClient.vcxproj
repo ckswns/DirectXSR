@@ -175,6 +175,8 @@
     <ClInclude Include="Game_Math.h" />
     <ClInclude Include="Game_Struct.h" />
     <ClInclude Include="PlayerSkill.h" />
+    <ClInclude Include="PoisonNova.h" />
+    <ClInclude Include="PoisonProjectile.h" />
     <ClInclude Include="StatusBar.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="LoadingScene.h" />
@@ -217,6 +219,8 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
+    <ClCompile Include="PoisonNova.cpp" />
+    <ClCompile Include="PoisonProjectile.cpp" />
     <ClCompile Include="StatusBar.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="LoadingScene.cpp" />

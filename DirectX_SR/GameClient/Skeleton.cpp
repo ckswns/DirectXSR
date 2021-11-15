@@ -13,6 +13,9 @@
 #include "SkeletoneAttack.h"
 #include "SkeletonDead.h"
 
+#include "Camera.h"
+#include "TargetCamera.h"
+
 Skeleton::Skeleton() noexcept
 	:_tStat(70, 10, 5), _eCurState(SK_END), _fSpeed(3.f)
 {
@@ -20,8 +23,6 @@ Skeleton::Skeleton() noexcept
 
 void Skeleton::Start(void) noexcept
 {
-	_bOnce = false;
-
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skeleton.png"));
@@ -35,6 +36,12 @@ void Skeleton::Start(void) noexcept
 
 void Skeleton::Update(float fElapsedTime) noexcept
 {
+	if (_pCamera->IsFPV())
+	{
+		D3DXVECTOR3 Bill = Camera::GetMainCamera()->GetTransform()->GetBillboardEulerAngleY();
+		_pTrans->SetLocalEulerAngle(Bill);
+	}
+
 	_pFSM[_eCurState]->Update(fElapsedTime);
 }
 
@@ -53,6 +60,11 @@ void Skeleton::OnDestroy(void) noexcept
 
 void Skeleton::Create(Transform* trans)
 {
+	if (!_pCamera)
+	{
+		_pCamera = static_cast<TargetCamera*>(Camera::GetMainCamera()->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
+	}
+
 	_pOwnerTrans = trans;
 	gameObject->SetActive(true);
 

@@ -9,6 +9,7 @@ namespace ce
 }
 class FSMState;
 class PathFinding;
+class TargetCamera;
 class Skeleton : public Behaviour
 {
 public:		typedef struct SkeletonStat
@@ -45,10 +46,10 @@ private:	Transform*				_pOwnerTrans;
 private:	Animator*				_pAnimator;
 private:	PathFinding*			_pPathFinding;
 
+private:	TargetCamera*			_pCamera;
+
 private:	std::vector<FSMState*>	_pFSM;
 private:	SK_STATE				_eCurState;
-
-private:	bool					_bOnce;
 
 private:	SK_STAT					_tStat;
 private:	float					_fMaxDist;

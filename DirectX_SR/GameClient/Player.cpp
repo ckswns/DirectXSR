@@ -20,6 +20,7 @@
 #include "Skill.h"
 #include "RaiseSkeleton.h"
 #include "BoneSpear.h"
+#include "PoisonNova.h"
 
 Player::Player(PathFinding* pf) noexcept
 	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
@@ -29,6 +30,7 @@ Player::Player(PathFinding* pf) noexcept
 	_pSkills.reserve(SKILL_END);
 	_pSkills.push_back(new RaiseSkeleton());
 	_pSkills.push_back(new BoneSpear());
+	_pSkills.push_back(new PoisonNova());
 
 	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(pf);
 }

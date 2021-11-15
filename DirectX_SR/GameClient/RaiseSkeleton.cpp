@@ -5,7 +5,7 @@
 #include"Transform.h"
 
 RaiseSkeleton::RaiseSkeleton() noexcept
-    :Skill(SKILL_ID::RAISE_SKELETON,30), _iMaxSkeleton(20), _iCount(0), _iIdx(0)
+    :Skill(SKILL_ID::RAISE_SKELETON,10), _iMaxSkeleton(20), _iCount(0), _iIdx(0)
 {
     for (int i = 0; i < (_iMaxSkeleton + 1); i++)
     {

@@ -27,9 +27,10 @@ void InputHandler::Start(void) noexcept
 	_pCameraTrans = Camera::GetMainCamera()->GetTransform();
 	_pTargetCamera = static_cast<TargetCamera*>(_pCameraTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
 	
-	_pLBCommand = new AttackCommand();
-	//_pLBCommand = new SkillCommand();
-	//static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::BONE_SPEAR);
+	//_pLBCommand = new AttackCommand();
+	_bLBSkill = true;
+	_pLBCommand = new SkillCommand();
+	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::POISON_NOVA);
 
 	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
