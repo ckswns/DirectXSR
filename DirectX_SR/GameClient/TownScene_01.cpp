@@ -12,15 +12,20 @@
 #include "Camera.h"
 #include "BillboardSprite.h"
 
+#include "Player.h"
+#include "NaviMesh.h"
+#include "PathFinding.h"
+#include "TargetCamera.h"
+#include "StatusBar.h"
 TownScene_01::TownScene_01(void) noexcept
 {
 }
 
 bool TownScene_01::Init(void) noexcept
 {
-	{
-		Terrain* terrain = new Terrain(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth"),
-			INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapHeight"), 1);
+	Terrain* terrain = new Terrain(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth"),
+		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapHeight"), 1);
+	{	
 		terrain->Open(D3D9DEVICE->GetDevice());
 
 		GameObject* obj;
@@ -55,28 +60,28 @@ bool TownScene_01::Init(void) noexcept
 
 		int cubeCnt = INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\PickingCube", "Start", "CubeCnt");
 
-		//for (int i = 0; i < cubeCnt; i++)
-		//{
-		//	obj = GameObject::Instantiate();
-		//	std::string sectionName = "PickingCube" + std::to_string(i);
-		//	std::string filePath = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "filePath");
-		//	filePath = filePath.substr(filePath.find('\\'));
-		//	filePath = "Asset\\Terrain\\Box" + filePath;
+		for (int i = 0; i < cubeCnt; i++)
+		{
+			obj = GameObject::Instantiate();
+			std::string sectionName = "PickingCube" + std::to_string(i);
+			std::string filePath = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "filePath");
+			filePath = filePath.substr(filePath.find('\\'));
+			filePath = "Asset\\Terrain\\Box" + filePath;
 
-		//	std::string sx = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleX");
-		//	std::string sy = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleY");
-		//	std::string sz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleZ");
+			std::string sx = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleX");
+			std::string sy = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleY");
+			std::string sz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleZ");
 
-		//	std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposX");
-		//	std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposY");
-		//	std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposZ");
+			std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposX");
+			std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposY");
+			std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposZ");
 
-		//	obj->AddComponent(new CubeObject(ASSETMANAGER->GetTextureData(filePath.c_str())));
-		//	Transform* tr = obj->GetTransform();
-		//	tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
-		//	tr->SetWorldPosition(stof(px), stof(py), stof(pz));
-		//	obj->SetLayer(GameObjectLayer::OBJECT);
-		//}
+			obj->AddComponent(new CubeObject(ASSETMANAGER->GetTextureData(filePath.c_str())));
+			Transform* tr = obj->GetTransform();
+			tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
+			tr->SetWorldPosition(stof(px), stof(py), stof(pz));
+			obj->SetLayer(GameObjectLayer::OBJECT);
+		}
 
 		std::string name = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", "SectionNames", "Names");
 
@@ -100,13 +105,32 @@ bool TownScene_01::Init(void) noexcept
 		}
 	}
 
-	GameObject* obj = GameObject::Instantiate();
-	obj->AddComponent(new EditorCamera(g_hWnd));
-	obj->AddComponent(new AudioListener());
-	obj->GetTransform()->SetWorldPosition(10, 10, 10);
-	obj->GetTransform()->SetLocalEulerAngle(45, 0, 0);
+	//GameObject* obj = GameObject::Instantiate();
+	//obj->AddComponent(new EditorCamera(g_hWnd));
+	//obj->AddComponent(new AudioListener());
+	//obj->GetTransform()->SetWorldPosition(10, 10, 10);
+	//obj->GetTransform()->SetLocalEulerAngle(45, 0, 0);
 	//obj->AddComponent(new SphereCollider(5));
 	//obj->AddComponent(new Rigidbody());
+
+	NaviMesh* _pNaviMesh = new NaviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
+	_pNaviMesh->Init();
+
+	//Player
+	GameObject* pPlayerObj = GameObject::Instantiate();
+	pPlayerObj = GameObject::Instantiate();
+	PathFinding* pf = new PathFinding(_pNaviMesh);
+	Player* player = new Player(pf);
+	pPlayerObj->AddComponent(player);
+	pPlayerObj->GetTransform()->SetLocalPosition(0, 0.5f, 0);
+
+	//TargetCamera
+	GameObject* pGameObj = GameObject::Instantiate();
+	pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
+
+	//UI
+	pGameObj = GameObject::Instantiate();
+	pGameObj->AddComponent(new StatusBar(player));
 
 	return true;
 }

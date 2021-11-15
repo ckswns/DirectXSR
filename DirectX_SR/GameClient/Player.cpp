@@ -25,6 +25,8 @@
 #include "BoneSpear.h"
 #include "PoisonNova.h"
 
+#include "Light.h"
+
 Player::Player(PathFinding* pf) noexcept
 	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
 {
@@ -59,8 +61,6 @@ void Player::Start(void) noexcept
 	_pManaSound[0] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\INeedMana.mp3");
 	_pManaSound[1] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\MoreMana.mp3");
 	_pManaSound[2] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\LowMana.mp3");
-	//_pAudioSource->LoadAudio(_pManaSound[0]);
-;
 
 	_pCollider = new BoxCollider(D3DXVECTOR3(0.3, 1, 0.2f));
 	gameObject->AddComponent(_pCollider);
@@ -72,6 +72,14 @@ void Player::Start(void) noexcept
 	_pAnimator = new Animator(true);
 	gameObject ->AddComponent(_pAnimator);
 	InitAnimation(sr);
+
+	D3DCOLORVALUE c;
+	c.a = 1;
+	c.r = 1;
+	c.g = 1;
+	c.b = 1;
+	gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 20, 0, 0, 0.02f));
+	gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 100, 2.f));
 
 	InitState();
 	SetState(PLAYER_STAND,FRONT);

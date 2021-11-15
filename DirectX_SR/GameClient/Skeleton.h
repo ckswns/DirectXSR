@@ -58,5 +58,6 @@ private:	SK_STATE				_eCurState;
 private:	SK_STAT					_tStat;
 private:	float					_fMaxDist;
 private:	float					_fSpeed;
-};
 
+private:	bool					_bOnce;
+};

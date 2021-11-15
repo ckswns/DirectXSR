@@ -20,7 +20,7 @@
 #include "TargetCamera.h"
 
 Skeleton::Skeleton() noexcept
-	:_tStat(70, 10, 5), _eCurState(SK_END), _fSpeed(3.f)
+	:_tStat(70, 10, 5), _eCurState(SK_END), _fSpeed(3.f), _bOnce(false)
 {
 }
 
@@ -49,6 +49,13 @@ void Skeleton::Update(float fElapsedTime) noexcept
 {
 	if (_pCamera->IsFPV())
 	{
+		_bOnce = true;
+		D3DXVECTOR3 Bill = Camera::GetMainCamera()->GetTransform()->GetBillboardEulerAngleY();
+		_pTrans->SetLocalEulerAngle(Bill);
+	}
+	else if (_bOnce)
+	{
+		_bOnce = false;
 		D3DXVECTOR3 Bill = Camera::GetMainCamera()->GetTransform()->GetBillboardEulerAngleY();
 		_pTrans->SetLocalEulerAngle(Bill);
 	}

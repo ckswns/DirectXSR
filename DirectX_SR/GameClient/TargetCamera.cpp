@@ -15,7 +15,7 @@ void TargetCamera::Start(void) noexcept
 {
 	_pTrans = gameObject->GetTransform();
 
-	gameObject->AddComponent(new Camera(D3D9DEVICE->GetDevice()));
+	gameObject->AddComponent(new Camera(D3D9DEVICE->GetDevice(), Camera::Type::PERSPECTIVE, Camera::ClearOption::SKYBOX, ASSETMANAGER->GetTextureData("Asset\\SkyBox\\Night1.dds")));
 	
 	_pTrans->SetLocalPosition(0, _fTPVHeight, _fTPVDist);
 
@@ -25,14 +25,6 @@ void TargetCamera::Start(void) noexcept
 	_fAngle = D3DXVec3Dot(&vLook, &vDir);
 
 	_pTrans->SetLocalEulerAngle(_fAngle, 0, 0);
-
-	D3DCOLORVALUE c;
-	c.a = 1;
-	c.r = 1;
-	c.g = 1;
-	c.b = 1;
-	gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 10));
-
 }
 
 void TargetCamera::Update(float fElapsedTime) noexcept
