@@ -163,9 +163,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
     <ClInclude Include="AttackCommand.h" />
+    <ClInclude Include="BillboardSprite.h" />
     <ClInclude Include="BoneSpear.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="DbgShowFrame.h" />
     <ClInclude Include="ExitBtn.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FSMState.h" />
@@ -209,8 +212,11 @@
     <ClInclude Include="TownScene_01.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AttackCommand.cpp" />
+    <ClCompile Include="BillboardSprite.cpp" />
     <ClCompile Include="BoneSpear.cpp" />
+    <ClCompile Include="DbgShowFrame.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />

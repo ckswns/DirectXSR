@@ -139,6 +139,15 @@
     <Filter Include="00. Game\01. GameObject\02. UI\System\ExitBtn">
       <UniqueIdentifier>{546fdf4d-bfde-4507-85e2-9cb144652165}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\02. UI\FrameText">
+      <UniqueIdentifier>{9e7319f8-a9df-467d-82c3-9ba596a45f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\BillboardSprite">
+      <UniqueIdentifier>{59da0ae7-873b-4e8a-b417-9fca2aab2089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor">
+      <UniqueIdentifier>{735c5706-7b04-4840-8ff2-701db35a3c67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -273,6 +282,15 @@
     <ClInclude Include="ExitBtn.h">
       <Filter>00. Game\01. GameObject\02. UI\System\ExitBtn</Filter>
     </ClInclude>
+    <ClInclude Include="DbgShowFrame.h">
+      <Filter>00. Game\01. GameObject\02. UI\FrameText</Filter>
+    </ClInclude>
+    <ClInclude Include="BillboardSprite.h">
+      <Filter>99. Default\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>00. Game\01. GameObject\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -376,6 +394,15 @@
     </ClCompile>
     <ClCompile Include="ExitBtn.cpp">
       <Filter>00. Game\01. GameObject\02. UI\System\ExitBtn</Filter>
+    </ClCompile>
+    <ClCompile Include="DbgShowFrame.cpp">
+      <Filter>00. Game\01. GameObject\02. UI\FrameText</Filter>
+    </ClCompile>
+    <ClCompile Include="BillboardSprite.cpp">
+      <Filter>99. Default\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>00. Game\01. GameObject\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@
 #include "AudioSource.h"
 #include "AudioListener.h"
 #include "TopBar.h"
+#include "DbgShowFrame.h"
 
 using namespace ce::UI;
 
@@ -108,6 +109,9 @@ bool LoadingScene::Init(void) noexcept
 	obj->AddComponent(new TopBar(g_hWnd));
 	ASSETMANAGER->LoadAssetFolder("Asset");
 
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new DbgShowFrame());
+	obj->SetDontDestroy(true);
 	return true;
 }
 

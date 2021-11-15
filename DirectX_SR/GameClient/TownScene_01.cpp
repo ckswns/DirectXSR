@@ -10,6 +10,7 @@
 #include "RigidBody.h"
 #include "TerrainCollider.h"
 #include "Camera.h"
+#include "BillboardSprite.h"
 
 TownScene_01::TownScene_01(void) noexcept
 {
@@ -17,65 +18,89 @@ TownScene_01::TownScene_01(void) noexcept
 
 bool TownScene_01::Init(void) noexcept
 {
-	Terrain* terrain = new Terrain(51, 51, 1);
-	terrain->Open(D3D9DEVICE->GetDevice());
-
-	GameObject* obj;
-	obj = GameObject::Instantiate();
-	TerrainRenderer* tr = static_cast<TerrainRenderer*>(obj->AddComponent(new TerrainRenderer(D3D9DEVICE->GetDevice(), terrain)));
-	Material* mat = tr->GetAlphaMaterial();
-	obj->SetLayer(GameObjectLayer::BACKGROUND);
-	obj->AddComponent(new TerrainCollider(terrain));
-
-	std::vector<Texture*> vt;
-
-	for (int i = 1; i <= 4; i++)
 	{
-		char str[256];
-		sprintf_s(str, 256, "Asset\\Terrain\\AlphaMap\\AlphaMap%d.png", i);
-		vt.push_back(ASSETMANAGER->GetTextureData(str));
-	}
+		Terrain* terrain = new Terrain(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth"),
+			INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapHeight"), 1);
+		terrain->Open(D3D9DEVICE->GetDevice());
 
-	mat->SetTextures(vt);
-	vt.clear();
-
-	mat = tr->GetMaterialPTR();
-
-	for (int i = 0; i < 4; i++)
-	{
-		char str[256];
-		sprintf_s(str, 256, "Asset\\Terrain\\Tile\\Tile%d.png", i);
-		vt.push_back(ASSETMANAGER->GetTextureData(str));
-	}
-	mat->SetTextures(vt);
-	vt.clear();
-
-	int cubeCnt = INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\PickingCube", "Start", "CubeCnt");
-
-	for (int i = 0; i < cubeCnt; i++)
-	{
+		GameObject* obj;
 		obj = GameObject::Instantiate();
-		std::string sectionName = "PickingCube" + std::to_string(i);
-		std::string filePath = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "filePath");
-		filePath = filePath.substr(filePath.find('\\'));
-		filePath = "Asset\\Terrain\\Box" + filePath;
+		TerrainRenderer* tr = static_cast<TerrainRenderer*>(obj->AddComponent(new TerrainRenderer(D3D9DEVICE->GetDevice(), terrain)));
+		Material* mat = tr->GetAlphaMaterial();
+		obj->SetLayer(GameObjectLayer::BACKGROUND);
+		obj->AddComponent(new TerrainCollider(terrain));
 
-		std::string sx = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleX");
-		std::string sy = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleY");
-		std::string sz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleZ");
+		std::vector<Texture*> vt;
 
-		std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposX");
-		std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposY");
-		std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposZ");
+		for (int i = 1; i <= 4; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset\\Scene\\Town_01\\AlphaMap\\AlphaMap%d.png", i);
+			vt.push_back(ASSETMANAGER->GetTextureData(str));
+		}
 
-		obj->AddComponent(new CubeObject(ASSETMANAGER->GetTextureData(filePath.c_str())));
-		Transform* tr = obj->GetTransform();
-		tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
-		tr->SetWorldPosition(stof(px), stof(py), stof(pz));
-		obj->SetLayer(GameObjectLayer::OBJECT);
+		mat->SetTextures(vt);
+		vt.clear();
+
+		mat = tr->GetMaterialPTR();
+
+		for (int i = 1; i <= 5; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset\\Terrain\\Tile\\Tile%d.png", i);
+			vt.push_back(ASSETMANAGER->GetTextureData(str));
+		}
+		mat->SetTextures(vt);
+		vt.clear();
+
+		int cubeCnt = INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\PickingCube", "Start", "CubeCnt");
+
+		//for (int i = 0; i < cubeCnt; i++)
+		//{
+		//	obj = GameObject::Instantiate();
+		//	std::string sectionName = "PickingCube" + std::to_string(i);
+		//	std::string filePath = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "filePath");
+		//	filePath = filePath.substr(filePath.find('\\'));
+		//	filePath = "Asset\\Terrain\\Box" + filePath;
+
+		//	std::string sx = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleX");
+		//	std::string sy = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleY");
+		//	std::string sz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "scaleZ");
+
+		//	std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposX");
+		//	std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposY");
+		//	std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposZ");
+
+		//	obj->AddComponent(new CubeObject(ASSETMANAGER->GetTextureData(filePath.c_str())));
+		//	Transform* tr = obj->GetTransform();
+		//	tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
+		//	tr->SetWorldPosition(stof(px), stof(py), stof(pz));
+		//	obj->SetLayer(GameObjectLayer::OBJECT);
+		//}
+
+		std::string name = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", "SectionNames", "Names");
+
+		std::vector<std::string> names = Util::Split(name, ',');
+
+		for (int i = 0; i < names.size(); i++)
+		{
+			if (names[i].find("Tree") != std::string::npos)
+			{
+				std::string fileName = names[i].substr(0, 5);
+				fileName += ".png";
+				obj = GameObject::Instantiate();
+				obj->AddComponent(new BillboardSprite(ASSETMANAGER->GetTextureData("Asset\\Terrain\\Tree\\" + fileName)));
+
+				std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldX");
+				std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldY");
+				std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldZ");
+
+				obj->GetTransform()->SetWorldPosition(stof(px), stof(py), stof(pz));
+			}
+		}
 	}
 
-	obj = GameObject::Instantiate();
+	GameObject* obj = GameObject::Instantiate();
 	obj->AddComponent(new EditorCamera(g_hWnd));
 	obj->AddComponent(new AudioListener());
 	obj->GetTransform()->SetWorldPosition(10, 10, 10);

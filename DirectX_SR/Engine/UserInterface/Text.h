@@ -21,6 +21,8 @@ namespace ce
 		public:		void			Render(void) noexcept override;
 		public:		void			Release(void) noexcept override;
 
+		public:		void			SetText(const char* str) noexcept { _str = str; }
+
 		private:	D3DXCOLOR		_color = D3DCOLOR_ARGB(255, 50, 50, 50);
 		private:	LPD3DXFONT		_pFont;
 		private:	LPD3DXSPRITE	_pSprite;
