@@ -12,10 +12,9 @@ namespace ce
 		size_t split = _filePathA.find('.');
 		std::string fileExtension = _filePathA.substr(split);
 
-		if (_filePathA.find("UI") == std::string::npos)
+		if (fileExtension == ".dds")
 		{
-			if (fileExtension == ".dds")
-			{
+
 				if (FAILED(D3DXCreateCubeTextureFromFileA(pd3dDevice, filePath, (LPDIRECT3DCUBETEXTURE9*)&_pTexture)))
 				{
 					_pTexture = NULL;
@@ -23,27 +22,13 @@ namespace ce
 					CE_ASSERT("ckswns", "텍스쳐 생성에 실패하였습니다!");
 					return false;
 				}
-
-				_type = Texture::Type::CUBE;
-			}
-			else
-			{
-				if (FAILED(D3DXCreateTextureFromFileA(pd3dDevice, filePath, (LPDIRECT3DTEXTURE9*)&_pTexture)))
+				if (FAILED(D3DXGetImageInfoFromFileA(filePath, &_imgInfo)))
 				{
-					_pTexture = NULL;
-
-					CE_ASSERT("ckswns", "텍스쳐 생성에 실패하였습니다!");
+					CE_ASSERT("ckswns", "텍스쳐의 정보를 읽어오는데 실패하였습니다");
 					return false;
 				}
+				_type = Texture::Type::CUBE;
 
-				_type = Texture::Type::DEFAULT;
-			}
-
-			if (FAILED(D3DXGetImageInfoFromFileA(filePath, &_imgInfo)))
-			{
-				CE_ASSERT("ckswns", "텍스쳐의 정보를 읽어오는데 실패하였습니다");
-				return false;
-			}
 		}
 		else
 		{

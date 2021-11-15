@@ -6,9 +6,10 @@
 
 namespace ce
 {
-	SpriteRenderer::SpriteRenderer(LPDIRECT3DDEVICE9 pDevice, Texture* texture) noexcept :
+	SpriteRenderer::SpriteRenderer(LPDIRECT3DDEVICE9 pDevice, Texture* texture, bool lightEnable) noexcept :
 		Renderer(pDevice),
-		_quad(nullptr)
+		_quad(nullptr),
+		_lightEnable(lightEnable)
 	{
 		if (texture != nullptr)
 			_material.SetMainTexture(texture);
@@ -19,24 +20,31 @@ namespace ce
 		_owner->SetLayer(GameObjectLayer::ALPHA);
 
 		float x = 1, y = 1;
+		float x2 = 1, y2 = 1;
 
 		if (_material.GetMainTexture() != nullptr)
 		{
-			x = _material.GetMainTexture()->Width() / 100.f;
-			y = _material.GetMainTexture()->Height() / 100.f;
+			x = _material.GetMainTexture()->LoadedWidth();
+			y = _material.GetMainTexture()->LoadedHeight();
+
+			x2 = _material.GetMainTexture()->Width();
+			y2 = _material.GetMainTexture()->Height();
 		}
 
-		_quad = new Quad(x, y);
+		_quad = new Quad(x2 / 100.f, y2 / 100.f, x2 / x, y2 / y);
 		_quad->Open(_pDevice);
-
+		
 		_transform = _owner->GetTransform();
 	}
 
 	void SpriteRenderer::Render(void) noexcept
 	{
+		//_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
+		//_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
+
 		_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
 		_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
-		_pDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
+		_pDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);
 
 		DWORD flag = 0;
 		_pDevice->GetRenderState(D3DRS_LIGHTING, &flag);
@@ -68,15 +76,21 @@ namespace ce
 		_material.SetMainTexture(texture);
 
 		float x = 1, y = 1;
-		
+		float x2 = 1, y2 = 1;
+
 		if (texture != nullptr)
 		{
-			x = _material.GetMainTexture()->Width() / 100.f;
-			y = _material.GetMainTexture()->Height() / 100.f;
+			x = _material.GetMainTexture()->LoadedWidth();
+			y = _material.GetMainTexture()->LoadedHeight();
+
+			x2 = _material.GetMainTexture()->Width();
+			y2 = _material.GetMainTexture()->Height();
 		}
 
 		_quad->Close();
-		_quad->SetInterval(x, y);
+		_quad->SetInterval(x2, y2);
+		_quad->SetMaxUV(x2 / x, y2 / y);
+
 		_quad->Open(_pDevice);
 	}
 

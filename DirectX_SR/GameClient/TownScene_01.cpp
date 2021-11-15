@@ -114,7 +114,7 @@ bool TownScene_01::Init(void) noexcept
 	//obj->AddComponent(new SphereCollider(5));
 	//obj->AddComponent(new Rigidbody());
 
-	obj = GameObject::Instantiate();
+	GameObject* obj = GameObject::Instantiate();
 	obj->AddComponent(new Cow());
 
 	NaviMesh* _pNaviMesh = new NaviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
@@ -146,25 +146,25 @@ void TownScene_01::FixedUpdate(float fElapsedTime) noexcept
 
 void TownScene_01::Update(float fElapsedTime) noexcept
 {
-	if (INPUT->GetKeyDown(VK_LBUTTON))
-	{
-		if (Camera::GetMainCamera() == nullptr)
-			CE_ASSERT("ckswns", "main camera does not exits");
-		Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
-		RaycastHit hit;
+	//if (INPUT->GetKeyDown(VK_LBUTTON))
+	//{
+	//	if (Camera::GetMainCamera() == nullptr)
+	//		CE_ASSERT("ckswns", "main camera does not exits");
+	//	Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
+	//	RaycastHit hit;
 
-		if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
-		{
-			hit.collider->GetGameObject()->Destroy();
-		}
+	//	if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
+	//	{
+	//		hit.collider->GetGameObject()->Destroy();
+	//	}
 
-		//if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
-		//{
-		//	GameObject* obj = GameObject::Instantiate();
-		//	obj->AddComponent(new CubeObject);
-		//	obj->GetTransform()->SetWorldPosition(hit.point);
-		//}
-	}
+	//	//if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
+	//	//{
+	//	//	GameObject* obj = GameObject::Instantiate();
+	//	//	obj->AddComponent(new CubeObject);
+	//	//	obj->GetTransform()->SetWorldPosition(hit.point);
+	//	//}
+	//}
 }
 
 void TownScene_01::LateUpdate(float fElapsedTime) noexcept

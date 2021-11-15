@@ -66,7 +66,7 @@ void Player::Start(void) noexcept
 	gameObject->AddComponent(_pCollider);
 	gameObject->AddComponent(new Rigidbody());
 
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"));
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"), false);
 	gameObject->AddComponent(sr);
 
 	_pAnimator = new Animator(true);

@@ -4,10 +4,12 @@
 
 namespace ce
 {
-	Quad::Quad(float x, float y) noexcept :
+	Quad::Quad(float x, float y, float uMax, float vMax) noexcept :
 		Mesh(1),
 		_intvX(x),
-		_intvY(y)
+		_intvY(y),
+		_maxU(uMax),
+		_maxV(vMax)
 	{
 
 	}
@@ -39,13 +41,13 @@ namespace ce
 		pVertex[0].vTexUV = D3DXVECTOR2(0.f, 0.f);
 
 		pVertex[1].vPosition = D3DXVECTOR3(0.5f * _intvX, 0.5f * _intvY, 0.f);
-		pVertex[1].vTexUV = D3DXVECTOR2(1.f, 0.f);
+		pVertex[1].vTexUV = D3DXVECTOR2(_maxU, 0.f);
 
 		pVertex[2].vPosition = D3DXVECTOR3(0.5f * _intvX, -0.5f * _intvY, 0.f);
-		pVertex[2].vTexUV = D3DXVECTOR2(1.f, 1.f);
+		pVertex[2].vTexUV = D3DXVECTOR2(_maxU, _maxV);
 
 		pVertex[3].vPosition = D3DXVECTOR3(-0.5f * _intvX, -0.5f * _intvY, 0.f);
-		pVertex[3].vTexUV = D3DXVECTOR2(0.f, 1.f);
+		pVertex[3].vTexUV = D3DXVECTOR2(0.f, _maxV);
 
 		INDEX16* pIndex = nullptr;
 
