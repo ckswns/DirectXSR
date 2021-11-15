@@ -14,6 +14,8 @@ public:		virtual						~PoisonProjectile(void) noexcept { __noop; }
 public:		virtual void				Start(void) noexcept;
 public:		virtual void				Update(float fElapsedTime) noexcept;
 
+public:		virtual void				OnCollisionEnter(Collider* mine, Collider* other) noexcept;
+
 private:	Transform* _pTrans;
 private:	D3DXVECTOR3					_vDir;
 

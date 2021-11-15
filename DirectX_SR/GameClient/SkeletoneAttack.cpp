@@ -9,9 +9,10 @@ void SkeletoneAttack::Start() noexcept
 	_pSk = static_cast<Skeleton*>(_pTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
 
 	D3DXVECTOR3 vDir = _vTarget - _pTrans->GetWorldPosition();
+	vDir.y = 0;
 	if (D3DXVec3Length(&vDir) <= 1.5f)
 	{
-		if (_eDir == SK_END)
+		if (_eDir == DIR_END)
 		{
 			_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
 			_iDir = (int)_eDir * 2;

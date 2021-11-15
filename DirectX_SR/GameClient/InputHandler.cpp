@@ -37,6 +37,12 @@ void InputHandler::Start(void) noexcept
 
 void InputHandler::Update(float fElapsedTime) noexcept
 {
+	if (!_pTargetCamera)
+	{
+		_pCameraTrans = Camera::GetMainCamera()->GetTransform();
+		_pTargetCamera = static_cast<TargetCamera*>(_pCameraTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
+	}
+
 	//시점 변경
 	if (INPUT->GetKeyDown(VK_TAB))
 	{
@@ -45,11 +51,6 @@ void InputHandler::Update(float fElapsedTime) noexcept
 
 		_pPlayer->SetFPV();
 
-		if (!_pTargetCamera)
-		{
-			_pCameraTrans = Camera::GetMainCamera()->GetTransform();
-			_pTargetCamera = static_cast<TargetCamera*>(_pCameraTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
-		}
 		_pTargetCamera->ChangeView();
 	}
 
@@ -69,8 +70,9 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			}
 			else if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
 			{
-				//아닌 경우 커맨드 
-				_pLBCommand->Execute(_pPlayerObj, hit.point);
+				//몬스터인 경우 공격 
+				if (hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+					_pLBCommand->Execute(_pPlayerObj, hit.point);
 			}
 		}
 		else if (INPUT->GetKeyDown(KEY_RBUTTON))
@@ -86,8 +88,9 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			}
 			else if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
 			{
-				//아닌 경우 커맨드 
-				_pRBCommand->Execute(_pPlayerObj, hit.point);
+				//몬스터인 경우 공격 
+				if(hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+					_pRBCommand->Execute(_pPlayerObj, hit.point);
 			}
 		}
 	}

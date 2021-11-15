@@ -5,6 +5,9 @@
 #include "SpriteRenderer.h"
 #include "Animator.h"
 #include "Animation.h"
+#include "BoxCollider.h"
+#include "RigidBody.h"
+#include "AudioSource.h"
 
 #include "FSMState.h"
 #include "SkeletonCreate.h"
@@ -24,6 +27,14 @@ Skeleton::Skeleton() noexcept
 void Skeleton::Start(void) noexcept
 {
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
+
+	BoxCollider* trigger = new BoxCollider(D3DXVECTOR3(2, 1, 2),D3DXVECTOR3(0,0,0),"Trigger");
+	gameObject->AddComponent(trigger);
+	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.2f)));
+	gameObject->AddComponent(new Rigidbody());
+
+	_pRaiseAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
+	_pRaiseAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\skeletonraise.wav"));
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skeleton.png"));
 	gameObject->AddComponent(sr);
@@ -71,6 +82,8 @@ void Skeleton::Create(Transform* trans)
 	_pFSM[SK_STAND] = new SkeletonStand(_pAnimator, _pTrans, _pOwnerTrans);
 	_pFSM[SK_MOVE] = new SkeletonMove(_pAnimator, _pTrans, _pOwnerTrans, _pPathFinding, _fSpeed);
 
+	_pRaiseAudio->Play();
+
 	SetState(SK_CREATE);
 }
 
@@ -86,7 +99,7 @@ void Skeleton::SetState(SK_STATE newState, DIR eDir, D3DXVECTOR3 vTarget, bool b
 		static_cast<SkeletonMove*>(_pFSM[_eCurState])->SetAtt();
 	}
 
-	if(eDir != DIR_END)
+	if (eDir != DIR_END)
 		_pFSM[_eCurState]->SetDir(eDir);
 	_pFSM[_eCurState]->Start();
 }
@@ -98,6 +111,16 @@ void Skeleton::SetPathFinding(PathFinding* pf)
 		_pPathFinding = pf;
 		_pFSM[SK_MOVE] = new SkeletonMove(_pAnimator, _pTrans, _pOwnerTrans, _pPathFinding, _fSpeed);
 	}
+}
+
+void Skeleton::OnCollisionEnter(Collider* mine, Collider* other) noexcept
+{
+	if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+	{
+		if(_eCurState != SK_ATTACK)
+			SetState(SK_STATE::SK_ATTACK, DIR_END, other->GetTransform()->GetWorldPosition());
+	}
+
 }
 
 void Skeleton::InitAnimation(SpriteRenderer* sr)

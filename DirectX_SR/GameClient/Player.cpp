@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Animator.h"
 #include "BoxCollider.h"
+#include "Rigidbody.h"
 #include "AudioListener.h"
 
 #include "PathFinding.h"
@@ -45,15 +46,17 @@ void Player::Start(void) noexcept
 	_fSpeed =3.f;
 	_fRunSpeed = 5.f;
 
-	GetGameObject()->SetDontDestroy(true);
+	gameObject->SetDontDestroy(true);
+	gameObject->SetTag(GameObjectTag::PLAYER);
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 	_pInputHandler->Start();
 
+	gameObject->AddComponent(new AudioListener());
 
-	//gameObject->AddComponent(new AudioListener());
-	_pCollider = new BoxCollider(D3DXVECTOR3(1, 1, 0.5f));
+	_pCollider = new BoxCollider(D3DXVECTOR3(0.3, 1, 0.2f));
 	gameObject->AddComponent(_pCollider);
+	gameObject->AddComponent(new Rigidbody());
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"));
 	gameObject->AddComponent(sr);
@@ -122,7 +125,7 @@ void Player::InitAnimation(SpriteRenderer* sr)
 			sprintf_s(str, 256, "Asset\\Player\\stand_%d\\%d.png", folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
-			FrameTime.push_back(0.5f);
+			FrameTime.push_back(0.3f);
 		}
 
 		ani = new Animation(FrameTime, TList, true);
@@ -191,7 +194,7 @@ void Player::InitAnimation(SpriteRenderer* sr)
 			sprintf_s(str, 256, "Asset\\Player\\skill_%d\\%d.png", folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
-			FrameTime.push_back(0.1f);
+			FrameTime.push_back(0.08f);
 		}
 
 		ani = new Animation(FrameTime, TList);

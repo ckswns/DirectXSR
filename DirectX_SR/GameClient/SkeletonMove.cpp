@@ -41,6 +41,7 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 		float fZ = CE_MATH::Random(-1, 1) + _pPlayerTrans->GetWorldPosition().z;
 
 		_pTrans->SetWorldPosition(fX, _pPlayerTrans->GetWorldPosition().y, fZ);
+		_vTarget.y = 5;
 		_pSk->SetState(SK_STAND, _eDir);
 	}
 

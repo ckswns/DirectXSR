@@ -5,6 +5,8 @@
 #include "SpriteRenderer.h"
 #include "Animator.h"
 #include "Animation.h"
+#include "BoxCollider.h"
+#include "RigidBody.h"
 
 PoisonProjectile::PoisonProjectile(D3DXVECTOR3 dir,int iAniNum) noexcept
 	:_fMaxDist(5.f), _fDist(0), _fSpeed(3.f), _vDir(dir),_iAniNum(iAniNum)
@@ -14,6 +16,9 @@ PoisonProjectile::PoisonProjectile(D3DXVECTOR3 dir,int iAniNum) noexcept
 void PoisonProjectile::Start(void) noexcept
 {
 	_pTrans = GetGameObject()->GetTransform();
+	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 0.5f, 0.3f)));//,D3DXVECTOR3((_vDir.x*0.5f),0, (_vDir.z * 0.5f))));
+	gameObject->AddComponent(new Rigidbody());
+
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skill\\PoisonNova\\0\\0.png"));
 	gameObject->AddComponent(sr);
 
@@ -55,5 +60,18 @@ void PoisonProjectile::Update(float fElapsedTime) noexcept
 	{
 		_fDist += (fElapsedTime * _fSpeed);
 		_pTrans->Translate(_vDir * fElapsedTime * _fSpeed);
+	}
+}
+
+void PoisonProjectile::OnCollisionEnter(Collider* mine, Collider* other) noexcept
+{
+	if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+	{
+		//데미지
+	}
+	else if (other->GetGameObject()->GetTag() == GameObjectTag::OBSTACLE)
+	{
+		//벽같은거?면 사라짐
+		gameObject->Destroy();
 	}
 }

@@ -3,6 +3,9 @@
 #include "Transform.h"
 #include "Spear.h"
 #include "SpearTrail.h"
+#include "AudioSource.h"
+#include "BoxCollider.h"
+#include "RigidBody.h"
 
 Projectile::Projectile(D3DXVECTOR3 dir, bool isDir) noexcept
 	:_fMaxDist(7.f), _fDist(0), _fSpeed(3.f), _vDir(dir), _bRot(true), _bDir(isDir)
@@ -10,7 +13,14 @@ Projectile::Projectile(D3DXVECTOR3 dir, bool isDir) noexcept
 
 void Projectile::Start(void) noexcept
 {
-	_pTrans = GetGameObject()->GetTransform();
+	_pTrans = gameObject->GetTransform();
+	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.2f, 0.5f, 0.3)));
+	gameObject->AddComponent(new Rigidbody());
+
+	AudioSource* audio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
+	audio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\bonespear.wav"));
+	audio->SetVolume(0);
+	audio->Play();
 
 	DIR eDir = BACK;
 	float angle = 0;
@@ -53,7 +63,7 @@ void Projectile::Start(void) noexcept
 
 	_pSpear = GameObject::Instantiate();
 	_pSpear->AddComponent(new Spear());
-	_pSpear->GetTransform()->SetParent(GetGameObject()->GetTransform());
+	_pSpear->GetTransform()->SetParent(_pTrans);
 	//방향에 따른 회전 값
 	_pSpear->GetTransform()->SetLocalEulerAngle(0, 0, angle);
 
@@ -104,5 +114,26 @@ void Projectile::Update(float fElapsedTime) noexcept
 	{
 		_fDist += (fElapsedTime * _fSpeed);
 		_pTrans->Translate(_vDir * fElapsedTime * _fSpeed);
+	}
+}
+
+void Projectile::OnCollisionEnter(Collider* mine, Collider* other) noexcept
+{
+	if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+	{
+		//데미지
+	}
+	else if (other->GetGameObject()->GetTag() == GameObjectTag::OBSTACLE)
+	{
+		//벽같은거?면 사라짐
+		gameObject->Destroy();
+		_pSpear->Destroy();
+
+		for (size_t i = 0; i < _pTrails.size(); ++i)
+		{
+			_pTrails[i]->Destroy();
+			_pTrails[i] = nullptr;
+		}
+		_pTrails.clear();
 	}
 }
