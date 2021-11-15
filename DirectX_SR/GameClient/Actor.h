@@ -1,6 +1,11 @@
 #pragma once
 #include "Behaviour.h"
 
+namespace ce
+{
+	class Animator;
+}
+
 class Actor : public Behaviour
 {
 public:		enum class Direction
@@ -24,20 +29,26 @@ public:		enum class State
 				DIE
 			};
 
+public:		struct Data
+			{
+				float		maxHP;
+				float		aggroDistance;
+				float		moveSpeed;
+				float		damageMin;
+				float		damageMax;
+			};
+
 public:		explicit		Actor(void) noexcept;
 public:		virtual			~Actor(void) noexcept { __noop; }
 
 
 public:		virtual void	GetHit(float damage) noexcept PURE;
 
-protected:	float			_maxHP;
-protected:	float			_aggroDistance;
-protected:	float			_moveSpeed;
-protected:	float			_damageMin;
-protected:	float			_damageMax;
-
+protected:	Data			_data;
 protected:	Direction		_dir;
 protected:	Collider*		_hitBox;
 protected:	Collider*		_attackBox;
+
+protected:	Animator*		_animator;
 };
 

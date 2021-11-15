@@ -122,12 +122,13 @@ void LoadingScene::FixedUpdate(float fElapsedTime) noexcept
 
 void LoadingScene::Update(float fElapsedTime) noexcept
 {
-	static float a = 0;
-	a += fElapsedTime * 0.5f;
-	_imgProgressFront->SetFillAmount(/*ASSETMANAGER->GetLoadingProgress()*/a);
+	_imgProgressFront->SetFillAmount(ASSETMANAGER->GetLoadingProgress());
 
-	if (a >= 1 && !ASSETMANAGER->GetLoadingState())
+	if (!ASSETMANAGER->GetLoadingState())
+	{
+		GAMEDATAMANAGER->Init();
 		SCENEMANAGER->LoadScene("Town_01");
+	}
 }
 
 void LoadingScene::LateUpdate(float fElapsedTime) noexcept

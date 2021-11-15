@@ -11,6 +11,7 @@
 #include "TerrainCollider.h"
 #include "Camera.h"
 #include "BillboardSprite.h"
+#include "Cow.h"
 
 TownScene_01::TownScene_01(void) noexcept
 {
@@ -107,6 +108,9 @@ bool TownScene_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(45, 0, 0);
 	//obj->AddComponent(new SphereCollider(5));
 	//obj->AddComponent(new Rigidbody());
+
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new Cow());
 
 	return true;
 }

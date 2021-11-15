@@ -154,6 +154,9 @@
     <Filter Include="00. Game\Manager">
       <UniqueIdentifier>{40dea778-d529-4716-a740-9aec9908e052}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\BillboardObj">
+      <UniqueIdentifier>{70846859-c726-47e1-b220-8e982f18328f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -303,6 +306,9 @@
     <ClInclude Include="GameDataManager.h">
       <Filter>00. Game\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="BillboardObj.h">
+      <Filter>00. Game\01. GameObject\BillboardObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -421,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="GameDataManager.cpp">
       <Filter>00. Game\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="BillboardObj.cpp">
+      <Filter>00. Game\01. GameObject\BillboardObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AttackCommand.h" />
+    <ClInclude Include="BillboardObj.h" />
     <ClInclude Include="BillboardSprite.h" />
     <ClInclude Include="BoneSpear.h" />
     <ClInclude Include="Command.h" />
@@ -216,6 +217,7 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AttackCommand.cpp" />
+    <ClCompile Include="BillboardObj.cpp" />
     <ClCompile Include="BillboardSprite.cpp" />
     <ClCompile Include="BoneSpear.cpp" />
     <ClCompile Include="Cow.cpp" />

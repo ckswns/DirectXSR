@@ -37,3 +37,6 @@ using namespace ce;
 #include "Game_Struct.h"
 #include "Game_Math.h"
 #include "Game_Enum.h"
+
+#include "GameDataManager.h"
+#define GAMEDATAMANAGER GameDataManager::Instance()

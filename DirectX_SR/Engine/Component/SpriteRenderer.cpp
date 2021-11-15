@@ -38,6 +38,12 @@ namespace ce
 		_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
 		_pDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
 
+		DWORD flag = 0;
+		_pDevice->GetRenderState(D3DRS_LIGHTING, &flag);
+
+		if (_lightEnable == false)
+			_pDevice->SetRenderState(D3DRS_LIGHTING, false);
+
 		_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -48,6 +54,7 @@ namespace ce
 		_quad->Render(_pDevice);
 
 		_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		_pDevice->SetRenderState(D3DRS_LIGHTING, flag);
 	}
 
 	void SpriteRenderer::Release(void) noexcept
