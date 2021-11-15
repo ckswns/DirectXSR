@@ -6,8 +6,8 @@
 #include "Animator.h"
 #include "Animation.h"
 
-PoisonProjectile::PoisonProjectile(D3DXVECTOR3 dir,int _iAniNum) noexcept
-	:_fMaxDist(5.f), _fDist(0), _fSpeed(1.f), _vDir(dir)
+PoisonProjectile::PoisonProjectile(D3DXVECTOR3 dir,int iAniNum) noexcept
+	:_fMaxDist(5.f), _fDist(0), _fSpeed(3.f), _vDir(dir),_iAniNum(iAniNum)
 {
 }
 

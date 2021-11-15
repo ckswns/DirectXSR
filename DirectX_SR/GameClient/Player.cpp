@@ -8,9 +8,10 @@
 #include "Animator.h"
 #include "BoxCollider.h"
 #include "AudioListener.h"
-#include "BoxCollider.h"
 
 #include "PathFinding.h"
+#include "InputHandler.h"
+
 #include "PlayerFSMState.h"
 #include "PlayerStand.h"
 #include "PlayerMove.h"
@@ -33,6 +34,8 @@ Player::Player(PathFinding* pf) noexcept
 	_pSkills.push_back(new PoisonNova());
 
 	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(pf);
+
+	_pInputHandler = new InputHandler(this);
 }
 
 void Player::Start(void) noexcept
@@ -45,6 +48,8 @@ void Player::Start(void) noexcept
 	GetGameObject()->SetDontDestroy(true);
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
+	_pInputHandler->Start();
+
 
 	//gameObject->AddComponent(new AudioListener());
 	_pCollider = new BoxCollider(D3DXVECTOR3(1, 1, 0.5f));
@@ -63,6 +68,8 @@ void Player::Start(void) noexcept
 
 void Player::Update(float fElapsedTime) noexcept
 {
+	_pInputHandler->Update(fElapsedTime);
+
 	_pFSM[_eCurState]->Update(fElapsedTime);
 
 	_tStat->Recovery(_fRecovery * fElapsedTime);
@@ -72,6 +79,11 @@ void Player::OnDestroy(void) noexcept
 {
 	delete _tStat;
 	_tStat = nullptr;
+
+	_pInputHandler->OnDestroy();
+
+	delete _pInputHandler;
+	_pInputHandler = nullptr;
 
 	for (size_t i = 0; i < _pSkills.size(); ++i)
 	{

@@ -25,24 +25,27 @@ bool PoisonNova::Using(D3DXVECTOR3 vPos, Transform* pTrans, bool isDir) noexcept
         }
         else if (i <= 16)
         {
-            dir.x = -1 + (x * i); // -1 -> 0
-            dir.z = (z * i);      // 0 -> -1
+            int num = i - 8;
+            dir.x = -1 + (x * num); // -1 -> 0
+            dir.z = (z * num);      // 0 -> 1
         }
         else if (i <= 24)
         {
-            dir.x = x * i;        // 0 -> 1
-            dir.z = 1-( z * i);   // 1 -> 0
+            int num = i - 16;
+            dir.x = x * num;        // 0 -> 1
+            dir.z = 1-( z * num);   // 1 -> 0
         }
         else 
         {
-            dir.x = 1 - (x * i);  // 1 -> 0
-            dir.z = - (z * i);    // 0 -> -1
+            int num = i - 24;
+            dir.x = 1 - (x * num);  // 1 -> 0
+            dir.z = - (z * num);    // 0 -> -1
         }
-        D3DXVec3Normalize(&dir, &dir);
+    //    D3DXVec3Normalize(&dir, &dir);
 
         GameObject* pObj = GameObject::Instantiate();
         pObj->GetTransform()->SetWorldPosition(pTrans->GetWorldPosition());
-        pObj->GetTransform()->SetLocalEulerAngle(0, 0, angle * i);
+//        pObj->GetTransform()->SetLocalEulerAngle(0, 0, angle * i);
         pObj->AddComponent(new PoisonProjectile(dir,i));
     }
 

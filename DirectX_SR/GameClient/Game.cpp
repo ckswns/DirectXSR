@@ -57,13 +57,13 @@ bool Game::Init(void) noexcept
     pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
 
     //InputHandler
-    pGameObj = GameObject::Instantiate();
-    InputHandler* pInputHandler = new InputHandler(pPlayerObj, terrain);
-    pGameObj->AddComponent(pInputHandler);
+    //pGameObj = GameObject::Instantiate();
+    //InputHandler* pInputHandler = new InputHandler(pPlayerObj, terrain);
+    //pGameObj->AddComponent(pInputHandler);
 
     //UI
     pGameObj = GameObject::Instantiate();
-    pGameObj->AddComponent(new StatusBar(pInputHandler, player));
+    pGameObj->AddComponent(new StatusBar(player));
 
     return false;
 }

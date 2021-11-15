@@ -8,6 +8,12 @@
 #include "MouseBtnUI.h"
 using namespace ce::UI;
 
+StatusBar::StatusBar(Player* player) noexcept
+    :_pPlayer(player) 
+{
+    _pInputHandler = _pPlayer->GetInpuHandler();
+}
+
 void StatusBar::Start(void) noexcept
 {
     gameObject->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\StatusBar.png")));

@@ -8,7 +8,7 @@ namespace ce
 class PoisonProjectile: public Behaviour
 {
 public:		explicit					PoisonProjectile() = delete;
-public:		explicit					PoisonProjectile(D3DXVECTOR3 dir,int _iAniNum) noexcept;
+public:		explicit					PoisonProjectile(D3DXVECTOR3 dir,int iAniNum) noexcept;
 public:		virtual						~PoisonProjectile(void) noexcept { __noop; }
 
 public:		virtual void				Start(void) noexcept;
