@@ -30,6 +30,7 @@
 #include "ManagerDef.h"
 #include "ConstValues.h"
 #include "CEMath.h"
+#include "Util.h"
 
 using namespace ce;
 

@@ -67,6 +67,9 @@
     <Filter Include="Interpolation">
       <UniqueIdentifier>{c82daefc-cffe-46bc-bc42-69e487675ec9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{73c2f68c-e98f-46f0-ab49-5ecce6d9c17e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)INoncopyable.h">
@@ -131,6 +134,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)CETween.h">
       <Filter>Interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Util.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

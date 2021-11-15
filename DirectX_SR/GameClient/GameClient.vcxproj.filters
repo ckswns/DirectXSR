@@ -151,6 +151,21 @@
     <Filter Include="00. Game\01. GameObject\00. Player\Skill\PoisonNova\PoisonProjectile">
       <UniqueIdentifier>{d0b38a18-c45d-4e77-ba37-7171afedcfac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\02. UI\FrameText">
+      <UniqueIdentifier>{9e7319f8-a9df-467d-82c3-9ba596a45f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\BillboardSprite">
+      <UniqueIdentifier>{59da0ae7-873b-4e8a-b417-9fca2aab2089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor">
+      <UniqueIdentifier>{735c5706-7b04-4840-8ff2-701db35a3c67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster">
+      <UniqueIdentifier>{0051822a-bf3b-4b4f-9267-efbf0a9e8a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\Manager">
+      <UniqueIdentifier>{40dea778-d529-4716-a740-9aec9908e052}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -294,6 +309,21 @@
     <ClInclude Include="PoisonProjectile.h">
       <Filter>00. Game\01. GameObject\00. Player\Skill\PoisonNova\PoisonProjectile</Filter>
     </ClInclude>
+    <ClInclude Include="DbgShowFrame.h">
+      <Filter>00. Game\01. GameObject\02. UI\FrameText</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>00. Game\01. GameObject\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="BillboardSprite.h">
+      <Filter>00. Game\01. GameObject\BillboardSprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Cow.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDataManager.h">
+      <Filter>00. Game\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -406,6 +436,21 @@
     </ClCompile>
     <ClCompile Include="PoisonProjectile.cpp">
       <Filter>00. Game\01. GameObject\00. Player\Skill\PoisonNova\PoisonProjectile</Filter>
+    </ClCompile>
+    <ClCompile Include="DbgShowFrame.cpp">
+      <Filter>00. Game\01. GameObject\02. UI\FrameText</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>00. Game\01. GameObject\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="BillboardSprite.cpp">
+      <Filter>00. Game\01. GameObject\BillboardSprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Cow.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDataManager.cpp">
+      <Filter>00. Game\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
