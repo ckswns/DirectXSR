@@ -214,14 +214,28 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget, bool b
 		static_cast<PlayerMove*>(_pFSM[newState])->SetAtt();
 	}
 
-	if(!_bFPV)
+	/*if(!_bFPV)
 		_pFSM[newState]->SetDir(eDir);
 	
 	if (_eCurState != newState) 
 	{
 		_eCurState = newState;
 		_pFSM[_eCurState]->Start();
+	}*/
+
+	if (!_bFPV)
+	{
+		_pFSM[newState]->SetDir(eDir);
+
+		_eCurState = newState;
+		_pFSM[_eCurState]->Start();
 	}
+	else if (_eCurState != newState)
+	{
+		_eCurState = newState;
+		_pFSM[_eCurState]->Start();
+	}
+
 
 }
 
