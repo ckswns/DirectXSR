@@ -50,17 +50,17 @@ void MouseBtnUI::Start(void) noexcept
 
     if (!_bLeft)
     {
-        _pBtnAttack->GetTransform()->SetLocalPosition(0, -47, 0);
-        _pBtnRaise->GetTransform()->SetLocalPosition(-49, -47, 0);
-        _pBtnSpear->GetTransform()->SetLocalPosition(-49, -94, 0);
-        _pBtnPoison->GetTransform()->SetLocalPosition(0, -94, 0);
+        _pBtnAttack->GetTransform()->SetLocalPosition(0, -82, 0);
+        _pBtnRaise->GetTransform()->SetLocalPosition(-75, -82, 0);
+        _pBtnSpear->GetTransform()->SetLocalPosition(-75, -158, 0);
+        _pBtnPoison->GetTransform()->SetLocalPosition(0, -158, 0);
     }
     else
     {
-        _pBtnAttack->GetTransform()->SetLocalPosition(0, -47, 0);
-        _pBtnRaise->GetTransform()->SetLocalPosition(49, -47, 0);
-        _pBtnSpear->GetTransform()->SetLocalPosition(49, -94, 0);
-        _pBtnPoison->GetTransform()->SetLocalPosition(0, -94, 0);
+        _pBtnAttack->GetTransform()->SetLocalPosition(0, -82, 0);
+        _pBtnRaise->GetTransform()->SetLocalPosition(75, -82, 0);
+        _pBtnSpear->GetTransform()->SetLocalPosition(75, -158, 0);
+        _pBtnPoison->GetTransform()->SetLocalPosition(0, -158, 0);
     }
 
 }

@@ -73,6 +73,7 @@ void Projectile::Start(void) noexcept
 	pTrail->AddComponent(new SpearTrail(0.3f,eDir));
 	pTrail->GetTransform()->SetParent(_pTrans);
 	pTrail->GetTransform()->SetLocalPosition(-(_vDir * 0.2f));
+	pTrail->GetTransform()->SetLocalScale(0.8, 0.8f, 0);
 	if (_bRot)
 		pTrail->GetTransform()->SetLocalEulerAngle(0, 0, trailAng);
 	_pTrails.push_back(pTrail);
@@ -81,7 +82,7 @@ void Projectile::Start(void) noexcept
 	pTrail->AddComponent(new SpearTrail(0.3f, eDir));
 	pTrail->GetTransform()->SetParent(_pTrans);
 	pTrail->GetTransform()->SetLocalPosition(-_vDir * 0.4f);
-	pTrail->GetTransform()->SetLocalScale(1.2f, 1.2f, 1.2f);
+	pTrail->GetTransform()->SetLocalScale(1,1, 0);
 	if (_bRot)
 		pTrail->GetTransform()->SetLocalEulerAngle(0, 0, trailAng);
 	_pTrails.push_back(pTrail);
@@ -90,7 +91,25 @@ void Projectile::Start(void) noexcept
 	pTrail->AddComponent(new SpearTrail(0.3f, eDir));
 	pTrail->GetTransform()->SetParent(_pTrans);
 	pTrail->GetTransform()->SetLocalPosition(-_vDir * 0.6f);
-	pTrail->GetTransform()->SetLocalScale(1.5f, 1.5f, 1.5f);
+	pTrail->GetTransform()->SetLocalScale(1.2f,1.2f, 0);
+	if (_bRot)
+		pTrail->GetTransform()->SetLocalEulerAngle(0, 0, trailAng);
+	_pTrails.push_back(pTrail);
+
+	pTrail = GameObject::Instantiate();
+	pTrail->AddComponent(new SpearTrail(0.3f, eDir));
+	pTrail->GetTransform()->SetParent(_pTrans);
+	pTrail->GetTransform()->SetLocalPosition(-_vDir * 0.8f);
+	pTrail->GetTransform()->SetLocalScale(1.4f, 1.4f, 0);
+	if (_bRot)
+		pTrail->GetTransform()->SetLocalEulerAngle(0, 0, trailAng);
+	_pTrails.push_back(pTrail);
+
+	pTrail = GameObject::Instantiate();
+	pTrail->AddComponent(new SpearTrail(0.3f, eDir));
+	pTrail->GetTransform()->SetParent(_pTrans);
+	pTrail->GetTransform()->SetLocalPosition(-_vDir);
+	pTrail->GetTransform()->SetLocalScale(1.6f, 1.6f, 0);
 	if (_bRot)
 		pTrail->GetTransform()->SetLocalEulerAngle(0, 0, trailAng);
 	_pTrails.push_back(pTrail);
