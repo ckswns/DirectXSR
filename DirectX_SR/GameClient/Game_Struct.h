@@ -63,6 +63,37 @@ typedef struct tagStat
 	}
 
 }STAT;
+//
+typedef struct tagItemInfo
+{
+	int	_iItemID;
+	int _iWidth;
+	int _iHeight;
+
+	tagItemInfo(int iID, int iWidth, int iHeight)
+	{
+		_iItemID = iID;
+		_iWidth = iWidth;
+		_iHeight = iHeight;
+	}
+
+}ITEMINFO;
+
+typedef struct tagSlot
+{
+	D3DXVECTOR2 _vPos;
+	RECT		_tRect;
+	int			_iSlotSizeX;
+	int			_iSlotSizeY;
+	bool		_bSlotCheck;
+	tagSlot()
+	{
+		_bSlotCheck = false;
+		_iSlotSizeX = 46;
+		_iSlotSizeY = 30;
+	}
+
+}SLOTINFO;
 
 #endif // !__GAME_STRUCT_H__
 

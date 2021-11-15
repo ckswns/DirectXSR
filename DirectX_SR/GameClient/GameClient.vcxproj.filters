@@ -139,6 +139,18 @@
     <Filter Include="00. Game\01. GameObject\02. UI\System\ExitBtn">
       <UniqueIdentifier>{546fdf4d-bfde-4507-85e2-9cb144652165}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Inventory">
+      <UniqueIdentifier>{cabd2120-d3b1-4f95-a424-1096fb6fd17b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Inventory\Inventory">
+      <UniqueIdentifier>{6c8d2562-b6f1-48d3-a573-e3ffb933c578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Inventory\TestItem">
+      <UniqueIdentifier>{4da9224c-915c-4f65-8e60-3168b7d2224b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Inventory\Inventory\Slot">
+      <UniqueIdentifier>{7c03b790-a656-4ecd-9a15-116a19c6840f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -148,9 +160,6 @@
       <Filter>99. Default\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>99. Default\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameClient.h">
       <Filter>99. Default\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
@@ -273,11 +282,23 @@
     <ClInclude Include="ExitBtn.h">
       <Filter>00. Game\01. GameObject\02. UI\System\ExitBtn</Filter>
     </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Test.h">
+      <Filter>00. Game\00. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TestItem.h">
+      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClient.h">
+      <Filter>99. Default\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Slot.h">
+      <Filter>00. Game\01. GameObject\Inventory\Inventory\Slot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameClient.cpp">
-      <Filter>99. Default\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>99. Default\Source Files</Filter>
     </ClCompile>
@@ -376,6 +397,21 @@
     </ClCompile>
     <ClCompile Include="ExitBtn.cpp">
       <Filter>00. Game\01. GameObject\02. UI\System\ExitBtn</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
+      <Filter>00. Game\00. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestItem.cpp">
+      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClient.cpp">
+      <Filter>99. Default\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Slot.cpp">
+      <Filter>00. Game\01. GameObject\Inventory\Inventory\Slot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -66,7 +66,6 @@ BEGIN_MESSAGE_MAP(ObjectTab, CDialog)
 
 END_MESSAGE_MAP()
 
-
 // ObjectTab 메시지 처리기
 
 void ObjectTab::OnBnClickedPositionSave()
@@ -77,7 +76,7 @@ void ObjectTab::OnBnClickedPositionSave()
 
 	for (int i = 0; i < iCnt; ++i)
 	{
-		strNames += (_vecSaveName[i].first + ",");
+		strNames += (_vecSaveName[i].first + ',');
 		INIMANAGER->AddData("SectionNames", "Names", strNames);
 	}
 
