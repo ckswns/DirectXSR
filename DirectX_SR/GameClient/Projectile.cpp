@@ -19,7 +19,7 @@ void Projectile::Start(void) noexcept
 
 	AudioSource* audio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
 	audio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\bonespear.wav"));
-	audio->SetVolume(0);
+	//audio->SetVolume(0);
 	audio->Play();
 
 	DIR eDir = BACK;

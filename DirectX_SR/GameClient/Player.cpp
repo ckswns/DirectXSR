@@ -9,6 +9,7 @@
 #include "BoxCollider.h"
 #include "Rigidbody.h"
 #include "AudioListener.h"
+#include "AudioSource.h"
 
 #include "PathFinding.h"
 #include "InputHandler.h"
@@ -53,6 +54,13 @@ void Player::Start(void) noexcept
 	_pInputHandler->Start();
 
 	gameObject->AddComponent(new AudioListener());
+	_pAudioSource = new AudioSource();
+	gameObject->AddComponent(_pAudioSource);
+	_pManaSound[0] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\INeedMana.mp3");
+	_pManaSound[1] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\MoreMana.mp3");
+	_pManaSound[2] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\LowMana.mp3");
+	//_pAudioSource->LoadAudio(_pManaSound[0]);
+;
 
 	_pCollider = new BoxCollider(D3DXVECTOR3(0.3, 1, 0.2f));
 	gameObject->AddComponent(_pCollider);
@@ -107,6 +115,12 @@ void Player::OnDestroy(void) noexcept
 		}
 	}
 	_pFSM.clear();
+
+	for (int i = 0; i < 3; i++)
+	{
+	//	delete _pManaSound[i];
+		_pManaSound[i] = nullptr;
+	}
 }
 
 void Player::InitAnimation(SpriteRenderer* sr)
@@ -286,7 +300,13 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			{
 				SetState(PLAYER_SKILL, DIR_END, vPos);
 				pSkill->Using(vPos, _pTrans,_bFPV);
-			//	_tStat->_fMP -= SkillMp;
+				_tStat->_fMP -= SkillMp;
+			}
+			else
+			{
+				int num = CE_MATH::Random(3);
+				_pAudioSource->LoadAudio(_pManaSound[num]);
+				_pAudioSource->Play();
 			}
 			break;
 		}
