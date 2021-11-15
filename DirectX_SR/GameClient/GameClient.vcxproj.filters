@@ -139,6 +139,12 @@
     <Filter Include="00. Game\01. GameObject\02. UI\System\ExitBtn">
       <UniqueIdentifier>{546fdf4d-bfde-4507-85e2-9cb144652165}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\02. UI\StatusWnd">
+      <UniqueIdentifier>{ddb511fb-d117-4c45-95f6-46681d9a954a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\State\Player\03.Skill">
+      <UniqueIdentifier>{5f1bdd1c-587b-4e77-8b37-fb3f1221c14f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -273,6 +279,9 @@
     <ClInclude Include="ExitBtn.h">
       <Filter>00. Game\01. GameObject\02. UI\System\ExitBtn</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerSkill.h">
+      <Filter>00. Game\01. GameObject\00. Player\State\Player\03.Skill</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -376,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="ExitBtn.cpp">
       <Filter>00. Game\01. GameObject\02. UI\System\ExitBtn</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSkill.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\State\Player\03.Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

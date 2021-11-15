@@ -21,7 +21,7 @@ bool RaiseSkeleton::Using(D3DXVECTOR3 vPos, Transform* pTrans, bool isDir) noexc
 {
     if (_iCount == _iMaxSkeleton)
     {
-        int index = (_iIdx + 1) > 2 ? 0 : (_iIdx + 1);
+        int index = (_iIdx + 1) > _iMaxSkeleton ? 0 : (_iIdx + 1);
         
         //ÇÏ³ª ¾ø¾Ú
         Skeleton* sk = _Skeletones[index];

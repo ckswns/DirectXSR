@@ -15,6 +15,7 @@
 #include "PlayerStand.h"
 #include "PlayerMove.h"
 #include "PlayerAttack.h"
+#include "PlayerSkill.h"
 
 #include "Skill.h"
 #include "RaiseSkeleton.h"
@@ -168,6 +169,23 @@ void Player::InitAnimation(SpriteRenderer* sr)
 
 		TList.clear();
 		FrameTime.clear();
+
+		//Skill
+		for (int i = 0; i < 16; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset\\Player\\skill_%d\\%d.png", folder, i);
+
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
+			FrameTime.push_back(0.1f);
+		}
+
+		ani = new Animation(FrameTime, TList);
+		ani->SetMaterial(material);
+		_pAnimator->InsertAnimation("Skill_" + std::to_string(folder), ani);
+
+		TList.clear();
+		FrameTime.clear();
 	}
 }
 
@@ -177,6 +195,7 @@ void Player::InitState()
 	_pFSM.push_back(new PlayerStand(_pAnimator));
 	_pFSM.push_back(new PlayerMove(this,_pAnimator, _pTrans, _pPathFinding, _fSpeed));
 	_pFSM.push_back(new PlayerAttack(this,_pAnimator, _pTrans));
+	_pFSM.push_back(new PlayerSkill(this, _pAnimator, _pTrans));
 }
 
 void Player::SetFPV()
@@ -248,6 +267,7 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			int SkillMp = pSkill->GetUsingMp();
 			if (_tStat->_fMP >= SkillMp)
 			{
+				SetState(PLAYER_SKILL, DIR_END, vPos);
 				pSkill->Using(vPos, _pTrans,_bFPV);
 			//	_tStat->_fMP -= SkillMp;
 			}
