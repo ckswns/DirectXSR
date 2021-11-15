@@ -2,7 +2,7 @@
 
 namespace ce
 {
-	namespace CETween
+	class CETween
 	{
 		enum class EaseType
 		{
