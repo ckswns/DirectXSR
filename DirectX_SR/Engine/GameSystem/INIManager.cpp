@@ -19,6 +19,7 @@ namespace ce
 	void INIManager::SaveIni(std::string fileName)
 	{
 		char str[256];
+		ZeroMemory(str, 256);
 		fileName = "\\" + fileName + ".ini";
 		GetCurrentDirectoryA(256, str);
 
@@ -37,6 +38,7 @@ namespace ce
 	std::string INIManager::LoadDataString(std::string fileName, std::string section, std::string key)
 	{
 		char str[256];
+		ZeroMemory(str, 256);
 		fileName = "\\" + fileName + ".ini";
 		GetCurrentDirectoryA(256, str);
 
@@ -46,7 +48,7 @@ namespace ce
 		GetPrivateProfileStringA(section.c_str(), key.c_str(), "", data, 512, fileName.c_str());
 
 		std::string result = data;
-		delete data;
+		delete[] data;
 
 		return result;
 	}

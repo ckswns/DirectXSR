@@ -2,7 +2,7 @@
 
 #include "targetver.h"
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
-#define NOMINMAX
+//#define NOMINMAX
 // Windows Header Files
 #include <windows.h>
 // C RunTime Header Files
@@ -27,7 +27,6 @@
 #include "d3dx9.h"
 #pragma comment(lib, "d3dx9.lib")
 
-#include "AutoDetectMemoryLeak.h"
 #include "ManagerDef.h"
 #include "ConstValues.h"
 #include "CEMath.h"

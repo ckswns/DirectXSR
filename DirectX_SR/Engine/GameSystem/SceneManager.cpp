@@ -55,8 +55,9 @@ namespace ce
 		if (_pNextScene)
 		{
 			_pActiveScene->Release();
-			_pActiveScene->ReleaseXXX();
+			_pActiveScene->UnloadXXX();
 			
+			_pNextScene->InsertPrevSceneGameObj(_pActiveScene);
 			_pActiveScene = _pNextScene;
 			_pNextScene = nullptr;
 

@@ -166,6 +166,7 @@
     <ClInclude Include="AttackCommand.h" />
     <ClInclude Include="BoneSpear.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="ExitBtn.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FSMState.h" />
     <ClInclude Include="Game.h" />
@@ -204,11 +205,13 @@
     <ClInclude Include="SpearTrail.h" />
     <ClInclude Include="TargetCamera.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TopBar.h" />
     <ClInclude Include="TownScene_01.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AttackCommand.cpp" />
     <ClCompile Include="BoneSpear.cpp" />
+    <ClCompile Include="ExitBtn.cpp" />
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
@@ -243,6 +246,7 @@
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="SpearTrail.cpp" />
     <ClCompile Include="TargetCamera.cpp" />
+    <ClCompile Include="TopBar.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
   </ItemGroup>
   <ItemGroup>

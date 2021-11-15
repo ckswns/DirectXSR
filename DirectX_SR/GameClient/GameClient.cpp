@@ -59,7 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	Scene::KEY_VALUE_LIST scenesList;
 	Scene* scene = new LoadingScene();
 	scenesList.push_back(std::make_pair("Loading", scene));
-	scene = new Game();
+	scene = new TownScene_01();
 	scenesList.push_back(std::make_pair("Town_01", scene));
 
 	pGameController->Init(g_hWnd, scenesList, WINCX, WINCY);
@@ -131,8 +131,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hInst = hInstance; // Store instance handle in our global variable
 	RECT rc = { 0 ,0 , WINCX, WINCY };
 	AdjustWindowRect(&rc, WS_POPUP, FALSE);
-	//HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_POPUP, CW_USEDEFAULT, 0, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr); //제목 표시줄 제거
-	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr); //제목 표시줄 O
+	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_POPUP, CW_USEDEFAULT, 0, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr); //제목 표시줄 제거
+	//HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr); //제목 표시줄 O
 
    if (!hWnd)
    {

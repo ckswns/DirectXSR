@@ -23,6 +23,19 @@ namespace ce
 		_vLayerChangedObj.emplace_back(obj);
 	}
 
+	void Scene::InsertPrevSceneGameObj(Scene* prevScene) noexcept
+	{
+		for (int i = 0; i < static_cast<int>(GameObjectLayer::END); i++)
+		{
+			for (auto iter = prevScene->_vGameObjs[i].begin(); iter != prevScene->_vGameObjs[i].end();)
+			{
+				_vGameObjs[i].emplace_back(*iter);
+				iter = prevScene->_vGameObjs[i].erase(iter);
+				continue;
+			}
+		}
+	}
+
 	void Scene::FixedUpdateXXX(float fElapsedTime) noexcept
 	{
 		if (_qGameObjWaitForInsert.empty() == false)
@@ -216,6 +229,32 @@ namespace ce
 				continue;
 
 			_vGameObjs[i][j]->RenderXXX();
+		}
+	}
+
+	void Scene::UnloadXXX(void) noexcept
+	{
+		for (int i = 0; i < static_cast<int>(GameObjectLayer::END); i++)
+		{
+			for (auto iter = _vGameObjs[i].begin(); iter != _vGameObjs[i].end();)
+			{
+				if ((*iter) == nullptr)
+				{
+					iter = _vGameObjs[i].erase(iter);
+					continue;
+				}
+
+				if ((*iter)->GetDontDestroy())
+				{
+					iter++;
+					continue;
+				}
+
+				(*iter)->ReleaseXXX();
+
+				delete ((*iter));
+				iter = _vGameObjs[i].erase(iter);
+			}
 		}
 	}
 

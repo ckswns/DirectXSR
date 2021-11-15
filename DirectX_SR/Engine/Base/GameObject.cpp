@@ -96,56 +96,50 @@ namespace ce
 
 	void GameObject::OnMouseEnterXXX(void) noexcept
 	{
-		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
-		if (cp == nullptr)
-			return;
-
-		cp->OnMouseEnter();
+		for (size_t i = 0; i < _pComponents.size(); i++)
+		{
+			_pComponents[i]->OnMouseEnter();
+		}
 	}
 
 	void GameObject::OnMouseLeaveXXX(void) noexcept
 	{
-		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
-		if (cp == nullptr)
-			return;
-
-		cp->OnMouseLeave();
+		for (size_t i = 0; i < _pComponents.size(); i++)
+		{
+			_pComponents[i]->OnMouseLeave();
+		}
 	}
 
 	void GameObject::OnMouseOverXXX(void) noexcept
 	{
-		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
-		if (cp == nullptr)
-			return;
-
-		cp->OnMouseOver();
+		for (size_t i = 0; i < _pComponents.size(); i++)
+		{
+			_pComponents[i]->OnMouseOver();
+		}
 	}
 
 	void GameObject::OnMouseDownXXX(void) noexcept
 	{
-		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
-		if (cp == nullptr)
-			return;
-
-		cp->OnMouseDown();
+		for (size_t i = 0; i < _pComponents.size(); i++)
+		{
+			_pComponents[i]->OnMouseDown();
+		}
 	}
 
 	void GameObject::OnMouseUpXXX(void) noexcept
 	{
-		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
-		if (cp == nullptr)
-			return;
-
-		cp->OnMouseUp();
+		for (size_t i = 0; i < _pComponents.size(); i++)
+		{
+			_pComponents[i]->OnMouseUp();
+		}
 	}
 
 	void GameObject::OnMouseHeldDownXXX(void) noexcept
 	{
-		Component* cp = GetComponent(COMPONENT_ID::BUTTON);
-		if (cp == nullptr)
-			return;
-
-		cp->OnMouseHeldDown();
+		for (size_t i = 0; i < _pComponents.size(); i++)
+		{
+			_pComponents[i]->OnMouseHeldDown();
+		}
 	}
 
 	void GameObject::OnCollisionEnterXXX(Collider* mine, Collider* other) noexcept

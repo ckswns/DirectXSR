@@ -95,8 +95,8 @@ namespace ce
 #ifdef __USE_FMOD__
 		FMOD::System* audioSystem = FMODManager::Instance()->GetSystem();
 #endif
-		std::mutex m;
-		m.lock();
+		std::mutex mtx;
+		std::lock_guard<std::mutex> guard(mtx);
 
 		float fileCount = std::distance(fs::recursive_directory_iterator(_assetFolderPath), fs::recursive_directory_iterator{});
 		float loadCount = 0;
@@ -196,8 +196,6 @@ namespace ce
 				continue;
 			}
 		}
-
-		m.unlock();
 
 		_bWhileLoading = false;
 

@@ -3,7 +3,9 @@
 #ifndef PURE
 #define PURE =0
 #endif
-
+#ifndef _QUEUE_
+#include <queue>
+#endif
 #include "TypeDefine.h"
 #include "ConstValues.h"
 #include "MemoryPool.h"
@@ -19,6 +21,9 @@ namespace ce
 
 	class GameObject final //: public MemoryPool<GameObject>
 	{
+	public:		using								TList = std::vector<GameObject*>;
+	public:		using								QUEUE = std::queue<GameObject*>;
+
 	public:		explicit 							GameObject() noexcept;
 	public:											~GameObject() noexcept;
 

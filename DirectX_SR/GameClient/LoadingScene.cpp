@@ -12,6 +12,7 @@
 #include "AudioAsset.h"
 #include "AudioSource.h"
 #include "AudioListener.h"
+#include "TopBar.h"
 
 using namespace ce::UI;
 
@@ -103,6 +104,8 @@ bool LoadingScene::Init(void) noexcept
 
 	_imgLogo = static_cast<Image*>(obj->GetComponent(COMPONENT_ID::IMAGE));
 
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new TopBar(g_hWnd));
 	ASSETMANAGER->LoadAssetFolder("Asset");
 
 	return true;

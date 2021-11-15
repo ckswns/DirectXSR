@@ -17,7 +17,6 @@ namespace ce
 
 	bool GameController::Init(HWND hWnd, const Scene::KEY_VALUE_LIST& scenes, uint32 winX, uint32 winY, const char* fontFilePath, const char* fontFaceName) noexcept
 	{
-		//_CrtSetBreakAlloc(1250);
 		_hWnd = hWnd;
 
 		INPUT->Init(_hWnd);

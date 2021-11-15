@@ -130,6 +130,15 @@
     <Filter Include="00. Game\01. GameObject\03. InputHandle\Command\MoveCommand">
       <UniqueIdentifier>{e19d1efa-3196-4ded-9f0e-fe945e3fff7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\02. UI\System">
+      <UniqueIdentifier>{3233839e-fb88-4fae-bade-3719e38bf121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\02. UI\System\TopBar">
+      <UniqueIdentifier>{14724f00-33d1-4c7c-ab55-10158c57d4f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\02. UI\System\ExitBtn">
+      <UniqueIdentifier>{546fdf4d-bfde-4507-85e2-9cb144652165}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -258,6 +267,12 @@
     <ClInclude Include="StatusBar.h">
       <Filter>00. Game\01. GameObject\02. UI\StatusBar</Filter>
     </ClInclude>
+    <ClInclude Include="TopBar.h">
+      <Filter>00. Game\01. GameObject\02. UI\System\TopBar</Filter>
+    </ClInclude>
+    <ClInclude Include="ExitBtn.h">
+      <Filter>00. Game\01. GameObject\02. UI\System\ExitBtn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameClient.cpp">
@@ -355,6 +370,12 @@
     </ClCompile>
     <ClCompile Include="StatusBar.cpp">
       <Filter>00. Game\01. GameObject\02. UI\StatusBar</Filter>
+    </ClCompile>
+    <ClCompile Include="TopBar.cpp">
+      <Filter>00. Game\01. GameObject\02. UI\System\TopBar</Filter>
+    </ClCompile>
+    <ClCompile Include="ExitBtn.cpp">
+      <Filter>00. Game\01. GameObject\02. UI\System\ExitBtn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
