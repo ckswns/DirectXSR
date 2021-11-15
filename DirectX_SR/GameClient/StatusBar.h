@@ -15,8 +15,7 @@ class StatusBar : public Behaviour
 {
 
 public:		explicit			StatusBar() = delete;
-public:		explicit			StatusBar(InputHandler* input,Player* player) noexcept 
-											:_pInputHandler(input), _pPlayer(player) {__noop;}
+public:		explicit			StatusBar(Player* player) noexcept;
 public:		virtual				~StatusBar(void) noexcept { __noop; }
 
 public:		virtual void		Start(void) noexcept;

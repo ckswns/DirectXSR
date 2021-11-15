@@ -5,7 +5,7 @@
 #include"Transform.h"
 
 RaiseSkeleton::RaiseSkeleton() noexcept
-    :Skill(SKILL_ID::RAISE_SKELETON,30), _iMaxSkeleton(20), _iCount(0), _iIdx(0)
+    :Skill(SKILL_ID::RAISE_SKELETON,10), _iMaxSkeleton(3), _iCount(0), _iIdx(0)
 {
     for (int i = 0; i < (_iMaxSkeleton + 1); i++)
     {
@@ -21,19 +21,19 @@ bool RaiseSkeleton::Using(D3DXVECTOR3 vPos, Transform* pTrans, bool isDir) noexc
 {
     if (_iCount == _iMaxSkeleton)
     {
-        int index = (_iIdx + 1) > 2 ? 0 : (_iIdx + 1);
+        int index = (_iIdx + 1) > _iMaxSkeleton ? 0 : (_iIdx + 1);
         
         //하나 없앰
         Skeleton* sk = _Skeletones[index];
         sk->SetState(SK_DEAD);
 
-        _iCount = 1;
+        _iCount = _iMaxSkeleton-1;
 
     } 
     //클릭한 시체 위치에 스켈레톤 생성 
     GameObject* pSkeleton = _Skeletones[_iIdx]->GetGameObject();
     if(!isDir)
-        pSkeleton->GetTransform()->SetWorldPosition(vPos);
+        pSkeleton->GetTransform()->SetWorldPosition(vPos.x, 0.5f,vPos.z);
     else
         pSkeleton->GetTransform()->SetWorldPosition(pTrans->GetWorldPosition()+vPos);
     _Skeletones[_iIdx]->Create(pTrans);

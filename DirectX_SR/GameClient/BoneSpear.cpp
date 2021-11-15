@@ -8,7 +8,7 @@
 #include "Spear.h"
 #include "SpearTrail.h"
 BoneSpear::BoneSpear() noexcept
-    :Skill(SKILL_ID::BONE_SPEAR,40)
+    :Skill(SKILL_ID::BONE_SPEAR,7)
 {
 }
 

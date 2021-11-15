@@ -22,6 +22,7 @@ public:		void			BtnClick();
 public:		void			SetAttack();
 public:		void			SetRaise();
 public:		void			SetSpear();
+public:		void			SetPoison();
 
 private:	bool			_bLeft;
 private:	InputHandler*	_pInputHandler;
@@ -31,5 +32,6 @@ private:	UI::Image*		_pImg;
 private:	GameObject*		_pBtnAttack;
 private:	GameObject*		_pBtnRaise;
 private:	GameObject*		_pBtnSpear;
+private:	GameObject*		_pBtnPoison;
 };
 

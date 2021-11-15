@@ -50,20 +50,16 @@ bool Game::Init(void) noexcept
     GameObject* obj = GameObject::Instantiate();
     obj->AddComponent(new CubeObject);
     obj->SetLayer(GameObjectLayer::OBJECT);
+    obj->SetTag(GameObjectTag::MONSTER);
     obj->GetTransform()->SetWorldPosition(5,1,5);
 
     //TargetCamera
     pGameObj = GameObject::Instantiate();
     pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
 
-    //InputHandler
-    pGameObj = GameObject::Instantiate();
-    InputHandler* pInputHandler = new InputHandler(pPlayerObj, terrain);
-    pGameObj->AddComponent(pInputHandler);
-
     //UI
     pGameObj = GameObject::Instantiate();
-    pGameObj->AddComponent(new StatusBar(pInputHandler, player));
+    pGameObj->AddComponent(new StatusBar(player));
 
     return false;
 }

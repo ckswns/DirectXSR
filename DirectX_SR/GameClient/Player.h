@@ -7,10 +7,13 @@ namespace ce
 	class Animator;
 	class BoxCollider;
 	class SpriteRenderer;
+	class AudioSource;
+	class AudioAsset;
 }
 
 class Skill;
 class PathFinding;
+class InputHandler;
 class PlayerFSMState;
 class Player : public Behaviour
 {
@@ -37,14 +40,20 @@ public:		float					GetHPPer();
 public:		float					GetMPPer();
 public:		float					GetStaminaPer();
 
+public:		InputHandler*			GetInpuHandler() { return _pInputHandler; }
+
 private:	Transform*				_pTrans;
 private:	Animator*				_pAnimator;
 private:	BoxCollider*			_pCollider;
+
+private:	InputHandler*			_pInputHandler;
 
 private:	VEC_FSM					_pFSM;
 private:	PLAYER_STATE			_eCurState;
 
 private:	PathFinding*			_pPathFinding;
+private:	AudioSource*			_pAudioSource;
+private:	AudioAsset*				_pManaSound[3];
 
 private:	STAT*					_tStat;
 private:	std::vector<Skill*>		_pSkills;

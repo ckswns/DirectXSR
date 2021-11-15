@@ -40,17 +40,27 @@ void MouseBtnUI::Start(void) noexcept
     _pBtnSpear->SetActive(false);
     _pBtnSpear->SetSortOrder(2);
 
+    _pBtnPoison = GameObject::Instantiate();
+    img = static_cast<Image*>(_pBtnPoison->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\8.png"))));
+    _pBtnPoison->GetTransform()->SetParent(gameObject->GetTransform());
+    btn = static_cast<Button<MouseBtnUI>*>(_pBtnPoison->AddComponent(new Button<MouseBtnUI>(this)));
+    btn->onMouseUp += &MouseBtnUI::SetPoison;
+    _pBtnPoison->SetActive(false);
+    _pBtnPoison->SetSortOrder(2);
+
     if (!_bLeft)
     {
-        _pBtnAttack->GetTransform()->SetLocalPosition(0, -47, 0);
-        _pBtnRaise->GetTransform()->SetLocalPosition(-49, -47, 0);
-        _pBtnSpear->GetTransform()->SetLocalPosition(-49, -94, 0);
+        _pBtnAttack->GetTransform()->SetLocalPosition(0, -82, 0);
+        _pBtnRaise->GetTransform()->SetLocalPosition(-75, -82, 0);
+        _pBtnSpear->GetTransform()->SetLocalPosition(-75, -158, 0);
+        _pBtnPoison->GetTransform()->SetLocalPosition(0, -158, 0);
     }
     else
     {
-        _pBtnAttack->GetTransform()->SetLocalPosition(0, -47, 0);
-        _pBtnRaise->GetTransform()->SetLocalPosition(49, -47, 0);
-        _pBtnSpear->GetTransform()->SetLocalPosition(49, -94, 0);
+        _pBtnAttack->GetTransform()->SetLocalPosition(0, -82, 0);
+        _pBtnRaise->GetTransform()->SetLocalPosition(75, -82, 0);
+        _pBtnSpear->GetTransform()->SetLocalPosition(75, -158, 0);
+        _pBtnPoison->GetTransform()->SetLocalPosition(0, -158, 0);
     }
 
 }
@@ -63,6 +73,7 @@ void MouseBtnUI::BtnClick()
         _pBtnAttack->SetActive(true);
         _pBtnRaise->SetActive(true);
         _pBtnSpear->SetActive(true);
+        _pBtnPoison->SetActive(true);
     }
     else
     {
@@ -70,6 +81,7 @@ void MouseBtnUI::BtnClick()
         _pBtnAttack->SetActive(false);
         _pBtnRaise->SetActive(false);
         _pBtnSpear->SetActive(false);
+        _pBtnPoison->SetActive(false);
     }
 }
 
@@ -92,4 +104,11 @@ void MouseBtnUI::SetSpear()
     BtnClick();
     _pImg->SetTexture(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\6.png"));
     _pInputHandler->SetMouseBtn(_bLeft, SKILL_ID::BONE_SPEAR);
+}
+
+void MouseBtnUI::SetPoison()
+{
+    BtnClick();
+    _pImg->SetTexture(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\8.png"));
+    _pInputHandler->SetMouseBtn(_bLeft, SKILL_ID::POISON_NOVA);
 }
