@@ -69,8 +69,8 @@ typedef struct tagInveItemInfo
 	std::string		_strName;
 	std::string		_strInvenImgPath;	//인벤토리에 들어갈 이미지
 	int				_iValue;			//골드의 양이나 회복량?
-	int				_eitemID;	//ITEM_ID
-	int				_eSlotType;	//Slot::SLOTTYPE
+	int				_eitemID;			//ITEM_ID
+	int				_eSlotType;			//Slot::SLOTTYPE
 }INVENITEMINFO;
 
 typedef struct tagItemInfo

@@ -27,10 +27,6 @@ void InputHandler::Start(void) noexcept
 	_pPlayerTrans = _pPlayerObj->GetTransform();
 
 	_pLBCommand = new AttackCommand();
-//	_bLBSkill = true;
-//	_pLBCommand = new SkillCommand();
-//	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::POISON_NOVA);
-
 	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
 }
@@ -63,7 +59,6 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			RaycastHit hit;
 			if (Physics::Raycast(ray, hit, GameObjectLayer::ALPHA))
 			{
-				int a;
 				//몬스터인 경우 공격 
 				if (hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
 					_pLBCommand->Execute(_pPlayerObj, hit.point);
@@ -102,6 +97,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 				//몬스터인 경우 공격 
 				if(hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
 					_pRBCommand->Execute(_pPlayerObj, hit.point);
+
 			}
 		}
 	}

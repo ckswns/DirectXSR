@@ -183,6 +183,7 @@
     <ClInclude Include="HpPotion.h" />
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="MpPotion.h" />
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
     <ClInclude Include="PoisonProjectile.h" />
@@ -239,6 +240,7 @@
     <ClCompile Include="HpPotion.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
+    <ClCompile Include="MpPotion.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />
     <ClCompile Include="PoisonProjectile.cpp" />

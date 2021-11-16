@@ -9,7 +9,7 @@ void PlayerAttack::Start() noexcept
 	if (!_bFPV)
 	{
 		D3DXVECTOR3 vDir = _vTarget - _pTrans->GetWorldPosition();
-		if (D3DXVec3Length(&vDir) <= 1.5f)
+		if (D3DXVec3Length(&vDir) <= 1)
 		{
 			if (_eDir == PLAYER_END)
 			{
@@ -20,6 +20,7 @@ void PlayerAttack::Start() noexcept
 
 			// 소리 
 			//충돌판정
+			// _pPlayer->GetAtt();
 		}
 		else
 		{
@@ -32,7 +33,9 @@ void PlayerAttack::Start() noexcept
 	{
 		_pAnimator->SetAnimation("Attack_0");
 		// 소리 
-		//충돌판정
+		// 거리 체크 
+		//몬스터 데미지
+		//_pPlayer->GetAtt();
 	}
 }
 

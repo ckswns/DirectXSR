@@ -19,6 +19,7 @@
 #include "PlayerMove.h"
 #include "PlayerAttack.h"
 #include "PlayerSkill.h"
+#include "PlayerDamaged.h"
 
 #include "Skill.h"
 #include "RaiseSkeleton.h"
@@ -126,7 +127,6 @@ void Player::OnDestroy(void) noexcept
 
 	for (int i = 0; i < 3; i++)
 	{
-	//	delete _pManaSound[i];
 		_pManaSound[i] = nullptr;
 	}
 }
@@ -225,6 +225,23 @@ void Player::InitAnimation(SpriteRenderer* sr)
 
 		TList.clear();
 		FrameTime.clear();
+
+		//Damaged
+		for (int i = 0; i < 7; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset\\Player\\damage_%d\\%d.png", folder, i);
+
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
+			FrameTime.push_back(0.08f);
+		}
+
+		ani = new Animation(FrameTime, TList);
+		ani->SetMaterial(material);
+		_pAnimator->InsertAnimation("Damaged_" + std::to_string(folder), ani);
+
+		TList.clear();
+		FrameTime.clear();
 	}
 }
 
@@ -235,6 +252,7 @@ void Player::InitState()
 	_pFSM.push_back(new PlayerMove(this,_pAnimator, _pTrans, _pPathFinding, _fSpeed));
 	_pFSM.push_back(new PlayerAttack(this,_pAnimator, _pTrans));
 	_pFSM.push_back(new PlayerSkill(this, _pAnimator, _pTrans));
+	_pFSM.push_back(new PlayerDamaged(this, _pAnimator, _pTrans));
 }
 
 void Player::SetFPV()
@@ -321,18 +339,19 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 	}
 }
 
-void Player::GetHit(float fDamage)
+void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
 {
 	_tStat->_fHp -= fDamage;
 	if (_tStat->_fHp < 0)
 	{
-		//��� ���
+		//죽음
 
-		//�ٽ� ���� 
+		//다시시작 
 	}
 	else
 	{
-		//������ ���
+		//피격 모션 vPos = 때린 몬스터 위치 
+		SetState(PLAYER_DAMAGED,DIR_END, vPos);
 	}
 }
 
