@@ -38,14 +38,14 @@ namespace ce
 
 	void Scene::FixedUpdateXXX(float fElapsedTime) noexcept
 	{
-		if (_qGameObjWaitForInsert.empty() == false)
+		if (_vGameObjWaitForInsert.empty() == false)
 		{
-			while (_qGameObjWaitForInsert.empty() == false)
+			for (auto iter = _vGameObjWaitForInsert.begin(); iter != _vGameObjWaitForInsert.end();)
 			{
-				GameObject* obj = _qGameObjWaitForInsert.front();
+				GameObject* obj = (*iter);
 				int layer = static_cast<int>(obj->_eLayer);
 				_vGameObjs[layer].emplace_back(obj);
-				_qGameObjWaitForInsert.pop();
+				iter = _vGameObjWaitForInsert.erase(iter);
 			}
 		}
 
@@ -418,7 +418,7 @@ namespace ce
 		if (obj->_eLayer == GameObjectLayer::END)
 			obj->_eLayer = GameObjectLayer::OBJECT;
 
-		_qGameObjWaitForInsert.push(obj);
+		_vGameObjWaitForInsert.push_back(obj);
 
 		return obj;
 	}
