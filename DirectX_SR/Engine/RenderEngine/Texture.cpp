@@ -43,7 +43,7 @@ namespace ce
 				, D3DPOOL_MANAGED
 				, D3DX_FILTER_NONE
 				, D3DX_FILTER_NONE
-				, 0
+				, D3DCOLOR_RGBA(255, 0, 255, 0)
 				, &_imgInfo
 				, NULL
 				, (LPDIRECT3DTEXTURE9*)&_pTexture

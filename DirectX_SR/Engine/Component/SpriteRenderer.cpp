@@ -6,10 +6,11 @@
 
 namespace ce
 {
-	SpriteRenderer::SpriteRenderer(LPDIRECT3DDEVICE9 pDevice, Texture* texture, bool lightEnable) noexcept :
+	SpriteRenderer::SpriteRenderer(LPDIRECT3DDEVICE9 pDevice, Texture* texture, bool lightEnable, DWORD cullingOption) noexcept :
 		Renderer(pDevice),
 		_quad(nullptr),
-		_lightEnable(lightEnable)
+		_lightEnable(lightEnable),
+		_cullOption(cullingOption)
 	{
 		if (texture != nullptr)
 			_material.SetMainTexture(texture);
@@ -46,23 +47,39 @@ namespace ce
 		_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
 		_pDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);
 
-		DWORD flag = 0;
+		DWORD flag = 0, cull = 0;
 		_pDevice->GetRenderState(D3DRS_LIGHTING, &flag);
+		_pDevice->GetRenderState(D3DRS_CULLMODE, &cull);
 
 		if (_lightEnable == false)
 			_pDevice->SetRenderState(D3DRS_LIGHTING, false);
 
+		_pDevice->SetRenderState(D3DRS_CULLMODE, _cullOption);
 		_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-		_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		//_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		//_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+		_pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+		_pDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+		_pDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+
+		_pDevice->SetTextureStageState(0, D3DTSS_CONSTANT, _material.GetColor());
+		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CONSTANT);
+		_pDevice->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
+		_pDevice->SetTextureStageState(1, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
+
 
 		_pDevice->SetTransform(D3DTS_WORLD, &_transform->GetWorldMatrix());
 
 		_material.Render(_pDevice);
 		_quad->Render(_pDevice);
 
+		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
 		_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 		_pDevice->SetRenderState(D3DRS_LIGHTING, flag);
+		_pDevice->SetRenderState(D3DRS_CULLMODE, cull);
 	}
 
 	void SpriteRenderer::Release(void) noexcept
@@ -88,7 +105,7 @@ namespace ce
 		}
 
 		_quad->Close();
-		_quad->SetInterval(x2, y2);
+		_quad->SetInterval(x2 / 100.f, y2 / 100.f);
 		_quad->SetMaxUV(x2 / x, y2 / y);
 
 		_quad->Open(_pDevice);

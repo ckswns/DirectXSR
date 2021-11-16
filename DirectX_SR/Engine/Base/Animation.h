@@ -63,6 +63,7 @@ namespace ce
 	public:		float			GetTimeLength(void) const noexcept { return _fTotalAniTime; }
 
 	public:		int				GetCurrentFrame(void) const noexcept { return _iFrame; }
+	public:		const VEC_TEX&	GetTexture(void) const noexcept { return _vTexture; }
 
 	public:		bool			AddEvent(uint32 keyIndex, std::string eventStr, GameObject* listener) noexcept;
 	public:		bool			AddEvent(EventData data) noexcept;
