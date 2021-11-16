@@ -52,6 +52,9 @@
     <Filter Include="Renderer\TerrainRenderer">
       <UniqueIdentifier>{e6e02ee2-f6a3-4ca1-a364-8c8ef688be4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderer\PlaneRenderer">
+      <UniqueIdentifier>{27f15134-f070-468f-959f-8fea7dacd2b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h">
@@ -100,6 +103,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TerrainRenderer.h">
       <Filter>Renderer\TerrainRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlaneRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
@@ -147,5 +151,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TerrainRenderer.cpp">
       <Filter>Renderer\TerrainRenderer</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlaneRenderer.cpp" />
   </ItemGroup>
 </Project>

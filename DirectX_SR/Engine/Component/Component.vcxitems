@@ -23,6 +23,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Component.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MeshRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ParticleRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlaneRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RectTransform.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Renderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Rigidbody.h" />
@@ -40,6 +41,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Collider.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MeshRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ParticleRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlaneRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RectTransform.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Renderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Rigidbody.cpp" />
