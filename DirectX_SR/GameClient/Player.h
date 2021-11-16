@@ -27,7 +27,6 @@ public:		virtual void			Start(void) noexcept;
 public:		virtual void			FixedUpdate(float fElapsedTime) noexcept;
 public:		virtual void			Update(float fElapsedTime) noexcept;
 public:		virtual void			OnDestroy(void) noexcept;
-public:		virtual void			OnCollisionEnter(Collider* mine, Collider* other) noexcept;
 
 public:		void					OnCollisionEnter(Collider* mine, Collider* other) noexcept override;
 public:		void					OnCollisionStay(Collider* mine, Collider* other) noexcept override;

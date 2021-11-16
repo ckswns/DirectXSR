@@ -147,12 +147,6 @@ void Player::OnDestroy(void) noexcept
 
 void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 {
-	//벽이나 장애물과 부딪치면 길찾기 시작 
-
-}
-
-void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
-{
 	if (other->GetGameObject()->GetTag() == GameObjectTag::OBSTACLE)
 	{
 		if (mine->GetTag() == "hitbox")
