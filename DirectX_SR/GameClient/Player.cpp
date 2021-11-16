@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Player.h"
 
 #include "Transform.h"
@@ -66,7 +66,7 @@ void Player::Start(void) noexcept
 	gameObject->AddComponent(_pCollider);
 	gameObject->AddComponent(new Rigidbody());
 
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"), false);
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"),false);
 	gameObject->AddComponent(sr);
 
 	_pAnimator = new Animator(true);
@@ -239,13 +239,13 @@ void Player::InitState()
 
 void Player::SetFPV()
 {
-	//1ÀÎÄª > 3ÀÎÄª
+	//1ì¸ì¹­>3ì¸ì¹­
 	if (_bFPV)
 	{
 		_bFPV = false;
 		_pTrans->SetLocalEulerAngle(0, 0, 0);
 	}
-	else //3ÀÎÄª > 1ÀÎÄª
+	else //3ì¸ì¹­>1ì¸ì¹­
 	{
 		SetState(_eCurState, BACK);
 		_pFSM[_eCurState]->Start();
@@ -318,6 +318,21 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			}
 			break;
 		}
+	}
+}
+
+void Player::GetHit(float fDamage)
+{
+	_tStat->_fHp -= fDamage;
+	if (_tStat->_fHp < 0)
+	{
+		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+
+		//ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+	}
+	else
+	{
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	}
 }
 

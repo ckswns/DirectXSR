@@ -29,7 +29,12 @@ void TargetCamera::Start(void) noexcept
 
 void TargetCamera::Update(float fElapsedTime) noexcept
 {
-	if (!_bFPV) 
+	
+}
+
+void TargetCamera::FixedUpdate(float fElapsedTime) noexcept
+{
+	if (!_bFPV)
 	{
 		D3DXVECTOR3 vDir = _pTargetTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
 		vDir.y += _fTPVHeight;
@@ -43,9 +48,9 @@ void TargetCamera::Update(float fElapsedTime) noexcept
 	}
 	else
 	{
-		_fDelta +=	fElapsedTime;
 		if (_fDelta <= 1)
 		{
+			_fDelta += fElapsedTime;
 			float ang = CETween::Lerp(_fAngle, 0, _fDelta, CETween::EaseType::easeInBack);
 			_pTrans->SetLocalEulerAngle(ang, 0, 0);
 		}
