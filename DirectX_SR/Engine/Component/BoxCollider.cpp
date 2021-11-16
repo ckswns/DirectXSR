@@ -128,7 +128,10 @@ namespace ce
 			auto device = D3D9DEVICE->GetDevice();
 			device->GetRenderState(D3DRS_FILLMODE, &state);
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-			device->SetTransform(D3DTS_WORLD, &_transform->GetWorldMatrix());
+			D3DXMATRIX mat;
+			D3DXVECTOR3 pos = _transform->GetWorldPosition();
+			D3DXMatrixTranslation(&mat, pos.x, pos.y, pos.z);
+			device->SetTransform(D3DTS_WORLD, &mat);
 			device->SetMaterial(&_material);
 			_dbgBox->DrawSubset(0);
 			device->SetRenderState(D3DRS_FILLMODE, state);
