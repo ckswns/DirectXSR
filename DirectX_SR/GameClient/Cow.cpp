@@ -96,6 +96,8 @@ void Cow::Start(void) noexcept
 
 	gameObject->AddComponent(_animator);
 	gameObject->SetTag(GameObjectTag::MONSTER);
+
+	GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
 }
 
 void Cow::FixedUpdate(float fElapsedTime) noexcept
