@@ -29,8 +29,8 @@ TownScene_01::TownScene_01(void) noexcept
 
 bool TownScene_01::Init(void) noexcept
 {
-	Terrain* terrain = new Terrain(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth"),
-		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapHeight"), 1);
+	Terrain* terrain = new Terrain(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth") + 1,
+		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapHeight") + 1, 1);
 	{	
 		terrain->Open(D3D9DEVICE->GetDevice());
 
@@ -86,19 +86,21 @@ bool TownScene_01::Init(void) noexcept
 				continue;
 
 			//obj->AddComponent(new CubeObject(ASSETMANAGER->GetTextureData(filePath.c_str())));
-			obj->AddComponent(new PlaneRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Terrain\\barricade.png"), stof(sx), 1));
+			if (stof(sz) < stof(sx))
+				obj->AddComponent(new PlaneRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Terrain\\barricade.png"), stof(sx), 1));
+			else
+				obj->AddComponent(new PlaneRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Terrain\\barricade.png"), stof(sz), 1));
 			Transform* tr = obj->GetTransform();
 			//tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
 			tr->SetWorldPosition(stof(px), stof(py), stof(pz));
-			if (stof(pz) > stof(px))
+			if (stof(sz) > stof(sx))
 			{
-				GameObject* temp = GameObject::Instantiate();
-				temp->GetTransform()->SetWorldPosition(tr->GetWorldPosition());
-				tr->SetParent(temp->GetTransform());
-				tr->SetLocalPosition(0, 0, 0);
-				tr->SetLocalEulerAngle(0, 90, 0);
+				if(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth") / 2 < stof(px))
+					tr->SetLocalEulerAngle(0, D3DXToRadian(90), 0);
+				else
+					tr->SetLocalEulerAngle(0, D3DXToRadian(-90), 0);
 			}
-			obj->SetLayer(GameObjectLayer::ALPHA);
+			obj->SetLayer(GameObjectLayer::BACKGROUND);
 		}
 
 		std::string name = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", "SectionNames", "Names");
@@ -143,21 +145,31 @@ bool TownScene_01::Init(void) noexcept
 	PathFinding* pf = new PathFinding(_pNaviMesh);
 	Player* player = new Player(pf);
 	pPlayerObj->AddComponent(player);
-	pPlayerObj->GetTransform()->SetLocalPosition(0, 0.5f, 0);
+	pPlayerObj->GetTransform()->SetLocalPosition(
+		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldX"),
+		0.5f,
+		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldZ"));
 
 	//TargetCamera
 	GameObject* pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
-
+	pGameObj->GetTransform()->SetLocalPosition(pPlayerObj->GetTransform()->GetLocalPosition());
 	//UI
 	pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StatusBar(player));
 
-
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		obj = GameObject::Instantiate();
 		obj->AddComponent(new Cow());
+		D3DXVECTOR3 pos = pPlayerObj->GetTransform()->GetWorldPosition();
+
+		pos.x += Random::GetValue(20, 3);
+		pos.x -= Random::GetValue(20, 3);
+
+		pos.z += Random::GetValue(20, 3);
+		pos.z -= Random::GetValue(20, 3);
+		obj->GetTransform()->SetWorldPosition(pos);
 	}
 
 	return true;
