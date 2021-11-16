@@ -180,6 +180,7 @@
     <ClInclude Include="Game_Enum.h" />
     <ClInclude Include="Game_Math.h" />
     <ClInclude Include="Game_Struct.h" />
+    <ClInclude Include="HpPotion.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="GameDataManager.cpp" />
+    <ClCompile Include="HpPotion.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />
     <ClCompile Include="PoisonProjectile.cpp" />

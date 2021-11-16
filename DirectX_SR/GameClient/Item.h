@@ -1,4 +1,5 @@
 #pragma once
+#include "Behaviour.h"
 
 namespace ce
 {
@@ -8,16 +9,15 @@ namespace ce
 	}
 	class Coillder;
 }
-class Item 
+class Item :public Behaviour
 {
-public:		virtual INVENITEMINFO* GetItem() = 0;
+public:		explicit					Item() noexcept { __noop; }
+public:		virtual						~Item(void) noexcept { __noop; }
 
-protected: 	D3DXVECTOR3		_vPos;		//¹Ù´Ú ÁÂÇ¥
-protected: 	UI::Image*		_ImgGround; //¹Ù´Ú¿¡ ÀÖÀ»¶§ ÀÌ¹ÌÁö
-protected: 	Coillder*		_Collier;
+public:		virtual void				Start(void) noexcept { __noop; }
+public:		virtual void			Update(float) noexcept { __noop; }
 
-protected:	std::string		_strName;
-protected: 	int				_iGold;
+public:		INVENITEMINFO* GetItem() { return &_tInvenItem; }
 
 protected: 	INVENITEMINFO	_tInvenItem;
 };
