@@ -62,6 +62,10 @@ void Player::Start(void) noexcept
 	_pManaSound[0] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\INeedMana.mp3");
 	_pManaSound[1] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\MoreMana.mp3");
 	_pManaSound[2] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\LowMana.mp3");
+	_pDamagedSound[0] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Damaged1.wav");
+	_pDamagedSound[1] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Damaged2.wav");
+	_pDamagedSound[2] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Damaged3.wav");
+
 
 	_pCollider = new BoxCollider(D3DXVECTOR3(0.3, 1, 0.2f));
 	gameObject->AddComponent(_pCollider);
@@ -350,6 +354,9 @@ void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
 	}
 	else
 	{
+		int num = CE_MATH::Random(3);
+		_pAudioSource->LoadAudio(_pDamagedSound[num]);
+		_pAudioSource->Play();
 		//피격 모션 vPos = 때린 몬스터 위치 
 		SetState(PLAYER_DAMAGED,DIR_END, vPos);
 	}

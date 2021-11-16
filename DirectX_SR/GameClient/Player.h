@@ -55,6 +55,7 @@ private:	PLAYER_STATE			_eCurState;
 private:	PathFinding*			_pPathFinding;
 private:	AudioSource*			_pAudioSource;
 private:	AudioAsset*				_pManaSound[3];
+private:	AudioAsset*				_pDamagedSound[3];
 
 private:	STAT*					_tStat;
 private:	std::vector<Skill*>		_pSkills;
