@@ -196,7 +196,8 @@ void CubeTab::OnBnClickedDataLoad()
 		_fScaleY = stof(strLoadScaleY);
 		_fScaleZ = stof(strLoadScaleZ);
 
-		_vScale = { _fScaleX,_fScaleY,_fScaleZ };
+		D3DXVECTOR3 vScale = { _fScaleX,_fScaleY,_fScaleZ };
+		_vecScale.emplace_back(vScale);
 		size_t split;
 		split = strLoadFilePath.find('\\');
 
@@ -204,7 +205,7 @@ void CubeTab::OnBnClickedDataLoad()
 		strKey = strLoadFilePath.substr(split);
 
 		std::wstring wstrKey;
-		wstrKey.assign(strKey.begin(), strKey.end());
+		wstrKey.assign(strSection.begin(), strSection.end());
 		_LoadList.AddString(wstrKey.c_str());
 
 		wstrKey.assign(strSection.begin(), strSection.end());
@@ -327,7 +328,6 @@ void CubeTab::OnBnClickedLoadTextureList()
 		}
 	}
 }
-
 
 void CubeTab::OnLbnSelchangeTextureSelect()
 {

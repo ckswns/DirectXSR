@@ -3,7 +3,8 @@
 
 class Slot : public Behaviour
 {
-public: enum class SLOTTYPE { NORMAL, HEAD, BODY, MAINWP, SECONDWP, GLOVES, LEGS, BELT, RING1, RING2, NECKLACE, END };
+public: enum class SLOTID { INVEN, ITEM, SHOP , END};
+public: enum class SLOTTYPE { NORMAL, HEAD, BODY, MAINWP, SECONDWP, GLOVES, LEGS, BELT, RING1, RING2, NECKLACE, POTION, END };
 
 public: explicit Slot(SLOTTYPE etype);
 public: virtual ~Slot();
@@ -23,5 +24,6 @@ private: int					_iSlotCntX;
 private: int					_iSlotCntY;
 private: SLOTTYPE				_eType;
 private: D3DXVECTOR3			_vStartPos;
+private: int					_iFlag;
 };
 
