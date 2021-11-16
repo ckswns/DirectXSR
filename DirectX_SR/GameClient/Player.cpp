@@ -66,7 +66,7 @@ void Player::Start(void) noexcept
 	gameObject->AddComponent(_pCollider);
 	gameObject->AddComponent(new Rigidbody());
 
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"));
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"),false);
 	gameObject->AddComponent(sr);
 
 	_pAnimator = new Animator(true);
@@ -318,6 +318,21 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			}
 			break;
 		}
+	}
+}
+
+void Player::GetHit(float fDamage)
+{
+	_tStat->_fHp -= fDamage;
+	if (_tStat->_fHp < 0)
+	{
+		//사망 모션
+
+		//다시 시작 
+	}
+	else
+	{
+		//데미지 모션
 	}
 }
 

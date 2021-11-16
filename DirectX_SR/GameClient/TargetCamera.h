@@ -7,11 +7,12 @@ namespace ce
 }
 class TargetCamera : public Behaviour
 {
-public:		explicit		TargetCamera(Transform* target) noexcept;
-public:		virtual			~TargetCamera(void) noexcept { __noop; }
+public:		explicit				TargetCamera(Transform* target) noexcept;
+public:		virtual					~TargetCamera(void) noexcept { __noop; }
 
-public:		void			Start(void) noexcept override;
-public:		void			Update(float fElapsedTime) noexcept override;
+public:		virtual void			Start(void) noexcept override;
+public:		virtual void			Update(float fElapsedTime) noexcept override;
+public:		virtual void				FixedUpdate(float fElapsedTime) noexcept;
 
 public:		void			ChangeView();
 public:		bool			IsFPV() { return _bFPV; }
