@@ -105,9 +105,11 @@ void Player::OnDestroy(void) noexcept
 	_tStat = nullptr;
 
 	_pInputHandler->OnDestroy();
-
 	delete _pInputHandler;
 	_pInputHandler = nullptr;
+
+	delete _pPathFinding;
+	_pPathFinding = nullptr;
 
 	for (size_t i = 0; i < _pSkills.size(); ++i)
 	{
@@ -132,7 +134,14 @@ void Player::OnDestroy(void) noexcept
 	for (int i = 0; i < 3; i++)
 	{
 		_pManaSound[i] = nullptr;
+		_pDamagedSound[i] = nullptr;
 	}
+}
+
+void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
+{
+	//벽이나 장애물과 부딪치면 길찾기 시작 
+
 }
 
 void Player::InitAnimation(SpriteRenderer* sr)
@@ -284,15 +293,11 @@ void Player::SetFPV()
 		
 }
 
-void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget, bool bAtt)
+//stand,move,skill,Damaged
+void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 {
 	if (vTarget != D3DXVECTOR3(0, -5, 0))
 		_pFSM[newState]->SetTarget(vTarget);
-
-	if (bAtt)
-	{
-		static_cast<PlayerMove*>(_pFSM[newState])->SetAtt();
-	}
 
 	/*if(!_bFPV)
 		_pFSM[newState]->SetDir(eDir);
@@ -315,7 +320,28 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget, bool b
 		_eCurState = newState;
 		_pFSM[_eCurState]->Start();
 	}
+}
 
+//attack,move
+void Player::SetState(PLAYER_STATE newState, DIR eDir, Transform* targetTrans, bool bAtt)
+{
+	if (!_bFPV)
+	{
+		_pFSM[newState]->SetTargetTrans(targetTrans);
+
+		if (bAtt)
+			static_cast<PlayerMove*>(_pFSM[newState])->SetAtt();
+	
+		_pFSM[newState]->SetDir(eDir);
+
+		_eCurState = newState;
+		_pFSM[_eCurState]->Start();
+	}
+	else if (_eCurState != newState)
+	{
+		_eCurState = newState;
+		_pFSM[_eCurState]->Start();
+	}
 
 }
 

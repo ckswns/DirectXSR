@@ -6,6 +6,7 @@ namespace ce
 	class Transform;
 	class Animator;
 	class BoxCollider;
+	class SphereCollider;
 	class SpriteRenderer;
 	class AudioSource;
 	class AudioAsset;
@@ -26,12 +27,14 @@ public:		virtual					~Player(void) noexcept { __noop; }
 public:		virtual void			Start(void) noexcept;
 public:		virtual void			Update(float fElapsedTime) noexcept;
 public:		virtual void			OnDestroy(void) noexcept;
+public:		virtual void			OnCollisionEnter(Collider* mine, Collider* other) noexcept;
 
 private:	void					InitAnimation(SpriteRenderer* mr);
 private:	void					InitState();
 
 public:		void					SetFPV();
-public:		void					SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget = D3DXVECTOR3(0,-5,0),bool bAtt = false);
+public:		void					SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget = D3DXVECTOR3(0,-5,0));
+public:		void					SetState(PLAYER_STATE newState, DIR eDir,Transform* targetTrans, bool bAtt =false);
 public:		void					UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 
 public:		float					GetAtt() { return _tStat->_fDamage; } //아이템 장착하면 아이템값까지 

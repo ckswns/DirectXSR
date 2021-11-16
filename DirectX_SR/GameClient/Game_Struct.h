@@ -39,13 +39,13 @@ typedef struct tagStat
 
 	void		Recovery(float fAmount)
 	{
-		if (_fHp < _fMaxHp)
+		/*if (_fHp < _fMaxHp)
 		{
 			_fHp += fAmount;
 		
 			if (_fHp > _fMaxHp)
 				_fHp = _fMaxHp;
-		}
+		}*/
 		if (_fMP < _fMaxMp) 
 		{
 			_fMP += fAmount;

@@ -129,20 +129,24 @@ void Projectile::Update(float fElapsedTime) noexcept
 	if (_fDist >= _fMaxDist) 
 	{
 		gameObject->Destroy();
-		_pSpear->Destroy();
-
-		for (size_t i = 0; i < _pTrails.size(); ++i)
-		{
-			_pTrails[i]->Destroy();
-			_pTrails[i] = nullptr;
-		}
-		_pTrails.clear();
 	}
 	else
 	{
 		_fDist += (fElapsedTime * _fSpeed);
 		_pTrans->Translate(_vDir * fElapsedTime * _fSpeed);
 	}
+}
+
+void Projectile::OnDestroy(void) noexcept
+{
+	_pSpear->Destroy();
+
+	for (size_t i = 0; i < _pTrails.size(); ++i)
+	{
+		_pTrails[i]->Destroy();
+		_pTrails[i] = nullptr;
+	}
+	_pTrails.clear();
 }
 
 void Projectile::OnCollisionEnter(Collider* mine, Collider* other) noexcept
@@ -155,13 +159,5 @@ void Projectile::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 	{
 		//벽같은거?면 사라짐
 		gameObject->Destroy();
-		_pSpear->Destroy();
-
-		for (size_t i = 0; i < _pTrails.size(); ++i)
-		{
-			_pTrails[i]->Destroy();
-			_pTrails[i] = nullptr;
-		}
-		_pTrails.clear();
 	}
 }

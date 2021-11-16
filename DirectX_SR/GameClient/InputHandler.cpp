@@ -61,7 +61,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			{
 				//몬스터인 경우 공격 
 				if (hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
-					_pLBCommand->Execute(_pPlayerObj, hit.point);
+					_pLBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
 				else if (hit.collider->GetGameObject()->GetName() == "Item")
 				{
 					//아이템인 경우 줍기 
@@ -75,7 +75,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			else if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
 			{
 				if (_bLBSkill)	//스킬인 경우
-					_pLBCommand->Execute(_pPlayerObj, hit.point);
+					_pLBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
 				else
 					_pMoveCommand->Execute(_pPlayerObj, hit.point);
 			}
@@ -88,7 +88,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
 			{
 				if (_bRBSkill)	//스킬인 경우
-					_pRBCommand->Execute(_pPlayerObj, hit.point);
+					_pRBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
 				else
 					_pMoveCommand->Execute(_pPlayerObj, hit.point);
 			}
@@ -96,7 +96,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			{
 				//몬스터인 경우 공격 
 				if(hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
-					_pRBCommand->Execute(_pPlayerObj, hit.point);
+					_pRBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
 
 			}
 		}
