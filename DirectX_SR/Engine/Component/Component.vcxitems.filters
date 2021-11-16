@@ -103,7 +103,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TerrainRenderer.h">
       <Filter>Renderer\TerrainRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)PlaneRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlaneRenderer.h">
+      <Filter>Renderer\PlaneRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp">
@@ -151,6 +153,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TerrainRenderer.cpp">
       <Filter>Renderer\TerrainRenderer</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)PlaneRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlaneRenderer.cpp">
+      <Filter>Renderer\PlaneRenderer</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

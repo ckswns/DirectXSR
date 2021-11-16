@@ -52,20 +52,24 @@ namespace ce
 			_pDevice->SetRenderState(D3DRS_LIGHTING, false);
 
 		_pDevice->SetRenderState(D3DRS_CULLMODE, _cullOption);
-		_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		//_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		//_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		//_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-		_pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-		_pDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-		_pDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
-		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		_pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+		_pDevice->SetRenderState(D3DRS_ALPHAREF, 50);
+
+		//_pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+		//_pDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+		//_pDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+		//_pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		//_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 
 		_pDevice->SetTextureStageState(0, D3DTSS_CONSTANT, _material.GetColor());
-		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CONSTANT);
-		_pDevice->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
-		_pDevice->SetTextureStageState(1, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
+		//_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CONSTANT);
+		//_pDevice->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
+		//_pDevice->SetTextureStageState(1, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
 
 
 		_pDevice->SetTransform(D3DTS_WORLD, &_transform->GetWorldMatrix());
@@ -73,8 +77,9 @@ namespace ce
 		_material.Render(_pDevice);
 		_quad->Render(_pDevice);
 
-		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
-		_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+		//_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+		//_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 		_pDevice->SetRenderState(D3DRS_LIGHTING, flag);
 		_pDevice->SetRenderState(D3DRS_CULLMODE, cull);
 	}

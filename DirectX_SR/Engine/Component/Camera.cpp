@@ -48,6 +48,7 @@ namespace ce
 		_pDevice->SetTransform(D3DTS_PROJECTION, &_matProj);
 
 		_skybox->SetTransform(transform);
+		_owner->SetLayer(GameObjectLayer::SKYBOX);
 	}
 
 	void Camera::LateUpdate(float fElapsedTime) noexcept

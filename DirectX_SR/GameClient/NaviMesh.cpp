@@ -96,3 +96,15 @@ Node* NaviMesh::NodeFormPosition(D3DXVECTOR3 Pos) noexcept
 
 	return Grid[idx];
 }
+
+void NaviMesh::SetWalkAbleFromPosition(D3DXVECTOR3 pos, bool able) noexcept
+{
+	int x = floor(pos.x);
+	int z = floor(pos.z);
+	int idx = (z * (_iSizeX - 1)) + x;
+
+	if (x >= _iSizeX || z >= _iSizeY)
+		return;
+
+	Grid[idx]->SetWalkAble(able);
+}

@@ -22,6 +22,7 @@
 
 #include "SpriteRenderer.h"
 #include "PlaneRenderer.h"
+#include "BoxCollider.h"
 
 TownScene_01::TownScene_01(void) noexcept
 {
@@ -29,6 +30,8 @@ TownScene_01::TownScene_01(void) noexcept
 
 bool TownScene_01::Init(void) noexcept
 {
+	NaviMesh* _pNaviMesh;
+
 	Terrain* terrain = new Terrain(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth") + 1,
 		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapHeight") + 1, 1);
 	{	
@@ -64,6 +67,9 @@ bool TownScene_01::Init(void) noexcept
 		mat->SetTextures(vt);
 		vt.clear();
 
+		_pNaviMesh = new NaviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
+		_pNaviMesh->Init();
+
 		int cubeCnt = INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\PickingCube", "Start", "CubeCnt");
 
 		for (int i = 0; i < cubeCnt; i++)
@@ -86,10 +92,17 @@ bool TownScene_01::Init(void) noexcept
 				continue;
 
 			//obj->AddComponent(new CubeObject(ASSETMANAGER->GetTextureData(filePath.c_str())));
+			
 			if (stof(sz) < stof(sx))
+			{
 				obj->AddComponent(new PlaneRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Terrain\\barricade.png"), stof(sx), 1));
+				obj->AddComponent(new BoxCollider(D3DXVECTOR3(stof(sx), 1, 1)));
+			}
 			else
+			{
+				obj->AddComponent(new BoxCollider(D3DXVECTOR3(1, 1, stof(sz))));
 				obj->AddComponent(new PlaneRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Terrain\\barricade.png"), stof(sz), 1));
+			}
 			Transform* tr = obj->GetTransform();
 			//tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
 			tr->SetWorldPosition(stof(px), stof(py), stof(pz));
@@ -100,7 +113,23 @@ bool TownScene_01::Init(void) noexcept
 				else
 					tr->SetLocalEulerAngle(0, D3DXToRadian(-90), 0);
 			}
+
+			_pNaviMesh->SetWalkAbleFromPosition(D3DXVECTOR3(stof(px), 0, stof(pz)), false);
+
+			for (int i = 0; i < (int)stof(sx) / 2; i++)
+			{
+				_pNaviMesh->SetWalkAbleFromPosition(D3DXVECTOR3(stof(px) - i, 0, stof(pz)), false);
+				_pNaviMesh->SetWalkAbleFromPosition(D3DXVECTOR3(stof(px) + i, 0, stof(pz)), false);
+			}
+
+			for (int i = 0; i < (int)stof(sz) / 2; i++)
+			{
+				_pNaviMesh->SetWalkAbleFromPosition(D3DXVECTOR3(stof(px), 0, stof(pz) - i), false);
+				_pNaviMesh->SetWalkAbleFromPosition(D3DXVECTOR3(stof(px), 0, stof(pz) + i), false);
+			}
+
 			obj->SetLayer(GameObjectLayer::BACKGROUND);
+			obj->SetTag(GameObjectTag::OBSTACLE);
 		}
 
 		std::string name = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", "SectionNames", "Names");
@@ -121,6 +150,7 @@ bool TownScene_01::Init(void) noexcept
 				std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldZ");
 
 				obj->GetTransform()->SetWorldPosition(stof(px), stof(py), stof(pz));
+				_pNaviMesh->SetWalkAbleFromPosition(D3DXVECTOR3(stof(px), 0, stof(pz)), false);
 			}
 		}
 	}
@@ -136,8 +166,7 @@ bool TownScene_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-	NaviMesh* _pNaviMesh = new NaviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
-	_pNaviMesh->Init();
+
 
 	//Player
 	GameObject* pPlayerObj = GameObject::Instantiate();

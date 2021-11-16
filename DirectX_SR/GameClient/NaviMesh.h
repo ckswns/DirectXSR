@@ -15,6 +15,8 @@ private:	void		Release() noexcept;
 
 public:	Node*			NodeFormPosition(D3DXVECTOR3 Pos) noexcept;
 
+public:		void		SetWalkAbleFromPosition(D3DXVECTOR3 pos, bool able) noexcept;
+
 private: VEC_NODE		Grid;
 private: D3DXVECTOR3*	_TerrainVtx;
 private: int			_iSizeX;

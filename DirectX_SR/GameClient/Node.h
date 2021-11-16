@@ -31,6 +31,8 @@ public:	Node*				GetParent() const { return _pParent; }
 public:	const LIST_NODE		GetNeighbours() const { return _pNeighbours; }
 public:	D3DXVECTOR3			GetPos() { return  _vCenter; }
 
+public:	void				SetWalkAble(bool able) noexcept { _bWalkable = able; }
+
 private: bool				_bWalkable;
 private: int				_iX;
 private: int				_iY;

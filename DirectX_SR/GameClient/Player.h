@@ -5,7 +5,7 @@ namespace ce
 {
 	class Transform;
 	class Animator;
-	class BoxCollider;
+	class SphereCollider;
 	class SpriteRenderer;
 	class AudioSource;
 	class AudioAsset;
@@ -24,8 +24,13 @@ public:		explicit				Player(PathFinding* pf) noexcept;
 public:		virtual					~Player(void) noexcept { __noop; }
 
 public:		virtual void			Start(void) noexcept;
+public:		virtual void			FixedUpdate(float fElapsedTime) noexcept;
 public:		virtual void			Update(float fElapsedTime) noexcept;
 public:		virtual void			OnDestroy(void) noexcept;
+
+public:		void					OnCollisionEnter(Collider* mine, Collider* other) noexcept override;
+public:		void					OnCollisionStay(Collider* mine, Collider* other) noexcept override;
+public:		void					OnCollisionExit(Collider* mine, Collider* other) noexcept override;
 
 private:	void					InitAnimation(SpriteRenderer* mr);
 private:	void					InitState();
@@ -44,7 +49,7 @@ public:		InputHandler*			GetInpuHandler() { return _pInputHandler; }
 
 private:	Transform*				_pTrans;
 private:	Animator*				_pAnimator;
-private:	BoxCollider*			_pCollider;
+private:	SphereCollider*			_pCollider;
 
 private:	InputHandler*			_pInputHandler;
 
@@ -58,10 +63,14 @@ private:	AudioAsset*				_pManaSound[3];
 private:	STAT*					_tStat;
 private:	std::vector<Skill*>		_pSkills;
 
+private:	bool					_bCollWithObstacle = false;
+private:	D3DXVECTOR3				_prevPos;
+
 private:	bool					_bFPV;
 private:	float					_fRecovery;
 private:	float					_fSpeed;
 private:	float					_fRunSpeed;
+
 
 };
 

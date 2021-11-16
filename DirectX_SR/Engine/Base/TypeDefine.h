@@ -31,6 +31,7 @@ namespace ce
 
 	enum class GameObjectLayer
 	{
+		SKYBOX,
 		BACKGROUND,
 		OBJECT,
 		ALPHA,

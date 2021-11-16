@@ -19,7 +19,7 @@ void PoisonProjectile::Start(void) noexcept
 	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 0.5f, 0.3f)));//,D3DXVECTOR3((_vDir.x*0.5f),0, (_vDir.z * 0.5f))));
 	gameObject->AddComponent(new Rigidbody());
 
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skill\\PoisonNova\\0\\0.png"));
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skill\\PoisonNova\\0\\0.png"), true, D3DCULL_NONE);
 	gameObject->AddComponent(sr);
 
 	Animator* pAnimator = new Animator(true);

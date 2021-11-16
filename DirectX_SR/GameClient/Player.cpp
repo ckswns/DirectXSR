@@ -6,7 +6,7 @@
 #include "Material.h"
 #include "Animation.h"
 #include "Animator.h"
-#include "BoxCollider.h"
+#include "SphereCollider.h"
 #include "Rigidbody.h"
 #include "AudioListener.h"
 #include "AudioSource.h"
@@ -62,7 +62,7 @@ void Player::Start(void) noexcept
 	_pManaSound[1] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\MoreMana.mp3");
 	_pManaSound[2] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\LowMana.mp3");
 
-	_pCollider = new BoxCollider(D3DXVECTOR3(0.3, 1, 0.2f));
+	_pCollider = new SphereCollider(0.3f, "hitbox");
 	gameObject->AddComponent(_pCollider);
 	gameObject->AddComponent(new Rigidbody());
 
@@ -83,6 +83,14 @@ void Player::Start(void) noexcept
 
 	InitState();
 	SetState(PLAYER_STAND,FRONT);
+}
+
+void Player::FixedUpdate(float fElapsedTime) noexcept
+{
+	if(_bCollWithObstacle == false)
+		_prevPos = transform->GetWorldPosition();
+
+	_bCollWithObstacle = false;
 }
 
 void Player::Update(float fElapsedTime) noexcept
@@ -129,6 +137,35 @@ void Player::OnDestroy(void) noexcept
 	//	delete _pManaSound[i];
 		_pManaSound[i] = nullptr;
 	}
+}
+
+void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
+{
+	if (other->GetGameObject()->GetTag() == GameObjectTag::OBSTACLE)
+	{
+		if (mine->GetTag() == "hitbox")
+		{
+			transform->SetWorldPosition(_prevPos);
+			_bCollWithObstacle = true;
+		}
+	}
+}
+
+void Player::OnCollisionStay(Collider* mine, Collider* other) noexcept
+{
+	if (other->GetGameObject()->GetTag() == GameObjectTag::OBSTACLE)
+	{
+		if (mine->GetTag() == "hitbox")
+		{
+			transform->SetWorldPosition(_prevPos);
+			_bCollWithObstacle = true;
+		}
+	}
+}
+
+void Player::OnCollisionExit(Collider* mine, Collider* other) noexcept
+{
+
 }
 
 void Player::InitAnimation(SpriteRenderer* sr)
@@ -367,3 +404,4 @@ float Player::GetStaminaPer()
 	per *= _tStat->_fStamina;
 	return per;
 }
+
