@@ -13,6 +13,7 @@
 #include "AudioSource.h"
 #include "AudioListener.h"
 #include "TopBar.h"
+#include "DbgShowFrame.h"
 
 using namespace ce::UI;
 
@@ -108,6 +109,9 @@ bool LoadingScene::Init(void) noexcept
 	obj->AddComponent(new TopBar(g_hWnd));
 	ASSETMANAGER->LoadAssetFolder("Asset");
 
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new DbgShowFrame());
+	obj->SetDontDestroy(true);
 	return true;
 }
 
@@ -118,12 +122,13 @@ void LoadingScene::FixedUpdate(float fElapsedTime) noexcept
 
 void LoadingScene::Update(float fElapsedTime) noexcept
 {
-	static float a = 0;
-	a += fElapsedTime * 0.5f;
-	_imgProgressFront->SetFillAmount(/*ASSETMANAGER->GetLoadingProgress()*/a);
+	_imgProgressFront->SetFillAmount(ASSETMANAGER->GetLoadingProgress());
 
-	if (a >= 1 && !ASSETMANAGER->GetLoadingState())
+	if (!ASSETMANAGER->GetLoadingState())
+	{
+		GAMEDATAMANAGER->Init();
 		SCENEMANAGER->LoadScene("Town_01");
+	}
 }
 
 void LoadingScene::LateUpdate(float fElapsedTime) noexcept

@@ -7,18 +7,25 @@
 #include "Animation.h"
 #include "Animator.h"
 #include "BoxCollider.h"
+#include "Rigidbody.h"
 #include "AudioListener.h"
-#include "BoxCollider.h"
+#include "AudioSource.h"
 
 #include "PathFinding.h"
+#include "InputHandler.h"
+
 #include "PlayerFSMState.h"
 #include "PlayerStand.h"
 #include "PlayerMove.h"
 #include "PlayerAttack.h"
+#include "PlayerSkill.h"
 
 #include "Skill.h"
 #include "RaiseSkeleton.h"
 #include "BoneSpear.h"
+#include "PoisonNova.h"
+
+#include "Light.h"
 
 Player::Player(PathFinding* pf) noexcept
 	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
@@ -28,8 +35,11 @@ Player::Player(PathFinding* pf) noexcept
 	_pSkills.reserve(SKILL_END);
 	_pSkills.push_back(new RaiseSkeleton());
 	_pSkills.push_back(new BoneSpear());
+	_pSkills.push_back(new PoisonNova());
 
 	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(pf);
+
+	_pInputHandler = new InputHandler(this);
 }
 
 void Player::Start(void) noexcept
@@ -39,20 +49,37 @@ void Player::Start(void) noexcept
 	_fSpeed =3.f;
 	_fRunSpeed = 5.f;
 
-	GetGameObject()->SetDontDestroy(true);
+	gameObject->SetDontDestroy(true);
+	gameObject->SetTag(GameObjectTag::PLAYER);
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
+	_pInputHandler->Start();
 
-	//gameObject->AddComponent(new AudioListener());
-	_pCollider = new BoxCollider(D3DXVECTOR3(1, 1, 0.5f));
+	gameObject->AddComponent(new AudioListener());
+	_pAudioSource = new AudioSource();
+	gameObject->AddComponent(_pAudioSource);
+	_pManaSound[0] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\INeedMana.mp3");
+	_pManaSound[1] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\MoreMana.mp3");
+	_pManaSound[2] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\LowMana.mp3");
+
+	_pCollider = new BoxCollider(D3DXVECTOR3(0.3, 1, 0.2f));
 	gameObject->AddComponent(_pCollider);
+	gameObject->AddComponent(new Rigidbody());
 
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"));
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"), false);
 	gameObject->AddComponent(sr);
 
 	_pAnimator = new Animator(true);
 	gameObject ->AddComponent(_pAnimator);
 	InitAnimation(sr);
+
+	D3DCOLORVALUE c;
+	c.a = 1;
+	c.r = 1;
+	c.g = 1;
+	c.b = 1;
+	gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 20, 0, 0, 0.02f));
+	gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 100, 2.f));
 
 	InitState();
 	SetState(PLAYER_STAND,FRONT);
@@ -60,6 +87,8 @@ void Player::Start(void) noexcept
 
 void Player::Update(float fElapsedTime) noexcept
 {
+	_pInputHandler->Update(fElapsedTime);
+
 	_pFSM[_eCurState]->Update(fElapsedTime);
 
 	_tStat->Recovery(_fRecovery * fElapsedTime);
@@ -69,6 +98,11 @@ void Player::OnDestroy(void) noexcept
 {
 	delete _tStat;
 	_tStat = nullptr;
+
+	_pInputHandler->OnDestroy();
+
+	delete _pInputHandler;
+	_pInputHandler = nullptr;
 
 	for (size_t i = 0; i < _pSkills.size(); ++i)
 	{
@@ -89,6 +123,12 @@ void Player::OnDestroy(void) noexcept
 		}
 	}
 	_pFSM.clear();
+
+	for (int i = 0; i < 3; i++)
+	{
+	//	delete _pManaSound[i];
+		_pManaSound[i] = nullptr;
+	}
 }
 
 void Player::InitAnimation(SpriteRenderer* sr)
@@ -107,7 +147,7 @@ void Player::InitAnimation(SpriteRenderer* sr)
 			sprintf_s(str, 256, "Asset\\Player\\stand_%d\\%d.png", folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
-			FrameTime.push_back(0.5f);
+			FrameTime.push_back(0.3f);
 		}
 
 		ani = new Animation(FrameTime, TList, true);
@@ -168,6 +208,23 @@ void Player::InitAnimation(SpriteRenderer* sr)
 
 		TList.clear();
 		FrameTime.clear();
+
+		//Skill
+		for (int i = 0; i < 16; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset\\Player\\skill_%d\\%d.png", folder, i);
+
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
+			FrameTime.push_back(0.08f);
+		}
+
+		ani = new Animation(FrameTime, TList);
+		ani->SetMaterial(material);
+		_pAnimator->InsertAnimation("Skill_" + std::to_string(folder), ani);
+
+		TList.clear();
+		FrameTime.clear();
 	}
 }
 
@@ -177,6 +234,7 @@ void Player::InitState()
 	_pFSM.push_back(new PlayerStand(_pAnimator));
 	_pFSM.push_back(new PlayerMove(this,_pAnimator, _pTrans, _pPathFinding, _fSpeed));
 	_pFSM.push_back(new PlayerAttack(this,_pAnimator, _pTrans));
+	_pFSM.push_back(new PlayerSkill(this, _pAnimator, _pTrans));
 }
 
 void Player::SetFPV()
@@ -214,14 +272,28 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget, bool b
 		static_cast<PlayerMove*>(_pFSM[newState])->SetAtt();
 	}
 
-	if(!_bFPV)
+	/*if(!_bFPV)
 		_pFSM[newState]->SetDir(eDir);
 	
 	if (_eCurState != newState) 
 	{
 		_eCurState = newState;
 		_pFSM[_eCurState]->Start();
+	}*/
+
+	if (!_bFPV)
+	{
+		_pFSM[newState]->SetDir(eDir);
+
+		_eCurState = newState;
+		_pFSM[_eCurState]->Start();
 	}
+	else if (_eCurState != newState)
+	{
+		_eCurState = newState;
+		_pFSM[_eCurState]->Start();
+	}
+
 
 }
 
@@ -234,8 +306,15 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			int SkillMp = pSkill->GetUsingMp();
 			if (_tStat->_fMP >= SkillMp)
 			{
+				SetState(PLAYER_SKILL, DIR_END, vPos);
 				pSkill->Using(vPos, _pTrans,_bFPV);
-			//	_tStat->_fMP -= SkillMp;
+				_tStat->_fMP -= SkillMp;
+			}
+			else
+			{
+				int num = CE_MATH::Random(3);
+				_pAudioSource->LoadAudio(_pManaSound[num]);
+				_pAudioSource->Play();
 			}
 			break;
 		}

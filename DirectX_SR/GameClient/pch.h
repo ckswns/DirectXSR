@@ -6,7 +6,7 @@
 
 #ifndef PCH_H
 #define PCH_H
-#include "AutoDetectMemoryLeak.h"
+//#include "AutoDetectMemoryLeak.h"
 // add headers that you want to pre-compile here
 #include "framework.h"
 

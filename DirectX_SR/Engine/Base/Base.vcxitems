@@ -34,6 +34,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TextAsset.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureAsset.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TypeDefine.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Util.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vector3.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vector4.h" />
   </ItemGroup>

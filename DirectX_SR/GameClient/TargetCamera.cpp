@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "Light.h"
+#include "CETween.h"
 
 TargetCamera::TargetCamera(Transform* target) noexcept
 	:_pTrans(nullptr), _pTargetTrans(target), _bFPV(false),
@@ -14,7 +15,7 @@ void TargetCamera::Start(void) noexcept
 {
 	_pTrans = gameObject->GetTransform();
 
-	gameObject->AddComponent(new Camera(D3D9DEVICE->GetDevice()));
+	gameObject->AddComponent(new Camera(D3D9DEVICE->GetDevice(), Camera::Type::PERSPECTIVE, Camera::ClearOption::SKYBOX, ASSETMANAGER->GetTextureData("Asset\\SkyBox\\Night1.dds")));
 	
 	_pTrans->SetLocalPosition(0, _fTPVHeight, _fTPVDist);
 
@@ -24,14 +25,6 @@ void TargetCamera::Start(void) noexcept
 	_fAngle = D3DXVec3Dot(&vLook, &vDir);
 
 	_pTrans->SetLocalEulerAngle(_fAngle, 0, 0);
-
-	D3DCOLORVALUE c;
-	c.a = 1;
-	c.r = 1;
-	c.g = 1;
-	c.b = 1;
-	gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 10));
-
 }
 
 void TargetCamera::Update(float fElapsedTime) noexcept
@@ -50,6 +43,13 @@ void TargetCamera::Update(float fElapsedTime) noexcept
 	}
 	else
 	{
+		_fDelta +=	fElapsedTime;
+		if (_fDelta <= 1)
+		{
+			float ang = CETween::Lerp(_fAngle, 0, _fDelta, CETween::EaseType::easeInBack);
+			_pTrans->SetLocalEulerAngle(ang, 0, 0);
+		}
+
 		D3DXVECTOR3 vPos = _pTargetTrans->GetWorldPosition();
 		vPos.x -= _pTargetTrans->GetWorldMatrix()._31;
 		vPos.y += _fFPVHeight;
@@ -76,9 +76,7 @@ void TargetCamera::ChangeView()
 	else //1인칭으로 변경
 	{
 		_bFPV = true;
-
-		//_pTrans->Rotate(-_fAngle, 0, 0);
-		_pTrans->SetLocalEulerAngle(0, 0, 0);
+		_fDelta = 0;
 
 		//D3DXVECTOR3 vPos = _pTargetTrans->GetWorldPosition();
 		//vPos.y += _fFPVHeight;

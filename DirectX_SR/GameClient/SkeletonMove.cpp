@@ -34,13 +34,14 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 {
 	//플레이어와 거리확인
 	D3DXVECTOR3 vDir = _pPlayerTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
-	if (D3DXVec3Length(&vDir) >= 10.f)
+	if (D3DXVec3Length(&vDir) >= 5.f)
 	{
 		//많이 멀어진 경우 주변으로 순간이동 
 		float fX = CE_MATH::Random(-1, 1) + _pPlayerTrans->GetWorldPosition().x;
 		float fZ = CE_MATH::Random(-1, 1) + _pPlayerTrans->GetWorldPosition().z;
 
 		_pTrans->SetWorldPosition(fX, _pPlayerTrans->GetWorldPosition().y, fZ);
+		_vTarget.y = 5;
 		_pSk->SetState(SK_STAND, _eDir);
 	}
 

@@ -139,7 +139,7 @@ namespace ce
 
 	void EditorCamera::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 	{
-		other->GetGameObject()->Destroy();
+		//other->GetGameObject()->Destroy();
 	}
 
 }

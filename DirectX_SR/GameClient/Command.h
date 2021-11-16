@@ -1,6 +1,9 @@
 #pragma once
 
-#include "GameObject.h"
+namespace ce
+{
+	class GameObject;
+}
 class Command abstract
 {
 public:		virtual				~Command() noexcept { __noop; }
