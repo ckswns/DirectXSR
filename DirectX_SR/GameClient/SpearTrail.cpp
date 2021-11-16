@@ -11,7 +11,7 @@ SpearTrail::SpearTrail(float AniTime, DIR eDir) noexcept
 }
 void SpearTrail::Start(void) noexcept
 {
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skill\\BoneSpear\\Trail\\0\\0.png"));
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skill\\BoneSpear\\Trail\\0\\0.png"),true,false);
 	gameObject->AddComponent(sr);
 
 	Animator* pAnimator = new Animator(true);
