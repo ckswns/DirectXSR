@@ -89,4 +89,10 @@ private:	PARTICLE_ATRRI						_tOrign;
 private:	float zero = 0.f;
 private:	float one = 1.f;
 
+public:
+	void FixedUpdate(float) noexcept override;
+
+
+	void LateUpdate(float) noexcept override;
+
 };

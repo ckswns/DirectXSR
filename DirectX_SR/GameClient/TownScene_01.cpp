@@ -23,6 +23,8 @@
 #include "SpriteRenderer.h"
 #include "PlaneRenderer.h"
 #include "BoxCollider.h"
+#include "ParticleRenderer.h"
+#include "BillboardObj.h"
 
 TownScene_01::TownScene_01(void) noexcept
 {
@@ -166,8 +168,10 @@ bool TownScene_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-
-
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
+	obj->GetTransform()->SetWorldPosition(40, 0, 40);
+	obj->AddComponent(new BillboardObj());
 	//Player
 	GameObject* pPlayerObj = GameObject::Instantiate();
 	pPlayerObj = GameObject::Instantiate();
@@ -195,7 +199,7 @@ bool TownScene_01::Init(void) noexcept
 
 		pos.x += Random::GetValue(20, 3);
 		pos.x -= Random::GetValue(20, 3);
-
+		pos.y = 0.7f;
 		pos.z += Random::GetValue(20, 3);
 		pos.z -= Random::GetValue(20, 3);
 		obj->GetTransform()->SetWorldPosition(pos);

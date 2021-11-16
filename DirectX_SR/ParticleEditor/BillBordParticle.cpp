@@ -261,6 +261,16 @@ void BillBordParticle::Stop()
 	Reset();
 }
 
+void BillBordParticle::FixedUpdate(float) noexcept
+{
+
+}
+
+void BillBordParticle::LateUpdate(float) noexcept
+{
+
+}
+
 void BillBordParticle::Reset()
 {
 	_fTime = 0.0f;

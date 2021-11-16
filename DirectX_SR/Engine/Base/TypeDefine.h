@@ -71,6 +71,14 @@ namespace ce
 		END
 	};
 
+	typedef struct tagParticle
+	{
+		D3DXVECTOR3	 vPosition;
+		float					 fSize;
+		unsigned long			 dwColor;
+	}PARTICLE;
+	const unsigned long FVF_PARTICLE = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_PSIZE;
+
 	typedef struct tagVertexColor
 	{
 		D3DXVECTOR3		vPosition;
@@ -88,6 +96,15 @@ namespace ce
 	}VTXTEX;
 
 	constexpr DWORD		FVF_TEX = D3DFVF_XYZ | D3DFVF_TEX1;
+
+	typedef struct tagVertexTextureColor
+	{
+		D3DXVECTOR3		vPosition;
+		unsigned long	dwColor;
+		D3DXVECTOR2		vTexUV;
+	}VTXCOLTEX;
+
+	const unsigned long FVF_VTXCOLTEX = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
 
 	typedef struct tagVertexCubeTexture
 	{

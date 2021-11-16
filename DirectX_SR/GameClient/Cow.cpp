@@ -23,7 +23,7 @@ void Cow::Start(void) noexcept
 	gameObject->AddComponent(new BillboardObj());
 	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f)));
 	gameObject->AddComponent(new Rigidbody());
-	gameObject->GetTransform()->SetLocalPosition(0, 0.6f, 0);
+	gameObject->GetTransform()->SetLocalPosition(0, 0.7f, 0);
 
 	_animator = new Animator(true);
 
