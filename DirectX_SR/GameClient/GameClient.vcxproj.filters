@@ -181,6 +181,9 @@
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory\Slot">
       <UniqueIdentifier>{7c03b790-a656-4ecd-9a15-116a19c6840f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Item">
+      <UniqueIdentifier>{13197765-f5af-4ab8-ae70-99ffa2e51d92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -315,9 +318,6 @@
     <ClInclude Include="Inventory.h">
       <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="Test.h">
-      <Filter>00. Game\00. Scene</Filter>
-    </ClInclude>
     <ClInclude Include="TestItem.h">
       <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
     </ClInclude>
@@ -353,6 +353,9 @@
     </ClInclude>
     <ClInclude Include="BillboardObj.h">
       <Filter>00. Game\01. GameObject\BillboardObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>00. Game\01. GameObject\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -457,9 +460,6 @@
     </ClCompile>
     <ClCompile Include="Inventory.cpp">
       <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>00. Game\00. Scene</Filter>
     </ClCompile>
     <ClCompile Include="TestItem.cpp">
       <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>

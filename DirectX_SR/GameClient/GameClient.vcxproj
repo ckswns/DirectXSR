@@ -180,6 +180,7 @@
     <ClInclude Include="Game_Enum.h" />
     <ClInclude Include="Game_Math.h" />
     <ClInclude Include="Game_Struct.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
     <ClInclude Include="PoisonProjectile.h" />
@@ -217,7 +218,6 @@
     <ClInclude Include="TargetCamera.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TopBar.h" />
-    <ClInclude Include="Test.h" />
     <ClInclude Include="TestItem.h" />
     <ClInclude Include="TownScene_01.h" />
   </ItemGroup>
@@ -271,7 +271,6 @@
     <ClCompile Include="SpearTrail.cpp" />
     <ClCompile Include="TargetCamera.cpp" />
     <ClCompile Include="TopBar.cpp" />
-    <ClCompile Include="Test.cpp" />
     <ClCompile Include="TestItem.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
   </ItemGroup>

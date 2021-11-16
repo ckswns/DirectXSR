@@ -8,15 +8,17 @@ namespace ce
 	}
 	class Coillder;
 }
-class Item
+class Item 
 {
-private:	std::string		_strName;
-private: 	D3DXVECTOR3		_vPos;		//바닥 좌표
-private: 	UI::Image*		_ImgGround; //바닥에 있을때 이미지
-private: 	UI::Image*		_ImgInven;
-private: 	Coillder*		_Collier;
-private: 	int				_iGold;
-private: 	ITEM_ID::ID		_itemID;
+public:		virtual INVENITEMINFO* GetItem() = 0;
 
+protected: 	D3DXVECTOR3		_vPos;		//바닥 좌표
+protected: 	UI::Image*		_ImgGround; //바닥에 있을때 이미지
+protected: 	Coillder*		_Collier;
+
+protected:	std::string		_strName;
+protected: 	int				_iGold;
+
+protected: 	INVENITEMINFO	_tInvenItem;
 };
 

@@ -63,7 +63,14 @@ typedef struct tagStat
 	}
 
 }STAT;
-//
+
+typedef struct tagInveItemInfo
+{
+	std::string		_strInvenImgPath;	//인벤토리에 들어갈 이미지
+	int				_eitemID;	//ITEM_ID
+	int				_eSlotType;	//Slot::SLOTTYPE
+}INVENITEMINFO;
+
 typedef struct tagItemInfo
 {
 	int	_iItemID;
