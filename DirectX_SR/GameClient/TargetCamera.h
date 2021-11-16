@@ -29,5 +29,11 @@ private:	bool			_bFPV;
 private:	float			_fDelta;
 private:	float			_fFPVDist;
 private:	float			_fFPVHeight;
+
+private:	bool			_bDoLerp = false;
+private:	D3DXVECTOR3		_destPos;
+private:	D3DXVECTOR3		_srcPos;
+
+private:	float			_currentLerpTime = 0;
 };
 

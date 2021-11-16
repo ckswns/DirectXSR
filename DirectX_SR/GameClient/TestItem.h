@@ -22,15 +22,16 @@ public: void setTestPosition(D3DXVECTOR3 vtest);
 public: void SetPosition(D3DXVECTOR3 vpos);
 
 public: std::vector<std::pair<GameObject*, SLOTINFO*>>	GetItemSlot() { return _vecSlot; }
-public: Slot::SLOTTYPE									GetItemType() { return _eType; }
+public: ITEMINFO										GetItemInfo() { return _tInfo; }
 
 private: GameObject* _pTest;
 private: ITEMINFO	 _tInfo;
 private: RECT		 _tRect;
 private: UI::Image*	_pImage;
+private: int		iSlotCntX;
+private: int		iSlotCntY;
 
 private: std::vector<std::pair<GameObject*, SLOTINFO*>> _vecSlot;
-private: Slot::SLOTTYPE									_eType;
 
 };
 
