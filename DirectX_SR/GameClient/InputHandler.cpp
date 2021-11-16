@@ -7,11 +7,11 @@
 
 #include "GameObject.h"
 #include "Player.h"
-#include "Terrain.h"
+#include "Item.h"
 
 #include "Camera.h"
-#include "SphereCollider.h"
 #include "Transform.h"
+#include "SphereCollider.h"
 #include "TargetCamera.h"
 
 InputHandler::InputHandler(Player* player) noexcept
@@ -27,10 +27,6 @@ void InputHandler::Start(void) noexcept
 	_pPlayerTrans = _pPlayerObj->GetTransform();
 
 	_pLBCommand = new AttackCommand();
-//	_bLBSkill = true;
-//	_pLBCommand = new SkillCommand();
-//	static_cast<SkillCommand*>(_pLBCommand)->SetSkill(SKILL_ID::POISON_NOVA);
-
 	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
 }
@@ -61,19 +57,29 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			//마우스 피킹 
 			Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
 			RaycastHit hit;
-			if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
-			{
-				if (_bLBSkill)	//스킬인 경우
-					_pLBCommand->Execute(_pPlayerObj, hit.point);
-				else
-					_pMoveCommand->Execute(_pPlayerObj, hit.point);
-			}
-			else if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
+			if (Physics::Raycast(ray, hit, GameObjectLayer::ALPHA))
 			{
 				//몬스터인 경우 공격 
 				if (hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
-					_pLBCommand->Execute(_pPlayerObj, hit.point);
+					_pLBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
+				else if (hit.collider->GetGameObject()->GetName() == "Item")
+				{
+					//아이템인 경우 줍기 
+					//아이템 정보 
+					INVENITEMINFO* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
+					//인벤토리에 아이템 추가 
+
+					hit.collider->GetGameObject()->Destroy();
+				}
 			}
+			else if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
+			{
+				if (_bLBSkill)	//스킬인 경우
+					_pLBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
+				else
+					_pMoveCommand->Execute(_pPlayerObj, hit.point);
+			}
+
 		}
 		else if (INPUT->GetKeyDown(KEY_RBUTTON))
 		{
@@ -82,7 +88,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
 			{
 				if (_bRBSkill)	//스킬인 경우
-					_pRBCommand->Execute(_pPlayerObj, hit.point);
+					_pRBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
 				else
 					_pMoveCommand->Execute(_pPlayerObj, hit.point);
 			}
@@ -90,7 +96,8 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			{
 				//몬스터인 경우 공격 
 				if(hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
-					_pRBCommand->Execute(_pPlayerObj, hit.point);
+					_pRBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
+
 			}
 		}
 	}

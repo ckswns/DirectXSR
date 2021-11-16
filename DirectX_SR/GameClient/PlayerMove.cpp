@@ -5,6 +5,7 @@
 #include "Animator.h"
 #include "PathFinding.h"
 #include "Node.h"
+#include "Ray.h"
 
 PlayerMove::PlayerMove(Player* player, Animator* pAnim, Transform* trans, PathFinding* pf, float speed) noexcept
 	:PlayerFSMState(player, pAnim, trans), _pPathFinding(pf), _fSpeed(speed),
@@ -17,6 +18,11 @@ void PlayerMove::Start() noexcept
 {
 	if (!_bFPV)
 	{
+		if (_pTargetTrans)
+		{
+			_vTarget = _pTargetTrans->GetWorldPosition();
+		}
+
 		_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
 		_iDir = (int)_eDir * 2;
 	}
@@ -32,7 +38,8 @@ void PlayerMove::Update(float fElapsedTime) noexcept
 {
 	if (INPUT->GetKeyDown('Z') || INPUT->GetKeyStay('Z'))
 	{
-		_bRun = true;
+		if(_pPlayer->GetStaminaPer() > 0.1f)
+			_bRun = true;
 	}
 	else
 	{
@@ -58,7 +65,8 @@ void PlayerMove::TPVUpdate(float fElapsedTime)
 			if (_bAtt)
 			{
 				_bAtt = false;
-				_pPlayer->SetState(PLAYER_ATTACK, _eDir, _vTarget);
+				_pPlayer->SetState(PLAYER_ATTACK, _eDir, _pTargetTrans);
+				_pTargetTrans = nullptr;
 			}
 			else
 				_pPlayer->SetState(PLAYER_STAND, _eDir);
@@ -102,6 +110,7 @@ void PlayerMove::Move(D3DXVECTOR3 vDir, float fElapsedTime)
 	}
 	else
 	{
+		_bRun = false;
 		if (_pAnimator->GetCurrentAnimationName() != _strWalk)
 			_pAnimator->SetAnimation(_strWalk);
 

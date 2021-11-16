@@ -36,7 +36,7 @@ void Skeleton::Start(void) noexcept
 	_pRaiseAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
 	_pRaiseAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\skeletonraise.wav"));
 
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skeleton.png"));
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skeleton.png"),true,false);
 	gameObject->AddComponent(sr);
 
 	_pAnimator = new Animator(true);

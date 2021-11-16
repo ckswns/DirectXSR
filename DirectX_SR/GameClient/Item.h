@@ -1,22 +1,18 @@
 #pragma once
+#include "Behaviour.h"
 
-namespace ce
+class Item :public Behaviour
 {
-	namespace UI 
-	{
-		class Image;
-	}
-	class Coillder;
-}
-class Item
-{
-private:	std::string		_strName;
-private: 	D3DXVECTOR3		_vPos;		//¹Ù´Ú ÁÂÇ¥
-private: 	UI::Image*		_ImgGround; //¹Ù´Ú¿¡ ÀÖÀ»¶§ ÀÌ¹ÌÁö
-private: 	UI::Image*		_ImgInven;
-private: 	Coillder*		_Collier;
-private: 	int				_iGold;
-private: 	ITEM_ID::ID		_itemID;
+public:		explicit					Item() noexcept { __noop; }
+public:		virtual						~Item(void) noexcept { __noop; }
 
+public:		virtual void				Start(void) noexcept;
+public:		virtual void				Update(float) noexcept;
+
+public:		INVENITEMINFO*				GetItem() { return &_tInvenItem; }
+
+protected: 	INVENITEMINFO				_tInvenItem;
+private:	GameObject*					_pTxtName;
+private:	bool						_bLook;
 };
 

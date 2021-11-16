@@ -39,13 +39,13 @@ typedef struct tagStat
 
 	void		Recovery(float fAmount)
 	{
-		if (_fHp < _fMaxHp)
+		/*if (_fHp < _fMaxHp)
 		{
 			_fHp += fAmount;
 		
 			if (_fHp > _fMaxHp)
 				_fHp = _fMaxHp;
-		}
+		}*/
 		if (_fMP < _fMaxMp) 
 		{
 			_fMP += fAmount;
@@ -63,7 +63,16 @@ typedef struct tagStat
 	}
 
 }STAT;
-//
+
+typedef struct tagInveItemInfo
+{
+	std::string		_strName;
+	std::string		_strInvenImgPath;	//인벤토리에 들어갈 이미지
+	int				_iValue;			//골드의 양이나 회복량?
+	int				_eitemID;			//ITEM_ID
+	int				_eSlotType;			//Slot::SLOTTYPE
+}INVENITEMINFO;
+
 typedef struct tagItemInfo
 {
 	int	_iItemID;

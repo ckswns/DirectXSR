@@ -13,6 +13,7 @@ public:		virtual						~Projectile(void) noexcept { __noop; }
 
 public:		virtual void				Start(void) noexcept;
 public:		virtual void				Update(float fElapsedTime) noexcept;
+public:		virtual void				OnDestroy(void) noexcept;
 
 public:		virtual void				OnCollisionEnter(Collider* mine, Collider* other) noexcept;
 
