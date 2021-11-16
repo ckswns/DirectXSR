@@ -46,6 +46,7 @@ namespace ce
 	private:	void						CheckUIPicking(void) noexcept;
 
 	public:		const GameObject::TList&	GetSceneGameObjectXXXXXXXXXXXX(GameObjectLayer layer) const noexcept { return _vGameObjs[static_cast<int>(layer)]; }
+	public:		const GameObject::QUEUE&	GetSceneWaitInsertGameObjectXXXXXXXXXXXX(void) const noexcept { return _qGameObjWaitForInsert; }
 	public:		GameObject*					InsertGameObject(GameObject* obj) noexcept;
 
 	private:	GameObject::TList			_vGameObjs[static_cast<int>(GameObjectLayer::END)];

@@ -430,6 +430,14 @@ namespace ce
 				return vObjects_EFFECT[i];
 		}
 
+		const std::queue<GameObject*>& vWaitInsert = SceneManager::Instance()->GetActiveScene()->GetSceneWaitInsertGameObjectXXXXXXXXXXXX();
+
+		for (int i = 0; i < vWaitInsert.size(); i++)
+		{
+			if (vWaitInsert._Get_container()[i]->GetTag() == tag)
+				return vWaitInsert._Get_container()[i];
+		}
+
 		return nullptr;
 	}
 

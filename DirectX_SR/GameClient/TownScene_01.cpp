@@ -119,11 +119,6 @@ bool TownScene_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-	for (int i = 0; i < 30; i++)
-	{
-		obj = GameObject::Instantiate();
-		obj->AddComponent(new Cow());
-	}
 	NaviMesh* _pNaviMesh = new NaviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
 	_pNaviMesh->Init();
 
@@ -142,6 +137,13 @@ bool TownScene_01::Init(void) noexcept
 	//UI
 	pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StatusBar(player));
+
+
+	for (int i = 0; i < 30; i++)
+	{
+		obj = GameObject::Instantiate();
+		obj->AddComponent(new Cow());
+	}
 
 	return true;
 }

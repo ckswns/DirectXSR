@@ -36,14 +36,48 @@ void TargetCamera::FixedUpdate(float fElapsedTime) noexcept
 {
 	if (!_bFPV)
 	{
-		D3DXVECTOR3 vDir = _pTargetTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
-		vDir.y += _fTPVHeight;
-		vDir.z += _fTPVDist;
-
-		if (D3DXVec3Length(&vDir) > 0.1f)
+		if (_bDoLerp == false)
 		{
-			D3DXVec3Normalize(&vDir, &vDir);
-			_pTrans->Translate(vDir * fElapsedTime * 6);
+			D3DXVECTOR3 vDir = _pTargetTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
+			vDir.y += _fTPVHeight;
+			vDir.z += _fTPVDist;
+
+			float length = D3DXVec3Length(&vDir);
+
+			if (length > 1.f)
+			{
+				_srcPos = transform->GetWorldPosition();
+				_destPos = _pTargetTrans->GetWorldPosition();
+				_destPos.y += _fTPVHeight;
+				_destPos.z += _fTPVDist;
+				_bDoLerp = true;
+				_currentLerpTime = 0;
+			}
+			else
+			{
+				D3DXVECTOR3 targetPos = _pTargetTrans->GetWorldPosition();
+				targetPos.y += _fTPVHeight;
+				targetPos.z += _fTPVDist;
+				transform->SetWorldPosition(targetPos);
+			}
+		}
+		else
+		{
+			D3DXVECTOR3 targetPos = _pTargetTrans->GetWorldPosition();
+			targetPos.y += _fTPVHeight;
+			targetPos.z += _fTPVDist;
+
+			_currentLerpTime += fElapsedTime;
+			if (_currentLerpTime > 1)
+			{
+				_currentLerpTime = 1;
+				_bDoLerp = false;
+			}
+			transform->SetWorldPosition(
+				CETween::Lerp(_srcPos.x, targetPos.x, _currentLerpTime, CETween::EaseType::easeOutBack),
+				CETween::Lerp(_srcPos.y, targetPos.y, _currentLerpTime, CETween::EaseType::easeOutBack),
+				CETween::Lerp(_srcPos.z, targetPos.z, _currentLerpTime, CETween::EaseType::easeOutBack)
+				);
 		}
 	}
 	else

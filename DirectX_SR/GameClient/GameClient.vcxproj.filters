@@ -315,9 +315,6 @@
     <ClInclude Include="Inventory.h">
       <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="Test.h">
-      <Filter>00. Game\00. Scene</Filter>
-    </ClInclude>
     <ClInclude Include="TestItem.h">
       <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
     </ClInclude>
@@ -457,9 +454,6 @@
     </ClCompile>
     <ClCompile Include="Inventory.cpp">
       <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>00. Game\00. Scene</Filter>
     </ClCompile>
     <ClCompile Include="TestItem.cpp">
       <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>

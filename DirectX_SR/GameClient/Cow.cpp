@@ -10,6 +10,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "RigidBody.h"
+#include "Player.h"
 
 void Cow::Awake(void) noexcept
 {
@@ -98,6 +99,24 @@ void Cow::Start(void) noexcept
 	gameObject->SetTag(GameObjectTag::MONSTER);
 
 	GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
+	if (player == nullptr)
+		CE_ASSERT("ckswns", "Player가 존재하지 않습니다.");
+
+	const std::vector<Component*>& components = player->GetComponents();
+
+	for (auto iter = components.begin(); iter != components.end(); iter++)
+	{
+		if ((*iter)->GetID() == COMPONENT_ID::BEHAVIOUR)
+		{
+			Player* p = dynamic_cast<Player*>((*iter));
+
+			if (p != nullptr)
+			{
+				_player = p;
+				break;
+			}
+		}
+	}
 }
 
 void Cow::FixedUpdate(float fElapsedTime) noexcept
