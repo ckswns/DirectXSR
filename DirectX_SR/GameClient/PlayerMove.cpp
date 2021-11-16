@@ -32,7 +32,8 @@ void PlayerMove::Update(float fElapsedTime) noexcept
 {
 	if (INPUT->GetKeyDown('Z') || INPUT->GetKeyStay('Z'))
 	{
-		_bRun = true;
+		if(_pPlayer->GetStaminaPer() > 0.1f)
+			_bRun = true;
 	}
 	else
 	{
@@ -102,6 +103,7 @@ void PlayerMove::Move(D3DXVECTOR3 vDir, float fElapsedTime)
 	}
 	else
 	{
+		_bRun = false;
 		if (_pAnimator->GetCurrentAnimationName() != _strWalk)
 			_pAnimator->SetAnimation(_strWalk);
 
