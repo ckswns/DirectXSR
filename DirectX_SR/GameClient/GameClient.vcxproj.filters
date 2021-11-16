@@ -509,6 +509,9 @@
     <ClCompile Include="ItemSlot.cpp">
       <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>99. Default\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameClient.rc">

@@ -237,6 +237,7 @@
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="GameDataManager.cpp" />
     <ClCompile Include="HpPotion.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />

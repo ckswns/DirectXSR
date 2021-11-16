@@ -7,11 +7,11 @@
 
 #include "GameObject.h"
 #include "Player.h"
-#include "Terrain.h"
+#include "Item.h"
 
 #include "Camera.h"
-#include "SphereCollider.h"
 #include "Transform.h"
+#include "SphereCollider.h"
 #include "TargetCamera.h"
 
 InputHandler::InputHandler(Player* player) noexcept
@@ -61,19 +61,30 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			//마우스 피킹 
 			Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
 			RaycastHit hit;
-			if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
+			if (Physics::Raycast(ray, hit, GameObjectLayer::ALPHA))
+			{
+				int a;
+				//몬스터인 경우 공격 
+				if (hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+					_pLBCommand->Execute(_pPlayerObj, hit.point);
+				else if (hit.collider->GetGameObject()->GetName() == "Item")
+				{
+					//아이템인 경우 줍기 
+					//아이템 정보 
+					INVENITEMINFO* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
+					//인벤토리에 아이템 추가 
+
+					hit.collider->GetGameObject()->Destroy();
+				}
+			}
+			else if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
 			{
 				if (_bLBSkill)	//스킬인 경우
 					_pLBCommand->Execute(_pPlayerObj, hit.point);
 				else
 					_pMoveCommand->Execute(_pPlayerObj, hit.point);
 			}
-			else if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
-			{
-				//몬스터인 경우 공격 
-				if (hit.collider->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
-					_pLBCommand->Execute(_pPlayerObj, hit.point);
-			}
+
 		}
 		else if (INPUT->GetKeyDown(KEY_RBUTTON))
 		{
