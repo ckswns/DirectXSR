@@ -85,6 +85,7 @@ typedef struct tagSlot
 	RECT		_tRect;
 	int			_iSlotSizeX;
 	int			_iSlotSizeY;
+	int			_iFlag;
 	bool		_bSlotCheck;
 	tagSlot()
 	{

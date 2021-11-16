@@ -52,5 +52,6 @@ public:
 	afx_msg void OnEnChangeCubeFloor();
 	float iFloor;
 
-	D3DXVECTOR3 _vScale;
+	//D3DXVECTOR3 _vScale;
+	std::vector<D3DXVECTOR3> _vecScale;
 };

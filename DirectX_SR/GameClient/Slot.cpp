@@ -17,56 +17,68 @@ Slot::Slot(SLOTTYPE etype)
 		_iSlotCntX = 10;
 		_iSlotCntY = 4;
 		_vStartPos = D3DXVECTOR3(692.f, 370.f, 0);
+		_iFlag |= 0x00000001;
 		break;
 	case Slot::SLOTTYPE::HEAD:
 		_iSlotCntX = 2;
 		_iSlotCntY = 2;
 		_vStartPos = D3DXVECTOR3(875.f, 85.f, 0.f);
+		_iFlag |= 0x00000002;
 		break;
 	case Slot::SLOTTYPE::BODY:
 		_iSlotCntX = 2;
 		_iSlotCntY = 3;
 		_vStartPos = D3DXVECTOR3(875.f, 162.f, 0.f);
+		_iFlag |= 0x00000004;
 		break;
 	case Slot::SLOTTYPE::MAINWP:
 		_iSlotCntX = 2;
 		_iSlotCntY = 4;
 		_vStartPos = D3DXVECTOR3(693.f, 137.f, 0.f);;
+		_iFlag |= 0x00000008;
 		break;
 	case Slot::SLOTTYPE::SECONDWP:
 		_iSlotCntX = 2;
 		_iSlotCntY = 4;
 		_vStartPos = D3DXVECTOR3(1063.f, 137.f, 0.f);
+		_iFlag |= 0x00000010;
 		break;
 	case Slot::SLOTTYPE::GLOVES:
 		_iSlotCntX = 2;
 		_iSlotCntY = 2;
 		_vStartPos = D3DXVECTOR3(693.f, 279.f, 0.f);
+		_iFlag |= 0x00000020;
 		break;
 	case Slot::SLOTTYPE::LEGS:
 		_iSlotCntX = 2;
 		_iSlotCntY = 2;
 		_vStartPos = D3DXVECTOR3(1063.f, 279.f, 0.f);
+		_iFlag |= 0x00000040;
 			break;
+	case Slot::SLOTTYPE::BELT:
+		_iSlotCntX = 2;
+		_iSlotCntY = 1;
+		_vStartPos = D3DXVECTOR3(880.f, 279.f, 0.f);
+		_iFlag |= 0x00000080;
+		break;
+
 	case Slot::SLOTTYPE::RING1:
 		_iSlotCntX = 1;
 		_iSlotCntY = 1;
 		_vStartPos = D3DXVECTOR3(811.f, 279.f, 0.f);
+		_iFlag |= 0x00000100;
 		break;
 	case Slot::SLOTTYPE::RING2:
 		_iSlotCntX = 1;
 		_iSlotCntY = 1;
 		_vStartPos = D3DXVECTOR3(995.f, 279.f, 0.f);
+		_iFlag |= 0x00000100;
 		break;
 	case Slot::SLOTTYPE::NECKLACE:
 		_iSlotCntX = 1;
 		_iSlotCntY = 1;
 		_vStartPos = D3DXVECTOR3(993.f, 115.f, 0.f);
-		break;
-	case Slot::SLOTTYPE::BELT:
-		_iSlotCntX = 2;
-		_iSlotCntY = 1;
-		_vStartPos = D3DXVECTOR3(880.f, 279.f, 0.f);
+		_iFlag |= 0x00000200;
 		break;
 	}
 
@@ -103,6 +115,7 @@ void Slot::Start(void) noexcept
 			pSlot->_tRect.top = LONG(pSlot->_vPos.y - (pSlot->_iSlotSizeY * 0.5f));
 			pSlot->_tRect.right = LONG(pSlot->_vPos.x + (pSlot->_iSlotSizeX * 0.5f));
 			pSlot->_tRect.bottom = LONG(pSlot->_vPos.y + (pSlot->_iSlotSizeY * 0.5f));
+			pSlot->_iFlag = _iFlag;
 
 			#ifdef _DEBUG
 			GameObject* pGameobject = GameObject::Instantiate();

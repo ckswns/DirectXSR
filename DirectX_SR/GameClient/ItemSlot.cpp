@@ -1,81 +1,128 @@
 #include "pch.h"
-#include "TestItem.h"
+#include "ItemSlot.h"
 #include "GameObject.h"
 #include "Image.h"
 #include "Transform.h"
-#include "Texture.h"
 
 using namespace ce::UI;
 
-TestItem::TestItem(GameObject* pobj, Slot::SLOTTYPE etype) noexcept
-	: _pTest(pobj), _tInfo((int)etype, 0, 0)
-{ 
-
-}
-
-TestItem::~TestItem() noexcept
+ItemSlot::ItemSlot(GameObject* pObj,Slot::SLOTTYPE eType, float fx, float fy) noexcept
+	: _pOwner(pObj), _eType(eType)
 {
-	for (auto& iter : _vecSlot)
+	_vStartPos = D3DXVECTOR3(fx, fy, 0);
+
+	switch (_eType)
 	{
-		if (iter.second)
-		{
-			delete iter.second;
-			iter.second = nullptr;
-		}
+	case Slot::SLOTTYPE::HEAD:
+		_iSlotCntX = 2;
+		_iSlotCntY = 2;
+		_iFlag |= 0x00000002;
+		break;
+	case Slot::SLOTTYPE::BODY:
+		_iSlotCntX = 2;
+		_iSlotCntY = 3;
+		_iFlag |= 0x00000004;
+		break;
+	case Slot::SLOTTYPE::MAINWP:
+		_iSlotCntX = 1;
+		_iSlotCntY = 3;
+		_iFlag |= 0x00000008;
+		break;
+	case Slot::SLOTTYPE::SECONDWP:
+		_iSlotCntX = 2;
+		_iSlotCntY = 3;
+		_iFlag |= 0x00000010;
+		break;
+	case Slot::SLOTTYPE::GLOVES:
+		_iSlotCntX = 2;
+		_iSlotCntY = 2;
+		_iFlag |= 0x00000020;
+		break;
+	case Slot::SLOTTYPE::LEGS:
+		_iSlotCntX = 2;
+		_iSlotCntY = 2;
+		_iFlag |= 0x00000040;
+		break;
+	case Slot::SLOTTYPE::BELT:
+		_iSlotCntX = 2;
+		_iSlotCntY = 1;
+		_iFlag |= 0x00000080;
+		break;
+	case Slot::SLOTTYPE::RING1:
+		_iSlotCntX = 1;
+		_iSlotCntY = 1;
+		_iFlag |= 0x00000100;
+		break;
+	case Slot::SLOTTYPE::NECKLACE:
+		_iSlotCntX = 1;
+		_iSlotCntY = 1;
+		_iFlag |= 0x00000200;
+		break;
+	case Slot::SLOTTYPE::POTION:
+		_iSlotCntX = 1;
+		_iSlotCntY = 1;
+		_iFlag |= 0x00000001;
+		break;
 	}
+	
+	Start();
 }
 
-void TestItem::Start(void) noexcept
+ItemSlot::~ItemSlot() noexcept
 {
-	_pImage = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\4.png")); //
+}
 
-	_tInfo._iWidth = _pImage->GetTexture()->Width();
-	_tInfo._iHeight = _pImage->GetTexture()->Height();;
+void ItemSlot::Start(void) noexcept
+{
+	Image* pImage = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\4.png")); //
 
-	_pTest->AddComponent(_pImage);
-	_pTest->SetSortOrder(2);
-	_pTest->GetTransform()->SetWorldPosition(100, 100, 0);
-	_pTest->SetActive(false);
+	_pOwner->AddComponent(pImage);
+	_pOwner->SetSortOrder(2);
+	_pOwner->GetTransform()->SetWorldPosition(_vStartPos.x, _vStartPos.y, 0);
+	_pOwner->SetActive(true);
+
+	_vecSlot.reserve((size_t)_iSlotCntX * (size_t)_iSlotCntY);
 
 	SLOTINFO* pSlot = nullptr;
-	D3DXVECTOR3 startpos = _pTest->GetTransform()->GetWorldPosition();
-	int iIndex = 0;
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < _iSlotCntY; ++i)
 	{
-		for (int j = 0; j < 2; ++j)
+		for (int j = 0; j < _iSlotCntX; ++j)
 		{
 			pSlot = new SLOTINFO;
 
-			pSlot->_vPos.x = startpos.x + (pSlot->_iSlotSizeX * j);
-			pSlot->_vPos.y = startpos.y + (pSlot->_iSlotSizeY * i);
+			pSlot->_vPos.x = _vStartPos.x + (pSlot->_iSlotSizeX * j);
+			pSlot->_vPos.y = _vStartPos.y + (pSlot->_iSlotSizeY * i);
 			pSlot->_tRect.left = LONG(pSlot->_vPos.x - (pSlot->_iSlotSizeX * 0.5f));
 			pSlot->_tRect.top = LONG(pSlot->_vPos.y - (pSlot->_iSlotSizeY * 0.5f));
 			pSlot->_tRect.right = LONG(pSlot->_vPos.x + (pSlot->_iSlotSizeX * 0.5f));
 			pSlot->_tRect.bottom = LONG(pSlot->_vPos.y + (pSlot->_iSlotSizeY * 0.5f));
+			pSlot->_iFlag = _iFlag;
 
 			GameObject* pGameobject = GameObject::Instantiate();
 			Image* pTest = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Test.png"));
 			pGameobject->AddComponent(pTest);
 			pGameobject->SetSortOrder(1);
-			pGameobject->GetTransform()->SetWorldPosition((float)pSlot->_tRect.left, (float)(pSlot->_tRect.top + (pSlot->_iSlotSizeY >> 1)), 0);
+			pGameobject->GetTransform()->SetWorldPosition(pSlot->_tRect.left, pSlot->_tRect.top, 0);
 			pGameobject->SetActive(true);
-			_vecSlot.push_back(std::make_pair(pGameobject, pSlot));
+
+			_vecSlot.emplace_back(std::make_pair(pGameobject,pSlot));
 		}
 	}
 }
 
-void TestItem::Update(float) noexcept
+void ItemSlot::Update(float) noexcept
 {
+	int i = 0;
 }
 
-void TestItem::setTestPosition(D3DXVECTOR3 vtest)
+void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
 {
 	int Index = 0;
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < _iSlotCntY; ++i)
 	{
-		for (int j = 0; j < 2; ++j)
+		for (int j = 0; j < _iSlotCntX; ++j)
 		{
-			Index = i * 2 + j;
+			Index = i * _iSlotCntX + j;
 			_vecSlot[Index].second->_vPos.x = vtest.x + (_vecSlot[Index].second->_iSlotSizeX * j);
 			_vecSlot[Index].second->_vPos.y = vtest.y + (_vecSlot[Index].second->_iSlotSizeY * i);
 			_vecSlot[Index].second->_tRect.left = LONG(_vecSlot[Index].second->_vPos.x - (_vecSlot[Index].second->_iSlotSizeX * 0.5f));
@@ -87,15 +134,15 @@ void TestItem::setTestPosition(D3DXVECTOR3 vtest)
 	}
 	vtest.x -= float(_vecSlot[0].second->_iSlotSizeX >> 1);
 	vtest.y -= float(_vecSlot[0].second->_iSlotSizeY >> 1);
-	_pTest->GetTransform()->SetWorldPosition(vtest);
+	_pOwner->GetTransform()->SetWorldPosition(vtest);
 }
 
-void TestItem::SetPosition(D3DXVECTOR3 vpos)
+void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)
 {
 	int Index = 0;
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < _iSlotCntY; ++i)
 	{
-		for (int j = 0; j < 2; ++j)
+		for (int j = 0; j < _iSlotCntX; ++j)
 		{
 			Index = i * 2 + j;
 			_vecSlot[Index].second->_vPos.x = (vpos.x + (_vecSlot[Index].second->_iSlotSizeX >> 1)) + (_vecSlot[Index].second->_iSlotSizeX * j);
@@ -108,5 +155,5 @@ void TestItem::SetPosition(D3DXVECTOR3 vpos)
 		}
 	}
 	vpos.x += float(_vecSlot[0].second->_iSlotSizeX >> 1);
-	_pTest->GetTransform()->SetWorldPosition(vpos);
+	_pOwner->GetTransform()->SetWorldPosition(vpos);
 }

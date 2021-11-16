@@ -193,7 +193,7 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 			Texture* pTex = pCubetab->_mapTex[cstrTextureName.GetString()].second;
 			std::string filepath = pCubetab->_mapTex[cstrTextureName.GetString()].first;
 			pGameObject->AddComponent(new CubeObject(pTex));
-			pGameObject->GetTransform()->SetLocalScale(pCubetab->_vScale.x, pCubetab->_vScale.y, pCubetab->_vScale.z);
+			pGameObject->GetTransform()->SetLocalScale(pCubetab->_vecScale[CubeIndex].x, pCubetab->_vecScale[CubeIndex].y, pCubetab->_vecScale[CubeIndex].z);
 			pGameObject->GetTransform()->SetWorldPosition(vPickingPos);
 
 			_vecCube.emplace_back(pGameObject, filepath);
