@@ -357,6 +357,9 @@
     <ClInclude Include="Item.h">
       <Filter>00. Game\01. GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="ItemSlot.h">
+      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -496,6 +499,9 @@
     </ClCompile>
     <ClCompile Include="BillboardObj.cpp">
       <Filter>00. Game\01. GameObject\BillboardObj</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemSlot.cpp">
+      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,9 @@
 #include "StatusBar.h"
 #include "Light.h"
 
+#include "SpriteRenderer.h"
+#include "PlaneRenderer.h"
+
 TownScene_01::TownScene_01(void) noexcept
 {
 }
@@ -79,11 +82,23 @@ bool TownScene_01::Init(void) noexcept
 			std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposY");
 			std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\PickingCube", sectionName.c_str(), "worldposZ");
 
-			obj->AddComponent(new CubeObject(ASSETMANAGER->GetTextureData(filePath.c_str())));
+			if (stof(py) > 1)
+				continue;
+
+			//obj->AddComponent(new CubeObject(ASSETMANAGER->GetTextureData(filePath.c_str())));
+			obj->AddComponent(new PlaneRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Terrain\\barricade.png"), stof(sx), 1));
 			Transform* tr = obj->GetTransform();
-			tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
+			//tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
 			tr->SetWorldPosition(stof(px), stof(py), stof(pz));
-			obj->SetLayer(GameObjectLayer::BACKGROUND);
+			if (stof(pz) > stof(px))
+			{
+				GameObject* temp = GameObject::Instantiate();
+				temp->GetTransform()->SetWorldPosition(tr->GetWorldPosition());
+				tr->SetParent(temp->GetTransform());
+				tr->SetLocalPosition(0, 0, 0);
+				tr->SetLocalEulerAngle(0, 90, 0);
+			}
+			obj->SetLayer(GameObjectLayer::ALPHA);
 		}
 
 		std::string name = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", "SectionNames", "Names");

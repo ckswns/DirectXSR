@@ -1,57 +1,51 @@
 #include "pch.h"
-#include "SpriteRenderer.h"
+#include "PlaneRenderer.h"
 #include "Quad.h"
 #include "Texture.h"
 #include "Transform.h"
 
 namespace ce
 {
-	SpriteRenderer::SpriteRenderer(LPDIRECT3DDEVICE9 pDevice, Texture* texture, bool lightEnable, DWORD cullingOption) noexcept :
+	PlaneRenderer::PlaneRenderer(LPDIRECT3DDEVICE9 pDevice, Texture* texture, int x, int z) noexcept :
 		Renderer(pDevice),
 		_quad(nullptr),
-		_lightEnable(lightEnable),
-		_cullOption(cullingOption)
+		_x(x),
+		_z(z)
 	{
 		if (texture != nullptr)
 			_material.SetMainTexture(texture);
 	}
 
-	void SpriteRenderer::Init(void) noexcept
+	void PlaneRenderer::Init(void) noexcept
 	{
 		_owner->SetLayer(GameObjectLayer::ALPHA);
 
-		float x = 1, y = 1;
 		float x2 = 1, y2 = 1;
 
 		if (_material.GetMainTexture() != nullptr)
 		{
-			x = _material.GetMainTexture()->LoadedWidth();
-			y = _material.GetMainTexture()->LoadedHeight();
-
 			x2 = _material.GetMainTexture()->Width();
 			y2 = _material.GetMainTexture()->Height();
 		}
 
-		_quad = new Quad(x2 / 100.f, y2 / 100.f, x2 / x, y2 / y);
+		_quad = new Quad(_x, _z, _x, _z);
 		_quad->Open(_pDevice);
-		
+
 		_transform = _owner->GetTransform();
 	}
 
-	void SpriteRenderer::Render(void) noexcept
+	void PlaneRenderer::Render(void) noexcept
 	{
+		_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+		_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+
 		_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
 		_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
 		_pDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);
 
-		DWORD flag = 0, cull = 0;
-		_pDevice->GetRenderState(D3DRS_LIGHTING, &flag);
+		DWORD cull = 0;
 		_pDevice->GetRenderState(D3DRS_CULLMODE, &cull);
-
-		if (_lightEnable == false)
-			_pDevice->SetRenderState(D3DRS_LIGHTING, false);
-
-		_pDevice->SetRenderState(D3DRS_CULLMODE, _cullOption);
+		_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 		_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 		//_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		//_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -75,40 +69,35 @@ namespace ce
 
 		_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
 		_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-		_pDevice->SetRenderState(D3DRS_LIGHTING, flag);
 		_pDevice->SetRenderState(D3DRS_CULLMODE, cull);
 	}
-
-	void SpriteRenderer::Release(void) noexcept
+	
+	void PlaneRenderer::Release(void) noexcept
 	{
 		delete _quad;
 		_quad = nullptr;
 	}
 
-	void SpriteRenderer::SetTexture(Texture* texture) noexcept
+	void PlaneRenderer::SetTexture(Texture* texture) noexcept
 	{
 		_material.SetMainTexture(texture);
 
-		float x = 1, y = 1;
 		float x2 = 1, y2 = 1;
 
 		if (texture != nullptr)
 		{
-			x = _material.GetMainTexture()->LoadedWidth();
-			y = _material.GetMainTexture()->LoadedHeight();
-
 			x2 = _material.GetMainTexture()->Width();
 			y2 = _material.GetMainTexture()->Height();
 		}
 
 		_quad->Close();
-		_quad->SetInterval(x2 / 100.f, y2 / 100.f);
-		_quad->SetMaxUV(x2 / x, y2 / y);
+		_quad->SetInterval(_x, _z);
+		_quad->SetMaxUV(_x, _z);
 
 		_quad->Open(_pDevice);
 	}
 
-	void SpriteRenderer::SetColor(D3DXCOLOR c) noexcept
+	void PlaneRenderer::SetColor(D3DXCOLOR c) noexcept
 	{
 		_material.SetColor(c);
 	}
