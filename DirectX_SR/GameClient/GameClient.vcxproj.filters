@@ -360,6 +360,9 @@
     <ClInclude Include="HpPotion.h">
       <Filter>00. Game\01. GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="ItemSlot.h">
+      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -502,6 +505,9 @@
     </ClCompile>
     <ClCompile Include="HpPotion.cpp">
       <Filter>00. Game\01. GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemSlot.cpp">
+      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

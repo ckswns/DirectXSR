@@ -181,6 +181,7 @@
     <ClInclude Include="Game_Math.h" />
     <ClInclude Include="Game_Struct.h" />
     <ClInclude Include="HpPotion.h" />
+    <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="GameDataManager.cpp" />
     <ClCompile Include="HpPotion.cpp" />
+    <ClCompile Include="ItemSlot.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />
     <ClCompile Include="PoisonProjectile.cpp" />
