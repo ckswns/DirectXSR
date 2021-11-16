@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Player.h"
 
 #include "Transform.h"
@@ -239,13 +239,13 @@ void Player::InitState()
 
 void Player::SetFPV()
 {
-	//1ÀÎÄª > 3ÀÎÄª
+	//1ì¸ì¹­>3ì¸ì¹­
 	if (_bFPV)
 	{
 		_bFPV = false;
 		_pTrans->SetLocalEulerAngle(0, 0, 0);
 	}
-	else //3ÀÎÄª > 1ÀÎÄª
+	else //3ì¸ì¹­>1ì¸ì¹­
 	{
 		SetState(_eCurState, BACK);
 		_pFSM[_eCurState]->Start();
@@ -326,13 +326,13 @@ void Player::GetHit(float fDamage)
 	_tStat->_fHp -= fDamage;
 	if (_tStat->_fHp < 0)
 	{
-		//»ç¸Á ¸ð¼Ç
+		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
-		//´Ù½Ã ½ÃÀÛ 
+		//ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 	}
 	else
 	{
-		//µ¥¹ÌÁö ¸ð¼Ç
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	}
 }
 

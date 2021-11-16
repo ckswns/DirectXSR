@@ -4,6 +4,7 @@
 namespace ce
 {
 	class Animator;
+	class SpriteRenderer;
 }
 
 class Actor : public Behaviour
@@ -46,9 +47,12 @@ public:		virtual void	GetHit(float damage) noexcept PURE;
 
 protected:	Data			_data;
 protected:	Direction		_dir;
+
 protected:	Collider*		_hitBox;
 protected:	Collider*		_attackBox;
 
 protected:	Animator*		_animator;
+
+protected:	SpriteRenderer* _spriteRenderer;
 };
 

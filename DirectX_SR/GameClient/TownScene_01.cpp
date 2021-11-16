@@ -18,6 +18,8 @@
 #include "PathFinding.h"
 #include "TargetCamera.h"
 #include "StatusBar.h"
+#include "Light.h"
+
 TownScene_01::TownScene_01(void) noexcept
 {
 }
@@ -81,7 +83,7 @@ bool TownScene_01::Init(void) noexcept
 			Transform* tr = obj->GetTransform();
 			tr->SetLocalScale(stof(sx), stof(sy), stof(sz));
 			tr->SetWorldPosition(stof(px), stof(py), stof(pz));
-			obj->SetLayer(GameObjectLayer::OBJECT);
+			obj->SetLayer(GameObjectLayer::BACKGROUND);
 		}
 
 		std::string name = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", "SectionNames", "Names");
@@ -106,17 +108,22 @@ bool TownScene_01::Init(void) noexcept
 		}
 	}
 
-	//GameObject* obj = GameObject::Instantiate();
-	//obj->AddComponent(new EditorCamera(g_hWnd));
-	//obj->AddComponent(new AudioListener());
-	//obj->GetTransform()->SetWorldPosition(10, 10, 10);
-	//obj->GetTransform()->SetLocalEulerAngle(45, 0, 0);
-	//obj->AddComponent(new SphereCollider(5));
-	//obj->AddComponent(new Rigidbody());
+	D3DCOLORVALUE c;
+	c.a = 1;
+	c.r = 0.25f;
+	c.g = 0.25f;
+	c.b = 0.25f;
 
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new Cow());
+	GameObject* obj = GameObject::Instantiate();
+	obj->GetTransform()->SetWorldPosition(0, -3, 0);
+	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
+	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
+	for (int i = 0; i < 30; i++)
+	{
+		obj = GameObject::Instantiate();
+		obj->AddComponent(new Cow());
+	}
 	NaviMesh* _pNaviMesh = new NaviMesh(terrain->Get_VtxPos(), terrain->Get_VtxCntX(), terrain->Get_VtxCntZ());
 	_pNaviMesh->Init();
 
@@ -146,25 +153,25 @@ void TownScene_01::FixedUpdate(float fElapsedTime) noexcept
 
 void TownScene_01::Update(float fElapsedTime) noexcept
 {
-	if (INPUT->GetKeyDown(VK_LBUTTON))
-	{
-		if (Camera::GetMainCamera() == nullptr)
-			CE_ASSERT("ckswns", "main camera does not exits");
-		Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
-		RaycastHit hit;
+	//if (INPUT->GetKeyDown(VK_LBUTTON))
+	//{
+	//	if (Camera::GetMainCamera() == nullptr)
+	//		CE_ASSERT("ckswns", "main camera does not exits");
+	//	Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
+	//	RaycastHit hit;
 
-		if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
-		{
-			hit.collider->GetGameObject()->Destroy();
-		}
+	//	if (Physics::Raycast(ray, hit, GameObjectLayer::OBJECT))
+	//	{
+	//		hit.collider->GetGameObject()->Destroy();
+	//	}
 
-		//if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
-		//{
-		//	GameObject* obj = GameObject::Instantiate();
-		//	obj->AddComponent(new CubeObject);
-		//	obj->GetTransform()->SetWorldPosition(hit.point);
-		//}
-	}
+	//	//if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
+	//	//{
+	//	//	GameObject* obj = GameObject::Instantiate();
+	//	//	obj->AddComponent(new CubeObject);
+	//	//	obj->GetTransform()->SetWorldPosition(hit.point);
+	//	//}
+	//}
 }
 
 void TownScene_01::LateUpdate(float fElapsedTime) noexcept

@@ -10,7 +10,7 @@ namespace ce
 	class SpriteRenderer : public Renderer
 	{
 	public:		explicit	SpriteRenderer(void) noexcept = delete;
-	public:		explicit	SpriteRenderer(LPDIRECT3DDEVICE9 pDevice, Texture* texture = nullptr, bool lightEnable = true) noexcept;
+	public:		explicit	SpriteRenderer(LPDIRECT3DDEVICE9 pDevice, Texture* texture = nullptr, bool lightEnable = true, DWORD cullingOption = D3DCULL_CCW) noexcept;
 	public:		virtual		~SpriteRenderer(void) noexcept { __noop; }
 
 	public:		void		Init(void) noexcept override;
@@ -23,5 +23,6 @@ namespace ce
 	private:	bool		_lightEnable = true;
 	private:	Quad*		_quad;
 	private:	Transform*	_transform;
+	private:	DWORD		_cullOption;
 	};
 }

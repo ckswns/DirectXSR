@@ -183,8 +183,10 @@
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
     <ClInclude Include="PoisonProjectile.h" />
+    <ClInclude Include="Slot.h" />
     <ClInclude Include="StatusBar.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MouseBtnUI.h" />
     <ClInclude Include="MoveCommand.h" />
@@ -215,6 +217,8 @@
     <ClInclude Include="TargetCamera.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TopBar.h" />
+    <ClInclude Include="Test.h" />
+    <ClInclude Include="TestItem.h" />
     <ClInclude Include="TownScene_01.h" />
   </ItemGroup>
   <ItemGroup>
@@ -233,8 +237,10 @@
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />
     <ClCompile Include="PoisonProjectile.cpp" />
+    <ClCompile Include="Slot.cpp" />
     <ClCompile Include="StatusBar.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="MouseBtnUI.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
@@ -265,6 +271,8 @@
     <ClCompile Include="SpearTrail.cpp" />
     <ClCompile Include="TargetCamera.cpp" />
     <ClCompile Include="TopBar.cpp" />
+    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="TestItem.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
   </ItemGroup>
   <ItemGroup>

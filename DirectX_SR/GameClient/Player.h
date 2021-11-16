@@ -34,12 +34,12 @@ public:		void					SetFPV();
 public:		void					SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget = D3DXVECTOR3(0,-5,0),bool bAtt = false);
 public:		void					UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 
-public:		bool					IsRunning(float fElapsedTime);
+public:		void					GetHit(float fDamage);
 
+public:		bool					IsRunning(float fElapsedTime);
 public:		float					GetHPPer();
 public:		float					GetMPPer();
 public:		float					GetStaminaPer();
-
 public:		InputHandler*			GetInpuHandler() { return _pInputHandler; }
 
 private:	Transform*				_pTrans;

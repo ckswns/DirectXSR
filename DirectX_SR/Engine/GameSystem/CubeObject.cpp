@@ -36,9 +36,6 @@ namespace ce
 
 		meshRenderer->GetMaterialPTR()->SetColor(_color);
 		gameObject->AddComponent(meshRenderer);
-
-		BoxCollider* coll = new BoxCollider(D3DXVECTOR3(1, 1, 1));
-		gameObject->AddComponent(coll);
 	}
 
 	void CubeObject::Update(float fElapsedTime) noexcept

@@ -148,17 +148,28 @@ namespace ce
 
 	D3DXVECTOR3 Transform::GetForward(void) const noexcept
 	{
-		return D3DXVECTOR3(_matWorld._31, _matWorld._32, _matWorld._33);
+		D3DXVECTOR3 foward = D3DXVECTOR3(_matWorld._31, _matWorld._32, _matWorld._33);
+		D3DXVec3Normalize(&foward, &foward);
+
+		return foward;
 	}
 
 	D3DXVECTOR3 Transform::GetUp(void) const noexcept
 	{
-		return D3DXVECTOR3(_matWorld._21, _matWorld._22, _matWorld._23);
+		D3DXVECTOR3 up = D3DXVECTOR3(_matWorld._21, _matWorld._22, _matWorld._23);
+
+		D3DXVec3Normalize(&up, &up);
+
+		return up;
 	}
 
 	D3DXVECTOR3 Transform::GetRight(void) const noexcept
 	{
-		return D3DXVECTOR3(_matWorld._11, _matWorld._12, _matWorld._13);
+		D3DXVECTOR3 right = D3DXVECTOR3(_matWorld._11, _matWorld._12, _matWorld._13);
+
+		D3DXVec3Normalize(&right, &right);
+
+		return right;
 	}
 
 	void Transform::Translate(const D3DXVECTOR3& position, bool isLocal)
