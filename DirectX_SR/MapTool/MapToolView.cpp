@@ -233,7 +233,7 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 		Mesh* mesh = new Quad();
 		mesh->Open(D3D9DEVICE->GetDevice());
 		MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), mesh);
-		mr->GetMaterialPTR()->SetMainTexture(pTex);
+		//mr->GetMaterialPTR()->SetTexture(pTex);
 		pGameObject->GetTransform()->SetWorldPosition(vPickingPos);
 		pGameObject->GetTransform()->Translate(0.f, 0.5f, 0.f);
 		pGameObject->AddComponent(mr);

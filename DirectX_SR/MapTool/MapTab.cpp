@@ -344,61 +344,84 @@ void MapTab::OnBnClickedLoadTerrain()
 	CMainFrame* pMain = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 	CMapToolView* pMapToolview = static_cast<CMapToolView*>(pMain->m_tMainSplitter.GetPane(0, 1));
 
-	std::string strLoadPath = "Data/Terrain";
-	std::string strSection = "Terrain";
+	std::string strFilePath = "Data/Terrain";
+	std::string strSectiong = "Terrain";
+	/*std::string	strWidth;*/
+	//strWidth = INIMANAGER->LoadDataString(strFilePath, "Terrain", "MapWidth");
+	m_dwVtxX = stoi(INIMANAGER->LoadDataString(strFilePath, strSectiong, "MapWidth"));
+
+	//std::string	strHeight;
+	//strHeight = INIMANAGER->LoadDataString(strFilePath, "Terrain", "MapHeight");
+	m_dwVtxZ = stoi(INIMANAGER->LoadDataString(strFilePath, strSectiong, "MapHeight"));
 	std::string strTexture = "Texture";
+	std::vector<std::string> vecTexturePath;
+	for (int i = 0; i < 5; ++i)
+	{
+		vecTexturePath.emplace_back(INIMANAGER->LoadDataString(strFilePath, strSectiong, strTexture + std::to_string(i)));
+	}
+
 	std::string strAlphaMap = "AlphaMap";
-
-	std::vector<std::string> vecTexture;
 	std::vector<std::string> vecAlphaMap;
-
-	m_dwVtxX = stoi(INIMANAGER->LoadDataString(strLoadPath, strSection, "MapWidth"));
-	m_dwVtxZ = stoi(INIMANAGER->LoadDataString(strLoadPath, strSection, "MapHeight"));
+	for (int i = 0; i < 4; ++i)
+	{
+		vecAlphaMap.emplace_back(INIMANAGER->LoadDataString(strFilePath, strSectiong, strAlphaMap + std::to_string(i+1)));
+	}
 
 	GameObject* pGameObject = GameObject::Instantiate();
-	Mesh* pMesh = new FloorTerrain(m_dwVtxX, m_dwVtxZ);
-	static_cast<FloorTerrain*>(pMesh)->Open(D3D9DEVICE->GetDevice());
+	Texture* pTex = new Texture();
+	pTex->Init(D3D9DEVICE->GetDevice(),vecTexturePath[0].c_str());
 
-	for (DWORD i = 0; i < 5; ++i)
-	{
-		vecTexture.emplace_back(INIMANAGER->LoadDataString(strLoadPath,strSection, strTexture + std::to_string(i)));
-		vecAlphaMap.emplace_back(INIMANAGER->LoadDataString(strLoadPath, strSection, strAlphaMap + std::to_string(i + 1)));
+	//std::string strBaseFilePath;
+	//strBaseFilePath = INIMANAGER->LoadDataString(strFilePath, "Terrain", "BaseTerrain");
+	//IDirect3DTexture9* pBaseTex;
+	//D3DXCreateTextureFromFileA(D3D9DEVICE->GetDevice(), strBaseFilePath.c_str(), &pBaseTex);
+	//
+	//GameObject* pGameObject = GameObject::Instantiate();
+	//Mesh* pMesh = new FloorTerrain(m_dwVtxX, m_dwVtxZ);
+	//pMapToolview->_mesh = pMesh;
 
-		if (i == 0)
-		{
-			IDirect3DTexture9* pTexure = nullptr;
-			D3DXCreateTextureFromFileA(D3D9DEVICE->GetDevice(), vecTexture[i].c_str(), &pTexure);
-			static_cast<FloorTerrain*>(pMesh)->SetBaseTex(pTexure);
-		}
-		else
-		{
-			IDirect3DTexture9* pTexure = nullptr;
-			IDirect3DTexture9* pAlphaMap = nullptr;
-			D3DXCreateTextureFromFileA(D3D9DEVICE->GetDevice(), vecTexture[i].c_str(), &pTexure);
-			//D3DXCreateTextureFromFileA(D3D9DEVICE->GetDevice(), vecAlphaMap[i].c_str(), &pAlphaMap);
-			D3DXIMAGE_INFO tImageInfo;
-			D3DXGetImageInfoFromFileA(vecAlphaMap[(i - 1)].c_str(), &tImageInfo);
-			D3DXCreateTextureFromFileExA(D3D9DEVICE->GetDevice()
-											, vecAlphaMap[(i - 1)].c_str()
-											, tImageInfo.Width
-											, tImageInfo.Height
-											, tImageInfo.MipLevels
-											, 0
-											, tImageInfo.Format
-											, D3DPOOL_MANAGED
-											, D3DX_DEFAULT
-											, D3DX_DEFAULT
-											, 0
-											, nullptr
-											, nullptr
-											, &pAlphaMap);
+	//pMapToolview->_mesh->Open(D3D9DEVICE->GetDevice());
+	//static_cast<FloorTerrain*>(pMapToolview->_mesh)->SetBaseTex(pBaseTex);
 
-			static_cast<FloorTerrain*>(pMesh)->SetAlphaTex(pTexure, pAlphaMap,(i - 1));
-		}
-	}
-	pMapToolview->_mesh = pMesh;
-	MeshRenderer* pmr = new MeshRenderer(D3D9DEVICE->GetDevice(), static_cast<FloorTerrain*>(pMesh));
-	pGameObject->AddComponent(pmr);
+	//for (int i = 0; i < 4; ++i)
+	//{
+	//	CString cstrTerrainNumber;
+	//	cstrTerrainNumber.Format(_T("%d"), i + 1);
+	//	std::string strSection = "Data/AlphaTerrain"; // 사용할 텍스쳐 경로
+	//	strSection += CT2CA(cstrTerrainNumber + L".png"); // 파일 이미지
+	//	std::string strkey = "TerrainAlphaMap";
+
+	//	std::string strTexFilePath;
+	//	strTexFilePath = INIMANAGER->LoadDataString("Data/Terrain", strSection, strkey);
+
+	//	IDirect3DTexture9* pTexture = nullptr;
+	//	IDirect3DTexture9* pAlphaMapTemp = nullptr;
+
+	//	D3DXCreateTextureFromFileA(D3D9DEVICE->GetDevice(), strTexFilePath.c_str(),&pTexture);
+	//	D3DXIMAGE_INFO tImageInfo;
+	//	D3DXGetImageInfoFromFileA(strSection.c_str(), &tImageInfo);
+	//	//D3DXCreateTextureFromFileA(D3D9DEVICE->GetDevice(), strSection.c_str(), &pAlphaMapTemp);
+	//	D3DXCreateTextureFromFileExA(D3D9DEVICE->GetDevice()
+	//								,strSection.c_str()
+	//								,tImageInfo.Width
+	//								,tImageInfo.Height
+	//								,tImageInfo.MipLevels
+	//								,0
+	//								,tImageInfo.Format
+	//								,D3DPOOL_MANAGED
+	//								,D3DX_DEFAULT
+	//								,D3DX_DEFAULT
+	//								,0
+	//								,nullptr
+	//								,nullptr
+	//								,&pAlphaMapTemp);
+
+	//	static_cast<FloorTerrain*>(pMapToolview->_mesh)->SetAlphaTex(pTexture, pAlphaMapTemp,(i));
+	//}	
+	//MeshRenderer* mr = new MeshRenderer(D3D9DEVICE->GetDevice(), pMapToolview->_mesh);
+	//pGameObject->AddComponent(mr);
+
+	MessageBoxA(nullptr, "Load Success", "Success", MB_OK);
 }
 
 // 모든파일 불러오기

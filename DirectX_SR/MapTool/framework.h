@@ -45,6 +45,9 @@
 #include "d3dx9.h"
 #pragma comment(lib, "d3dx9.lib")
 
+//#include "../External/include/fmod.hpp"
+//#define __USE_FMOD__
+
 #include "GameController.h"
 #include "ManagerDef.h"
 using namespace ce;

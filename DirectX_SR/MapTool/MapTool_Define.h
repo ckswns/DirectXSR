@@ -4,11 +4,11 @@
 
 //#define MAPWIDTH		32
 //#define MAPHEIGHT		32
-#define WINCX 800
-#define WINCY 600
+#define WINCX 1280
+#define WINCY 720
 #define MAXTEXNUM		4
 //#define TEXALPHASIZE	512 // totla vertex /2 
-//#define MINIALPHASIZE	128	// total vertex /8
+//#define MINIALPHASIZE	128
 
 #define SAFE_DELETE_(p)       {if(p) {delete (p);     (p)=NULL;}}
 #define SAFE_DELETE_ARRAY_(p) {if(p) {delete[] (p);   (p)=NULL;}}
