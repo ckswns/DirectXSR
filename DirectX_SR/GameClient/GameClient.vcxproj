@@ -171,6 +171,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Cow.h" />
     <ClInclude Include="DbgShowFrame.h" />
+    <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FSMState.h" />
@@ -221,6 +222,7 @@
     <ClInclude Include="SpearTrail.h" />
     <ClInclude Include="TargetCamera.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="TopBar.h" />
     <ClInclude Include="TestItem.h" />
     <ClInclude Include="TownScene_01.h" />
@@ -233,6 +235,7 @@
     <ClCompile Include="BoneSpear.cpp" />
     <ClCompile Include="Cow.cpp" />
     <ClCompile Include="DbgShowFrame.cpp" />
+    <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -279,6 +282,7 @@
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="SpearTrail.cpp" />
     <ClCompile Include="TargetCamera.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="TopBar.cpp" />
     <ClCompile Include="TestItem.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
