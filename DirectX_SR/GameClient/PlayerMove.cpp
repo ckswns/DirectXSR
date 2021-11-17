@@ -18,7 +18,7 @@ void PlayerMove::Start() noexcept
 {
 	if (!_bFPV)
 	{
-		if (_pTargetTrans)
+		if (_pTargetTrans != nullptr)
 		{
 			_vTarget = _pTargetTrans->GetWorldPosition();
 		}
@@ -30,8 +30,15 @@ void PlayerMove::Start() noexcept
 	_strWalk = "Walk_" + std::to_string(_iDir);
 
 	_pAnimator->SetAnimation(_strWalk);
-//	_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget);
-//	_pPath = (_pPathFinding->GetPath());
+
+	if (!_bFPV) 
+	{
+		if (_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget))
+		{
+			_pPath = (_pPathFinding->GetPath());
+			_bFinding = true;
+		}
+	}
 }
 
 void PlayerMove::Update(float fElapsedTime) noexcept
@@ -59,13 +66,13 @@ void PlayerMove::TPVUpdate(float fElapsedTime)
 	{
 		D3DXVECTOR3 vDir = _vTarget - _pTrans->GetWorldPosition();
 		vDir.y = 0;
-		if (D3DXVec3Length(&vDir) < 0.1f)
+		 if (D3DXVec3Length(&vDir) < 0.1f)
 		{
 			//공격이였으면 공격으로 돌아가기
 			if (_bAtt)
 			{
 				_bAtt = false;
-				_pPlayer->SetState(PLAYER_ATTACK, _eDir, _pTargetTrans);
+				_pPlayer->SetState(PLAYER_ATTACK, _pTargetTrans);
 				_pTargetTrans = nullptr;
 			}
 			else
@@ -90,12 +97,25 @@ void PlayerMove::TPVUpdate(float fElapsedTime)
 			{
 				_pPath.clear();
 				_bFinding = false;
+
+				if (_bAtt)
+				{
+					_bAtt = false;
+					_pPlayer->SetState(PLAYER_ATTACK, _pTargetTrans);
+					_pTargetTrans = nullptr;
+				}
+				else
+					_pPlayer->SetState(PLAYER_STAND, _eDir);
 			}
 		}
 		else
 		{
 			Move(*D3DXVec3Normalize(&vDir, &vDir), fElapsedTime);
 		}
+	}
+	else
+	{
+		_pPlayer->SetState(PLAYER_STAND, _eDir);
 	}
 }
 

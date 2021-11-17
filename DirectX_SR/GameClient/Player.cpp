@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Animator.h"
 #include "SphereCollider.h"
+#include "BoxCollider.h"
 #include "Rigidbody.h"
 #include "AudioListener.h"
 #include "AudioSource.h"
@@ -27,6 +28,7 @@
 #include "PoisonNova.h"
 
 #include "Light.h"
+#include "Inventory.h"
 
 Player::Player(PathFinding* pf) noexcept
 	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
@@ -37,8 +39,6 @@ Player::Player(PathFinding* pf) noexcept
 	_pSkills.push_back(new RaiseSkeleton());
 	_pSkills.push_back(new BoneSpear());
 	_pSkills.push_back(new PoisonNova());
-
-	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(pf);
 
 	_pInputHandler = new InputHandler(this);
 }
@@ -56,6 +56,14 @@ void Player::Start(void) noexcept
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 	_pInputHandler->Start();
 
+	//인벤토리 
+	/*_pInven = new Inventory();
+	_pInvenObj = GameObject::Instantiate();
+	_pInvenObj->AddComponent(_pInven);*/
+
+
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding);
+
 	gameObject->AddComponent(new AudioListener());
 	_pAudioSource = new AudioSource();
 	gameObject->AddComponent(_pAudioSource);
@@ -69,6 +77,10 @@ void Player::Start(void) noexcept
 	_pCollider = new SphereCollider(0.3f, "hitbox");
 	gameObject->AddComponent(_pCollider);
 	gameObject->AddComponent(new Rigidbody());
+
+	_pAttCollider = new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.3f), D3DXVECTOR3(0, 0, 1), "Attack");
+	gameObject->AddComponent(_pAttCollider);
+	_pAttCollider->SetEnable(false);
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"),false);
 	gameObject->AddComponent(sr);
@@ -145,12 +157,6 @@ void Player::OnDestroy(void) noexcept
 	}
 }
 
-//void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
-//{
-//	//벽이나 장애물과 부딪치면 길찾기 시작 
-//
-//}
-
 void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 {
 	if (other->GetGameObject()->GetTag() == GameObjectTag::OBSTACLE)
@@ -159,6 +165,14 @@ void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 		{
 			transform->SetWorldPosition(_prevPos);
 			_bCollWithObstacle = true;
+		}
+	}
+	else if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+	{
+		if (mine->GetTag() == "Attack")
+		{
+			//1인칭인 경우 공격 체크 
+			other->GetGameObject();
 		}
 	}
 }
@@ -335,17 +349,11 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 	if (vTarget != D3DXVECTOR3(0, -5, 0))
 		_pFSM[newState]->SetTarget(vTarget);
 
-	/*if(!_bFPV)
-		_pFSM[newState]->SetDir(eDir);
-	
-	if (_eCurState != newState) 
-	{
-		_eCurState = newState;
-		_pFSM[_eCurState]->Start();
-	}*/
-
 	if (!_bFPV)
 	{
+		if(newState == PLAYER_MOVE)
+			static_cast<PlayerMove*>(_pFSM[newState])->SetAtt(false);
+
 		_pFSM[newState]->SetDir(eDir);
 
 		_eCurState = newState;
@@ -359,17 +367,15 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 }
 
 //attack,move
-void Player::SetState(PLAYER_STATE newState, DIR eDir, Transform* targetTrans, bool bAtt)
+void Player::SetState(PLAYER_STATE newState, Transform* targetTrans, bool bAtt)
 {
 	if (!_bFPV)
 	{
 		_pFSM[newState]->SetTargetTrans(targetTrans);
 
 		if (bAtt)
-			static_cast<PlayerMove*>(_pFSM[newState])->SetAtt();
+			static_cast<PlayerMove*>(_pFSM[newState])->SetAtt(bAtt);
 	
-		_pFSM[newState]->SetDir(eDir);
-
 		_eCurState = newState;
 		_pFSM[_eCurState]->Start();
 	}
@@ -403,6 +409,11 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			break;
 		}
 	}
+}
+
+void Player::SetAttCollider(bool b)
+{
+	_pAttCollider->SetEnable(b);
 }
 
 void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)

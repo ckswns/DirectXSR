@@ -94,20 +94,35 @@ void Skeleton::Create(Transform* trans)
 	SetState(SK_CREATE);
 }
 
-void Skeleton::SetState(SK_STATE newState, DIR eDir, D3DXVECTOR3 vTarget, bool bAtt)
+void Skeleton::SetState(SK_STATE newState, DIR eDir, D3DXVECTOR3 vTarget)
 {
 	_eCurState = newState;
 
 	if (vTarget != D3DXVECTOR3(0, -5, 0))
 		_pFSM[_eCurState]->SetTarget(vTarget);
 
-	if (bAtt)
+	if (newState == SK_MOVE)
 	{
-		static_cast<SkeletonMove*>(_pFSM[_eCurState])->SetAtt();
+		static_cast<SkeletonMove*>(_pFSM[_eCurState])->SetAtt(false);
 	}
 
 	if (eDir != DIR_END)
 		_pFSM[_eCurState]->SetDir(eDir);
+
+	_pFSM[_eCurState]->Start();
+}
+
+void Skeleton::SetState(SK_STATE newState, Transform* targetTrans, bool bAtt)
+{
+	_eCurState = newState;
+
+	_pFSM[_eCurState]->SetTargetTrans(targetTrans);
+
+	if (bAtt)
+	{
+		static_cast<SkeletonMove*>(_pFSM[_eCurState])->SetAtt(bAtt);
+	}
+
 	_pFSM[_eCurState]->Start();
 }
 
@@ -125,7 +140,7 @@ void Skeleton::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 	if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
 	{
 		if(_eCurState != SK_ATTACK)
-			SetState(SK_STATE::SK_ATTACK, DIR_END, other->GetTransform()->GetWorldPosition());
+			SetState(SK_STATE::SK_ATTACK, other->GetTransform());
 	}
 
 }

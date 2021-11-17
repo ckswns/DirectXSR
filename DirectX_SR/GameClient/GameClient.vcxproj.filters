@@ -193,6 +193,12 @@
     <Filter Include="00. Game\01. GameObject\00. Player\01. State\Player\04. Damaged">
       <UniqueIdentifier>{cd704aaa-1e94-4ff3-b8db-374cf031901d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\NPC">
+      <UniqueIdentifier>{d946f848-c0a2-496b-a4cf-a16af9bca7dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\NPC\Store">
+      <UniqueIdentifier>{6c61c5c7-969d-4bd5-b630-63cc424550e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -378,6 +384,15 @@
     <ClInclude Include="PlayerDamaged.h">
       <Filter>00. Game\01. GameObject\00. Player\01. State\Player\04. Damaged</Filter>
     </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>00. Game\01. GameObject\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="StoreNPC.h">
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
+    </ClInclude>
+    <ClInclude Include="StoreWnd.h">
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -532,6 +547,12 @@
     </ClCompile>
     <ClCompile Include="PlayerDamaged.cpp">
       <Filter>00. Game\01. GameObject\00. Player\01. State\Player\04. Damaged</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreNPC.cpp">
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreWnd.cpp">
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ public:		virtual					~SkeletonMove() noexcept { __noop; }
 public:		virtual void			Start() noexcept;
 public:		virtual void			Update(float fElapsedTime) noexcept;
 
-public:		void					SetAtt() { _bAtt = true; }
+public:		void					SetAtt(bool att) { _bAtt = att; }
 
 private:	Skeleton*				_pSk;
 private:	Transform*				_pPlayerTrans;
