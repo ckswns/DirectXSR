@@ -16,6 +16,7 @@ class Skill;
 class PathFinding;
 class InputHandler;
 class PlayerFSMState;
+class Inventory;
 class Player : public Behaviour
 {
 private:	using		VEC_FSM = std::vector<PlayerFSMState*>;
@@ -50,6 +51,7 @@ public:		float					GetHPPer();
 public:		float					GetMPPer();
 public:		float					GetStaminaPer();
 public:		InputHandler*			GetInpuHandler() { return _pInputHandler; }
+public:		Inventory* GetInventory() { return _pInven; }
 
 private:	Transform*				_pTrans;
 private:	Animator*				_pAnimator;
@@ -61,6 +63,8 @@ private:	InputHandler*			_pInputHandler;
 private:	VEC_FSM					_pFSM;
 private:	PLAYER_STATE			_eCurState;
 
+private:	GameObject*				_pInvenObj;
+private:	Inventory*				_pInven;
 private:	PathFinding*			_pPathFinding;
 private:	AudioSource*			_pAudioSource;
 private:	AudioAsset*				_pManaSound[3];

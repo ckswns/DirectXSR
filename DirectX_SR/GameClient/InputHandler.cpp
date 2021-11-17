@@ -13,7 +13,7 @@
 #include "Transform.h"
 #include "SphereCollider.h"
 #include "TargetCamera.h"
-
+#include "Inventory.h"
 InputHandler::InputHandler(Player* player) noexcept
 	:_pPlayer(player), _vDir(0, 0, 0),
 	_bFPV(false), _bAtt(false), _bDown(false), _bLBSkill(false), _bRBSkill(false)
@@ -68,6 +68,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 					//아이템 정보 
 					INVENITEMINFO* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
 					//인벤토리에 아이템 추가 
+				//	_pPlayer->GetInventory()->GetItem(ivenItem);
 
 					hit.collider->GetGameObject()->Destroy();
 				}

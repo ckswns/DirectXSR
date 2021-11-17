@@ -28,6 +28,7 @@
 #include "PoisonNova.h"
 
 #include "Light.h"
+#include "Inventory.h"
 
 Player::Player(PathFinding* pf) noexcept
 	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
@@ -54,6 +55,12 @@ void Player::Start(void) noexcept
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 	_pInputHandler->Start();
+
+	//인벤토리 
+	/*_pInven = new Inventory();
+	_pInvenObj = GameObject::Instantiate();
+	_pInvenObj->AddComponent(_pInven);*/
+
 
 	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding);
 
