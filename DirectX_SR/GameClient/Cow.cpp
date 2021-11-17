@@ -30,7 +30,7 @@ void Cow::Start(void) noexcept
 {
 	_spriteRenderer = static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Idle\\1.png"))));
 	gameObject->AddComponent(new BillboardObj());
-	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f)));
+	_hitBox = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f))));
 	gameObject->AddComponent(new Rigidbody());
 	//gameObject->GetTransform()->SetLocalPosition(0, 0.7f, 0);
 
@@ -198,7 +198,6 @@ void Cow::Update(float fElapsedTime) noexcept
 			}
 			else
 			{
-
 				transform->Translate(vDir * _data.moveSpeed * fElapsedTime);
 			}
 		}
