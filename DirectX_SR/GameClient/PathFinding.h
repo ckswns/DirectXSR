@@ -20,7 +20,6 @@ private:	void				Release() noexcept;
 
 public:		std::list<Node*>	GetPath() { return _pPath; }
 
-private:	Transform*			_pTrans;
 private:	NaviMesh*			_pNavi;
 private:	std::list<Node*>	_pPath;
 

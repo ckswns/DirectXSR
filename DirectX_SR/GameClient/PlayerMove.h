@@ -15,7 +15,7 @@ public:		virtual void			Update(float fElapsedTime) noexcept;
 private:	void					TPVUpdate(float fElapsedTime);
 private:	void					Move(D3DXVECTOR3 vDir, float fElapsedTime);
 
-public:		void					SetAtt() { _bAtt = true; }
+public:		void					SetAtt(bool att) { _bAtt = att; }
 
 private:	bool					_bFinding;
 private:	PathFinding*			_pPathFinding;

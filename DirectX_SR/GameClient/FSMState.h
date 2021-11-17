@@ -11,7 +11,7 @@ class FSMState abstract
 {
 public:		explicit			FSMState() noexcept = delete;
 public:		explicit			FSMState(Animator* pAnim, Transform* trans = nullptr) noexcept
-													:_pAnimator(pAnim), _pTrans(trans),_vTarget(D3DXVECTOR3(0,5,0)), _eDir(DIR_END){ __noop; }
+													:_pAnimator(pAnim), _pTrans(trans),_vTarget(D3DXVECTOR3(0,5,0)), _pTargetTrans(nullptr), _eDir(DIR_END){ __noop; }
 public:		virtual				~FSMState() noexcept { __noop; }
 
 public:		virtual void		Start() noexcept =0;

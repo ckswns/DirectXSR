@@ -38,8 +38,6 @@ Player::Player(PathFinding* pf) noexcept
 	_pSkills.push_back(new BoneSpear());
 	_pSkills.push_back(new PoisonNova());
 
-	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(pf);
-
 	_pInputHandler = new InputHandler(this);
 }
 
@@ -55,6 +53,8 @@ void Player::Start(void) noexcept
 
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 	_pInputHandler->Start();
+
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding);
 
 	gameObject->AddComponent(new AudioListener());
 	_pAudioSource = new AudioSource();
@@ -144,12 +144,6 @@ void Player::OnDestroy(void) noexcept
 		_pDamagedSound[i] = nullptr;
 	}
 }
-
-//void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
-//{
-//	//벽이나 장애물과 부딪치면 길찾기 시작 
-//
-//}
 
 void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 {
@@ -335,17 +329,11 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 	if (vTarget != D3DXVECTOR3(0, -5, 0))
 		_pFSM[newState]->SetTarget(vTarget);
 
-	/*if(!_bFPV)
-		_pFSM[newState]->SetDir(eDir);
-	
-	if (_eCurState != newState) 
-	{
-		_eCurState = newState;
-		_pFSM[_eCurState]->Start();
-	}*/
-
 	if (!_bFPV)
 	{
+		if(newState == PLAYER_MOVE)
+			static_cast<PlayerMove*>(_pFSM[newState])->SetAtt(false);
+
 		_pFSM[newState]->SetDir(eDir);
 
 		_eCurState = newState;
@@ -359,23 +347,22 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 }
 
 //attack,move
-void Player::SetState(PLAYER_STATE newState, DIR eDir, Transform* targetTrans, bool bAtt)
+void Player::SetState(PLAYER_STATE newState, Transform* targetTrans, bool bAtt)
 {
 	if (!_bFPV)
 	{
 		_pFSM[newState]->SetTargetTrans(targetTrans);
 
 		if (bAtt)
-			static_cast<PlayerMove*>(_pFSM[newState])->SetAtt();
+			static_cast<PlayerMove*>(_pFSM[newState])->SetAtt(bAtt);
 	
-		_pFSM[newState]->SetDir(eDir);
-
 		_eCurState = newState;
 		_pFSM[_eCurState]->Start();
 	}
 	else if (_eCurState != newState)
 	{
 		_eCurState = newState;
+		
 		_pFSM[_eCurState]->Start();
 	}
 

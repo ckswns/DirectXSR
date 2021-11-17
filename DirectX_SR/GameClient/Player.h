@@ -37,7 +37,7 @@ private:	void					InitState();
 
 public:		void					SetFPV();
 public:		void					SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget = D3DXVECTOR3(0,-5,0));
-public:		void					SetState(PLAYER_STATE newState, DIR eDir,Transform* targetTrans, bool bAtt =false);
+public:		void					SetState(PLAYER_STATE newState,Transform* targetTrans, bool bAtt =false);
 public:		void					UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 
 public:		float					GetAtt() { return _tStat->_fDamage; } //아이템 장착하면 아이템값까지 

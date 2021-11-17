@@ -12,13 +12,18 @@ SkeletonMove::SkeletonMove(Animator* pAnim, Transform* trans, Transform* playerT
 
 void SkeletonMove::Start() noexcept
 {
-	_bFinding = false;
-
 	if (_vTarget.y == 5)
 	{
-		_vTarget.x = _pTrans->GetWorldPosition().x +SignedRandomf(1.f);
-		_vTarget.y = _pTrans->GetWorldPosition().y;
-		_vTarget.z = _pTrans->GetWorldPosition().z + SignedRandomf(1.f);
+		if (_pTargetTrans != nullptr)
+		{
+			_vTarget = _pTargetTrans->GetWorldPosition();
+		}
+		else 
+		{
+			_vTarget.x = _pTrans->GetWorldPosition().x + SignedRandomf(2);
+			_vTarget.y = _pTrans->GetWorldPosition().y;
+			_vTarget.z = _pTrans->GetWorldPosition().z + SignedRandomf(2);
+		}
 	}
 
 	_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
@@ -26,8 +31,12 @@ void SkeletonMove::Start() noexcept
 
 	_pSk = static_cast<Skeleton*>(_pTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
 	_pAnimator->SetAnimation("Walk_"+std::to_string(_iDir));
-//	_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget);
-//	_pPath = (_pPathFinding->GetPath());
+
+	if (_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget))
+	{
+		_pPath = (_pPathFinding->GetPath());
+		_bFinding = true;
+	}
 }
 
 void SkeletonMove::Update(float fElapsedTime) noexcept
@@ -45,25 +54,25 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 		_pSk->SetState(SK_STAND, _eDir);
 	}
 
-	if (!_bAtt)
-	{
-		//주변에 몬스터 있나 탐색
-		//있을 경우 공격 모드 
-	}
-
 	// 길찾기 중이 아닐 때 
 	if (!_bFinding)
 	{
-		D3DXVECTOR3 vDir = _vTarget - _pTrans->GetWorldPosition();
+		D3DXVECTOR3 vDir;
+		if(_pTargetTrans != nullptr)
+			vDir = _pTargetTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
+		else
+			vDir = _vTarget - _pTrans->GetWorldPosition();
 		vDir.y = 0;
-		if (D3DXVec3Length(&vDir) < 0.7f)
+
+		if (D3DXVec3Length(&vDir) < 0.5f)
 		{
 			_vTarget.y = 5;
 			//공격이였으면 공격으로 돌아가기
 			if (_bAtt)
 			{
 				_bAtt = false;
-				_pSk->SetState(SK_ATTACK, _eDir, _vTarget);
+				_pSk->SetState(SK_ATTACK, _pTargetTrans);
+				_pTargetTrans = nullptr;
 			}
 			else
 				_pSk->SetState(SK_STAND, _eDir);
@@ -74,7 +83,7 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 			_pTrans->Translate(vDir * _fSpeed * fElapsedTime);
 		}
 	}
-	else
+	else if(!_pPath.empty())
 	{
 		std::list<Node*>::iterator iter = _pPath.begin();
 
@@ -84,14 +93,29 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 		if (D3DXVec3Length(&vDir) < 0.5f)
 		{
 			_pPath.pop_front();
-			
+
 			if (_pPath.empty())	//A* 종료
+			{
 				_bFinding = false;
+				_vTarget.y = 5;
+				if (_bAtt)
+				{
+					_bAtt = false;
+					_pSk->SetState(SK_ATTACK,_pTargetTrans);
+					_pTargetTrans = nullptr;
+				}
+				else
+					_pSk->SetState(SK_STAND, _eDir);
+			}
 		}
 		else
 		{
 			D3DXVec3Normalize(&vDir, &vDir);
 			_pTrans->Translate(vDir* _fSpeed * fElapsedTime);
 		}
+	}
+	else
+	{
+		_pSk->SetState(SK_STAND, _eDir);
 	}
 }

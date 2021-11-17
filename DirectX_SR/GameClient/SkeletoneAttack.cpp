@@ -6,17 +6,17 @@
 
 void SkeletoneAttack::Start() noexcept
 {
-	_pSk = static_cast<Skeleton*>(_pTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
+	if(!_pSk)
+		_pSk = static_cast<Skeleton*>(_pTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
 
-	D3DXVECTOR3 vDir = _vTarget - _pTrans->GetWorldPosition();
+	D3DXVECTOR3 vDir = _pTargetTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
 	vDir.y = 0;
-	if (D3DXVec3Length(&vDir) <= 1.5f)
+	if (D3DXVec3Length(&vDir) <= 0.3f)
 	{
-		if (_eDir == DIR_END)
-		{
-			_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
-			_iDir = (int)_eDir * 2;
-		}
+
+		_eDir = GetDirect(_pTrans->GetWorldPosition(), _pTargetTrans->GetWorldPosition());
+		_iDir = (int)_eDir * 2;
+
 		_pAnimator->SetAnimation("Attack_" + std::to_string(_iDir));
 
 		// 소리 
@@ -25,7 +25,7 @@ void SkeletoneAttack::Start() noexcept
 	else
 	{
 		//이동으로 바꿈 
-		_pSk->SetState(SK_MOVE, _eDir, _vTarget, true);
+		_pSk->SetState(SK_MOVE, _pTargetTrans, true);
 		_eDir = DIR_END;
 	}
 }
