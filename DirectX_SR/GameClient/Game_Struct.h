@@ -90,12 +90,15 @@ typedef struct tagItemInfo
 
 typedef struct tagSlot
 {
-	D3DXVECTOR2 _vPos;
+	D3DXVECTOR3 _vPos;
 	RECT		_tRect;
 	int			_iSlotSizeX;
 	int			_iSlotSizeY;
 	int			_iFlag;
+	int			_iIndex;
 	bool		_bSlotCheck;
+	int			_iSlotCntX;
+	int			_iSlotCntY;
 	tagSlot()
 	{
 		_bSlotCheck = false;

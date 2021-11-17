@@ -54,7 +54,7 @@ Slot::Slot(SLOTTYPE etype)
 		_iSlotCntY = 2;
 		_vStartPos = D3DXVECTOR3(1063.f, 279.f, 0.f);
 		_iFlag |= 0x00000040;
-			break;
+		break;
 	case Slot::SLOTTYPE::BELT:
 		_iSlotCntX = 2;
 		_iSlotCntY = 1;
@@ -107,35 +107,42 @@ void Slot::Start(void) noexcept
 	{
 		for (int j = 0; j < _iSlotCntX; ++j)
 		{
+			iIndex = i * _iSlotCntX + j;
 			pSlot = new SLOTINFO;
 
 			pSlot->_vPos.x = _vStartPos.x + (pSlot->_iSlotSizeX * j);
 			pSlot->_vPos.y = _vStartPos.y + (pSlot->_iSlotSizeY * i);
+			pSlot->_vPos.z = 0;
 			pSlot->_tRect.left = LONG(pSlot->_vPos.x - (pSlot->_iSlotSizeX * 0.5f));
 			pSlot->_tRect.top = LONG(pSlot->_vPos.y - (pSlot->_iSlotSizeY * 0.5f));
 			pSlot->_tRect.right = LONG(pSlot->_vPos.x + (pSlot->_iSlotSizeX * 0.5f));
 			pSlot->_tRect.bottom = LONG(pSlot->_vPos.y + (pSlot->_iSlotSizeY * 0.5f));
 			pSlot->_iFlag = _iFlag;
+			pSlot->_iIndex = iIndex;
+			pSlot->_iSlotCntX = _iSlotCntX;
+			pSlot->_iSlotCntY = _iSlotCntY;
 
-			#ifdef _DEBUG
+#ifdef _DEBUG
 			GameObject* pGameobject = GameObject::Instantiate();
 			Image* pTest = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Test.png"));
 			pGameobject->AddComponent(pTest);
 			pGameobject->SetSortOrder(1);
 			pGameobject->GetTransform()->SetWorldPosition(pSlot->_tRect.left, pSlot->_tRect.top, 0);
 			pGameobject->SetActive(false);
-			#endif
+#endif
 
 			_vecSlot.push_back(pSlot);
 		}
+	}
+	if (!_vecSlot.empty())
+	{
+		_SlotMaxRect.left = _vecSlot[0]->_tRect.left;
+		_SlotMaxRect.top = _vecSlot[0]->_tRect.top;
+		_SlotMaxRect.right = _vecSlot[iIndex]->_tRect.right;;
+		_SlotMaxRect.bottom = _vecSlot[iIndex]->_tRect.bottom;;
 	}
 }
 
 void Slot::Update(float) noexcept
 {
-}
-
-void Slot::SlotFill(int ItemSlotX, int ItemSlotY)
-{	
-
 }

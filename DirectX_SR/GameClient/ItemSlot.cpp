@@ -6,7 +6,7 @@
 
 using namespace ce::UI;
 
-ItemSlot::ItemSlot(GameObject* pObj,Slot::SLOTTYPE eType, float fx, float fy) noexcept
+ItemSlot::ItemSlot(GameObject* pObj, Slot::SLOTTYPE eType, float fx, float fy) noexcept
 	: _pOwner(pObj), _eType(eType)
 {
 	_vStartPos = D3DXVECTOR3(fx, fy, 0);
@@ -64,7 +64,7 @@ ItemSlot::ItemSlot(GameObject* pObj,Slot::SLOTTYPE eType, float fx, float fy) no
 		_iFlag |= 0x00000001;
 		break;
 	}
-	
+
 	Start();
 }
 
@@ -82,21 +82,25 @@ void ItemSlot::Start(void) noexcept
 	_pOwner->SetActive(true);
 
 	_vecSlot.reserve((size_t)_iSlotCntX * (size_t)_iSlotCntY);
-
+	int iIndex = 01;
 	SLOTINFO* pSlot = nullptr;
 	for (int i = 0; i < _iSlotCntY; ++i)
 	{
 		for (int j = 0; j < _iSlotCntX; ++j)
 		{
 			pSlot = new SLOTINFO;
+			iIndex = i * _iSlotCntX + j;
 
 			pSlot->_vPos.x = _vStartPos.x + (pSlot->_iSlotSizeX * j);
 			pSlot->_vPos.y = _vStartPos.y + (pSlot->_iSlotSizeY * i);
+			pSlot->_vPos.z = 0;
 			pSlot->_tRect.left = LONG(pSlot->_vPos.x - (pSlot->_iSlotSizeX * 0.5f));
 			pSlot->_tRect.top = LONG(pSlot->_vPos.y - (pSlot->_iSlotSizeY * 0.5f));
 			pSlot->_tRect.right = LONG(pSlot->_vPos.x + (pSlot->_iSlotSizeX * 0.5f));
 			pSlot->_tRect.bottom = LONG(pSlot->_vPos.y + (pSlot->_iSlotSizeY * 0.5f));
 			pSlot->_iFlag = _iFlag;
+			pSlot->_iSlotCntX = _iSlotCntX;
+			pSlot->_iSlotCntY = _iSlotCntY;
 
 			GameObject* pGameobject = GameObject::Instantiate();
 			Image* pTest = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Test.png"));
@@ -105,8 +109,15 @@ void ItemSlot::Start(void) noexcept
 			pGameobject->GetTransform()->SetWorldPosition(pSlot->_tRect.left, pSlot->_tRect.top, 0);
 			pGameobject->SetActive(true);
 
-			_vecSlot.emplace_back(std::make_pair(pGameobject,pSlot));
+			_vecSlot.emplace_back(std::make_pair(pGameobject, pSlot));
 		}
+	}
+	if (!_vecSlot.empty())
+	{
+		_SlotMaxRect.left = _vecSlot[0].second->_tRect.left;
+		_SlotMaxRect.top = _vecSlot[0].second->_tRect.top;
+		_SlotMaxRect.right = _vecSlot[iIndex].second->_tRect.right;;
+		_SlotMaxRect.bottom = _vecSlot[iIndex].second->_tRect.bottom;;
 	}
 }
 
@@ -132,8 +143,16 @@ void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
 			_vecSlot[Index].first->GetTransform()->SetWorldPosition(float(_vecSlot[Index].second->_tRect.left), float(_vecSlot[Index].second->_tRect.top + (_vecSlot[Index].second->_iSlotSizeY >> 1)), 0);
 		}
 	}
+
+	if (!_vecSlot.empty())
+	{
+		_SlotMaxRect.left = _vecSlot[0].second->_tRect.left;
+		_SlotMaxRect.top = _vecSlot[0].second->_tRect.top;
+		_SlotMaxRect.right = _vecSlot[Index].second->_tRect.right;;
+		_SlotMaxRect.bottom = _vecSlot[Index].second->_tRect.bottom;;
+	}
+
 	vtest.x -= float(_vecSlot[0].second->_iSlotSizeX >> 1);
-	vtest.y -= float(_vecSlot[0].second->_iSlotSizeY >> 1);
 	_pOwner->GetTransform()->SetWorldPosition(vtest);
 }
 
@@ -144,7 +163,7 @@ void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)
 	{
 		for (int j = 0; j < _iSlotCntX; ++j)
 		{
-			Index = i * 2 + j;
+			Index = i * _iSlotCntX + j;
 			_vecSlot[Index].second->_vPos.x = (vpos.x + (_vecSlot[Index].second->_iSlotSizeX >> 1)) + (_vecSlot[Index].second->_iSlotSizeX * j);
 			_vecSlot[Index].second->_vPos.y = (vpos.y + (_vecSlot[Index].second->_iSlotSizeY >> 1)) + (_vecSlot[Index].second->_iSlotSizeY * i);
 			_vecSlot[Index].second->_tRect.left = LONG(_vecSlot[Index].second->_vPos.x - (_vecSlot[Index].second->_iSlotSizeX * 0.5f));
@@ -153,6 +172,14 @@ void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)
 			_vecSlot[Index].second->_tRect.bottom = LONG(_vecSlot[Index].second->_vPos.y + (_vecSlot[Index].second->_iSlotSizeY * 0.5f));
 			_vecSlot[Index].first->GetTransform()->SetWorldPosition(float(_vecSlot[Index].second->_tRect.left), float(_vecSlot[Index].second->_tRect.top), 0);
 		}
+	}
+
+	if (!_vecSlot.empty())
+	{
+		_SlotMaxRect.left = _vecSlot[0].second->_tRect.left;
+		_SlotMaxRect.top = _vecSlot[0].second->_tRect.top;
+		_SlotMaxRect.right = _vecSlot[Index].second->_tRect.right;;
+		_SlotMaxRect.bottom = _vecSlot[Index].second->_tRect.bottom;;
 	}
 	vpos.x += float(_vecSlot[0].second->_iSlotSizeX >> 1);
 	_pOwner->GetTransform()->SetWorldPosition(vpos);
