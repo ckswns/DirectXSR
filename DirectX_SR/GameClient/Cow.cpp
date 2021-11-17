@@ -11,9 +11,18 @@
 #include "Camera.h"
 #include "RigidBody.h"
 #include "Player.h"
+#include "Vector3.h"
+#include "PathFinding.h"
+
+Cow::Cow(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept :
+	_pathFinder(pf),
+	_bornPosition(bornPos)
+{
+}
 
 void Cow::Awake(void) noexcept
 {
+	_state = Actor::State::IDLE;
 	memcpy(&_data, &GAMEDATAMANAGER->GetActorData("Cow"), sizeof(Actor::Data));
 }
 
@@ -23,77 +32,86 @@ void Cow::Start(void) noexcept
 	gameObject->AddComponent(new BillboardObj());
 	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f)));
 	gameObject->AddComponent(new Rigidbody());
-	gameObject->GetTransform()->SetLocalPosition(0, 0.7f, 0);
+	//gameObject->GetTransform()->SetLocalPosition(0, 0.7f, 0);
 
 	_animator = new Animator(true);
 
 	std::vector<float> frameTime;
 	std::vector<Texture*> frameTex;
 
+	for (int i = 0; i < 8; i++)
 	{
-		for (int i = 1; i <= 10; i++)
+		for (int j = 0; j < 10; j++)
 		{
+			int index = i * 10 + j + 1;
+
 			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Idle\\" + std::to_string(i) + ".png"));
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Idle\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, true);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
-		_animator->InsertAnimation("Idle", ani);
+		_animator->InsertAnimation("Idle_" + std::to_string(i), ani);
 
 		frameTime.clear();
 		frameTex.clear();
 	}
 
+	for (int i = 0; i < 8; i++)
 	{
-		for (int i = 1; i <= 8; i++)
+		for (int j = 0; j < 8; j++)
 		{
+			int index = i * 8 + j + 1;
+
 			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Walk\\" + std::to_string(i) + ".png"));
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Walk\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, true);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
-		_animator->InsertAnimation("Walk", ani);
+		_animator->InsertAnimation("Walk_" + std::to_string(i), ani);
 
 		frameTime.clear();
 		frameTex.clear();
 	}
 
+	for (int i = 0; i < 8; i++)
 	{
-		for (int i = 1; i <= 19; i++)
+		for (int j = 0; j < 19; j++)
 		{
+			int index = i * 19 + j + 1;
 			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Attack\\" + std::to_string(i) + ".png"));
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Attack\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, true);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
-
-		_animator->InsertAnimation("Attack", ani);
+		_animator->InsertAnimation("Attack_" + std::to_string(i), ani);
 
 		frameTime.clear();
 		frameTex.clear();
 	}
 
+	for (int i = 0; i < 8; i++)
 	{
-		for (int i = 1; i <= 14; i++)
+		for (int j = 0; j < 14; j++)
 		{
+			int index = i * 14 + j + 1;
 			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Death\\" + std::to_string(i) + ".png"));
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Death\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, false);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 
-		_animator->InsertAnimation("Death", ani);
+		_animator->InsertAnimation("Death_" + std::to_string(i), ani);
 
 		frameTime.clear();
 		frameTex.clear();
 	}
 
-	_animator->SetAnimation("Idle");
-	_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle")->GetTexture()[0]);
+	_animator->SetAnimation("Idle_0");
+	_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_0")->GetTexture()[0]);
 
 	gameObject->AddComponent(_animator);
 	gameObject->SetTag(GameObjectTag::MONSTER);
@@ -117,22 +135,83 @@ void Cow::Start(void) noexcept
 			}
 		}
 	}
+
+	gameObject->GetTransform()->SetWorldPosition(_bornPosition);
+
 }
 
 void Cow::FixedUpdate(float fElapsedTime) noexcept
 {
-
+	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
+	
+	if (dis.Length() <= _data.aggroDistance)
+	{
+		if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
+		{
+			_state = Actor::State::MOVE;
+		}
+	}
 }
 
 void Cow::Update(float fElapsedTime) noexcept
 {
-	//static float a = 255;
+	switch (_state)
+	{
+	case Actor::State::IDLE:
+		break;
+	case Actor::State::MOVE:
+		if (!_pathFinder->GetPath().empty())
+		{
+			Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
 
-	//if (a > 0)
-	//	a -= (fElapsedTime * 0.1f);
-	//else
-	//	a = 0;
-	//_spriteRenderer->SetColor(D3DCOLOR_ARGB((int)a, 255, 255, 255)); // 알파 변경 테스트
+			if (dis.Length() > _data.aggroDistance)
+			{
+				_pathFinder->FindPath(transform->GetWorldPosition(), _bornPosition);
+			}
+
+			std::list<Node*>& path = const_cast<std::list<Node*>&>(_pathFinder->GetPath());
+
+			if (path.begin() == path.end())
+				return;
+
+			std::list<Node*>::iterator iter = path.begin();
+
+			D3DXVECTOR3 vDir = (*iter)->GetPos() - transform->GetWorldPosition();
+			vDir.y = 0;
+
+			Direction dir =  GetDirect(transform->GetWorldPosition(), (*iter)->GetPos());
+			int iDir = static_cast<int>(dir);
+
+			if(_dir != dir)
+				_animator->SetAnimation("Walk_" + std::to_string(iDir));
+
+			_dir = dir;
+
+			if (D3DXVec3Length(&vDir) < 0.1f)
+			{
+				path.pop_front();
+				if (path.empty())
+				{
+					path.clear();
+					_state = Actor::State::IDLE;
+				}
+			}
+			else
+			{
+
+				transform->Translate(vDir * _data.moveSpeed * fElapsedTime);
+			}
+		}
+		break;
+	case Actor::State::ATTAK:
+		break;
+	case Actor::State::HIT:
+		break;
+	case Actor::State::DIE:
+		break;
+	default:
+		break;
+	}
 }
 
 void Cow::LateUpdate(float fElapsedTime) noexcept
@@ -142,7 +221,11 @@ void Cow::LateUpdate(float fElapsedTime) noexcept
 
 void Cow::OnDestroy(void) noexcept
 {
-
+	if (_pathFinder)
+	{
+		delete _pathFinder;
+		_pathFinder = nullptr;
+	}
 }
 
 void Cow::OnCollisionEnter(Collider* mine, Collider* other) noexcept

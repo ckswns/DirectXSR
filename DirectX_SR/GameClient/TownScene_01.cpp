@@ -194,7 +194,7 @@ bool TownScene_01::Init(void) noexcept
 	for (int i = 0; i < 50; i++)
 	{
 		obj = GameObject::Instantiate();
-		obj->AddComponent(new Cow());
+
 		D3DXVECTOR3 pos = pPlayerObj->GetTransform()->GetWorldPosition();
 
 		pos.x += Random::GetValue(20, 3);
@@ -202,7 +202,7 @@ bool TownScene_01::Init(void) noexcept
 		pos.y = 0.7f;
 		pos.z += Random::GetValue(20, 3);
 		pos.z -= Random::GetValue(20, 3);
-		obj->GetTransform()->SetWorldPosition(pos);
+		obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
 	}
 
 	return true;

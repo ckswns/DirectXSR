@@ -34,6 +34,9 @@ namespace ce
 
 	public:		virtual void				DbgRender(void) noexcept { __noop; } // call debug mode only
 
+	public:		Transform*					GetTransform(void) noexcept { return transform; }
+	public:		GameObject*					GetGameObject(void) noexcept { return gameObject; }
+
 	protected:	Transform*					transform;
 	protected:	GameObject*					gameObject;
 	};

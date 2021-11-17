@@ -24,7 +24,7 @@ public:		enum class Direction
 public:		enum class State
 			{
 				IDLE,
-				FOLLOW,
+				MOVE,
 				ATTAK,
 				HIT,
 				DIE
@@ -44,9 +44,11 @@ public:		virtual			~Actor(void) noexcept { __noop; }
 
 
 public:		virtual void	GetHit(float damage) noexcept PURE;
+protected:	Direction		GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd);
 
 protected:	Data			_data;
 protected:	Direction		_dir;
+protected:	State			_state;
 
 protected:	Collider*		_hitBox;
 protected:	Collider*		_attackBox;

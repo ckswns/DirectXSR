@@ -95,16 +95,17 @@ float PathFinding::GetDistance(Node* A, Node* B)
 
 void PathFinding::Release() noexcept
 {
-	std::list<Node*>::iterator iter = _pPath.begin();
-	while (iter != _pPath.end())
-	{
-		if ((*iter) != nullptr)
-		{
-			delete (*iter);
-			(*iter) = nullptr;
-		}
-		iter++;
-	}
+	//std::list<Node*>::iterator iter = _pPath.begin();
+	//while (iter != _pPath.end())
+	//{
+	//	if ((*iter) != nullptr)
+	//	{
+	//		delete (*iter);
+	//		(*iter) = nullptr;
+	//	}
 
-	_pPath.clear();
+	//	iter = _pPath.erase(iter);
+	//}
+
+	//_pPath.clear();
 }
