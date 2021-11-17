@@ -34,6 +34,7 @@ void PlayerAttack::Start() noexcept
 		_pAnimator->SetAnimation("Attack_0");
 		// 소리 
 		// 거리 체크 
+		_pPlayer->SetAttCollider(true);
 		//몬스터 데미지
 		//_pPlayer->GetAtt();
 
@@ -44,6 +45,8 @@ void PlayerAttack::Update(float fElapsedTime) noexcept
 {
 	if (_pAnimator->GetCurrentAnimationEnd())
 	{
+		if(_bFPV)
+			_pPlayer->SetAttCollider(false);
 		//Stand로 변경 
 		_pPlayer->SetState(PLAYER_STAND, _eDir);
 	}

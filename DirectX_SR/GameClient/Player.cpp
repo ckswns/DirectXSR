@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Animator.h"
 #include "SphereCollider.h"
+#include "BoxCollider.h"
 #include "Rigidbody.h"
 #include "AudioListener.h"
 #include "AudioSource.h"
@@ -69,6 +70,10 @@ void Player::Start(void) noexcept
 	_pCollider = new SphereCollider(0.3f, "hitbox");
 	gameObject->AddComponent(_pCollider);
 	gameObject->AddComponent(new Rigidbody());
+
+	_pAttCollider = new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.3f), D3DXVECTOR3(0, 0, 1), "Attack");
+	gameObject->AddComponent(_pAttCollider);
+	_pAttCollider->SetEnable(false);
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"),false);
 	gameObject->AddComponent(sr);
@@ -153,6 +158,14 @@ void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 		{
 			transform->SetWorldPosition(_prevPos);
 			_bCollWithObstacle = true;
+		}
+	}
+	else if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+	{
+		if (mine->GetTag() == "Attack")
+		{
+			//1인칭인 경우 공격 체크 
+			other->GetGameObject();
 		}
 	}
 }
@@ -362,7 +375,6 @@ void Player::SetState(PLAYER_STATE newState, Transform* targetTrans, bool bAtt)
 	else if (_eCurState != newState)
 	{
 		_eCurState = newState;
-		
 		_pFSM[_eCurState]->Start();
 	}
 
@@ -390,6 +402,11 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			break;
 		}
 	}
+}
+
+void Player::SetAttCollider(bool b)
+{
+	_pAttCollider->SetEnable(b);
 }
 
 void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
