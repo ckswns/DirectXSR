@@ -177,7 +177,7 @@ void Cow::FixedUpdate(float fElapsedTime) noexcept
 			{
 				_fDeltaTime += fElapsedTime;
 				if (_fDeltaTime > 1)
-					_fDeltaTime = 1;
+					gameObject->Destroy();
 			}
 			else
 			{
