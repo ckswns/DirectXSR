@@ -4,12 +4,14 @@
 #include "Animator.h"
 #include "SpriteRenderer.h"
 #include "BoxCollider.h"
-#include "RectTransform.h"
 #include "StoreWnd.h"
 #include "GameObject.h"
 
 void StoreNPC::Start(void) noexcept
 {
+	gameObject->SetName("StoreNPC");
+	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5, 1, 0.5)));
+
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"), false);
 	gameObject->AddComponent(sr);
 	Animator* pAnimator = new Animator(true);
