@@ -3,7 +3,7 @@
 
 bool Dungeon_01::Init(void) noexcept
 {
-
+	return true;
 }
 
 void Dungeon_01::FixedUpdate(float fElapsedTime) noexcept
