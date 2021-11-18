@@ -73,6 +73,11 @@ namespace ce
 			_pSprite->SetTransform(&_transform->GetWorldMatrix());
 			RECT rt = _rectTransform->GetPickingRect();
 
+			rt.right -= rt.left;
+			rt.bottom -= rt.top;
+			rt.top = 0;
+			rt.left = 0;
+
 			if (_align == 0)
 				_pFont->DrawTextA(_pSprite, _str.c_str(), _str.size(), nullptr, 0, _color);
 			else

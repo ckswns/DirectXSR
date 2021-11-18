@@ -85,6 +85,8 @@ namespace ce
 			_owner->OnCollisionEnterXXX(mine, other);
 		else
 			_owner->OnCollisionStayXXX(mine, other);
+
+		_collisionList.push_back(std::make_pair(mine, other));
 	}
 
 	void Rigidbody::OnNotCollideWith(Collider* mine, Collider* other) noexcept

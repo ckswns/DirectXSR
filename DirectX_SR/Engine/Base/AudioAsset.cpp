@@ -15,6 +15,9 @@ namespace ce
 	bool AudioAsset::ReLoad(bool is3D) noexcept
 	{
 		_is3D = is3D;
+		if(_data)
+			reinterpret_cast<FMOD::Sound*>(_data)->release();
+
 		return Load(_filePath);
 	}
 
@@ -58,6 +61,15 @@ namespace ce
 			reinterpret_cast<FMOD::Sound*>(_data)->release();
 			_data = nullptr;
 		}
+	}
+
+	AudioAsset* AudioAsset::Clone(bool is3D) const noexcept
+	{
+		AudioAsset* clone = new AudioAsset(_pFMODSystem);
+		clone->_filePath = _filePath;
+		clone->ReLoad(is3D);
+
+		return clone;
 	}
 }
 

@@ -33,7 +33,7 @@ typedef struct tagStat
 	int			_iVitality;
 	int			_iEnergy;
 
-	float		_fDamage = _iStr * 0.01f;
+	float		_fDamage = _iStr * 0.5f;//0.01f;
 	float		_fAttRating = _iDex * 5.f;
 	float		_fDef = _iDex * 0.25f;
 
@@ -71,6 +71,15 @@ typedef struct tagInveItemInfo
 	int				_iValue;			//골드의 양이나 회복량?
 	int				_eitemID;			//ITEM_ID
 	int				_eSlotType;			//Slot::SLOTTYPE
+
+	tagInveItemInfo()
+	{
+		_strName = "";
+	}
+	tagInveItemInfo(int eSlotType)
+	{
+		_eSlotType = eSlotType;
+	}
 }INVENITEMINFO;
 
 typedef struct tagItemInfo

@@ -10,9 +10,9 @@ public:		virtual					~StoreNPC(void) noexcept { __noop; }
 public:		virtual void			Start(void) noexcept;
 public:		virtual void			Update(float fElapsedTime) noexcept { __noop; }
 
-public:		virtual void			OnClick();
+public:		virtual void			OnClick(Player* player);
 
-//private:	StoreWnd*				_pStoreWnd;
-private:	GameObject*				_pStoreWndObj;
+private:	StoreWnd*				_pStoreWnd;
+//private:	GameObject*				_pStoreWndObj;
 };
 

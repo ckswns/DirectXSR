@@ -5,8 +5,9 @@
 #include "SpriteRenderer.h"
 #include "Animator.h"
 #include "Animation.h"
-#include "BoxCollider.h"
+#include "SphereCollider.h"
 #include "RigidBody.h"
+#include "Actor.h"
 
 PoisonProjectile::PoisonProjectile(D3DXVECTOR3 dir,int iAniNum) noexcept
 	:_fMaxDist(5.f), _fDist(0), _fSpeed(3.f), _vDir(dir),_iAniNum(iAniNum)
@@ -16,7 +17,7 @@ PoisonProjectile::PoisonProjectile(D3DXVECTOR3 dir,int iAniNum) noexcept
 void PoisonProjectile::Start(void) noexcept
 {
 	_pTrans = GetGameObject()->GetTransform();
-	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 0.5f, 0.3f)));//,D3DXVECTOR3((_vDir.x*0.5f),0, (_vDir.z * 0.5f))));
+	gameObject->AddComponent(new SphereCollider(0.1f));//,D3DXVECTOR3((_vDir.x*0.5f),0, (_vDir.z * 0.5f))));
 	gameObject->AddComponent(new Rigidbody());
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skill\\PoisonNova\\0\\0.png"), true, D3DCULL_NONE);
@@ -47,7 +48,6 @@ void PoisonProjectile::Start(void) noexcept
 	FrameTime.clear();
 
 	pAnimator->Play(aniName);
-
 }
 
 void PoisonProjectile::Update(float fElapsedTime) noexcept
@@ -67,6 +67,9 @@ void PoisonProjectile::OnCollisionEnter(Collider* mine, Collider* other) noexcep
 {
 	if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
 	{
+		Actor* p = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
+		if (p)
+			p->GetHit(7);
 		//µ¥¹ÌÁö
 	}
 	else if (other->GetGameObject()->GetTag() == GameObjectTag::OBSTACLE)

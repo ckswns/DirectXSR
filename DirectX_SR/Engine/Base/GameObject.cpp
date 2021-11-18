@@ -94,9 +94,12 @@ namespace ce
     {
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->Release();
-			delete _pComponents[i];
-			_pComponents[i] = nullptr;
+			if (_pComponents[i] != nullptr)
+			{
+				_pComponents[i]->Release();
+				delete _pComponents[i];
+				_pComponents[i] = nullptr;
+			}
 		}
     }
 
@@ -349,6 +352,11 @@ namespace ce
 
 	void GameObject::OnAnimationEvent(int frame, std::string eventName)
 	{
+		for (auto iter = _pComponents.begin(); iter != _pComponents.end(); iter++)
+		{
+			if ((*iter)->GetID() == COMPONENT_ID::BEHAVIOUR)
+				static_cast<Behaviour*>(*iter)->OnAnimationEvent(eventName);
+		}
 	}
 
 	GameObject* GameObject::Instantiate() noexcept

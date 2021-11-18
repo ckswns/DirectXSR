@@ -21,6 +21,7 @@ public:		void				SetTarget(D3DXVECTOR3 target) { _vTarget = target; }
 public:		void				SetTargetTrans(Transform* hit) { _pTargetTrans = hit; }
 public:		void				SetDir(DIR eDir) { _eDir = eDir; _iDir = (int)_eDir * 2; }
 
+public:		Transform*			GetTargetTrans() { return _pTargetTrans; }
 protected:	DIR					GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd);
 
 protected:	Animator*			_pAnimator;

@@ -27,11 +27,13 @@ public:		enum class State
 				MOVE,
 				ATTAK,
 				HIT,
-				DIE
+				DIE,
+				END
 			};
 
 public:		struct Data
 			{
+				char		name[128];
 				int			maxHP;
 				float		aggroDistance;
 				float		moveSpeed;
@@ -45,6 +47,9 @@ public:		virtual			~Actor(void) noexcept { __noop; }
 
 public:		virtual void	GetHit(int damage) noexcept PURE;
 protected:	Direction		GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd);
+
+public:		const Data&		GetData(void) noexcept { return _data; }
+public:		int				GetCurrentHp(void) noexcept { return _currentHP; }
 
 protected:	int				_currentHP;
 protected:	Data			_data;

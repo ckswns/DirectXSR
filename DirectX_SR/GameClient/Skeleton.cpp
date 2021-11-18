@@ -138,12 +138,27 @@ void Skeleton::SetPathFinding(PathFinding* pf)
 
 void Skeleton::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 {
-	if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+	if (_eCurState != SK_ATTACK) 
 	{
-		if(_eCurState != SK_ATTACK)
+		if (mine->GetTag() == "Trigger" && other->GetTag() == "Monster")
+		{
+
 			SetState(SK_STATE::SK_ATTACK, other->GetTransform());
+		}
 	}
 
+}
+
+void Skeleton::OnCollisionStay(Collider* mine, Collider* other) noexcept
+{
+	if (_eCurState != SK_ATTACK)
+	{
+		if (mine->GetTag() == "Trigger" && other->GetTag() == "Monster")
+		{
+
+			SetState(SK_STATE::SK_ATTACK, other->GetTransform());
+		}
+	}
 }
 
 void Skeleton::InitAnimation(SpriteRenderer* sr)

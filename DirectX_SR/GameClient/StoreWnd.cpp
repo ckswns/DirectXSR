@@ -1,135 +1,250 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "StoreWnd.h"
-#include "ItemSlot.h"
-
+#include "Inventory.h"
+#include "StoreItem.h"
+#include "Slot.h"
 #include "Transform.h"
 #include "Image.h"
 #include "Button.h"
+#include "RectTransform.h"
+
+#include "Player.h"
+#include "InputHandler.h"
 using namespace ce::UI;
 void StoreWnd::Start(void) noexcept
 {
-	_ItemSlot.assign(_iCntX * _iCntY, false);
+	_ItemSlot.assign((_iCntX * _iCntY), false);
 
-	gameObject->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Store.png")));
+	//ì¹¸ ì‹œìž‘ì§€ì 
+	_vStartPos = D3DXVECTOR3(165, 148, 0);
+
+	Image* img = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Store.png"));
+	gameObject->AddComponent(img);
+	gameObject->SetSortOrder(3);
 
 	GameObject* CloseBtn = GameObject::Instantiate();
 	CloseBtn->GetTransform()->SetParent(gameObject->GetTransform());
 	CloseBtn->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Close_0.png")));
-	Button<StoreWnd>* btn = static_cast<Button<StoreWnd>*>(gameObject->AddComponent(new Button<StoreWnd>(this)));
-	btn->onMouseDown += &StoreWnd::OnClose;
+	Button<StoreWnd>* btn = static_cast<Button<StoreWnd>*>(CloseBtn->AddComponent(new Button<StoreWnd>(this)));
+	btn->onMouseDown += &StoreWnd::Close;
 	btn->SetTexture(nullptr, nullptr, ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Close_1.png"), nullptr);
-	CloseBtn->SetSortOrder(2);
-	//CloseBtn->GetTransform()->SetLocalPosition();
+	CloseBtn->SetSortOrder(4);
+	CloseBtn->GetTransform()->SetLocalPosition(565,520,0);
 
+	INVENITEMINFO* info = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION);
+	AddItem(info);
+	info = new INVENITEMINFO((int)Slot::SLOTTYPE::BODY);
+	AddItem(info);
+}
 
-
+void StoreWnd::OnDestroy(void) noexcept
+{
+	_ItemSlot.clear();
+	_StoreItem.clear();
 }
 
 void StoreWnd::AddItem(INVENITEMINFO* item)
 {
-	//GameObject* pobj = GameObject::Instantiate();
-	//ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)item->_eSlotType);
-	//pobj->AddComponent(pSlot);
+	GameObject* pobj = GameObject::Instantiate();
+	StoreItem* pSlot = new StoreItem((Slot::SLOTTYPE)item->_eSlotType,this);
+	pobj->AddComponent(pSlot);
 
-	//int Index = -1;
-	//int cntX, cntY;
-	////³Ö¾îÁÙ ºóÄ­ Ã£±â 
-	//for (int y = 0; y < _iCntY; ++y)
-	//{
-	//	for (int x = 0; x < _iCntX; ++x)
-	//	{
-	//		int idx = x + (y * _iCntX);
-	//		if (!_ItemSlot[idx])
-	//		{
-	//			// Çö À§Ä¡ ±âÁØÀ¸·Î ³ÖÀ» ¼ö ¾øÀ½
-	//			if (x + pSlot->GetItemInfo()._iSlotCntX >= _iCntX) continue;
-	//			if (y + pSlot->GetItemInfo()._iSlotCntY >= _iCntY) continue;
-	//			
-	//			bool chk = false;
-	//			for (int i = 0; i <= pSlot->GetItemInfo()._iSlotCntX ; i++)
-	//			{
-	//				//°¡·Î Ä­ ¾øÀ½
-	//				if (_ItemSlot[idx + i])
-	//				{
-	//					chk = true;
-	//					break;
-	//				}
-	//				for (int j = 0; j <= pSlot->GetItemInfo()._iSlotCntY; j++)
-	//				{//¼¼·ÎÄ­ ¾øÀ½
-	//					if (_ItemSlot[idx + i + (j * _iCntX)])
-	//					{
-	//						chk = true;
-	//						break;
-	//					}
-	//				}
-	//			}
-	//			if (chk) continue;
-	//			else 
-	//			{
-	//				Index = idx;
-	//				cntX = x;
-	//				cntY = y;
-	//				break;
-	//			}
+	int Index = -1;
+	int cntX, cntY;
+	//ë„£ì–´ì¤„ ë¹ˆì¹¸ ì°¾ê¸° 
+	for (int y = 0; y < _iCntY; ++y)
+	{
+		for (int x = 0; x < _iCntX; ++x)
+		{
+			int idx = x + (y * _iCntX);
+			if (!_ItemSlot[idx])
+			{
+				int itemX = pSlot->GetItemInfo(0)->_iSlotCntX;
+				int itemY = pSlot->GetItemInfo(0)->_iSlotCntY;
+				// í˜„ ìœ„ì¹˜ ê¸°ì¤€ìœ¼ë¡œ ë„£ì„ ìˆ˜ ì—†ìŒ
+				if (x + itemX > _iCntX) continue;
+				if (y + itemY > _iCntY) continue;
+				
+				bool chk = false;
+				for (int i = 0; i < itemX; i++)
+				{
+					//ê°€ë¡œ ì¹¸ ì—†ìŒ
+					if (_ItemSlot[idx + i])
+					{
+						chk = true;
+						break;
+					}
+					for (int j = 0; j < itemY; j++)
+					{//ì„¸ë¡œì¹¸ ì—†ìŒ
+						if (_ItemSlot[idx + i + (j * _iCntX)])
+						{
+							chk = true;
+							break;
+						}
+					}
+				}
+				if (chk) continue;
+				else 
+				{
+					Index = idx;
+					cntX = x;
+					cntY = y;
+					break;
+				}
 
-	//		}
-	//	}
-	//}
+			}
+			if (Index != -1) break;
+		}
+		if (Index != -1) break;
+	}
 
-	//if (Index != -1)
-	//{
-	//	pobj->GetTransform()->SetWorldPosition((46 * cntX), (32 * cntY), 0);
-	//	_StoreItem.push_back(std::pair(pobj, item));
-	//
-	//	for (int i = 0; i <= pSlot->GetItemInfo()._iSlotCntX; i++)
-	//	{
-	//		//°¡·Î Ä­ 
-	//		_ItemSlot[Index + i] = true;
-	//		for (int j = 0; j <= pSlot->GetItemInfo()._iSlotCntY; j++)
-	//		{//¼¼·ÎÄ­ 
-	//			_ItemSlot[Index + i + (j * _iCntX)] = true;
-	//		}
-	//	}
-	//}
+	if (Index != -1)
+	{
+		D3DXVECTOR3 vPos(0, 0, 0);
+		vPos.x = _vStartPos.x + (46 * cntX);
+		vPos.y = _vStartPos.y + (32 * cntY);
+
+		pobj->GetTransform()->SetWorldPosition(vPos);
+		//pobj->SetSortOrder(4);
+		pobj->SetActive(false);
+		_StoreItem.push_back(std::pair(pobj, item));
+		
+		for (int i = 0; i <pSlot->GetItemInfo(0)->_iSlotCntX; i++)
+		{
+			//ê°€ë¡œ ì¹¸ 
+			_ItemSlot[(Index + i)] = true;
+			for (int j = 0; j < pSlot->GetItemInfo(0)->_iSlotCntY; j++)
+			{//ì„¸ë¡œì¹¸ 
+				_ItemSlot[(Index + i + (j * _iCntX))] = true;
+			}
+		}
+	}
+	else//ë¹ˆì¹¸ì—†ìŒ
+	{
+		pobj->Destroy();
+	}
 }
 
+/*
 void StoreWnd::SellItem()
 {
-	//POINT pt;
-	//GetCursorPos(&pt);
+	POINT pt;
+	GetCursorPos(&pt);
 
-	//LIST_ITEM::iterator iter = _StoreItem.begin();
-	//while (iter != _StoreItem.end())
-	//{
-	//	RECT rc = iter->first->GetComponent(COMPONENT_ID::BEHAVIOUR)->GetItemRect();
-	//	if (PtInRect(&rc, pt))
-	//	{
-	//		//ÀÎº¥Åä¸®·Î ÀÌµ¿
-	//		//°ñµå Â÷°¨ 
+	ScreenToClient(g_hWnd, &pt);
+	LIST_ITEM::iterator iter = _StoreItem.begin();
+	while (iter != _StoreItem.end())
+	{
+		GameObject* obj = iter->first;
+		ItemSlot* itemSlot = static_cast<ItemSlot*>(obj->GetComponent(COMPONENT_ID::BEHAVIOUR));
+		
+		D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
+		RECT rc = itemSlot->GetItemRect();
+		rc.left += vPos.x;
+		rc.right += vPos.x;
+		rc.top += vPos.y;
+		rc.bottom += vPos.y;
 
-	//		//»óÁ¡ ¾ÆÀÌÅÛÄ­ ºñ¿ì±â 
-	//		D3DXVECTOR3 vPos = iter->first->GetTransform()->GetWorldPosition();
-	//		int x = vPos.x / 46;
-	//		int y = vPos.y / 32;
-	//		int Index = x + (y * _iCntX);
+	//	RectTransform* rectTransform = static_cast<RectTransform*>((iter->first)->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 
-	//		SLOTINFO slot = iter->first->GetComponent(COMPONENT_ID::BEHAVIOUR)->GetItemInfo();
-	//		for (int i = 0; i <= pslot._iSlotCntX; i++)
-	//		{
-	//			//°¡·Î Ä­ 
-	//			_ItemSlot[Index + i] = false;
-	//			for (int j = 0; j <= slot._iSlotCntX; j++)
-	//			{//¼¼·ÎÄ­ 
-	//				_ItemSlot[Index + i + (j * _iCntX)] = false;
-	//			}
-	//		}
+	//	RECT rc = rectTransform->GetPickingRect();
+		if (PtInRect(&rc, pt))
+		{
+			//ì¸ë²¤í† ë¦¬ë¡œ ì´ë™
+			//_pInven->GetItem(iter->second);	
+			//ê³¨ë“œ ì°¨ê° 
+			
+			//ì•„ì´í…œ ì œê±°
+		//	D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
+			int x = (vPos.x-_vStartPos.x) / 46;
+			int y = (vPos.y - _vStartPos.y) / 32;
+			int Index = x + (y * _iCntX);
 
-	//		break;
-	//	}
-	//}
+			SLOTINFO slotInfo = *(itemSlot->GetItemInfo(0));
+			for (int i = 0; i < slotInfo._iSlotCntX; i++)
+			{
+				//ê°€ë¡œ ì¹¸ 
+				_ItemSlot[(Index + i)] = false;
+				for (int j = 0; j < slotInfo._iSlotCntX; j++)
+				{//ì„¸ë¡œì¹¸ 
+					_ItemSlot[(Index + i + (j * _iCntX))] = false;
+				}
+			}
+
+	//		obj->Destroy();
+	//		iter->first = nullptr;
+	//		delete iter->second;
+			_StoreItem.erase(iter);
+			break;
+		}
+	}
+}
+*/
+
+void StoreWnd::Sell(GameObject* obj)
+{
+	LIST_ITEM::iterator iter = _StoreItem.begin();
+	while (iter != _StoreItem.end())
+	{
+		if (iter->first == obj)
+		{
+			//ì¸ë²¤í† ë¦¬ë¡œ ì´ë™
+			_pInven->PickUpItems(iter->second);	
+			//ê³¨ë“œ ì°¨ê° 
+
+			//ì•„ì´í…œ ì œê±°
+			D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
+			int x = (vPos.x - _vStartPos.x) / 46;
+			int y = (vPos.y - _vStartPos.y) / 32;
+			int Index = x + (y * _iCntX);
+
+			StoreItem* itemSlot = static_cast<StoreItem*>(obj->GetComponent(COMPONENT_ID::BEHAVIOUR));
+			SLOTINFO slotInfo = *(itemSlot->GetItemInfo(0));
+			for (int i = 0; i < slotInfo._iSlotCntX; i++)
+			{
+				//ê°€ë¡œ ì¹¸ 
+				_ItemSlot[(Index + i)] = false;
+				for (int j = 0; j < slotInfo._iSlotCntX; j++)
+				{//ì„¸ë¡œì¹¸ 
+					_ItemSlot[(Index + i + (j * _iCntX))] = false;
+				}
+			}
+
+			obj->Destroy();
+			//		iter->first = nullptr;
+			//		delete iter->second;
+			iter = _StoreItem.erase(iter);
+			break;
+		}
+		iter++;
+	}
 }
 
-void StoreWnd::OnClose()
+void StoreWnd::Open(Player* player)
+{
+	_pPlayer = player;
+	_pInven = _pPlayer->GetInventory();
+
+	gameObject->SetActive(true);
+
+	LIST_ITEM::iterator iter = _StoreItem.begin();
+	while (iter != _StoreItem.end())
+	{
+		iter->first->SetActive(true);
+		iter++;
+	}
+}
+
+void StoreWnd::Close()
 {
 	gameObject->SetActive(false);
+
+	LIST_ITEM::iterator iter = _StoreItem.begin();
+	while (iter != _StoreItem.end())
+	{
+		iter->first->SetActive(false);
+		iter++;
+	}
+
+	_pPlayer->GetInpuHandler()->ClosedStore();
 }
