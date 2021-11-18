@@ -16,7 +16,7 @@
 #include "Inventory.h"
 #include "StoreNPC.h"
 InputHandler::InputHandler(Player* player) noexcept
-	:_pPlayer(player), _vDir(0, 0, 0),
+	:_pPlayer(player), _vDir(0, 0, 0), _bInven(false),
 	_bFPV(false), _bAtt(false), _bDown(false), _bLBSkill(false), _bRBSkill(false), _bUsingStore(false)
 {
 	
@@ -53,6 +53,20 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			_pTargetCamera->ChangeView();
 		}
 
+		if (INPUT->GetKeyDown('I'))
+		{
+			if (_bInven)
+			{
+				_bInven = false;
+				_pPlayer->GetInventory()->GetGameObject()->SetActive(false);
+			}
+			else 
+			{
+				_bInven = true;
+				_pPlayer->GetInventory()->GetGameObject()->SetActive(true);
+			}
+		}
+
 		if (!_bFPV) //3인칭 조작
 		{
 			if (INPUT->GetKeyDown(KEY_LBUTTON))
@@ -72,7 +86,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 						//아이템 정보 
 						INVENITEMINFO* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
 						//인벤토리에 아이템 추가 
-					//	_pPlayer->GetInventory()->GetItem(ivenItem);
+						_pPlayer->GetInventory()->GetItem(ivenItem);
 
 						hit.collider->GetGameObject()->Destroy();
 					}

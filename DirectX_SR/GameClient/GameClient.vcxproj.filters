@@ -421,7 +421,7 @@
       <Filter>00. Game\01. GameObject\BGMPlayer</Filter>
     </ClInclude>
     <ClInclude Include="StoreItem.h">
-      <Filter>99. Default\Header Files</Filter>
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -597,7 +597,7 @@
       <Filter>00. Game\01. GameObject\BGMPlayer</Filter>
     </ClCompile>
     <ClCompile Include="StoreItem.cpp">
-      <Filter>99. Default\Source Files</Filter>
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

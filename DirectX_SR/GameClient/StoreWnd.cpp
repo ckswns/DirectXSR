@@ -31,18 +31,10 @@ void StoreWnd::Start(void) noexcept
 	CloseBtn->SetSortOrder(4);
 	CloseBtn->GetTransform()->SetLocalPosition(565,520,0);
 
-	INVENITEMINFO info;
-	info._eSlotType =(int)Slot::SLOTTYPE::POTION;
-	AddItem(&info);
-	AddItem(&info);
-	INVENITEMINFO info2;
-	info2._eSlotType = (int)Slot::SLOTTYPE::BODY;
-	AddItem(&info2);
-	AddItem(&info2);
-	AddItem(&info2);
-	AddItem(&info2);
-	AddItem(&info2);
-	AddItem(&info2);
+	INVENITEMINFO* info = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION);
+	AddItem(info);
+	info = new INVENITEMINFO((int)Slot::SLOTTYPE::BODY);
+	AddItem(info);
 }
 
 void StoreWnd::OnDestroy(void) noexcept
@@ -113,7 +105,7 @@ void StoreWnd::AddItem(INVENITEMINFO* item)
 		vPos.y = _vStartPos.y + (32 * cntY);
 
 		pobj->GetTransform()->SetWorldPosition(vPos);
-		pobj->SetSortOrder(4);
+		//pobj->SetSortOrder(4);
 		pobj->SetActive(false);
 		_StoreItem.push_back(std::pair(pobj, item));
 		
@@ -197,7 +189,7 @@ void StoreWnd::Sell(GameObject* obj)
 		if (iter->first == obj)
 		{
 			//인벤토리로 이동
-			//_pInven->GetItem(iter->second);	
+			_pInven->GetItem(iter->second);	
 			//골드 차감 
 
 			//아이템 제거

@@ -42,6 +42,7 @@ public:		void					SetState(SK_STATE newState, Transform* targetTrans , bool bAtt
 public:		void					SetPathFinding(PathFinding* pf);
 
 public:		virtual void			OnCollisionEnter(Collider* mine, Collider* other) noexcept;
+public:		virtual void			OnCollisionStay(Collider* mine, Collider* other) noexcept override;
 
 private:	void					InitAnimation(SpriteRenderer* sr);
 private:	void					InitState();

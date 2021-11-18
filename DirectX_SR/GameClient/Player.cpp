@@ -29,6 +29,7 @@
 
 #include "Light.h"
 #include "Inventory.h"
+#include "Actor.h"
 
 Player::Player(PathFinding* pf) noexcept
 	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
@@ -57,10 +58,10 @@ void Player::Start(void) noexcept
 	_pInputHandler->Start();
 
 	//인벤토리 
-	/*_pInven = new Inventory();
+	_pInven = new Inventory();
 	_pInvenObj = GameObject::Instantiate();
-	_pInvenObj->AddComponent(_pInven);*/
-
+	_pInvenObj->AddComponent(_pInven);
+	_pInven->GetGameObject()->SetActive(false);
 
 	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding);
 
@@ -76,11 +77,12 @@ void Player::Start(void) noexcept
 
 	_pCollider = new SphereCollider(0.3f, "hitbox");
 	gameObject->AddComponent(_pCollider);
-	gameObject->AddComponent(new Rigidbody());
 
-	/*_pAttCollider = new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.3f), D3DXVECTOR3(0, 0, 1), "Attack");
+	_pAttCollider = new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f), D3DXVECTOR3(0, 0, 0), "Attack");
 	gameObject->AddComponent(_pAttCollider);
-	_pAttCollider->SetEnable(false);*/
+	_pAttCollider->SetEnable(false);
+
+	gameObject->AddComponent(new Rigidbody());
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"),false);
 	gameObject->AddComponent(sr);
@@ -167,14 +169,12 @@ void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 			_bCollWithObstacle = true;
 		}
 	}
-	//else if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
-	//{
-	//	if (mine->GetTag() == "Attack")
-	//	{
-	//		//1인칭인 경우 공격 체크 
-	//		other->GetGameObject();
-	//	}
-	//}
+	if (_pAttCollider->GetEnable()) {
+		if (other->GetTag() == "Monster" && mine->GetTag() == "Attack")
+		{
+			other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR)->GetHit(_tStat->_fDamage);
+		}
+	}
 }
 
 void Player::OnCollisionStay(Collider* mine, Collider* other) noexcept
@@ -187,6 +187,13 @@ void Player::OnCollisionStay(Collider* mine, Collider* other) noexcept
 			_bCollWithObstacle = true;
 		}
 	}
+	//if (_pAttCollider->GetEnable()) {
+	//	if (other->GetTag() == "Monster" && mine->GetTag() == "Attack")
+	//	{
+	//		other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR)->GetHit(_tStat->_fDamage);
+	//	}
+	//}
+
 }
 
 void Player::OnCollisionExit(Collider* mine, Collider* other) noexcept
@@ -262,11 +269,15 @@ void Player::InitAnimation(SpriteRenderer* sr)
 			sprintf_s(str, 256, "Asset\\Player\\attack_%d\\%d.png",folder, i);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
-			FrameTime.push_back(0.1f);
+			if(i <8)
+				FrameTime.push_back(0.08f);
+			else
+				FrameTime.push_back(0.05f);
 		}
 
 		ani = new Animation(FrameTime, TList);
 		ani->SetMaterial(material);
+		ani->AddEvent(Animation::EventData(8, "attack", this->gameObject));
 		_pAnimator->InsertAnimation("Attack_" + std::to_string(folder), ani);
 
 		TList.clear();
@@ -346,12 +357,16 @@ void Player::SetFPV()
 //stand,move,skill,Damaged
 void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 {
+	if (_bFPV)
+		SetAttCollider(false);
+
 	if (vTarget != D3DXVECTOR3(0, -5, 0))
 		_pFSM[newState]->SetTarget(vTarget);
 
 	if (!_bFPV)
 	{
-		if (newState == PLAYER_MOVE) {
+		if (newState == PLAYER_MOVE) 
+		{
 			static_cast<PlayerMove*>(_pFSM[newState])->SetAtt(false);
 			_pFSM[newState]->SetTargetTrans(nullptr);
 		}
@@ -370,6 +385,9 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 //attack,move
 void Player::SetState(PLAYER_STATE newState, Transform* targetTrans, bool bAtt)
 {
+	if (_bFPV)
+		SetAttCollider(false);
+
 	if (!_bFPV)
 	{
 		_pFSM[newState]->SetTargetTrans(targetTrans);
@@ -412,10 +430,28 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 	}
 }
 
-//void Player::SetAttCollider(bool b)
-//{
-//	_pAttCollider->SetEnable(b);
-//}
+void Player::SetAttCollider(bool b)
+{
+	_pAttCollider->SetEnable(b);
+}
+
+void Player::OnAnimationEvent(std::string str) noexcept
+{
+	if(_bFPV)
+		_pAttCollider->SetEnable(true);
+	else
+	{
+		if (_eCurState == PLAYER_ATTACK) 
+		{
+			Transform* Target = _pFSM[_eCurState]->GetTargetTrans();
+			if (Target != nullptr) 
+			{
+				Actor* actor = Target->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
+				actor->GetHit(_tStat->_fDamage);
+			}
+		}
+	}
+}
 
 void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
 {

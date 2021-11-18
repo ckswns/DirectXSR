@@ -71,6 +71,15 @@ typedef struct tagInveItemInfo
 	int				_iValue;			//골드의 양이나 회복량?
 	int				_eitemID;			//ITEM_ID
 	int				_eSlotType;			//Slot::SLOTTYPE
+
+	tagInveItemInfo()
+	{
+		_strName = "";
+	}
+	tagInveItemInfo(int eSlotType)
+	{
+		_eSlotType = eSlotType;
+	}
 }INVENITEMINFO;
 
 typedef struct tagItemInfo
