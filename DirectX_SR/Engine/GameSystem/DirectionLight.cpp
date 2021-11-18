@@ -2,6 +2,7 @@
 #include "DirectionLight.h"
 #include "Light.h"
 #include "ManagerDef.h"
+#include "GameObject.h"
 
 void DirectionLight::Start(void) noexcept
 {

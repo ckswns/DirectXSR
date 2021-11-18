@@ -7,6 +7,7 @@
 
 namespace ce
 {
+	class Collider;
 	class GameObject;
 	class Transform;
 

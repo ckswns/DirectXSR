@@ -2,6 +2,9 @@
 #include "ParticleRenderer.h"
 #include "CEMath.h"
 #include "TypeDefine.h"
+#include <fstream>
+#include "GameObject.h"
+#include "Assertion.h"
 
 namespace ce
 {

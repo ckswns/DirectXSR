@@ -5,6 +5,7 @@
 #include "Animator.h"
 #include "PathFinding.h"
 #include "Node.h"
+#include "GameObject.h"
 
 SkeletonMove::SkeletonMove(Animator* pAnim, Transform* trans, Transform* playerTrans, PathFinding* pf, float speed) noexcept
 	:FSMState(pAnim, trans), _pPlayerTrans(playerTrans), _pPathFinding(pf), _fSpeed(speed), _bAtt(false)

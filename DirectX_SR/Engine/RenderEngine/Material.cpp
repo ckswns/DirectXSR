@@ -8,26 +8,27 @@ namespace ce
 	{
 		//ZeroMemory(&_mat, sizeof(D3DXMATERIAL));
 
-		_mat.Diffuse.r = 1;
-		_mat.Diffuse.g = 1;
-		_mat.Diffuse.b = 1;
-		_mat.Diffuse.a = 1;
+		_mat.Diffuse.r = /*_mat.Ambient.r = */1;
+		_mat.Diffuse.g = /*_mat.Ambient.g = */1;
+		_mat.Diffuse.b = /*_mat.Ambient.b = */1;
+		_mat.Diffuse.a = /*_mat.Ambient.a = */1;
 	}
 
 	void Material::SetColor(D3DXCOLOR c) noexcept
 	{
-		_mat.Diffuse.r = c.r / 255.f;
-		_mat.Diffuse.g = c.g / 255.f;
-		_mat.Diffuse.b = c.b / 255.f;
-		_mat.Diffuse.a = c.a / 255.f;
+		_mat.Diffuse.r = /*_mat.Ambient.r = */c.r;
+		_mat.Diffuse.g = /*_mat.Ambient.g = */c.g;
+		_mat.Diffuse.b = /*_mat.Ambient.b = */c.b;
+		_mat.Diffuse.a = /*_mat.Ambient.a = */c.a;
 	}
 
 	D3DXCOLOR Material::GetColor(void) const noexcept
 	{
-		return D3DXCOLOR(_mat.Diffuse.r * 255,
-						_mat.Diffuse.g * 255,
-						_mat.Diffuse.b * 255,
-						_mat.Diffuse.a	* 255
+		return D3DCOLOR_RGBA(
+						(long)(_mat.Diffuse.r * 255),
+						(long)(_mat.Diffuse.g * 255),
+						(long)(_mat.Diffuse.b * 255),
+						(long)(_mat.Diffuse.a * 255)
 					);
 	}
 

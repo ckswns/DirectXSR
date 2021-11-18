@@ -10,10 +10,12 @@
 #include "SpriteRenderer.h"
 
 using namespace ce::UI;
+using namespace ce::CE_MATH;
 
 Inventory::Inventory() noexcept
 {
 }
+
 Inventory::~Inventory() noexcept
 {
 	for (int i = 0; i < (int)Slot::SLOTTYPE::END; ++i)
@@ -28,17 +30,7 @@ Inventory::~Inventory() noexcept
 			_vecSlotGroup[i].clear();
 		}
 	}
-
-	for (auto& iter : _vecItem)
-	{
-		if (iter)
-		{
-			delete iter;
-			iter = nullptr;
-		}
-	}
-	_vecItem.clear();
-
+#ifdef _DEBUG
 	for (auto& iter : _vecItemslot)
 	{
 		if (iter.second)
@@ -47,8 +39,25 @@ Inventory::~Inventory() noexcept
 			iter.second = nullptr;
 		}
 	}
+#else
+	for (auto& iter : _vecItemslot)
+	{
+		if (iter)
+		{
+			delete iter;
+			iter = nullptr;
+		}
+	}
+#endif // _DEBUG
 	_vecItemslot.clear();
+
+	if (_pExamine)
+	{
+		delete _pExamine;
+		_pExamine = nullptr;
+	}
 }
+
 void Inventory::Start(void) noexcept
 {
 	gameObject = GameObject::Instantiate();
@@ -56,61 +65,68 @@ void Inventory::Start(void) noexcept
 	gameObject->SetSortOrder(0);
 	gameObject->GetTransform()->SetWorldPosition(WINCX >> 1, 0, 0);
 
+	_pExamine = new Examine();
+
 	for (int i = 0; i < (int)Slot::SLOTTYPE::END; ++i)
 		_vecSlotGroup[i].emplace_back(new Slot((Slot::SLOTTYPE)i));
 
-	GameObject* pobj = GameObject::Instantiate();
-	ItemSlot* pSlot = new ItemSlot(pobj, Slot::SLOTTYPE::HEAD, 100.f, 100.f);
-	_vecItem.emplace_back(pSlot);
-
-	pobj = GameObject::Instantiate();
-	pSlot = new ItemSlot(pobj, Slot::SLOTTYPE::BODY, 100.f, 200.f);
-	_vecItem.emplace_back(pSlot);
-
-	pobj = GameObject::Instantiate();
-	pSlot = new ItemSlot(pobj, Slot::SLOTTYPE::MAINWP, 100.f, 300.f);
-	_vecItem.emplace_back(pSlot);
-
-	pobj = GameObject::Instantiate();
-	pSlot = new ItemSlot(pobj, Slot::SLOTTYPE::RING1, 100.f, 400.f);
-	_vecItem.emplace_back(pSlot);
-
-	pobj = GameObject::Instantiate();
-	pSlot = new ItemSlot(pobj, Slot::SLOTTYPE::HEAD, 100.f, 500.f);
-	_vecItem.emplace_back(pSlot);
 }
 
 void Inventory::Update(float) noexcept
 {
-	if (INPUT->GetKeyDown('o') || INPUT->GetKeyDown('O')) // Å°´Ù¿î ÀÌ½´
-	{
-		POINT pt = {};
-		GetCursorPos(&pt);
-		ScreenToClient(g_hWnd, &pt);
-		_bItemCatchCheck = !_bItemCatchCheck;
+	POINT pt = {};
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
 
-		if (_bItemCatchCheck)
-			ItemCatch(pt);
-		else
-			ItemDrop(pt);
+	if (INPUT->GetKeyDown('o') || INPUT->GetKeyDown('O')) // L¹öÆ°ÀÌ Àß ¾È¸Ô¾î¼­ ¹Ù²ã³õÀº°Å.
+	{
+		if (!_vecItem.empty())
+		{
+			_bItemCatchCheck = !_bItemCatchCheck;
+			if (_bItemCatchCheck)
+				ItemCatch(pt);
+			else
+				ItemDropAtMouse(pt);/*ItemDrop(pt);*/
+		}
 	}
 
 	if (_bItemCatchCheck)
+	{
 		ItemMove();
+	}
+
+#ifdef _DEBUG
+	if (INPUT->GetKeyDown('l') || INPUT->GetKeyDown('L'))
+	{
+
+		INVENITEMINFO* pInvenInfo = new INVENITEMINFO();
+
+		int i = ce::CE_MATH::Random(1, 12);
+		pInvenInfo->_eSlotType = i;
+
+		GetItem(pInvenInfo);
+	}
+#endif // _DEBUG
 }
 
 void Inventory::ItemCatch(POINT pt)
 {
 	_pItem = nullptr;
 	_pItemSlotInfo = nullptr;
-	for (auto& iter : _vecItem)
+
+	for (size_t t = 0; t < _vecItem.size(); ++t)
 	{
-		_vecItemslot = iter->GetItemSlot();
-		RECT rc = iter->GetItemRect();
+		_vecItemslot = _vecItem[t].second->GetItemSlot();
+		RECT rc = _vecItem[t].second->GetItemRect();
+
 		if (PtInRect(&rc, pt))
 		{
-			_pItem = iter;
+			_pItem = _vecItem[t].second;
+#ifdef _DEBUG
 			_pItemSlotInfo = _vecItemslot[0].second;
+#else
+			_pItemSlotInfo = _vecItemslot[0];
+#endif // _DEBUG
 			ItemCatchExamine(pt);
 			return;
 		}
@@ -131,125 +147,13 @@ void Inventory::ItemCatchExamine(POINT pt)
 		if (PtInRect(&MaxRc, pt))
 		{
 			SLOTINFO* pItem = _pItem->GetItemInfo(0);
-			CatchtoExamine(vSlot, pItem->_vPos);
+			ReCatchtoExamine(vSlot, pItem->_vPos);
 			return;
 		}
 	}
 }
 
-void Inventory::ItemMove()
-{
-	POINT pt = {};
-	GetCursorPos(&pt);
-	ScreenToClient(g_hWnd, &pt);
-
-	if (_pItem != nullptr)
-		_pItem->setMousePosition(D3DXVECTOR3(pt.x, pt.y, 0));
-
-	//_bSlotCheck = true;
-}
-
-void Inventory::ItemDrop(POINT pt) // ÀÌ¸§ º¯°æ ÇØ¾ßÇÔ
-{
-	if (_pItemSlotInfo == nullptr)
-		return;
-
-	for (int i = 0; i < (int)Slot::SLOTTYPE::END; ++i)
-	{
-		auto& iter = _vecSlotGroup[i];
-
-		Slot::SLOTTYPE eSlottype = iter[0]->GetSlotType();
-		std::vector<SLOTINFO*> vSlot = iter[0]->GetSlot();
-
-		RECT	MaxRc = iter[0]->GetRect();
-
-		if (PtInRect(&MaxRc, pt))
-		{
-			for (int i = 0; i < (int)vSlot.size(); ++i)
-			{
-				if (vSlot[i]->_iFlag & _pItemSlotInfo->_iFlag || eSlottype == Slot::SLOTTYPE::NORMAL)
-				{
-					if (eSlottype == Slot::SLOTTYPE::NORMAL)
-					{
-						// ¾ÆÀÌÅÛ À§Ä¡ º¯°æ ½ÃÄÑÁÖ±âÀü¿¡ ÇØ´ç ½½·ÔÀÇ Ä­ÀÌ ºñ¿©ÀÖ´ÂÁö È®ÀÎÇØ¾ßÇÔ.
-
-						SLOTINFO* pslot = ItemExamine(vSlot); // µå¶øÇßÀ»¶§ ¾ÆÀÌÅÛÀÌ µé¾î°¥ Ä­ÀÌÀÖ´ÂÁö °Ë»ç
-						if (pslot == nullptr)
-							return;
-
-						D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
-						_pItem->SetInvenPosition(vpos);
-						return;
-					}
-					else
-					{
-						SLOTINFO* pslot = ItemExamine(vSlot); // µå¶øÇßÀ»¶§ ¾ÆÀÌÅÛÀÌ µé¾î°¥ Ä­ÀÌÀÖ´ÂÁö °Ë»ç
-						if (pslot == nullptr)
-							return;
-
-						D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
-						//D3DXVECTOR3 vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
-						_pItem->SetInvenPosition(vpos);
-						return;
-					}
-				}
-			}
-		}
-	}
-	_bItemCatchCheck = true;
-}
-
-void Inventory::ItemDroponMouse(POINT pt)
-{
-	if (_pItemSlotInfo == nullptr)
-		return;
-
-	for (int i = 0; i < (int)Slot::SLOTTYPE::END; ++i)
-	{
-		auto& iter = _vecSlotGroup[i];
-
-		Slot::SLOTTYPE eSlottype = iter[0]->GetSlotType();
-		std::vector<SLOTINFO*> vSlot = iter[0]->GetSlot();
-
-		RECT	MaxRc = iter[0]->GetRect();
-
-		if (PtInRect(&MaxRc, pt))
-		{
-			for (int i = 0; i < (int)vSlot.size(); ++i)
-			{
-				if (vSlot[i]->_iFlag & _pItemSlotInfo->_iFlag || eSlottype == Slot::SLOTTYPE::NORMAL)
-				{
-					if (eSlottype == Slot::SLOTTYPE::NORMAL)
-					{
-						// ¾ÆÀÌÅÛ À§Ä¡ º¯°æ ½ÃÄÑÁÖ±âÀü¿¡ ÇØ´ç ½½·ÔÀÇ Ä­ÀÌ ºñ¿©ÀÖ´ÂÁö È®ÀÎÇØ¾ßÇÔ.
-
-						SLOTINFO* pslot = ItemExamine(vSlot); // µå¶øÇßÀ»¶§ ¾ÆÀÌÅÛÀÌ µé¾î°¥ Ä­ÀÌÀÖ´ÂÁö °Ë»ç
-						if (pslot == nullptr)
-							return;
-
-						D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
-						_pItem->SetInvenPosition(vpos);
-						return;
-					}
-					else
-					{
-						SLOTINFO* pslot = ItemExamine(vSlot); // µå¶øÇßÀ»¶§ ¾ÆÀÌÅÛÀÌ µé¾î°¥ Ä­ÀÌÀÖ´ÂÁö °Ë»ç
-						if (pslot == nullptr)
-							return;
-
-						D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
-						//D3DXVECTOR3 vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
-						_pItem->SetInvenPosition(vpos);
-						return;
-					}
-				}
-			}
-		}
-	}
-	_bItemCatchCheck = true;
-}
-
-SLOTINFO* Inventory::ItemExamine(std::vector<SLOTINFO*> InvenSlot) // ¼öÁ¤ ÇØ¾ßÇÔ.
+void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 vpos) // ¼öÁ¤ÇØ¾ßÇÔ
 {
 	int InvenCntX = InvenSlot[0]->_iSlotCntX;
 	int InvenCntY = InvenSlot[0]->_iSlotCntY;
@@ -257,31 +161,9 @@ SLOTINFO* Inventory::ItemExamine(std::vector<SLOTINFO*> InvenSlot) // ¼öÁ¤ ÇØ¾ßÇ
 	int ItemCntX = _pItemSlotInfo->_iSlotCntX;
 	int ItemCntY = _pItemSlotInfo->_iSlotCntY;
 
-	switch (ItemCntX * ItemCntY)
-	{
-	case 1:
-		return Examine1X1(InvenSlot, InvenCntX, InvenCntY);
-	case 2:
-		return Examine2X1(InvenSlot, InvenCntX, InvenCntY);
-	case 3:
-		return Examine1X3(InvenSlot, InvenCntX, InvenCntY);
-	case 4:
-		return Examine2X2(InvenSlot, InvenCntX, InvenCntY);
-	case 6:
-		return Examine2X3(InvenSlot, InvenCntX, InvenCntY);
-	}
-}
-
-void Inventory::CatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 vpos) // ¼öÁ¤ÇØ¾ßÇÔ
-{
-	int InvenCntX = InvenSlot[0]->_iSlotCntX;
-	int InvenCntY = InvenSlot[0]->_iSlotCntY;
-
-	int ItemCntX = _pItemSlotInfo->_iSlotCntX;
-	int ItemCntY = _pItemSlotInfo->_iSlotCntY;
-
-	int ChageIndex;
+	int ChageIndex = 0;
 	int Index = 0;
+	int MaxIndex = (InvenCntX * InvenCntY) - 1;
 	for (int i = 0; i < InvenCntY; ++i)
 	{
 		for (int j = 0; j < InvenCntX; ++j)
@@ -293,11 +175,23 @@ void Inventory::CatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 vpo
 				switch (ItemCntX * ItemCntY)
 				{
 				case 1:
-					InvenSlot[ChageIndex]->_bSlotCheck = false;
+					if (MaxIndex >= Index)
+					{
+						InvenSlot[ChageIndex]->_bSlotCheck = false;
+						return;
+					}
 					return;
 				case 2:
-					InvenSlot[ChageIndex]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
+					if (MaxIndex >= Index && MaxIndex >= (Index + 1))
+					{
+						if (MaxIndex >= Index && MaxIndex >= (Index + 1))
+						{
+							InvenSlot[ChageIndex]->_bSlotCheck = false;
+							InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
+							return;
+						}
+						return;
+					}
 					return;
 				case 3:
 					InvenSlot[ChageIndex]->_bSlotCheck = false;
@@ -305,18 +199,27 @@ void Inventory::CatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 vpo
 					InvenSlot[ChageIndex + (InvenCntX * 2)]->_bSlotCheck = false;
 					return;
 				case 4:
-					InvenSlot[ChageIndex]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + InvenCntX]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + InvenCntX + 1]->_bSlotCheck = false;
+					if (MaxIndex >= Index && MaxIndex >= Index + 1 && MaxIndex >= Index + InvenCntX && MaxIndex >= Index + InvenCntX + 1)
+					{
+						InvenSlot[ChageIndex]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + InvenCntX]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + InvenCntX + 1]->_bSlotCheck = false;
+						return;
+					}
 					return;
 				case 6:
-					InvenSlot[ChageIndex]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + InvenCntX]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + InvenCntX + 1]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + (InvenCntX * 2)]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + (InvenCntX * 2) + 1]->_bSlotCheck = false;
+					if (MaxIndex >= Index && MaxIndex >= Index + 1 && MaxIndex >= Index + InvenCntX && MaxIndex >= Index + InvenCntX + 1
+						&& MaxIndex >= Index + (InvenCntX * 2) && MaxIndex >= Index + (InvenCntX * 2) + 1)
+					{
+						InvenSlot[ChageIndex]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + InvenCntX]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + InvenCntX + 1]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + (InvenCntX * 2)]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + (InvenCntX * 2) + 1]->_bSlotCheck = false;
+						return;
+					}
 					return;
 				}
 			}
@@ -324,150 +227,208 @@ void Inventory::CatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 vpo
 	}
 }
 
-SLOTINFO* Inventory::Examine1X1(std::vector<SLOTINFO*> InvenSlot, int iInvenCntX, int iInvenCntY)
+void Inventory::GetItem(INVENITEMINFO* pInvenInfo)
 {
-	int Index = 0;
-	int MaxIndex = (iInvenCntX * iInvenCntY) - 1;
+	GameObject* pobj = GameObject::Instantiate();
+	float fx = UnsignedRandomf(400.f);
+	float fy = UnsignedRandomf(700.f);
+	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->_eSlotType,fx,fy);
+	pobj->AddComponent(pSlot);
+	_vecItem.emplace_back(pInvenInfo,pSlot);
+	_pItem = pSlot;
+#ifdef _DEBUG
+	_pItemSlotInfo = pSlot->GetItemSlot()[0].second;
+#else
+	_pItemSlotInfo = pSlot->GetItemInfo(0);
+#endif // _DEBUG
 
-	for (int i = 0; i < iInvenCntY; ++i)
+	ItemEating();
+}
+
+void Inventory::ItemEating() // ÀÌ¸§ º¯°æ ÇØ¾ßÇÔ
+{
+	if (_pItem == nullptr || _pItemSlotInfo == nullptr)
+		return;
+
+	SLOTINFO* pslot = DropAtEtingExamine(_vecSlotGroup[0][0]->GetSlot()); // ¾ÆÀÌÅÛÀÌ µé¾î°¥ Ä­ÀÌÀÖ´ÂÁö °Ë»ç
+	if (pslot == nullptr)
+		return;
+
+	D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
+	_pItem->SetInvenPosition(vpos);
+	_bItemCatchCheck = false;
+}
+
+SLOTINFO* Inventory::DropAtEtingExamine(std::vector<SLOTINFO*> InvenSlot) // ¼öÁ¤ ÇØ¾ßÇÔ.
+{
+	int ItemCntX = _pItemSlotInfo->_iSlotCntX;
+	int ItemCntY = _pItemSlotInfo->_iSlotCntY;
+
+	switch (ItemCntX * ItemCntY)
 	{
-		for (int j = 0; j < iInvenCntX; ++j)
-		{
-			Index = i * iInvenCntX + j;
+	case 1:
+		return _pExamine->EatingExamine1X1(InvenSlot);
+	case 2:
+		return _pExamine->EatingExamine2X1(InvenSlot);
+	case 3:
+		return _pExamine->EatingExamine1X3(InvenSlot);
+	case 4:
+		return _pExamine->EatingExamine2X2(InvenSlot);
+	case 6:
+		return _pExamine->EatingExamine2X3(InvenSlot);
+	}
 
-			if (MaxIndex >= Index)
+	return nullptr;
+}
+
+void Inventory::ItemDropAtMouse(POINT pt)
+{
+	if (_pItemSlotInfo == nullptr)
+		return;
+
+	for (int i = 0; i < (int)Slot::SLOTTYPE::END; ++i)
+	{
+		auto& iter = _vecSlotGroup[i];
+
+		Slot::SLOTTYPE eSlottype = iter[0]->GetSlotType();
+		Slot::SLOTTYPE eItemSlotType = _pItem->GetSlotType();
+		std::vector<SLOTINFO*> vSlot = iter[0]->GetSlot();
+		
+		RECT	MaxRc = iter[0]->GetRect();
+
+		if (PtInRect(&MaxRc, pt))
+		{
+			for (int i = 0; i < (int)vSlot.size(); ++i)
 			{
-				if (!InvenSlot[Index]->_bSlotCheck)
+				if (PtInRect(&vSlot[i]->_tRect, pt))
 				{
-					InvenSlot[Index]->_bSlotCheck = true;
-					return InvenSlot[Index];
+					if (vSlot[i]->_iFlag & _pItemSlotInfo->_iFlag && eItemSlotType != Slot::SLOTTYPE::POTION)
+					{
+						// ¾ÆÀÌÅÛ À§Ä¡ º¯°æ ½ÃÄÑÁÖ±âÀü¿¡ ÇØ´ç ½½·ÔÀÇ Ä­ÀÌ ºñ¿©ÀÖ´ÂÁö È®ÀÎÇØ¾ßÇÔ.
+						SLOTINFO* pslot = DropAtMouseExamine(vSlot,pt); // µå¶øÇßÀ»¶§ ¾ÆÀÌÅÛÀÌ µé¾î°¥ Ä­ÀÌÀÖ´ÂÁö °Ë»ç
+						if (pslot == nullptr)
+						{
+							_bItemCatchCheck = true;
+							return;
+						}
+
+						if (_bSwitchingcheck)
+						{
+							D3DXVECTOR3 vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
+							_pPriveItem->SetInvenPosition(vpos);
+							_bItemCatchCheck = true;
+							_bSwitchingcheck = false;
+							_pItem = _pPriveItem;
+							_pPriveItem = nullptr;
+						}
+						else
+						{
+							D3DXVECTOR3 vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
+							_pItem->SetInvenPosition(vpos);
+						}
+						return;
+					}
+					else if (eSlottype == Slot::SLOTTYPE::NORMAL)
+					{
+						SLOTINFO* pslot = DropAtMouseExamine(vSlot, pt); // µå¶øÇßÀ»¶§ ¾ÆÀÌÅÛÀÌ µé¾î°¥ Ä­ÀÌÀÖ´ÂÁö °Ë»ç
+						if (pslot == nullptr)
+						{
+							_bItemCatchCheck = true;
+							return;
+						}
+						D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
+						_pItem->SetInvenPosition(vpos);
+						return;
+					}
 				}
 			}
-			else
-				return nullptr;
 		}
+	}
+
+	for (int i = 0; i < (int)Slot::SLOTTYPE::END; ++i)
+	{
+		auto& iter = _vecSlotGroup[i];
+		RECT	MaxRc = iter[0]->GetRect();
+		if (!PtInRect(&MaxRc, pt))
+		{
+			float fx = UnsignedRandomf(400.f);
+			float fy = UnsignedRandomf(700.f);
+			D3DXVECTOR3 vPos = { fx, fy, 0.f };
+			_pItem->SetInvenPosition(vPos);
+			_bItemCatchCheck = false;
+			return;
+		}
+		else
+		{
+			_bItemCatchCheck = true; // Áß´ÜÁ¡ È®ÀÎÇØ¾ßÇÔ.
+			return;
+		}
+	}
+}
+
+SLOTINFO* Inventory::DropAtMouseExamine(std::vector<SLOTINFO*> InvenSlot, POINT pt)
+{
+	int ItemCntX = _pItemSlotInfo->_iSlotCntX;
+	int ItemCntY = _pItemSlotInfo->_iSlotCntY;
+	SLOTINFO* pSlotinfo = nullptr;
+	switch (ItemCntX * ItemCntY)
+	{
+	case 1:
+		pSlotinfo = _pExamine->MouseExamine1X1(InvenSlot, pt);
+		/*if (pSlotinfo == nullptr)
+			return ItemSwitching(pt);
+		else*/
+			return pSlotinfo;
+		break;
+	case 2:
+		return _pExamine->MouseExamine2X1(InvenSlot,pt);
+		break;
+	case 3:
+		return _pExamine->MouseExamine1X3(InvenSlot,pt);
+		break;
+	case 4:
+		return _pExamine->MouseExamine2X2(InvenSlot,pt);
+		break;
+	case 6:
+		return _pExamine->MouseExamine2X3(InvenSlot,pt);
+		break;
 	}
 	return nullptr;
 }
 
-SLOTINFO* Inventory::Examine1X3(std::vector<SLOTINFO*> InvenSlot, int iInvenCntX, int iInvenCntY)
+void Inventory::ItemMove()
 {
-	int Index = 0;
-	int MaxIndex = (iInvenCntX * iInvenCntY) - 1;
+	POINT pt = {};
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
 
-	for (int i = 0; i < iInvenCntY; ++i)
+	if (_pPriveItem != nullptr)
 	{
-		for (int j = 0; j < iInvenCntX; ++j)
-		{
-			Index = i * iInvenCntX + j;
-			if (MaxIndex >= Index && MaxIndex >= (Index + iInvenCntX) && MaxIndex >= (Index + (iInvenCntX * 2)))
-			{
-				if (!InvenSlot[Index]->_bSlotCheck
-					&& !InvenSlot[Index + iInvenCntX]->_bSlotCheck
-					&& !InvenSlot[Index + (iInvenCntX * 2)]->_bSlotCheck)
-				{
-					InvenSlot[Index]->_bSlotCheck = true;
-					InvenSlot[Index + iInvenCntX]->_bSlotCheck = true;
-					InvenSlot[Index + (iInvenCntX * 2)]->_bSlotCheck = true;
-					return InvenSlot[Index];
-				}
-			}
-			else
-				return nullptr;
-		}
+		_pPriveItem->setMousePosition(D3DXVECTOR3(pt.x, pt.y, 0));
 	}
-	return nullptr;
+	else if (_pItem != nullptr)
+	{
+		_pItem->setMousePosition(D3DXVECTOR3(pt.x, pt.y, 0));
+		return;
+	}
 }
 
-SLOTINFO* Inventory::Examine2X1(std::vector<SLOTINFO*> InvenSlot, int iInvenCntX, int iInvenCntY)
+SLOTINFO* Inventory::ItemSwitching(POINT pt) // ½ºÀ§Äª ¼öÁ¤ÇØ¾ßÇÔ.
 {
-	int Index = 0;
-	int MaxIndex = (iInvenCntX * iInvenCntY) - 1;
-
-	for (int i = 0; i < iInvenCntY; ++i)
+	RECT rc = {};
+	if (_pItemSlotInfo != nullptr)
 	{
-		for (int j = 0; j < iInvenCntX; ++j)
+		for (size_t t = 0; t < _vecItem.size(); ++t)
 		{
-			Index = i * iInvenCntX + j;
-
-			if (MaxIndex >= Index && MaxIndex >= (Index + 1))
+			for (size_t s = 0; s < _vecItem[t].second->GetItemSlot().size(); ++s)
 			{
-				if (!InvenSlot[Index]->_bSlotCheck
-					&& !InvenSlot[Index + 1]->_bSlotCheck)
+				if (IntersectRect(&rc, &_pItemSlotInfo->_tRect, &_vecItem[t].second->GetItemSlot()[s].second->_tRect));
 				{
-					InvenSlot[Index]->_bSlotCheck = true;
-					InvenSlot[Index + 1]->_bSlotCheck = true;
-					return InvenSlot[Index];
+					_pPriveItem = _vecItem[t].second;
+					_bSwitchingcheck = true;
+					return _vecItem[t].second->GetItemSlot()[0].second;
 				}
 			}
-		}
-	}
-	return nullptr;
-}
-
-SLOTINFO* Inventory::Examine2X2(std::vector<SLOTINFO*> InvenSlot, int iInvenCntX, int iInvenCntY)
-{
-	int Index = 0;
-	int MaxIndex = (iInvenCntX * iInvenCntY) - 1;
-
-	for (int i = 0; i < iInvenCntY; ++i)
-	{
-		for (int j = 0; j < iInvenCntX; ++j)
-		{
-			Index = i * iInvenCntX + j;
-
-			if (MaxIndex >= Index && MaxIndex >= Index + 1 && MaxIndex >= Index + iInvenCntX && MaxIndex >= Index + iInvenCntX + 1)
-			{
-				if (!InvenSlot[Index]->_bSlotCheck
-					&& !InvenSlot[Index + 1]->_bSlotCheck
-					&& !InvenSlot[Index + iInvenCntX]->_bSlotCheck
-					&& !InvenSlot[Index + iInvenCntX + 1]->_bSlotCheck)
-				{
-					InvenSlot[Index]->_bSlotCheck = true;
-					InvenSlot[Index + 1]->_bSlotCheck = true;
-					InvenSlot[Index + iInvenCntX]->_bSlotCheck = true;
-					InvenSlot[Index + iInvenCntX + 1]->_bSlotCheck = true;
-					return InvenSlot[Index];
-				}
-			}
-			else
-				return nullptr;
-		}
-	}
-	return nullptr;
-}
-
-SLOTINFO* Inventory::Examine2X3(std::vector<SLOTINFO*> InvenSlot, int iInvenCntX, int iInvenCntY)
-{
-	int Index = 0;
-	int MaxIndex = (iInvenCntX * iInvenCntY) - 1;
-	for (int i = 0; i < iInvenCntY; ++i)
-	{
-		for (int j = 0; j < iInvenCntX; ++j)
-		{
-			Index = i * iInvenCntX + j;
-
-			if (MaxIndex >= Index && MaxIndex >= Index + 1 && MaxIndex >= Index + iInvenCntX && MaxIndex >= Index + iInvenCntX + 1
-				&& MaxIndex >= Index + (iInvenCntX * 2) && MaxIndex >= Index + (iInvenCntX * 2) + 1)
-			{
-				if (!InvenSlot[Index]->_bSlotCheck
-					&& !InvenSlot[Index + 1]->_bSlotCheck
-					&& !InvenSlot[Index + iInvenCntX]->_bSlotCheck
-					&& !InvenSlot[Index + iInvenCntX + 1]->_bSlotCheck
-					&& !InvenSlot[Index + (iInvenCntX * 2)]->_bSlotCheck
-					&& !InvenSlot[Index + (iInvenCntX * 2) + 1]->_bSlotCheck)
-				{
-					InvenSlot[Index]->_bSlotCheck = true;
-					InvenSlot[Index + 1]->_bSlotCheck = true;
-					InvenSlot[Index + iInvenCntX]->_bSlotCheck = true;
-					InvenSlot[Index + iInvenCntX + 1]->_bSlotCheck = true;
-					InvenSlot[Index + (iInvenCntX * 2)]->_bSlotCheck = true;
-					InvenSlot[Index + (iInvenCntX * 2) + 1]->_bSlotCheck = true;
-					return InvenSlot[Index];
-				}
-			}
-			else
-				return nullptr;
 		}
 	}
 	return nullptr;

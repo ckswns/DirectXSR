@@ -8,10 +8,11 @@
 #endif
 
 #include "../Base/ConstValues.h"
-#include "../Base/GameObject.h"
 
 namespace ce
 {
+	class GameObject;
+
 	class Component abstract
 	{
 	protected:							Component() = delete;
@@ -44,7 +45,7 @@ namespace ce
 	public:		bool					GetEnable(void) const noexcept { return _bEnable; }
 
 	public:		void					SetEnable(bool enable) noexcept { _bEnable = enable; }
-	public:		void					RemoveComponent(void) noexcept { if (_owner) { _owner->RemoveComponent(this); } }
+	public:		void					RemoveComponent(void) noexcept;
 
 	public:		void					SetGameObjectXXX(GameObject* obj) { _owner = obj; }
 	public:		GameObject*				GetGameObject(void)	noexcept { return _owner; }

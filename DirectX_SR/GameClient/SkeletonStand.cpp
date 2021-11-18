@@ -3,6 +3,7 @@
 #include "Skeleton.h"
 #include "Animator.h"
 #include "Transform.h"
+#include "GameObject.h"
 
 void SkeletonStand::Start() noexcept
 {

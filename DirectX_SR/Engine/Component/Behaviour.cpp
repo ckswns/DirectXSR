@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Behaviour.h"
 #include "ConstValues.h"
+#include "GameObject.h"
 
 namespace ce
 {

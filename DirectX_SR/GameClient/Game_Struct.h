@@ -103,7 +103,7 @@ typedef struct tagSlot
 	{
 		_bSlotCheck = false;
 		_iSlotSizeX = 46;
-		_iSlotSizeY = 30;
+		_iSlotSizeY = 32;
 	}
 
 }SLOTINFO;

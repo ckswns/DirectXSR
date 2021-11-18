@@ -6,6 +6,7 @@
 #ifdef _DEBUG
 #include "ManagerDef.h"
 #endif
+#include "Assertion.h"
 
 namespace ce
 {

@@ -6,6 +6,8 @@
 #include "BoxCollider.h"
 #include "RectTransform.h"
 #include "StoreWnd.h"
+#include "GameObject.h"
+
 void StoreNPC::Start(void) noexcept
 {
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"), false);

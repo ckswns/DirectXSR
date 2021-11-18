@@ -156,5 +156,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PlaneRenderer.cpp">
       <Filter>Renderer\PlaneRenderer</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Component.cpp" />
   </ItemGroup>
 </Project>

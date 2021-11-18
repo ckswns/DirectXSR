@@ -171,6 +171,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Cow.h" />
     <ClInclude Include="DbgShowFrame.h" />
+    <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FSMState.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="BoneSpear.cpp" />
     <ClCompile Include="Cow.cpp" />
     <ClCompile Include="DbgShowFrame.cpp" />
+    <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />

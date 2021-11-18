@@ -41,6 +41,7 @@ void StatusBar::InitUI() noexcept
     pObj->SetSortOrder(1);
 
     _imgHP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\HPBall.png"));
+    _imgHP->SetFillType(Image::FillType::VERTICAL);
     pObj = GameObject::Instantiate();
     pObj->AddComponent(_imgHP);
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
@@ -48,6 +49,7 @@ void StatusBar::InitUI() noexcept
     pObj->SetSortOrder(1);
 
     _imgMP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\MPBall.png"));
+    _imgMP->SetFillType(Image::FillType::VERTICAL);
     pObj = GameObject::Instantiate();
     pObj->AddComponent(_imgMP);
     pObj->GetTransform()->SetParent(gameObject->GetTransform());

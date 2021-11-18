@@ -205,6 +205,9 @@
     <Filter Include="00. Game\01. GameObject\Item\Potion\RejuvenationPotion">
       <UniqueIdentifier>{6cac8b63-8491-481f-aa00-e9564c01f5af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Inventory\Inventory\Examine">
+      <UniqueIdentifier>{594fb1c4-11ab-4b9e-bb4b-0b3398f09b80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">

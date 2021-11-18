@@ -21,10 +21,13 @@ public:		void			OnCollisionEnter(Collider* mine, Collider* other) noexcept overr
 public:		void			OnCollisionStay(Collider* mine, Collider* other) noexcept override;
 public:		void			OnCollisionExit(Collider* mine, Collider* other) noexcept override;
 
-public:		void			GetHit(float damage) noexcept override;
+public:		void			GetHit(int damage) noexcept override;
 
 private:	D3DXVECTOR3		_bornPosition;
 private:	Player*			_player;
 private:	PathFinding*	_pathFinder;
+
+private:	bool			_dirtyState = false;
+private:	float			_fDeltaTime = 0;
 };
 

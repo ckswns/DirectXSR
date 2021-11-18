@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Assertion.h"
 #include "Texture.h"
+#include "GameObject.h"
 
 namespace ce
 {

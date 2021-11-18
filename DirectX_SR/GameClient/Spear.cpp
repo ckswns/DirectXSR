@@ -4,6 +4,9 @@
 #include "SpriteRenderer.h"
 #include "Animator.h"
 #include "Animation.h"
+#include "SphereCollider.h"
+#include "GameObject.h"
+#include "RigidBody.h"
 
 void Spear::Start(void) noexcept
 {
@@ -12,6 +15,9 @@ void Spear::Start(void) noexcept
 
 	Animator* pAnimator = new Animator(true);
 	gameObject->AddComponent(pAnimator);
+
+	gameObject->AddComponent(new SphereCollider(0.1f, "BoneSpear"));
+	gameObject->AddComponent(new Rigidbody());
 
 	std::vector<Texture*> TList;
 	std::vector<float>		FrameTime;
@@ -34,5 +40,15 @@ void Spear::Start(void) noexcept
 	FrameTime.clear();
 }
 
+void Spear::OnCollisionEnter(Collider* mine, Collider* other) noexcept
+{
+	if (mine->GetTag() == "BoneSpear" && other->GetTag() == "Monster")
+	{
+		Actor* monster = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
+
+		if(monster != nullptr)
+			monster->GetHit(10);
+	}
+}
 
 

@@ -18,6 +18,7 @@
 
 #include "Camera.h"
 #include "TargetCamera.h"
+#include "GameObject.h"
 
 Skeleton::Skeleton() noexcept
 	:_tStat(70, 10, 5), _eCurState(SK_END), _fSpeed(3.f), _bOnce(false)
