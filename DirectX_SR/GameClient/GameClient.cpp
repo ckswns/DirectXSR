@@ -10,7 +10,7 @@
 #include "Game.h"
 #include "LoadingScene.h"
 #include "TownScene_01.h"
-
+#include "Dungeon_01.h"
 #define MAX_LOADSTRING 100
 
 // Global Variables:
@@ -62,6 +62,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	scenesList.push_back(std::make_pair("Loading", scene));
 	scene = new TownScene_01();
 	scenesList.push_back(std::make_pair("Town_01", scene));
+	scene = new Dungeon_01();
+	scenesList.push_back(std::make_pair("Dungeon_01", scene));
 
 	pGameController->Init(g_hWnd, scenesList, WINCX, WINCY, "Asset\\Font\\kodia.ttf", "kodia");
  

@@ -28,6 +28,8 @@
 #include "BGMPlayer.h"
 #include "Portal.h"
 
+#include "StoreNPC.h"
+
 TownScene_01::TownScene_01(void) noexcept
 {
 }
@@ -204,6 +206,10 @@ bool TownScene_01::Init(void) noexcept
 	//UI
 	pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StatusBar(player));
+
+	pGameObj = GameObject::Instantiate();
+	pGameObj->AddComponent(new StoreNPC());
+	pGameObj->GetTransform()->SetWorldPosition(10, 0.5, 10);
 
 	for (int i = 0; i < 50; i++)
 	{

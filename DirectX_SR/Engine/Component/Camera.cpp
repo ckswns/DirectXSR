@@ -69,6 +69,8 @@ namespace ce
 
 	void Camera::Release(void) noexcept
 	{
+		mainCamera = nullptr;
+
 		if (_skybox)
 		{
 			_skybox->Release();

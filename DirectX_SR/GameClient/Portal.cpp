@@ -7,6 +7,7 @@
 #include "BillboardObj.h"
 #include "SphereCollider.h"
 #include "Ray.h"
+#include "Camera.h"
 
 Portal::Portal(const char* key) noexcept :
 	_sceneKey(key)
@@ -40,5 +41,17 @@ void Portal::Start(void) noexcept
 
 void Portal::Update(float) noexcept
 {
+	if (INPUT->GetKeyDown(VK_LBUTTON))
+	{
+		Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
+		RaycastHit hit;
 
+		if (Physics::Raycast(ray, hit, GameObjectLayer::ALPHA))
+		{
+			if (hit.collider->GetTag() == "portal")
+			{
+				SCENEMANAGER->LoadScene(_sceneKey);
+			}
+		}
+	}
 }
