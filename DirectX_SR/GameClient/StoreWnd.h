@@ -3,6 +3,7 @@
 
 class ItemSlot;
 class Inventory;
+class Player;
 class StoreWnd : public Behaviour
 {
 public:		using VEC_STORE = std::vector<bool>;
@@ -16,12 +17,11 @@ public:		virtual void		Update(float fElapsedTime) noexcept { __noop; }
 public:		virtual void		OnDestroy(void) noexcept;
 
 public:		void				AddItem(INVENITEMINFO* item);
-public:		void				SellItem();
-
-public:		void				Open(Inventory* inven);
+//public:		void				SellItem();
+public:		void				Sell(GameObject* obj);
+public:		void				Open(Player* player);
 public:		void				Close();
 
-public:		virtual void			OnMouseDown(void) noexcept;
 
 private:	D3DXVECTOR3			_vStartPos;
 private:	int					_iCntX = 10;
@@ -31,5 +31,6 @@ private:	float				_fSizeY;
 private:	VEC_STORE			_ItemSlot;	// 상점 아이템칸
 private:	LIST_ITEM			_StoreItem;	// 상점 소유 아이템 
 private:	Inventory*			_pInven;
+private:	Player*				_pPlayer;
 };
 

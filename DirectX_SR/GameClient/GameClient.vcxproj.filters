@@ -420,6 +420,9 @@
     <ClInclude Include="BGMPlayer.h">
       <Filter>00. Game\01. GameObject\BGMPlayer</Filter>
     </ClInclude>
+    <ClInclude Include="StoreItem.h">
+      <Filter>99. Default\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -592,6 +595,9 @@
     </ClCompile>
     <ClCompile Include="BGMPlayer.cpp">
       <Filter>00. Game\01. GameObject\BGMPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreItem.cpp">
+      <Filter>99. Default\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

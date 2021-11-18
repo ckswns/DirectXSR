@@ -23,6 +23,9 @@ public:		void					SetMouseBtn(bool isLeft, SKILL_ID id);
 
 public:		const D3DXVECTOR3&		GetDir(void) const noexcept { return _vDir; }
 
+public:		void					ClosedStore() { _bUsingStore = false; }
+private:	bool					_bUsingStore;
+
 private:	bool					_bLBSkill;
 private:	bool					_bRBSkill;
 private:	Command*				_pLBCommand;

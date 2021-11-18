@@ -13,7 +13,7 @@ void StoreNPC::Start(void) noexcept
 	gameObject->SetName("StoreNPC");
 	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5, 1, 0.5)));
 
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"), false);
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\NPC\\8\\0.png"), false);
 	gameObject->AddComponent(sr);
 	Animator* pAnimator = new Animator(true);
 	gameObject->AddComponent(pAnimator);
@@ -49,6 +49,6 @@ void StoreNPC::Start(void) noexcept
 void StoreNPC::OnClick(Player* player)
 {
 	//»óÁ¡ ¶ç¿ì±â 
-	_pStoreWnd->Open(player->GetInventory());
+	_pStoreWnd->Open(player);
 
 }
