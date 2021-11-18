@@ -398,7 +398,12 @@ void Cow::GetHit(int damage) noexcept
 
 void Cow::OnAnimationEvent(std::string str) noexcept
 {
-	_player->GetHit(Random::GetValue(_data.damageMax, _data.damageMin), transform->GetWorldPosition());
-	_hitEffectAudio->Play();
+	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
+
+	if (dis.Length() < 0.7f)
+	{
+		_player->GetHit(Random::GetValue(_data.damageMax, _data.damageMin), transform->GetWorldPosition());
+		_hitEffectAudio->Play();
+	}
 }
 
