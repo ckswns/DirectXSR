@@ -6,6 +6,7 @@
 #include "BoxCollider.h"
 #include "StoreWnd.h"
 #include "GameObject.h"
+#include "Player.h"
 
 void StoreNPC::Start(void) noexcept
 {
@@ -38,16 +39,16 @@ void StoreNPC::Start(void) noexcept
 	TList.clear();
 	FrameTime.clear();
 
-	_pStoreWndObj = GameObject::Instantiate();
-	//_pStoreWnd = new StoreWnd();
-	_pStoreWndObj->AddComponent(new StoreWnd());
-	_pStoreWndObj->SetActive(false);
+	GameObject * pStoreWndObj = GameObject::Instantiate();
+	_pStoreWnd = new StoreWnd();
+	pStoreWndObj->AddComponent(_pStoreWnd);
+	pStoreWndObj->SetActive(false);
 
 }
 
-void StoreNPC::OnClick()
+void StoreNPC::OnClick(Player* player)
 {
 	//»óÁ¡ ¶ç¿ì±â 
-	_pStoreWndObj->SetActive(true);
+	_pStoreWnd->Open(player->GetInventory());
 
 }

@@ -1,36 +1,50 @@
 ﻿#include "pch.h"
 #include "StoreWnd.h"
+#include "Inventory.h"
 #include "ItemSlot.h"
 #include "Slot.h"
 #include "Transform.h"
 #include "Image.h"
 #include "Button.h"
+#include "RectTransform.h"
 using namespace ce::UI;
 void StoreWnd::Start(void) noexcept
 {
 	_ItemSlot.assign((_iCntX * _iCntY), false);
 
 	//칸 시작지점
-	_vStartPos = D3DXVECTOR3(28, 88, 0);
+	_vStartPos = D3DXVECTOR3(165, 148, 0);
 
-	gameObject->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Store.png")));
+	Image* img = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Store.png"));
+	gameObject->AddComponent(img);
 
 	GameObject* CloseBtn = GameObject::Instantiate();
 	CloseBtn->GetTransform()->SetParent(gameObject->GetTransform());
 	CloseBtn->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Close_0.png")));
-	Button<StoreWnd>* btn = static_cast<Button<StoreWnd>*>(gameObject->AddComponent(new Button<StoreWnd>(this)));
-	btn->onMouseDown += &StoreWnd::OnClose;
+	Button<StoreWnd>* btn = static_cast<Button<StoreWnd>*>(CloseBtn->AddComponent(new Button<StoreWnd>(this)));
+	btn->onMouseDown += &StoreWnd::Close;
 	btn->SetTexture(nullptr, nullptr, ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Close_1.png"), nullptr);
 	CloseBtn->SetSortOrder(2);
-	CloseBtn->GetTransform()->SetLocalPosition(300,500,0);
+	CloseBtn->GetTransform()->SetLocalPosition(565,520,0);
 
 	INVENITEMINFO info;
 	info._eSlotType =(int)Slot::SLOTTYPE::POTION;
 	AddItem(&info);
-
+	AddItem(&info);
 	INVENITEMINFO info2;
 	info2._eSlotType = (int)Slot::SLOTTYPE::BODY;
 	AddItem(&info2);
+	AddItem(&info2);
+	AddItem(&info2);
+	AddItem(&info2);
+	AddItem(&info2);
+	AddItem(&info2);
+}
+
+void StoreWnd::OnDestroy(void) noexcept
+{
+	_ItemSlot.clear();
+	_StoreItem.clear();
 }
 
 void StoreWnd::AddItem(INVENITEMINFO* item)
@@ -52,8 +66,8 @@ void StoreWnd::AddItem(INVENITEMINFO* item)
 				int itemX = pSlot->GetItemInfo(0)->_iSlotCntX;
 				int itemY = pSlot->GetItemInfo(0)->_iSlotCntY;
 				// 현 위치 기준으로 넣을 수 없음
-				if (x + itemX >= _iCntX) continue;
-				if (y + itemY >= _iCntY) continue;
+				if (x + itemX > _iCntX) continue;
+				if (y + itemY > _iCntY) continue;
 				
 				bool chk = false;
 				for (int i = 0; i < itemX; i++)
@@ -114,40 +128,81 @@ void StoreWnd::SellItem()
 	POINT pt;
 	GetCursorPos(&pt);
 
+	ScreenToClient(g_hWnd, &pt);
+
 	LIST_ITEM::iterator iter = _StoreItem.begin();
 	while (iter != _StoreItem.end())
 	{
-		ItemSlot* itemSlot = static_cast<ItemSlot*>(iter->first->GetComponent(COMPONENT_ID::BEHAVIOUR));
+		GameObject* obj = iter->first;
+		ItemSlot* itemSlot = static_cast<ItemSlot*>(obj->GetComponent(COMPONENT_ID::BEHAVIOUR));
+		
+		D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
 		RECT rc = itemSlot->GetItemRect();
+		rc.left += vPos.x;
+		rc.right += vPos.x;
+		rc.top += vPos.y;
+		rc.bottom += vPos.y;
+
+	//	RectTransform* rectTransform = static_cast<RectTransform*>((iter->first)->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+
+	//	RECT rc = rectTransform->GetPickingRect();
 		if (PtInRect(&rc, pt))
 		{
 			//인벤토리로 이동
+			//_pInven->GetItem(iter->second);	
 			//골드 차감 
-
 			
 			//아이템 제거
-			D3DXVECTOR3 vPos = iter->first->GetTransform()->GetWorldPosition();
+		//	D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
 			int x = (vPos.x-_vStartPos.x) / 46;
 			int y = (vPos.y - _vStartPos.y) / 32;
 			int Index = x + (y * _iCntX);
 
 			SLOTINFO slotInfo = *(itemSlot->GetItemInfo(0));
-			for (int i = 0; i <= slotInfo._iSlotCntX; i++)
+			for (int i = 0; i < slotInfo._iSlotCntX; i++)
 			{
 				//가로 칸 
 				_ItemSlot[(Index + i)] = false;
-				for (int j = 0; j <= slotInfo._iSlotCntX; j++)
+				for (int j = 0; j < slotInfo._iSlotCntX; j++)
 				{//세로칸 
 					_ItemSlot[(Index + i + (j * _iCntX))] = false;
 				}
 			}
 
-			iter->first->Destroy();
+	//		obj->Destroy();
+	//		iter->first = nullptr;
+	//		delete iter->second;
+			_StoreItem.erase(iter);
+			break;
 		}
 	}
 }
 
-void StoreWnd::OnClose()
+void StoreWnd::Open(Inventory* inven)
+{
+	_pInven = inven;
+	gameObject->SetActive(true);
+
+	LIST_ITEM::iterator iter = _StoreItem.begin();
+	while (iter != _StoreItem.end())
+	{
+		iter->first->SetActive(true);
+		iter++;
+	}
+}
+
+void StoreWnd::Close()
 {
 	gameObject->SetActive(false);
+
+	LIST_ITEM::iterator iter = _StoreItem.begin();
+	while (iter != _StoreItem.end())
+	{
+		iter->first->SetActive(false);
+		iter++;
+	}
+}
+
+void StoreWnd::OnMouseDown(void) noexcept
+{
 }
