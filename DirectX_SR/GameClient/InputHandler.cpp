@@ -95,8 +95,12 @@ void InputHandler::Update(float fElapsedTime) noexcept
 						D3DXVECTOR3 vDir = hit.transform->GetWorldPosition() - _pPlayerTrans->GetWorldPosition();
 						if (D3DXVec3Length(&vDir) < 1)
 						{
-							static_cast<StoreNPC*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->OnClick(_pPlayer);
 							_bUsingStore = true;
+							static_cast<StoreNPC*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->OnClick(_pPlayer);
+
+							//인벤토리도 같이 열림 
+							_bInven = true;
+							_pPlayer->GetInventory()->GetGameObject()->SetActive(true);
 						}
 					}
 				}
@@ -250,4 +254,11 @@ void InputHandler::SetMouseBtn(bool isLeft, SKILL_ID id)
 			static_cast<SkillCommand*>(_pRBCommand)->SetSkill(id);
 		}
 	}
+}
+
+void InputHandler::ClosedStore()
+{
+	_bUsingStore = false;
+	_bInven = false;
+	_pPlayer->GetInventory()->GetGameObject()->SetActive(false);
 }
