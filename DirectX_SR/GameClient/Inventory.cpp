@@ -6,8 +6,9 @@
 #include "GameObject.h"
 #include "Image.h"
 #include "Transform.h"
-#include "TestItem.h"
 #include "SpriteRenderer.h"
+#include "RectTransform.h"
+#include "Text.h"
 
 using namespace ce::UI;
 using namespace ce::CE_MATH;
@@ -70,43 +71,102 @@ void Inventory::Start(void) noexcept
 	for (int i = 0; i < (int)Slot::SLOTTYPE::END; ++i)
 		_vecSlotGroup[i].emplace_back(new Slot((Slot::SLOTTYPE)i));
 
+	_iGold = 100;
+
+	GameObject* obj;
+	obj = GameObject::Instantiate();
+	_pTexGold = static_cast<UI::Text*>(obj->AddComponent(new UI::Text(std::to_string(_iGold).c_str(), D3DCOLOR_ARGB(255, 255, 255, 255))));
+	RectTransform* rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+	rt->SetWidth(40);
+	rt->SetHeight(40);
+	obj->SetSortOrder(10);
+	obj->GetTransform()->SetWorldPosition(885, 530, 0);
 }
 
 void Inventory::Update(float) noexcept
 {
+	_pTexGold->SetText(std::to_string(_iGold).c_str());
+
 	POINT pt = {};
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	if (INPUT->GetKeyDown('o') || INPUT->GetKeyDown('O')) // L버튼이 잘 안먹어서 바꿔놓은거.
+	if (INPUT->GetKeyDown(KEY_LBUTTON) || INPUT->GetKeyDown(KEY_LBUTTON))/*INPUT->GetKeyDown('o') || INPUT->GetKeyDown('O'))*/ // L버튼이 잘 안먹어서 바꿔놓은거.
 	{
+		float fx = pt.x;
+		float fy = pt.y;
 		if (!_vecItem.empty())
 		{
 			_bItemCatchCheck = !_bItemCatchCheck;
 			if (_bItemCatchCheck)
 				ItemCatch(pt);
 			else
-				ItemDropAtMouse(pt);/*ItemDrop(pt);*/
+				_bDropCheck = ItemDropAtMouse(pt);
 		}
 	}
+	else if (INPUT->GetKeyDown(KEY_RBUTTON) && !_bItemCatchCheck)
+		UsingItem(pt);
 
 	if (_bItemCatchCheck)
-	{
 		ItemMove();
-	}
+
 
 #ifdef _DEBUG
 	if (INPUT->GetKeyDown('l') || INPUT->GetKeyDown('L'))
 	{
-
 		INVENITEMINFO* pInvenInfo = new INVENITEMINFO();
 
 		int i = ce::CE_MATH::Random(1, 12);
 		pInvenInfo->_eSlotType = i;
 
-		GetItem(pInvenInfo);
+		PickUpItems(pInvenInfo);
 	}
 #endif // _DEBUG
+}
+
+bool Inventory::BuyItem(int Gold)
+{
+	_iGold -= Gold;
+
+	if (_iGold < 0)
+	{
+		_iGold = 0;
+		return false;
+	}
+	return true;
+}
+
+INVENITEMINFO* Inventory::UsingItem(POINT pt)
+{
+	int Index = 0;
+
+	for (auto& iter : _vecItem)
+	{
+		RECT rc = iter.second->GetItemRect();
+		Slot::SLOTTYPE eType = iter.second->GetSlotType();
+		if(PtInRect(&rc, pt))
+		{
+			if (eType == Slot::SLOTTYPE::POTION)
+			{
+				iter.second->OnMouseDown();
+				return iter.first;
+			}
+			else
+			{
+				iter.second->OnMouseDown();
+#ifdef _DEBUG
+				_pItemSlotInfo = iter.second->GetItemSlot()[0].second;
+				ReCatchtoExamine(_vecSlotGroup[0][0]->GetSlot(), iter.second->GetItemSlot()[0].second->_vPos, true);
+#else 
+				_pItemSlotInfo = iter.second->GetItemSlot()[0];
+				ReCatchtoExamine(_vecSlotGroup[0][0]->GetSlot(), iter.second->GetItemSlot()[0]->_vPos, true);
+#endif // _DEBUG
+
+				return iter.first;
+			}
+			break;
+		}
+	}
 }
 
 void Inventory::ItemCatch(POINT pt)
@@ -147,19 +207,28 @@ void Inventory::ItemCatchExamine(POINT pt)
 		if (PtInRect(&MaxRc, pt))
 		{
 			SLOTINFO* pItem = _pItem->GetItemInfo(0);
-			ReCatchtoExamine(vSlot, pItem->_vPos);
+			ReCatchtoExamine(vSlot, pItem->_vPos,true);
 			return;
 		}
 	}
 }
 
-void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 vpos) // 수정해야함
+void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 vpos, bool bCheck) // 수정해야함
 {
 	int InvenCntX = InvenSlot[0]->_iSlotCntX;
 	int InvenCntY = InvenSlot[0]->_iSlotCntY;
-
-	int ItemCntX = _pItemSlotInfo->_iSlotCntX;
-	int ItemCntY = _pItemSlotInfo->_iSlotCntY;
+	int ItemCntX = 0;
+	int ItemCntY = 0;
+	if (bCheck)
+	{
+		ItemCntX = _pItemSlotInfo->_iSlotCntX;
+		ItemCntY = _pItemSlotInfo->_iSlotCntY;
+	}
+	else
+	{
+		ItemCntX = _pPriveSlotInfo->_iSlotCntX;
+		ItemCntY = _pPriveSlotInfo->_iSlotCntY;
+	}
 
 	int ChageIndex = 0;
 	int Index = 0;
@@ -175,31 +244,31 @@ void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 v
 				switch (ItemCntX * ItemCntY)
 				{
 				case 1:
-					if (MaxIndex >= Index)
+					if (MaxIndex >= ChageIndex)
 					{
 						InvenSlot[ChageIndex]->_bSlotCheck = false;
 						return;
 					}
 					return;
 				case 2:
-					if (MaxIndex >= Index && MaxIndex >= (Index + 1))
+					if (MaxIndex >= ChageIndex && MaxIndex >= (ChageIndex + 1))
 					{
-						if (MaxIndex >= Index && MaxIndex >= (Index + 1))
-						{
-							InvenSlot[ChageIndex]->_bSlotCheck = false;
-							InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
-							return;
-						}
+						InvenSlot[ChageIndex]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
 						return;
 					}
 					return;
 				case 3:
-					InvenSlot[ChageIndex]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + InvenCntX]->_bSlotCheck = false;
-					InvenSlot[ChageIndex + (InvenCntX * 2)]->_bSlotCheck = false;
+					if (MaxIndex >= ChageIndex && MaxIndex >= (ChageIndex + InvenCntX) && MaxIndex >= ChageIndex + (InvenCntX * 2))
+					{
+						InvenSlot[ChageIndex]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + InvenCntX]->_bSlotCheck = false;
+						InvenSlot[ChageIndex + (InvenCntX * 2)]->_bSlotCheck = false;
+						return;
+					}
 					return;
 				case 4:
-					if (MaxIndex >= Index && MaxIndex >= Index + 1 && MaxIndex >= Index + InvenCntX && MaxIndex >= Index + InvenCntX + 1)
+					if (MaxIndex >= ChageIndex && MaxIndex >= ChageIndex + 1 && MaxIndex >= ChageIndex + InvenCntX && MaxIndex >= ChageIndex + InvenCntX + 1)
 					{
 						InvenSlot[ChageIndex]->_bSlotCheck = false;
 						InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
@@ -209,8 +278,8 @@ void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 v
 					}
 					return;
 				case 6:
-					if (MaxIndex >= Index && MaxIndex >= Index + 1 && MaxIndex >= Index + InvenCntX && MaxIndex >= Index + InvenCntX + 1
-						&& MaxIndex >= Index + (InvenCntX * 2) && MaxIndex >= Index + (InvenCntX * 2) + 1)
+					if (MaxIndex >= ChageIndex && MaxIndex >= ChageIndex + 1 && MaxIndex >= ChageIndex + InvenCntX && MaxIndex >= ChageIndex + InvenCntX + 1
+						&& MaxIndex >= ChageIndex + (InvenCntX * 2) && MaxIndex >= ChageIndex + (InvenCntX * 2) + 1)
 					{
 						InvenSlot[ChageIndex]->_bSlotCheck = false;
 						InvenSlot[ChageIndex + 1]->_bSlotCheck = false;
@@ -227,14 +296,14 @@ void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 v
 	}
 }
 
-void Inventory::GetItem(INVENITEMINFO* pInvenInfo)
+bool Inventory::PickUpItems(INVENITEMINFO* pInvenInfo)
 {
 	GameObject* pobj = GameObject::Instantiate();
 	float fx = UnsignedRandomf(400.f);
 	float fy = UnsignedRandomf(700.f);
-	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->_eSlotType,fx,fy);
+	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->_eSlotType,(int)_vecItem.size(), fx, fy);
 	pobj->AddComponent(pSlot);
-	_vecItem.emplace_back(pInvenInfo,pSlot);
+	_vecItem.emplace_back(pInvenInfo, pSlot);
 	_pItem = pSlot;
 #ifdef _DEBUG
 	_pItemSlotInfo = pSlot->GetItemSlot()[0].second;
@@ -242,24 +311,39 @@ void Inventory::GetItem(INVENITEMINFO* pInvenInfo)
 	_pItemSlotInfo = pSlot->GetItemInfo(0);
 #endif // _DEBUG
 
-	ItemEating();
+	return ItemEating();
 }
 
-void Inventory::ItemEating() // 이름 변경 해야함
+bool Inventory::ItemEating()
 {
 	if (_pItem == nullptr || _pItemSlotInfo == nullptr)
-		return;
+		return false;
 
 	SLOTINFO* pslot = DropAtEtingExamine(_vecSlotGroup[0][0]->GetSlot()); // 아이템이 들어갈 칸이있는지 검사
+
 	if (pslot == nullptr)
-		return;
+		return false;
 
 	D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
 	_pItem->SetInvenPosition(vpos);
-	_bItemCatchCheck = false;
+
+	RECT ItemRect = _pItem->GetItemRect();
+	RECT SlotRect = _vecSlotGroup[0][0]->GetRect();
+
+	if(SlotRect.right >= ItemRect.right && SlotRect.bottom >= ItemRect.bottom)
+		_bItemCatchCheck = false;
+	else
+	{
+		ReCatchtoExamine(_vecSlotGroup[0][0]->GetSlot(), _pItemSlotInfo->_vPos, true);
+		float fx = UnsignedRandomf(400.f);
+		float fy = UnsignedRandomf(700.f);
+		D3DXVECTOR3 vPos = { fx, fy, 0.f };
+		_pItem->SetInvenPosition(vPos);
+		return false;
+	}
 }
 
-SLOTINFO* Inventory::DropAtEtingExamine(std::vector<SLOTINFO*> InvenSlot) // 수정 해야함.
+SLOTINFO* Inventory::DropAtEtingExamine(std::vector<SLOTINFO*> InvenSlot)
 {
 	int ItemCntX = _pItemSlotInfo->_iSlotCntX;
 	int ItemCntY = _pItemSlotInfo->_iSlotCntY;
@@ -281,10 +365,10 @@ SLOTINFO* Inventory::DropAtEtingExamine(std::vector<SLOTINFO*> InvenSlot) // 수�
 	return nullptr;
 }
 
-void Inventory::ItemDropAtMouse(POINT pt)
+bool Inventory::ItemDropAtMouse(POINT pt)
 {
-	if (_pItemSlotInfo == nullptr)
-		return;
+	if (_pItemSlotInfo == nullptr || _pItem == nullptr)
+		return false;
 
 	for (int i = 0; i < (int)Slot::SLOTTYPE::END; ++i)
 	{
@@ -293,7 +377,7 @@ void Inventory::ItemDropAtMouse(POINT pt)
 		Slot::SLOTTYPE eSlottype = iter[0]->GetSlotType();
 		Slot::SLOTTYPE eItemSlotType = _pItem->GetSlotType();
 		std::vector<SLOTINFO*> vSlot = iter[0]->GetSlot();
-		
+
 		RECT	MaxRc = iter[0]->GetRect();
 
 		if (PtInRect(&MaxRc, pt))
@@ -304,41 +388,79 @@ void Inventory::ItemDropAtMouse(POINT pt)
 				{
 					if (vSlot[i]->_iFlag & _pItemSlotInfo->_iFlag && eItemSlotType != Slot::SLOTTYPE::POTION)
 					{
-						// 아이템 위치 변경 시켜주기전에 해당 슬롯의 칸이 비여있는지 확인해야함.
-						SLOTINFO* pslot = DropAtMouseExamine(vSlot,pt); // 드랍했을때 아이템이 들어갈 칸이있는지 검사
+
+						SLOTINFO* pslot = DropAtMouseExamine(vSlot, pt); // 들어갈 칸이 있는지 검사
 						if (pslot == nullptr)
 						{
-							_bItemCatchCheck = true;
-							return;
-						}
+							pslot = ItemSwitching(vSlot, pt); // 없으면 아이템 스위칭 해야 하는지 한번더 검사
 
+							if (pslot == nullptr)
+							{
+								_bItemCatchCheck = true;
+								return false;
+							}
+						}
 						if (_bSwitchingcheck)
 						{
+							SLOTINFO* pslot = DropAtMouseExamine(vSlot, pt); //아이템 스위칭 해야하는 상황이면 스위칭될 아이템이 들어갈 자리가 있는지 한번더 검사
+							if (pslot == nullptr)
+							{
+								_bItemCatchCheck = true; // 자리가 없으면 스위칭 시키지 않음
+								_bSwitchingcheck = false;
+								return false;
+							}
 							D3DXVECTOR3 vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
-							_pPriveItem->SetInvenPosition(vpos);
+							_pItem->SetInvenPosition(vpos);
+							_pItem = _pPriveItem;
+							_pItemSlotInfo = _pPriveSlotInfo;
 							_bItemCatchCheck = true;
 							_bSwitchingcheck = false;
-							_pItem = _pPriveItem;
-							_pPriveItem = nullptr;
+							return true;
 						}
 						else
 						{
 							D3DXVECTOR3 vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
 							_pItem->SetInvenPosition(vpos);
+							return true;
 						}
-						return;
 					}
-					else if (eSlottype == Slot::SLOTTYPE::NORMAL)
+					else if (eSlottype == Slot::SLOTTYPE::NORMAL) // 장착 슬롯을 제외한 수납이 가능한 공간에서 검사 처리
 					{
-						SLOTINFO* pslot = DropAtMouseExamine(vSlot, pt); // 드랍했을때 아이템이 들어갈 칸이있는지 검사
+						SLOTINFO* pslot = DropAtMouseExamine(vSlot, pt); // 들어갈 칸이 있는지 검사
 						if (pslot == nullptr)
 						{
-							_bItemCatchCheck = true;
-							return;
+							pslot = ItemSwitching(vSlot, pt); // 없으면 아이템 스위칭 해야 하는지 한번더 검사
+
+							if (pslot == nullptr)
+							{
+								_bItemCatchCheck = true;
+								return false;
+							}
 						}
-						D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
-						_pItem->SetInvenPosition(vpos);
-						return;
+
+						if (_bSwitchingcheck)
+						{
+							SLOTINFO* pslot = DropAtMouseExamine(vSlot, pt); //아이템 스위칭 해야하는 상황이면 스위칭될 아이템이 들어갈 자리가 있는지 한번더 검사
+							if (pslot == nullptr)
+							{
+								_bItemCatchCheck = true; // 자리가 없으면 스위칭 시키지 않음
+								_bSwitchingcheck = false;
+								return false;
+							}
+							D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
+							_pItem->SetInvenPosition(vpos);
+							_pItem = _pPriveItem;
+							_pItemSlotInfo = _pPriveSlotInfo;
+							_bItemCatchCheck = true;
+							_bSwitchingcheck = false;
+							return true;
+						}
+						else
+						{ // 스위칭을 할 필요가없으면 마우스 위치 기준의 칸으로 들어감
+							D3DXVECTOR3 vpos = { (float)pslot->_tRect.left, (float)pslot->_tRect.top, 0 };
+							_pItem->SetInvenPosition(vpos);
+							return true;
+						}
 					}
 				}
 			}
@@ -349,21 +471,19 @@ void Inventory::ItemDropAtMouse(POINT pt)
 	{
 		auto& iter = _vecSlotGroup[i];
 		RECT	MaxRc = iter[0]->GetRect();
-		if (!PtInRect(&MaxRc, pt))
+		if (PtInRect(&MaxRc, pt))
 		{
-			float fx = UnsignedRandomf(400.f);
-			float fy = UnsignedRandomf(700.f);
-			D3DXVECTOR3 vPos = { fx, fy, 0.f };
-			_pItem->SetInvenPosition(vPos);
-			_bItemCatchCheck = false;
-			return;
-		}
-		else
-		{
-			_bItemCatchCheck = true; // 중단점 확인해야함.
-			return;
+			_bItemCatchCheck = true;
+			return false;
 		}
 	}
+	// 비어있는 칸이 없거나 아이템 버리기 위해 아이템 슬롯 외의 공간에 아이템을 드랍 했을경우 
+	float fx = UnsignedRandomf(400.f);
+	float fy = UnsignedRandomf(700.f);
+	D3DXVECTOR3 vPos = { fx, fy, 0.f };
+	_pItem->SetInvenPosition(vPos);
+	_bItemCatchCheck = false;
+	return false;
 }
 
 SLOTINFO* Inventory::DropAtMouseExamine(std::vector<SLOTINFO*> InvenSlot, POINT pt)
@@ -374,23 +494,19 @@ SLOTINFO* Inventory::DropAtMouseExamine(std::vector<SLOTINFO*> InvenSlot, POINT 
 	switch (ItemCntX * ItemCntY)
 	{
 	case 1:
-		pSlotinfo = _pExamine->MouseExamine1X1(InvenSlot, pt);
-		/*if (pSlotinfo == nullptr)
-			return ItemSwitching(pt);
-		else*/
-			return pSlotinfo;
+		return _pExamine->MouseExamine1X1(InvenSlot, pt);
 		break;
 	case 2:
-		return _pExamine->MouseExamine2X1(InvenSlot,pt);
+		return _pExamine->MouseExamine2X1(InvenSlot, pt);
 		break;
 	case 3:
-		return _pExamine->MouseExamine1X3(InvenSlot,pt);
+		return _pExamine->MouseExamine1X3(InvenSlot, pt);
 		break;
 	case 4:
-		return _pExamine->MouseExamine2X2(InvenSlot,pt);
+		return _pExamine->MouseExamine2X2(InvenSlot, pt);
 		break;
 	case 6:
-		return _pExamine->MouseExamine2X3(InvenSlot,pt);
+		return _pExamine->MouseExamine2X3(InvenSlot, pt);
 		break;
 	}
 	return nullptr;
@@ -402,34 +518,51 @@ void Inventory::ItemMove()
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	if (_pPriveItem != nullptr)
-	{
-		_pPriveItem->setMousePosition(D3DXVECTOR3(pt.x, pt.y, 0));
-	}
-	else if (_pItem != nullptr)
+	if (_pItem != nullptr)
 	{
 		_pItem->setMousePosition(D3DXVECTOR3(pt.x, pt.y, 0));
 		return;
 	}
 }
 
-SLOTINFO* Inventory::ItemSwitching(POINT pt) // 스위칭 수정해야함.
+SLOTINFO* Inventory::ItemSwitching(std::vector<SLOTINFO*> InvenSlot,POINT pt) // 스위칭 수정해야함.
 {
-	//RECT rc = {};
-	//if (_pItemSlotInfo != nullptr)
-	//{
-	//	for (size_t t = 0; t < _vecItem.size(); ++t)
-	//	{
-	//		for (size_t s = 0; s < _vecItem[t].second->GetItemSlot().size(); ++s)
-	//		{
-	//			if (IntersectRect(&rc, &_pItemSlotInfo->_tRect, &_vecItem[t].second->GetItemSlot()[s].second->_tRect));
-	//			{
-	//				_pPriveItem = _vecItem[t].second;
-	//				_bSwitchingcheck = true;
-	//				return _vecItem[t].second->GetItemSlot()[0].second;
-	//			}
-	//		}
-	//	}
-	//}
+	RECT rc = {};
+	if (_pItemSlotInfo != nullptr)
+	{
+		for (size_t t = 0; t < _vecItem.size(); ++t)
+		{
+			RECT CurrentRect = _pItem->GetItemRect();
+			RECT PriveRect = _vecItem[t].second->GetItemRect();
+
+			if (_pItem != _vecItem[t].second)
+			{
+				if (IntersectRect(&rc, &PriveRect, &CurrentRect))
+				{
+					RECT rc = {};
+#ifdef _DEBUG
+					if (IntersectRect(&rc, &_pItemSlotInfo->_tRect, &_vecItem[t].second->GetItemSlot()[0].second->_tRect))
+					{
+						_pPriveItem = _vecItem[t].second;
+						_pPriveSlotInfo = _vecItem[t].second->GetItemSlot()[0].second;
+						ReCatchtoExamine(InvenSlot, _pPriveSlotInfo->_vPos, false);
+						_bSwitchingcheck = true;
+						return _vecItem[t].second->GetItemSlot()[0].second;
+					}
+#else
+					if (IntersectRect(&rc, &_pItemSlotInfo->_tRect, &_vecItem[t].second->GetItemSlot()[0]->_tRect))
+					{
+						_pPriveItem = _vecItem[t].second;
+						_pPriveSlotInfo = _vecItem[t].second->GetItemSlot()[0];
+						ReCatchtoExamine(InvenSlot, _pPriveSlotInfo->_vPos, false);
+						_bSwitchingcheck = true;
+						return _vecItem[t].second->GetItemSlot()[0];
+					}
+#endif // _DEBUG
+
+				}
+			}
+		}
+	}
 	return nullptr;
 }

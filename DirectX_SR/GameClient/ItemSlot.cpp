@@ -4,8 +4,8 @@
 #include "Transform.h"
 #include "Image.h"
 
-ItemSlot::ItemSlot(Slot::SLOTTYPE eType, float fx, float fy) noexcept
-	:  _eType(eType)
+ItemSlot::ItemSlot(Slot::SLOTTYPE eType,int Index, float fx, float fy) noexcept
+	:  _eType(eType), _iIndex(Index)
 {
 	_vStartPos = D3DXVECTOR3(fx, fy, 0);
 
@@ -299,4 +299,10 @@ void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)
 
 
 	gameObject->GetTransform()->SetWorldPosition(vpos);
+}
+
+void ItemSlot::OnMouseDown(void) noexcept
+{
+	if(INPUT->GetKeyDown(KEY_RBUTTON))
+		gameObject->Destroy();
 }
