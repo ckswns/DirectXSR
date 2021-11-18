@@ -10,10 +10,10 @@ void StoreWnd::Start(void) noexcept
 {
 	_ItemSlot.assign((_iCntX * _iCntY), false);
 
-	//ĭ ���� ��ġ 
-	_vStartPos = D3DXVECTOR3(100, 100, 0);
+	//칸 시작지점
+	_vStartPos = D3DXVECTOR3(28, 88, 0);
 
-	gameObject->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Store.png")));
+	gameObject->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Store.png")));
 
 	GameObject* CloseBtn = GameObject::Instantiate();
 	CloseBtn->GetTransform()->SetParent(gameObject->GetTransform());
@@ -27,12 +27,16 @@ void StoreWnd::Start(void) noexcept
 	INVENITEMINFO info;
 	info._eSlotType =(int)Slot::SLOTTYPE::POTION;
 	AddItem(&info);
+
+	INVENITEMINFO info2;
+	info2._eSlotType = (int)Slot::SLOTTYPE::BODY;
+	AddItem(&info2);
 }
 
 void StoreWnd::AddItem(INVENITEMINFO* item)
 {
 	GameObject* pobj = GameObject::Instantiate();
-	ItemSlot* pSlot = new ItemSlot(pobj,(Slot::SLOTTYPE)item->_eSlotType,0,0);
+	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)item->_eSlotType);
 	pobj->AddComponent(pSlot);
 
 	int Index = -1;
@@ -107,8 +111,8 @@ void StoreWnd::AddItem(INVENITEMINFO* item)
 
 void StoreWnd::SellItem()
 {
-	//POINT pt;
-	//GetCursorPos(&pt);
+	POINT pt;
+	GetCursorPos(&pt);
 
 	LIST_ITEM::iterator iter = _StoreItem.begin();
 	while (iter != _StoreItem.end())
@@ -120,11 +124,12 @@ void StoreWnd::SellItem()
 			//인벤토리로 이동
 			//골드 차감 
 
-	//		//���� ������ĭ ���� 
-	//		D3DXVECTOR3 vPos = iter->first->GetTransform()->GetWorldPosition();
-	//		int x = vPos.x / 46;
-	//		int y = vPos.y / 32;
-	//		int Index = x + (y * _iCntX);
+			
+			//아이템 제거
+			D3DXVECTOR3 vPos = iter->first->GetTransform()->GetWorldPosition();
+			int x = (vPos.x-_vStartPos.x) / 46;
+			int y = (vPos.y - _vStartPos.y) / 32;
+			int Index = x + (y * _iCntX);
 
 			SLOTINFO slotInfo = *(itemSlot->GetItemInfo(0));
 			for (int i = 0; i <= slotInfo._iSlotCntX; i++)
@@ -137,9 +142,9 @@ void StoreWnd::SellItem()
 				}
 			}
 
-	//		break;
-	//	}
-	//}
+			iter->first->Destroy();
+		}
+	}
 }
 
 void StoreWnd::OnClose()
