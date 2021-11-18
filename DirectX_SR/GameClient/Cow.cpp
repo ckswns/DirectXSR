@@ -15,7 +15,7 @@
 #include "PathFinding.h"
 #include "AudioSource.h"
 #include "AudioAsset.h"
-
+#include "MonsterHPBar.h"
 
 Cow::Cow(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept :
 	_pathFinder(pf),
@@ -344,6 +344,10 @@ void Cow::LateUpdate(float fElapsedTime) noexcept
 
 void Cow::OnDestroy(void) noexcept
 {
+	if (MonsterHPBar::Instance()->GetMonster() == this)
+	{
+		MonsterHPBar::Instance()->SetMonster(nullptr);
+	}
 	if (_pathFinder)
 	{
 		delete _pathFinder;
@@ -383,6 +387,8 @@ void Cow::GetHit(int damage) noexcept
 		_fDeltaTime = 0;
 
 		_deadAudio->Play();
+		if(MonsterHPBar::Instance()->GetMonster() == this)
+			MonsterHPBar::Instance()->SetMonster(nullptr);
 	}
 	else
 	{
@@ -393,6 +399,7 @@ void Cow::GetHit(int damage) noexcept
 		_fDeltaTime = 0;
 
 		_getHitAudio->Play();
+		MonsterHPBar::Instance()->SetMonster(this);
 	}
 }
 

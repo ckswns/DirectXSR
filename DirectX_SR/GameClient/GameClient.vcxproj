@@ -172,6 +172,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Cow.h" />
     <ClInclude Include="DbgShowFrame.h" />
+    <ClInclude Include="Dungeon_01.h" />
     <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
     <ClInclude Include="framework.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="HpPotion.h" />
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="MonsterHPBar.h" />
     <ClInclude Include="MpPotion.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="PlateArmor.h" />
@@ -192,6 +194,7 @@
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
     <ClInclude Include="PoisonProjectile.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="RejuvenationPotion.h" />
     <ClInclude Include="Slot.h" />
     <ClInclude Include="StatusBar.h" />
@@ -241,6 +244,7 @@
     <ClCompile Include="BoneSpear.cpp" />
     <ClCompile Include="Cow.cpp" />
     <ClCompile Include="DbgShowFrame.cpp" />
+    <ClCompile Include="Dungeon_01.cpp" />
     <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
     <ClCompile Include="FSMState.cpp" />
@@ -250,12 +254,14 @@
     <ClCompile Include="HpPotion.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
+    <ClCompile Include="MonsterHPBar.cpp" />
     <ClCompile Include="MpPotion.cpp" />
     <ClCompile Include="PlateArmor.cpp" />
     <ClCompile Include="PlayerDamaged.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />
     <ClCompile Include="PoisonProjectile.cpp" />
+    <ClCompile Include="Portal.cpp" />
     <ClCompile Include="RejuvenationPotion.cpp" />
     <ClCompile Include="Slot.cpp" />
     <ClCompile Include="StatusBar.cpp" />

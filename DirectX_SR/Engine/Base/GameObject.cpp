@@ -94,9 +94,12 @@ namespace ce
     {
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->Release();
-			delete _pComponents[i];
-			_pComponents[i] = nullptr;
+			if (_pComponents[i] != nullptr)
+			{
+				_pComponents[i]->Release();
+				delete _pComponents[i];
+				_pComponents[i] = nullptr;
+			}
 		}
     }
 
