@@ -59,6 +59,12 @@ namespace ce
 			_pChannel = nullptr;
 		}
 
+		if (_asset)
+		{
+			delete _asset;
+			_asset = nullptr;
+		}
+
 		_pSystem = nullptr;
 	}
 
@@ -70,9 +76,15 @@ namespace ce
 			return false;
 		}
 
-		_pSound = reinterpret_cast<FMOD::Sound*>(asset->GetData());
-		_asset = asset;
+		if (_asset)
+		{
+			delete _asset;
+			_asset = nullptr;
+		}
 
+		_asset = asset->Clone(_b3DSound);
+		_pSound = reinterpret_cast<FMOD::Sound*>(_asset->GetData());
+	
 		return true;
 	}
 
