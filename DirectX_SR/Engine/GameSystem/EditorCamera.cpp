@@ -6,6 +6,7 @@
 #include "Light.h"
 #include "CEMath.h"
 #include "Collider.h"
+#include "GameObject.h"
 namespace ce
 {
 	EditorCamera::EditorCamera(HWND hWnd, float velocity) noexcept :

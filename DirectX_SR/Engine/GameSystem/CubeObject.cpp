@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "D3D9Device.h"
 #include "BoxCollider.h"
+#include "GameObject.h"
 
 namespace ce
 {

@@ -2,6 +2,7 @@
 #include "SkeletonDead.h"
 #include "Transform.h"
 #include "Animator.h"
+#include "GameObject.h"
 
 void SkeletonDead::Start() noexcept
 {

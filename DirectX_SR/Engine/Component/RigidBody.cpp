@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Rigidbody.h"
 #include "PhysicsManager.h"
+#include "GameObject.h"
+#include "Assertion.h"
 
 namespace ce
 {

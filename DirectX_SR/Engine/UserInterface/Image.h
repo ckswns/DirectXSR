@@ -13,6 +13,12 @@ namespace ce
 
 		class Image : public Component
 		{
+		public:		enum class FillType
+					{
+						VERTICAL,
+						HORIZONTAL
+					};
+
 		public:		explicit				Image(void) noexcept;
 		public:		explicit				Image(Texture* tex) noexcept;
 		public:		virtual					~Image(void) noexcept { __noop; }
@@ -33,6 +39,8 @@ namespace ce
 		public:		void					SetFillAmount(float rhs) noexcept;
 		public:		Material*				GetMaterialPTR(void) noexcept { return &_material; }
 
+		public:		void					SetFillType(FillType type) noexcept { _fillType = type; }
+
 		private:	uint32					_texWidth;
 		private:	uint32					_texHeight;
 
@@ -42,6 +50,8 @@ namespace ce
 		private:	RectTransform*			_rtTransform = nullptr;
 		private:	Transform*				_transform = nullptr;
 		private:	RECT					_srcRect = { 0, 0, 0, 0 };
+
+		private:	FillType				_fillType = FillType::HORIZONTAL;
 
 		private:	float					_fillAmount = 1;
 		};

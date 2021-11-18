@@ -5,6 +5,7 @@
 #include "AudioAsset.h"
 #include "Transform.h"
 #include "FMODManager.h"
+#include "GameObject.h"
 
 #ifdef __USE_FMOD__
 

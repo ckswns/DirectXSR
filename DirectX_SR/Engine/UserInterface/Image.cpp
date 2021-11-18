@@ -65,12 +65,20 @@ namespace ce
 
 			D3DXMATRIX scale;
 			D3DXMATRIX world;
+			D3DXMATRIX trans;
 
 			float scaleX = _rtTransform->GetWidth() / _texWidth;
 			float scaleY = _rtTransform->GetHeight() / _texHeight;
 
+			D3DXMatrixIdentity(&trans);
+
+			if (_fillType == FillType::VERTICAL)
+			{
+				D3DXMatrixTranslation(&trans, 0,  (int)((1 - _fillAmount) * _texHeight), 0);
+			}
+
 			D3DXMatrixScaling(&scale, scaleX, scaleY, 1);
-			world = scale * _transform->GetWorldMatrix();
+			world = scale * trans * _transform->GetWorldMatrix();
 
 			_sprite->SetTransform(&world);
 			_sprite->Draw((LPDIRECT3DTEXTURE9)_material.GetMainTexture()->GetTexturePTR(), &_srcRect, &pivot, NULL, _material.GetColor());
@@ -94,7 +102,11 @@ namespace ce
 				return;
 			}
 
-			_srcRect = { 0, 0, (long)(tex->Width() * _fillAmount), (long)tex->Height() };
+			if (_fillType == FillType::HORIZONTAL)
+				_srcRect = { 0, 0, (long)(tex->Width() * _fillAmount), (long)tex->Height() };
+			else
+				_srcRect = { 0, (long)((1 - _fillAmount) * tex->Height()), (long)(tex->Width()), (long)tex->Height() };
+
 			_texWidth = tex->Width();
 			_texHeight = tex->Height();
 		}
@@ -103,7 +115,10 @@ namespace ce
 		{
 			_fillAmount = rhs;
 
-			_srcRect.right = _texWidth * rhs;
+			if (_fillType == FillType::HORIZONTAL)
+				_srcRect = { 0, 0, (long)(_texWidth * _fillAmount), (long)_texHeight };
+			else
+				_srcRect = { 0, (long)((1 - _fillAmount) * _texHeight), (long)(_texWidth), (long)_texHeight };
 		}
 	}
 }

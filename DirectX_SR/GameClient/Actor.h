@@ -32,7 +32,7 @@ public:		enum class State
 
 public:		struct Data
 			{
-				float		maxHP;
+				int			maxHP;
 				float		aggroDistance;
 				float		moveSpeed;
 				float		damageMin;
@@ -43,9 +43,10 @@ public:		explicit		Actor(void) noexcept;
 public:		virtual			~Actor(void) noexcept { __noop; }
 
 
-public:		virtual void	GetHit(float damage) noexcept PURE;
+public:		virtual void	GetHit(int damage) noexcept PURE;
 protected:	Direction		GetDirect(D3DXVECTOR3 vStart, D3DXVECTOR3 vEnd);
 
+protected:	int				_currentHP;
 protected:	Data			_data;
 protected:	Direction		_dir;
 protected:	State			_state;

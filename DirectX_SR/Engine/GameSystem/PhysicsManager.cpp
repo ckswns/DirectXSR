@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PhysicsManager.h"
 #include "Assertion.h"
+#include "GameObject.h"
 
 namespace ce
 {
@@ -8,16 +9,25 @@ namespace ce
 	{
 		for (int i = 0; i < _rigidbodys.size(); i++)
 		{
+			if (_rigidbodys[i]->GetGameObject()->GetActive() == false)
+				continue;
+
+			if (_rigidbodys[i]->GetEnable() == false)
+				continue;
+			
 			const Collider::TList& collidersR = _rigidbodys[i]->GetColliders();
 
 			for (int j = 0; j < collidersR.size(); j++)
 			{
-				if (collidersR[j]->GetGameObject()->GetActive() == false)
+				if (collidersR[j]->GetEnable() == false)
 					continue;
 
 				for (int k = 0; k < _colliders.size(); k++)
 				{
 					if (collidersR[j]->GetGameObject() == _colliders[k]->GetGameObject())
+						continue;
+
+					if (_colliders[k]->GetEnable() == false)
 						continue;
 
 					if (collidersR[j]->CheckCollision(_colliders[k]))

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Animator.h"
 #include "Animation.h"
+#include "Assertion.h"
 
 namespace ce
 {

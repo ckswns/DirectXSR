@@ -1,2 +1,2 @@
 name,damage_min,damage_max,hp,move_speed,aggro_dis,
-Cow,10,15,10,1,3,
+Cow,10,15,30,1,3,

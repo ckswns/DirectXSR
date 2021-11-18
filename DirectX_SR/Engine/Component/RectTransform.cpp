@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "RectTransform.h"
 #include "Transform.h"
+#include "GameObject.h"
 
 namespace ce
 {

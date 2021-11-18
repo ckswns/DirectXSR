@@ -4,6 +4,7 @@
 #include "Image.h"
 #include "Button.h"
 #include "ExitBtn.h"
+#include "GameObject.h"
 
 TopBar::TopBar(HWND hWnd) noexcept :
 	_hWnd(hWnd)

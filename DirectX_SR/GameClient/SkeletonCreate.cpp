@@ -2,6 +2,7 @@
 #include "SkeletonCreate.h"
 #include "Skeleton.h"
 #include "Animator.h"
+#include "GameObject.h"
 
 void SkeletonCreate::Start() noexcept
 {

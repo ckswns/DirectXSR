@@ -1,5 +1,7 @@
 #pragma once
 
+#ifndef __GAME_OBJECT_H__
+#define __GAME_OBJECT_H__
 #ifndef PURE
 #define PURE =0
 #endif
@@ -9,11 +11,12 @@
 #include "TypeDefine.h"
 #include "ConstValues.h"
 #include "MemoryPool.h"
+#include <typeinfo>
+#include "Component.h"
 
 namespace ce
 {
 	class Transform;
-	class Component;
 	class SceneManager;
 	class Scene;
 	class Behaviour;
@@ -63,6 +66,26 @@ namespace ce
 	public:		void								SetTag(GameObjectTag tag) noexcept { _eTag = tag; }
 
 	public:		Transform* const					GetTransform(void) noexcept;
+
+	public:		template<typename T> T* const		GetComponent(COMPONENT_ID::ID typeID)
+				{
+					if ((_hasComponentID & typeID) == false)
+						return nullptr;
+
+					for (auto iter = _pComponents.begin(); iter != _pComponents.end(); iter++)
+					{
+						if ((*iter)->GetID() == typeID)
+						{
+							T* p = dynamic_cast<T*>(*iter);
+							if (p != nullptr)
+								return p;
+							if (typeid((*iter)) == typeid(T))
+								return static_cast<T*>(*iter);
+						}
+					}
+
+					return nullptr;
+				}
 
 	public:		Component* const					GetComponent(COMPONENT_ID::ID typeID) noexcept;
 	public:		const std::vector<Component*>&		GetComponents(void) noexcept { return _pComponents; }
@@ -123,3 +146,4 @@ namespace ce
 	private:	friend								Scene;
 	};
 }
+#endif

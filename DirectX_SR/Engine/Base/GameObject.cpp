@@ -40,7 +40,8 @@ namespace ce
 	{
 		for (int i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->OnEnable();
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->OnEnable();
 		}
 	}
 
@@ -48,7 +49,8 @@ namespace ce
 	{
 		for (int i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->OnDisable();
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->OnDisable();
 		}
 	}
 
@@ -56,7 +58,8 @@ namespace ce
     {
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->FixedUpdate(fElapsedTime);
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->FixedUpdate(fElapsedTime);
 		}
     }
 
@@ -64,7 +67,8 @@ namespace ce
     {
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->Update(fElapsedTime);
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->Update(fElapsedTime);
 		}
     }
 
@@ -72,7 +76,8 @@ namespace ce
     {
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->LateUpdate(fElapsedTime);
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->LateUpdate(fElapsedTime);
 		}
     }
 
@@ -80,7 +85,8 @@ namespace ce
     {
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->Render();
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->Render();
 		}
     }
 
@@ -98,7 +104,8 @@ namespace ce
 	{
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->OnMouseEnter();
+			if(_pComponents[i]->GetEnable())
+				_pComponents[i]->OnMouseEnter();
 		}
 	}
 
@@ -106,7 +113,8 @@ namespace ce
 	{
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->OnMouseLeave();
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->OnMouseLeave();
 		}
 	}
 
@@ -114,7 +122,8 @@ namespace ce
 	{
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->OnMouseOver();
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->OnMouseOver();
 		}
 	}
 
@@ -122,7 +131,8 @@ namespace ce
 	{
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->OnMouseDown();
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->OnMouseDown();
 		}
 	}
 
@@ -130,7 +140,8 @@ namespace ce
 	{
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->OnMouseUp();
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->OnMouseUp();
 		}
 	}
 
@@ -138,7 +149,8 @@ namespace ce
 	{
 		for (size_t i = 0; i < _pComponents.size(); i++)
 		{
-			_pComponents[i]->OnMouseHeldDown();
+			if (_pComponents[i]->GetEnable())
+				_pComponents[i]->OnMouseHeldDown();
 		}
 	}
 

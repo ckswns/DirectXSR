@@ -30,7 +30,7 @@ void Cow::Start(void) noexcept
 {
 	_spriteRenderer = static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Idle\\1.png"))));
 	gameObject->AddComponent(new BillboardObj());
-	_hitBox = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f))));
+	_hitBox = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f), D3DXVECTOR3(0, 0, 0), "Monster")));
 	gameObject->AddComponent(new Rigidbody());
 	//gameObject->GetTransform()->SetLocalPosition(0, 0.7f, 0);
 
@@ -138,18 +138,67 @@ void Cow::Start(void) noexcept
 
 	gameObject->GetTransform()->SetWorldPosition(_bornPosition);
 
+	_currentHP = _data.maxHP;
 }
 
 void Cow::FixedUpdate(float fElapsedTime) noexcept
 {
 	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
-	
-	if (dis.Length() <= _data.aggroDistance)
+
+	switch (_state)
 	{
-		if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
+	case Actor::State::IDLE:
+		if (dis.Length() <= _data.aggroDistance)
 		{
-			_state = Actor::State::MOVE;
+			if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
+			{
+				_state = Actor::State::MOVE;
+				_dirtyState = true;
+			}
 		}
+		break;
+	case Actor::State::ATTAK:
+		break;
+	case Actor::State::HIT:
+		_fDeltaTime += fElapsedTime;
+
+		if (_fDeltaTime > 0.5f)
+		{
+			_state = State::IDLE;
+			_fDeltaTime = 0;
+			_dirtyState = true;
+			_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
+		break;
+	case Actor::State::DIE:
+		if (_animator->GetCurrentAnimationEnd())
+		{
+			if (_fDeltaTime < 1)
+			{
+				_fDeltaTime += fElapsedTime;
+				if (_fDeltaTime > 1)
+					_fDeltaTime = 1;
+			}
+			else
+			{
+				gameObject->Destroy();
+			}
+		}
+		break;
+	case Actor::State::MOVE:
+		if (dis.Length() <= _data.aggroDistance)
+		{
+			if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
+			{
+				_state = Actor::State::MOVE;
+			}
+		}
+		else if (_pathFinder->GetPath().empty())
+		{
+			_state = Actor::State::IDLE;
+			_dirtyState = true;
+		}
+		break;
 	}
 }
 
@@ -194,6 +243,7 @@ void Cow::Update(float fElapsedTime) noexcept
 				{
 					path.clear();
 					_state = Actor::State::IDLE;
+					_dirtyState = true;
 				}
 			}
 			else
@@ -215,7 +265,35 @@ void Cow::Update(float fElapsedTime) noexcept
 
 void Cow::LateUpdate(float fElapsedTime) noexcept
 {
+	if (_dirtyState == false)
+		return;
 
+	_dirtyState = false;
+
+	switch (_state)
+	{
+	case Actor::State::IDLE:
+		_animator->SetAnimation("Idle_" + std::to_string(static_cast<int>(_dir)));
+		_animator->Play();
+		break;
+	case Actor::State::MOVE:
+		_animator->SetAnimation("Walk_" + std::to_string(static_cast<int>(_dir)));
+		_animator->Play();
+		break;
+	case Actor::State::ATTAK:
+		_animator->SetAnimation("Attack_" + std::to_string(static_cast<int>(_dir)));
+		_animator->Play();
+		break;
+	case Actor::State::HIT:
+		_animator->Stop();
+		break;
+	case Actor::State::DIE:
+		_animator->SetAnimation("Death_" + std::to_string(static_cast<int>(_dir)));
+		_animator->Play();
+		break;
+	default:
+		break;
+	}
 }
 
 void Cow::OnDestroy(void) noexcept
@@ -242,9 +320,29 @@ void Cow::OnCollisionExit(Collider* mine, Collider* other) noexcept
 
 }
 
-void Cow::GetHit(float damage) noexcept
+void Cow::GetHit(int damage) noexcept
 {
+	if (_state == Actor::State::DIE)
+		return;
 
+	_currentHP -= damage;
+
+	if (_currentHP <= 0)
+	{
+		_state = Actor::State::DIE;
+		_hitBox->SetEnable(false);
+		_currentHP = 0;
+		_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+		_dirtyState = true;
+		_fDeltaTime = 0;
+	}
+	else
+	{
+		_state = Actor::State::HIT;
+		_animator->Stop();
+		_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
+		_dirtyState = true;
+	}
 }
 
 

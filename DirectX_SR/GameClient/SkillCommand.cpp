@@ -2,6 +2,7 @@
 #include "SkillCommand.h"
 #include "Player.h"
 #include "Transform.h"
+#include "GameObject.h"
 
 void SkillCommand::Execute(GameObject* actor, D3DXVECTOR3 curPos, Transform* pTargetTrans)noexcept
 {

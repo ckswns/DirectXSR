@@ -2,6 +2,7 @@
 #include "TerrainRenderer.h"
 #include "Terrain.h"
 #include "Transform.h"
+#include "GameObject.h"
 
 namespace ce
 {

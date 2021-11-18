@@ -3,6 +3,7 @@
 #include "Quad.h"
 #include "Texture.h"
 #include "Transform.h"
+#include "GameObject.h"
 
 namespace ce
 {

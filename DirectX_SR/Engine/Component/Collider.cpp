@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Collider.h"
 #include "PhysicsManager.h"
+#include "GameObject.h"
 
 namespace ce
 {

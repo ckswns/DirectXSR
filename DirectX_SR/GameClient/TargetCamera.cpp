@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "CETween.h"
+#include "GameObject.h"
 
 TargetCamera::TargetCamera(Transform* target) noexcept
 	:_pTrans(nullptr), _pTargetTrans(target), _bFPV(false),

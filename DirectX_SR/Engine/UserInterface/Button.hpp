@@ -1,5 +1,6 @@
 #include "Button.h"
 #include "RectTransform.h"
+#include "GameObject.h"
 
 namespace ce
 {
