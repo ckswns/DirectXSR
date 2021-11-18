@@ -3,8 +3,8 @@
 
 class Dungeon_01 : public Scene
 {
-public:		explicit	Dungeon_01(void) noexcept;
-public:		virtual		~Dungeon_01(void) noexcept;
+public:		explicit	Dungeon_01(void) noexcept { __noop; }
+public:		virtual		~Dungeon_01(void) noexcept { __noop; }
 
 public:		bool		Init(void) noexcept override;
 public:		void		FixedUpdate(float fElapsedTime) noexcept override;
