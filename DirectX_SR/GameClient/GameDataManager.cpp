@@ -13,6 +13,7 @@ bool GameDataManager::Init(void) noexcept
 
 		Actor::Data temp;
 
+		memcpy(&temp.name, name.c_str(), name.size() + 1);
 		temp.damageMin		= std::stoi(((*actorCSVData)[i])[index++]);
 		temp.damageMax		= std::stoi(((*actorCSVData)[i])[index++]);
 		temp.maxHP			= std::stoi(((*actorCSVData)[i])[index++]);

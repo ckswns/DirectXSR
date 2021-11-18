@@ -78,9 +78,11 @@ namespace ce
 
 		D3DXFONT_DESCA tDesc;
 		ZeroMemory(&tDesc, sizeof(D3DXFONT_DESCA));
-		tDesc.Height = 15;
-		tDesc.Width = 12;
-		tDesc.Weight = 500;
+		tDesc.Height = (int)(16 * 1.6f);
+		tDesc.Width = 16;
+		tDesc.MipLevels = 1;
+		tDesc.Weight = FW_NORMAL;
+		tDesc.Quality = DEFAULT_QUALITY;
 		tDesc.CharSet = HANGUL_CHARSET;
 		memcpy(tDesc.FaceName, fontFaceName, strlen(fontFaceName) + 1);
 
