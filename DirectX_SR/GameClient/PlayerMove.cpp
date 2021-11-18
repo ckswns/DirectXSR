@@ -31,14 +31,14 @@ void PlayerMove::Start() noexcept
 
 	_pAnimator->SetAnimation(_strWalk);
 
-	if (!_bFPV) 
-	{
-		if (_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget))
-		{
-			_pPath = (_pPathFinding->GetPath());
-			_bFinding = true;
-		}
-	}
+	//if (!_bFPV) 
+	//{
+	//	if (_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget))
+	//	{
+	//		_pPath = (_pPathFinding->GetPath());
+	//		_bFinding = true;
+	//	}
+	//}
 }
 
 void PlayerMove::Update(float fElapsedTime) noexcept

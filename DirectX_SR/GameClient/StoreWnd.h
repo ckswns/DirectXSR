@@ -17,6 +17,7 @@ public:		void				AddItem(INVENITEMINFO* item);
 public:		void				SellItem();
 public:		void				OnClose();
 
+private:	D3DXVECTOR3			_vStartPos;
 private:	int					_iCntX = 10;
 private:	int					_iCntY = 10;
 private:	float				_fSizeX;
