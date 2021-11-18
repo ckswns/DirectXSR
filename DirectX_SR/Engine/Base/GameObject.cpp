@@ -349,6 +349,11 @@ namespace ce
 
 	void GameObject::OnAnimationEvent(int frame, std::string eventName)
 	{
+		for (auto iter = _pComponents.begin(); iter != _pComponents.end(); iter++)
+		{
+			if ((*iter)->GetID() == COMPONENT_ID::BEHAVIOUR)
+				static_cast<Behaviour*>(*iter)->OnAnimationEvent(eventName);
+		}
 	}
 
 	GameObject* GameObject::Instantiate() noexcept

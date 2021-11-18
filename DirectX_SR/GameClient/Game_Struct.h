@@ -33,7 +33,7 @@ typedef struct tagStat
 	int			_iVitality;
 	int			_iEnergy;
 
-	float		_fDamage = _iStr * 0.01f;
+	float		_fDamage = _iStr * 0.5f;//0.01f;
 	float		_fAttRating = _iDex * 5.f;
 	float		_fDef = _iDex * 0.25f;
 

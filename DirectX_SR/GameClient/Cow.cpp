@@ -13,6 +13,9 @@
 #include "Player.h"
 #include "Vector3.h"
 #include "PathFinding.h"
+#include "AudioSource.h"
+#include "AudioAsset.h"
+
 
 Cow::Cow(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept :
 	_pathFinder(pf),
@@ -84,9 +87,10 @@ void Cow::Start(void) noexcept
 			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Attack\\" + std::to_string(index) + ".png"));
 		}
 
-		Animation* ani = new Animation(frameTime, frameTex, true);
+		Animation* ani = new Animation(frameTime, frameTex, false);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 		_animator->InsertAnimation("Attack_" + std::to_string(i), ani);
+		ani->AddEvent(Animation::EventData(9, "attack", this->gameObject));
 
 		frameTime.clear();
 		frameTex.clear();
@@ -139,6 +143,26 @@ void Cow::Start(void) noexcept
 	gameObject->GetTransform()->SetWorldPosition(_bornPosition);
 
 	_currentHP = _data.maxHP;
+
+	_attackAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
+	_getHitAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
+	_deadAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
+	_hitEffectAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
+
+	_attackAudio->Init();
+	_getHitAudio->Init();
+	_deadAudio->Init();
+	_hitEffectAudio->Init();
+
+	_attackAudio->SetSoundWorld(true);
+	_getHitAudio->SetSoundWorld(true);
+	_deadAudio->SetSoundWorld(true);
+	_hitEffectAudio->SetSoundWorld(true);
+
+	_attackAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Cow\\CowAttack.mp3"));
+	_getHitAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Cow\\CowGetHit.mp3"));
+	_deadAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Cow\\CowDead.mp3"));
+	_hitEffectAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Effect\\Blunt_GetHit.wav"));
 }
 
 void Cow::FixedUpdate(float fElapsedTime) noexcept
@@ -148,7 +172,14 @@ void Cow::FixedUpdate(float fElapsedTime) noexcept
 	switch (_state)
 	{
 	case Actor::State::IDLE:
-		if (dis.Length() <= _data.aggroDistance)
+
+		if (dis.Length() < 0.5f)
+		{
+			_state = Actor::State::ATTAK;
+			_dirtyState = true;
+			return;
+		}
+		else if (dis.Length() <= _data.aggroDistance)
 		{
 			if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
 			{
@@ -158,6 +189,9 @@ void Cow::FixedUpdate(float fElapsedTime) noexcept
 		}
 		break;
 	case Actor::State::ATTAK:
+		if (_animator->GetCurrentAnimationEnd())
+			_state = Actor::State::IDLE;
+
 		break;
 	case Actor::State::HIT:
 		_fDeltaTime += fElapsedTime;
@@ -186,7 +220,14 @@ void Cow::FixedUpdate(float fElapsedTime) noexcept
 		}
 		break;
 	case Actor::State::MOVE:
-		if (dis.Length() <= _data.aggroDistance)
+		if (dis.Length() < 0.5f)
+		{
+			_state = Actor::State::ATTAK;
+			_dirtyState = true;
+
+			return;
+		}
+		else if (dis.Length() <= _data.aggroDistance)
 		{
 			if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
 			{
@@ -273,21 +314,26 @@ void Cow::LateUpdate(float fElapsedTime) noexcept
 	switch (_state)
 	{
 	case Actor::State::IDLE:
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_0")->GetTexture()[0]);
 		_animator->SetAnimation("Idle_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;
 	case Actor::State::MOVE:
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Walk_0")->GetTexture()[0]);
 		_animator->SetAnimation("Walk_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;
 	case Actor::State::ATTAK:
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Attack_0")->GetTexture()[0]);
 		_animator->SetAnimation("Attack_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
+		_attackAudio->Play();
 		break;
 	case Actor::State::HIT:
 		_animator->Stop();
 		break;
 	case Actor::State::DIE:
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Death_0")->GetTexture()[0]);
 		_animator->SetAnimation("Death_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;
@@ -335,6 +381,8 @@ void Cow::GetHit(int damage) noexcept
 		_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 		_dirtyState = true;
 		_fDeltaTime = 0;
+
+		_deadAudio->Play();
 	}
 	else
 	{
@@ -342,7 +390,15 @@ void Cow::GetHit(int damage) noexcept
 		_animator->Stop();
 		_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
 		_dirtyState = true;
+		_fDeltaTime = 0;
+
+		_getHitAudio->Play();
 	}
 }
 
+void Cow::OnAnimationEvent(std::string str) noexcept
+{
+	_player->GetHit(Random::GetValue(_data.damageMax, _data.damageMin), transform->GetWorldPosition());
+	_hitEffectAudio->Play();
+}
 

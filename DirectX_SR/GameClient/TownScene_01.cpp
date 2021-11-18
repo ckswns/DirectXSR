@@ -25,6 +25,7 @@
 #include "BoxCollider.h"
 #include "ParticleRenderer.h"
 #include "BillboardObj.h"
+#include "BGMPlayer.h"
 
 TownScene_01::TownScene_01(void) noexcept
 {
@@ -204,6 +205,8 @@ bool TownScene_01::Init(void) noexcept
 		pos.z -= Random::GetValue(20, 3);
 		obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
 	}
+
+	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\TownBGM.mp3"));
 
 	return true;
 }

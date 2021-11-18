@@ -27,7 +27,8 @@ public:		enum class State
 				MOVE,
 				ATTAK,
 				HIT,
-				DIE
+				DIE,
+				END
 			};
 
 public:		struct Data
