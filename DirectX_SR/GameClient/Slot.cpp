@@ -16,7 +16,7 @@ Slot::Slot(SLOTTYPE etype)
 	case Slot::SLOTTYPE::NORMAL:
 		_iSlotCntX = 10;
 		_iSlotCntY = 4;
-		_vStartPos = D3DXVECTOR3(692.f, 390.f, 0);
+		_vStartPos = D3DXVECTOR3(692.f, 388.f, 0);
 		_iFlag |= 0x00000001;
 		break;
 	case Slot::SLOTTYPE::HEAD:
@@ -58,7 +58,7 @@ Slot::Slot(SLOTTYPE etype)
 	case Slot::SLOTTYPE::BELT:
 		_iSlotCntX = 2;
 		_iSlotCntY = 1;
-		_vStartPos = D3DXVECTOR3(880.f, 295.f, 0.f);
+		_vStartPos = D3DXVECTOR3(880.f, 290.f, 0.f);
 		_iFlag |= 0x00000080;
 		break;
 

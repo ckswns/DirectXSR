@@ -226,7 +226,6 @@
     <ClInclude Include="TargetCamera.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TopBar.h" />
-    <ClInclude Include="TestItem.h" />
     <ClInclude Include="TownScene_01.h" />
   </ItemGroup>
   <ItemGroup>
@@ -287,7 +286,6 @@
     <ClCompile Include="StoreWnd.cpp" />
     <ClCompile Include="TargetCamera.cpp" />
     <ClCompile Include="TopBar.cpp" />
-    <ClCompile Include="TestItem.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
   </ItemGroup>
   <ItemGroup>

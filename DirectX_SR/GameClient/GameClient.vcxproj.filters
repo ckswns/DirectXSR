@@ -175,9 +175,6 @@
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory">
       <UniqueIdentifier>{6c8d2562-b6f1-48d3-a573-e3ffb933c578}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\Inventory\TestItem">
-      <UniqueIdentifier>{4da9224c-915c-4f65-8e60-3168b7d2224b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory\Slot">
       <UniqueIdentifier>{7c03b790-a656-4ecd-9a15-116a19c6840f}</UniqueIdentifier>
     </Filter>
@@ -201,6 +198,9 @@
     </Filter>
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory\Examine">
       <UniqueIdentifier>{594fb1c4-11ab-4b9e-bb4b-0b3398f09b80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Inventory\Inventory\ItemSlot">
+      <UniqueIdentifier>{4da9224c-915c-4f65-8e60-3168b7d2224b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -336,9 +336,6 @@
     <ClInclude Include="Inventory.h">
       <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="TestItem.h">
-      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
-    </ClInclude>
     <ClInclude Include="GameClient.h">
       <Filter>99. Default\Header Files</Filter>
     </ClInclude>
@@ -376,7 +373,7 @@
       <Filter>00. Game\01. GameObject\Item</Filter>
     </ClInclude>
     <ClInclude Include="ItemSlot.h">
-      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
+      <Filter>00. Game\01. GameObject\Inventory\Inventory\ItemSlot</Filter>
     </ClInclude>
     <ClInclude Include="HpPotion.h">
       <Filter>00. Game\01. GameObject\Item\Hp Potion</Filter>
@@ -503,9 +500,6 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="TestItem.cpp">
-      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
-    </ClCompile>
     <ClCompile Include="GameClient.cpp">
       <Filter>99. Default\Source Files</Filter>
     </ClCompile>
@@ -540,7 +534,7 @@
       <Filter>00. Game\01. GameObject\BillboardObj</Filter>
     </ClCompile>
     <ClCompile Include="ItemSlot.cpp">
-      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
+      <Filter>00. Game\01. GameObject\Inventory\Inventory\ItemSlot</Filter>
     </ClCompile>
     <ClCompile Include="HpPotion.cpp">
       <Filter>00. Game\01. GameObject\Item\Hp Potion</Filter>

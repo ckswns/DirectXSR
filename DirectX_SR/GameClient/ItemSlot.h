@@ -14,18 +14,19 @@ using namespace ce::UI;
 
 class ItemSlot : public Behaviour
 {
-public: explicit ItemSlot( Slot::SLOTTYPE eType, float fx = 0, float fy = 0) noexcept;
+public: explicit ItemSlot( Slot::SLOTTYPE eType,int iIndex, float fx = 0, float fy = 0) noexcept;
 public: virtual ~ItemSlot() noexcept;
 
 public:	virtual	void Start(void) noexcept override;
 public: virtual void Update(float) noexcept override;
+public:	void OnMouseDown(void) noexcept override;
 
 public: void											setMousePosition(D3DXVECTOR3 vtest);
 public: void											SetInvenPosition(D3DXVECTOR3 vpos);
 
 public: Slot::SLOTTYPE									GetSlotType() { return _eType; }
-
 public: RECT											GetItemRect() { return _SlotMaxRect; }
+public: int												GetItemIndex() { return _iIndex; }
 
 #ifdef _DEBUG
 public: std::vector<std::pair<GameObject*, SLOTINFO*>>	GetItemSlot() { return _vecSlot; }
@@ -45,6 +46,7 @@ private: D3DXVECTOR3		_vStartPos;
 private: GameObject*		_pOwner;
 private: RECT				_SlotMaxRect;
 private: Image*				_pImage;
+private: int				_iIndex;
 
 #ifdef _DEBUG
 private: std::vector<std::pair<GameObject*, SLOTINFO*>> _vecSlot; // Debug¿ë
