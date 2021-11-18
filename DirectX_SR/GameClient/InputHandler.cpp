@@ -86,7 +86,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 						//아이템 정보 
 						INVENITEMINFO* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
 						//인벤토리에 아이템 추가 
-						_pPlayer->GetInventory()->GetItem(ivenItem);
+						_pPlayer->GetInventory()->PickUpItems(ivenItem);
 
 						hit.collider->GetGameObject()->Destroy();
 					}

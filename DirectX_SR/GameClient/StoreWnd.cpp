@@ -189,7 +189,7 @@ void StoreWnd::Sell(GameObject* obj)
 		if (iter->first == obj)
 		{
 			//인벤토리로 이동
-			_pInven->GetItem(iter->second);	
+			_pInven->PickUpItems(iter->second);	
 			//골드 차감 
 
 			//아이템 제거

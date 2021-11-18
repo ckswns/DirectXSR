@@ -26,6 +26,7 @@
 #include "ParticleRenderer.h"
 #include "BillboardObj.h"
 #include "BGMPlayer.h"
+#include "Portal.h"
 
 TownScene_01::TownScene_01(void) noexcept
 {
@@ -58,7 +59,7 @@ bool TownScene_01::Init(void) noexcept
 
 		mat->SetTextures(vt);
 		vt.clear();
-
+		
 		mat = tr->GetMaterialPTR();
 
 		for (int i = 1; i <= 5; i++)
@@ -67,6 +68,7 @@ bool TownScene_01::Init(void) noexcept
 			sprintf_s(str, 256, "Asset\\Terrain\\Tile\\Tile%d.png", i);
 			vt.push_back(ASSETMANAGER->GetTextureData(str));
 		}
+
 		mat->SetTextures(vt);
 		vt.clear();
 
@@ -154,6 +156,17 @@ bool TownScene_01::Init(void) noexcept
 
 				obj->GetTransform()->SetWorldPosition(stof(px), stof(py), stof(pz));
 				_pNaviMesh->SetWalkAbleFromPosition(D3DXVECTOR3(stof(px), 0, stof(pz)), false);
+			}
+
+			if (names[i].find("Portal") != std::string::npos)
+			{
+				obj = GameObject::Instantiate();
+				obj->AddComponent(new Portal("Dungeon_01"));
+
+				std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldX");
+				std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldY");
+				std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldZ");
+				obj->GetTransform()->SetWorldPosition(stof(px), 1, stof(pz));
 			}
 		}
 	}

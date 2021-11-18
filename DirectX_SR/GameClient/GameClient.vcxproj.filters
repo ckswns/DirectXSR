@@ -175,9 +175,6 @@
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory">
       <UniqueIdentifier>{6c8d2562-b6f1-48d3-a573-e3ffb933c578}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\Inventory\TestItem">
-      <UniqueIdentifier>{4da9224c-915c-4f65-8e60-3168b7d2224b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory\Slot">
       <UniqueIdentifier>{7c03b790-a656-4ecd-9a15-116a19c6840f}</UniqueIdentifier>
     </Filter>
@@ -196,6 +193,9 @@
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory\Examine">
       <UniqueIdentifier>{594fb1c4-11ab-4b9e-bb4b-0b3398f09b80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Inventory\Inventory\ItemSlot">
+      <UniqueIdentifier>{4da9224c-915c-4f65-8e60-3168b7d2224b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="00. Game\01. GameObject\Item\Potion">
       <UniqueIdentifier>{624b121a-e926-4a15-b148-8620917dde78}</UniqueIdentifier>
     </Filter>
@@ -213,6 +213,15 @@
     </Filter>
     <Filter Include="00. Game\01. GameObject\BGMPlayer">
       <UniqueIdentifier>{272dea86-69e3-4a8c-97ca-c6cf9193c399}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\MonsterHPBar">
+      <UniqueIdentifier>{942f594b-c12f-49ea-9285-d492753442aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Portal">
+      <UniqueIdentifier>{7c370417-2f21-48f4-9498-3e4b0f480173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\00. Scene\03.Dungeon">
+      <UniqueIdentifier>{09ac8e0c-fef8-411d-9adb-913aafea0157}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -348,9 +357,6 @@
     <ClInclude Include="Inventory.h">
       <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="TestItem.h">
-      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
-    </ClInclude>
     <ClInclude Include="GameClient.h">
       <Filter>99. Default\Header Files</Filter>
     </ClInclude>
@@ -388,7 +394,7 @@
       <Filter>00. Game\01. GameObject\Item</Filter>
     </ClInclude>
     <ClInclude Include="ItemSlot.h">
-      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
+      <Filter>00. Game\01. GameObject\Inventory\Inventory\ItemSlot</Filter>
     </ClInclude>
     <ClInclude Include="HpPotion.h">
       <Filter>00. Game\01. GameObject\Item\Potion\Hp Potion</Filter>
@@ -527,9 +533,6 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>00. Game\01. GameObject\Inventory\Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="TestItem.cpp">
-      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
-    </ClCompile>
     <ClCompile Include="GameClient.cpp">
       <Filter>99. Default\Source Files</Filter>
     </ClCompile>
@@ -564,7 +567,7 @@
       <Filter>00. Game\01. GameObject\BillboardObj</Filter>
     </ClCompile>
     <ClCompile Include="ItemSlot.cpp">
-      <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
+      <Filter>00. Game\01. GameObject\Inventory\Inventory\ItemSlot</Filter>
     </ClCompile>
     <ClCompile Include="HpPotion.cpp">
       <Filter>00. Game\01. GameObject\Item\Potion\Hp Potion</Filter>
@@ -595,6 +598,15 @@
     </ClCompile>
     <ClCompile Include="BGMPlayer.cpp">
       <Filter>00. Game\01. GameObject\BGMPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterHPBar.cpp">
+      <Filter>00. Game\01. GameObject\MonsterHPBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>00. Game\01. GameObject\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="Dungeon_01.cpp">
+      <Filter>00. Game\00. Scene\03.Dungeon</Filter>
     </ClCompile>
     <ClCompile Include="StoreItem.cpp">
       <Filter>00. Game\01. GameObject\NPC\Store</Filter>

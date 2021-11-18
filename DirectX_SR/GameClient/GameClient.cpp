@@ -63,7 +63,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	scene = new TownScene_01();
 	scenesList.push_back(std::make_pair("Town_01", scene));
 
-	pGameController->Init(g_hWnd, scenesList, WINCX, WINCY);
+	pGameController->Init(g_hWnd, scenesList, WINCX, WINCY, "Asset\\Font\\kodia.ttf", "kodia");
  
     // Main message loop:
     while (WM_QUIT != msg.message)
