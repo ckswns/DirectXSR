@@ -6,13 +6,14 @@
 #include "BoxCollider.h"
 #include "StoreWnd.h"
 #include "GameObject.h"
+#include "Player.h"
 
 void StoreNPC::Start(void) noexcept
 {
 	gameObject->SetName("StoreNPC");
 	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5, 1, 0.5)));
 
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"), false);
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\NPC\\8\\0.png"), false);
 	gameObject->AddComponent(sr);
 	Animator* pAnimator = new Animator(true);
 	gameObject->AddComponent(pAnimator);
@@ -38,16 +39,16 @@ void StoreNPC::Start(void) noexcept
 	TList.clear();
 	FrameTime.clear();
 
-	_pStoreWndObj = GameObject::Instantiate();
-	//_pStoreWnd = new StoreWnd();
-	_pStoreWndObj->AddComponent(new StoreWnd());
-	_pStoreWndObj->SetActive(false);
+	GameObject * pStoreWndObj = GameObject::Instantiate();
+	_pStoreWnd = new StoreWnd();
+	pStoreWndObj->AddComponent(_pStoreWnd);
+	pStoreWndObj->SetActive(false);
 
 }
 
-void StoreNPC::OnClick()
+void StoreNPC::OnClick(Player* player)
 {
 	//»óÁ¡ ¶ç¿ì±â 
-	_pStoreWndObj->SetActive(true);
+	_pStoreWnd->Open(player);
 
 }

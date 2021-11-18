@@ -94,19 +94,49 @@ void TargetCamera::FixedUpdate(float fElapsedTime) noexcept
 		vPos.x -= _pTargetTrans->GetWorldMatrix()._31;
 		vPos.y += _fFPVHeight;
 		vPos.z -= _pTargetTrans->GetWorldMatrix()._33 * _fFPVDist;
+		
+		//D3DXVECTOR3 vDir = vPos - _pTrans->GetWorldPosition();
+		//if (D3DXVec3Length(&vDir) > 0.1f)//0.1
+		//	{
+		//		D3DXVec3Normalize(&vDir, &vDir);
+		//		_pTrans->Translate(vDir * fElapsedTime * 6);
+		//	}
 
-		D3DXVECTOR3 vDir = vPos - _pTrans->GetWorldPosition();
-
-		if (D3DXVec3Length(&vDir) > 0.1f)
+		if (_bDoLerp == false)
 		{
-			D3DXVec3Normalize(&vDir, &vDir);
-			_pTrans->Translate(vDir * fElapsedTime * 6);
+			D3DXVECTOR3 vDir = vPos - _pTrans->GetWorldPosition();
+
+			if (D3DXVec3Length(&vDir) > 0.3f)//0.1
+			{
+				_srcPos = transform->GetWorldPosition();
+				_bDoLerp = true;
+				_currentLerpTime = 0;
+			}
+			else
+			{
+				transform->SetWorldPosition(vPos);
+			}
+		}
+		else
+		{
+			_currentLerpTime += fElapsedTime;
+			if (_currentLerpTime > 1)
+			{
+				_currentLerpTime = 1;
+				_bDoLerp = false;
+			}
+			transform->SetWorldPosition(
+				CETween::Lerp(_srcPos.x, vPos.x, _currentLerpTime, CETween::EaseType::easeInSine),
+				CETween::Lerp(_srcPos.y, vPos.y, _currentLerpTime, CETween::EaseType::easeInSine),
+				CETween::Lerp(_srcPos.z, vPos.z, _currentLerpTime, CETween::EaseType::easeInSine)
+			);
 		}
 	}
 }
 
 void TargetCamera::ChangeView()
 {
+	_bDoLerp = false;
 	//3인칭으로 변경
 	if (_bFPV)
 	{

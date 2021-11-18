@@ -44,7 +44,7 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 {
 	//플레이어와 거리확인
 	D3DXVECTOR3 vDir = _pPlayerTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
-	if (D3DXVec3Length(&vDir) >= 5.f)
+	if (D3DXVec3Length(&vDir) >= 10.f)
 	{
 		//많이 멀어진 경우 주변으로 순간이동 
 		float fX = CE_MATH::Random(-1, 1) + _pPlayerTrans->GetWorldPosition().x;
@@ -103,7 +103,7 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 				{
 					_bAtt = false;
 					_pSk->SetState(SK_ATTACK,_pTargetTrans);
-					_pTargetTrans = nullptr;
+				//	_pTargetTrans = nullptr;
 				}
 				else
 					_pSk->SetState(SK_STAND, _eDir);

@@ -227,6 +227,7 @@
     <ClInclude Include="SkillCommand.h" />
     <ClInclude Include="Spear.h" />
     <ClInclude Include="SpearTrail.h" />
+    <ClInclude Include="StoreItem.h" />
     <ClInclude Include="StoreNPC.h" />
     <ClInclude Include="StoreWnd.h" />
     <ClInclude Include="TargetCamera.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="SkillCommand.cpp" />
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="SpearTrail.cpp" />
+    <ClCompile Include="StoreItem.cpp" />
     <ClCompile Include="StoreNPC.cpp" />
     <ClCompile Include="StoreWnd.cpp" />
     <ClCompile Include="TargetCamera.cpp" />

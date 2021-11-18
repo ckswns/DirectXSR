@@ -9,11 +9,11 @@
 #include "Slot.h"
 HpPotion::HpPotion() noexcept
 {
-	_tInvenItem._eitemID = (int)ITEM_ID::HP;
-	_tInvenItem._eSlotType = (int)Slot::SLOTTYPE::POTION;
-	_tInvenItem._strName = "HP Potion";
-	_tInvenItem._strInvenImgPath = "Asset\\UI\\Inventory\\Hp";
-	_tInvenItem._iValue = 20;
+	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION);
+	_tInvenItem->_eitemID = (int)ITEM_ID::HP;
+	_tInvenItem->_strName = "HP Potion";
+	_tInvenItem->_strInvenImgPath = "Asset\\UI\\Inventory\\Hp";
+	_tInvenItem->_iValue = 20;
 }
 
 void HpPotion::Start(void) noexcept
@@ -43,7 +43,7 @@ void HpPotion::Start(void) noexcept
 
 	Animation* ani = new Animation(FrameTime, TList, false);
 	ani->SetMaterial(material);
-	pAnimator->InsertAnimation(_tInvenItem._strName, ani);
+	pAnimator->InsertAnimation(_tInvenItem->_strName, ani);
 
 	TList.clear();
 	FrameTime.clear();

@@ -4,7 +4,7 @@
 #include "Transform.h"
 #include "Animator.h"
 #include "GameObject.h"
-
+#include "Actor.h"
 void SkeletoneAttack::Start() noexcept
 {
 	if(!_pSk)
@@ -12,7 +12,7 @@ void SkeletoneAttack::Start() noexcept
 
 	D3DXVECTOR3 vDir = _pTargetTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
 	vDir.y = 0;
-	if (D3DXVec3Length(&vDir) <= 0.3f)
+	if (D3DXVec3Length(&vDir) < 1)
 	{
 
 		_eDir = GetDirect(_pTrans->GetWorldPosition(), _pTargetTrans->GetWorldPosition());
@@ -21,7 +21,8 @@ void SkeletoneAttack::Start() noexcept
 		_pAnimator->SetAnimation("Attack_" + std::to_string(_iDir));
 
 		// 소리 
-		//충돌판정
+		
+		_pTargetTrans->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR)->GetHit(2);
 	}
 	else
 	{

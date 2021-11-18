@@ -29,8 +29,12 @@ void PlayerMove::Start() noexcept
 	_strRun = "Run_" + std::to_string(_iDir);
 	_strWalk = "Walk_" + std::to_string(_iDir);
 
-	_pAnimator->SetAnimation(_strWalk);
+	std::string curAni = _pAnimator->GetCurrentAnimationName();
+	if (curAni != _strWalk && curAni != _strRun)
+	{
 
+		_pAnimator->SetAnimation(_strWalk);
+	}
 	//if (!_bFPV) 
 	//{
 	//	if (_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget))
