@@ -217,6 +217,12 @@
     <Filter Include="00. Game\01. GameObject\MonsterHPBar">
       <UniqueIdentifier>{942f594b-c12f-49ea-9285-d492753442aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Portal">
+      <UniqueIdentifier>{7c370417-2f21-48f4-9498-3e4b0f480173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\00. Scene\03.Dungeon">
+      <UniqueIdentifier>{09ac8e0c-fef8-411d-9adb-913aafea0157}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -426,6 +432,12 @@
     <ClInclude Include="MonsterHPBar.h">
       <Filter>00. Game\01. GameObject\MonsterHPBar</Filter>
     </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>00. Game\01. GameObject\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="Dungeon_01.h">
+      <Filter>00. Game\00. Scene\03.Dungeon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -601,6 +613,12 @@
     </ClCompile>
     <ClCompile Include="MonsterHPBar.cpp">
       <Filter>00. Game\01. GameObject\MonsterHPBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>00. Game\01. GameObject\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="Dungeon_01.cpp">
+      <Filter>00. Game\00. Scene\03.Dungeon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

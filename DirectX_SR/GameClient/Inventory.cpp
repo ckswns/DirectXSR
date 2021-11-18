@@ -415,21 +415,21 @@ void Inventory::ItemMove()
 
 SLOTINFO* Inventory::ItemSwitching(POINT pt) // 스위칭 수정해야함.
 {
-	RECT rc = {};
-	if (_pItemSlotInfo != nullptr)
-	{
-		for (size_t t = 0; t < _vecItem.size(); ++t)
-		{
-			for (size_t s = 0; s < _vecItem[t].second->GetItemSlot().size(); ++s)
-			{
-				if (IntersectRect(&rc, &_pItemSlotInfo->_tRect, &_vecItem[t].second->GetItemSlot()[s].second->_tRect));
-				{
-					_pPriveItem = _vecItem[t].second;
-					_bSwitchingcheck = true;
-					return _vecItem[t].second->GetItemSlot()[0].second;
-				}
-			}
-		}
-	}
+	//RECT rc = {};
+	//if (_pItemSlotInfo != nullptr)
+	//{
+	//	for (size_t t = 0; t < _vecItem.size(); ++t)
+	//	{
+	//		for (size_t s = 0; s < _vecItem[t].second->GetItemSlot().size(); ++s)
+	//		{
+	//			if (IntersectRect(&rc, &_pItemSlotInfo->_tRect, &_vecItem[t].second->GetItemSlot()[s].second->_tRect));
+	//			{
+	//				_pPriveItem = _vecItem[t].second;
+	//				_bSwitchingcheck = true;
+	//				return _vecItem[t].second->GetItemSlot()[0].second;
+	//			}
+	//		}
+	//	}
+	//}
 	return nullptr;
 }
