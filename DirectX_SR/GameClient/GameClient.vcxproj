@@ -185,10 +185,12 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="MpPotion.h" />
     <ClInclude Include="NPC.h" />
+    <ClInclude Include="PlateArmor.h" />
     <ClInclude Include="PlayerDamaged.h" />
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
     <ClInclude Include="PoisonProjectile.h" />
+    <ClInclude Include="RejuvenationPotion.h" />
     <ClInclude Include="Slot.h" />
     <ClInclude Include="StatusBar.h" />
     <ClInclude Include="InputHandler.h" />
@@ -245,10 +247,12 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
     <ClCompile Include="MpPotion.cpp" />
+    <ClCompile Include="PlateArmor.cpp" />
     <ClCompile Include="PlayerDamaged.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />
     <ClCompile Include="PoisonProjectile.cpp" />
+    <ClCompile Include="RejuvenationPotion.cpp" />
     <ClCompile Include="Slot.cpp" />
     <ClCompile Include="StatusBar.cpp" />
     <ClCompile Include="InputHandler.cpp" />

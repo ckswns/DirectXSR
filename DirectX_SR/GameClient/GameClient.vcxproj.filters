@@ -184,12 +184,6 @@
     <Filter Include="00. Game\01. GameObject\Item">
       <UniqueIdentifier>{13197765-f5af-4ab8-ae70-99ffa2e51d92}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\Item\Hp Potion">
-      <UniqueIdentifier>{1cf40e32-e04d-49ab-9adb-c9e78d83b26d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\Item\Mp">
-      <UniqueIdentifier>{203ad5e7-ecb9-46a4-b8e8-0d111442f34a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Game\01. GameObject\00. Player\01. State\Player\04. Damaged">
       <UniqueIdentifier>{cd704aaa-1e94-4ff3-b8db-374cf031901d}</UniqueIdentifier>
     </Filter>
@@ -198,6 +192,18 @@
     </Filter>
     <Filter Include="00. Game\01. GameObject\NPC\Store">
       <UniqueIdentifier>{6c61c5c7-969d-4bd5-b630-63cc424550e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Item\Potion">
+      <UniqueIdentifier>{a34b3a26-ea9a-4641-91ff-4788ac40cf70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Item\Potion\Hp Potion">
+      <UniqueIdentifier>{1cf40e32-e04d-49ab-9adb-c9e78d83b26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Item\Potion\Mp">
+      <UniqueIdentifier>{203ad5e7-ecb9-46a4-b8e8-0d111442f34a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Item\Potion\RejuvenationPotion">
+      <UniqueIdentifier>{6cac8b63-8491-481f-aa00-e9564c01f5af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -376,10 +382,10 @@
       <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
     </ClInclude>
     <ClInclude Include="HpPotion.h">
-      <Filter>00. Game\01. GameObject\Item\Hp Potion</Filter>
+      <Filter>00. Game\01. GameObject\Item\Potion\Hp Potion</Filter>
     </ClInclude>
     <ClInclude Include="MpPotion.h">
-      <Filter>00. Game\01. GameObject\Item\Mp</Filter>
+      <Filter>00. Game\01. GameObject\Item\Potion\Mp</Filter>
     </ClInclude>
     <ClInclude Include="PlayerDamaged.h">
       <Filter>00. Game\01. GameObject\00. Player\01. State\Player\04. Damaged</Filter>
@@ -392,6 +398,12 @@
     </ClInclude>
     <ClInclude Include="StoreWnd.h">
       <Filter>00. Game\01. GameObject\NPC\Store</Filter>
+    </ClInclude>
+    <ClInclude Include="RejuvenationPotion.h">
+      <Filter>00. Game\01. GameObject\Item\Potion\RejuvenationPotion</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateArmor.h">
+      <Filter>00. Game\01. GameObject\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -537,10 +549,10 @@
       <Filter>00. Game\01. GameObject\Inventory\TestItem</Filter>
     </ClCompile>
     <ClCompile Include="HpPotion.cpp">
-      <Filter>00. Game\01. GameObject\Item\Hp Potion</Filter>
+      <Filter>00. Game\01. GameObject\Item\Potion\Hp Potion</Filter>
     </ClCompile>
     <ClCompile Include="MpPotion.cpp">
-      <Filter>00. Game\01. GameObject\Item\Mp</Filter>
+      <Filter>00. Game\01. GameObject\Item\Potion\Mp</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>00. Game\01. GameObject\Item</Filter>
@@ -553,6 +565,12 @@
     </ClCompile>
     <ClCompile Include="StoreWnd.cpp">
       <Filter>00. Game\01. GameObject\NPC\Store</Filter>
+    </ClCompile>
+    <ClCompile Include="RejuvenationPotion.cpp">
+      <Filter>00. Game\01. GameObject\Item\Potion\RejuvenationPotion</Filter>
+    </ClCompile>
+    <ClCompile Include="PlateArmor.cpp">
+      <Filter>00. Game\01. GameObject\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
