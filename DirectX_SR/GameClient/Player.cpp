@@ -453,6 +453,14 @@ void Player::OnAnimationEvent(std::string str) noexcept
 	}
 }
 
+void Player::DrinkPotion(int value)
+{
+	_tStat->_fHp += value;
+	_tStat->_fMP += value;
+	if (_tStat->_fHp > _tStat->_fMaxHp)_tStat->_fHp = _tStat->_fMaxHp;
+	if (_tStat->_fMP > _tStat->_fMaxMp)_tStat->_fMP = _tStat->_fMaxMp;
+}
+
 void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
 {
 	_tStat->_fHp -= fDamage;

@@ -31,9 +31,13 @@ void StoreWnd::Start(void) noexcept
 	CloseBtn->SetSortOrder(4);
 	CloseBtn->GetTransform()->SetLocalPosition(565,520,0);
 
-	INVENITEMINFO* info = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION);
+	INVENITEMINFO* info = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION,20);
+	info->_iValue = 50;
 	AddItem(info);
-	info = new INVENITEMINFO((int)Slot::SLOTTYPE::BODY);
+	info = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION, 20);
+	info->_iValue = 50;
+	AddItem(info);
+	info = new INVENITEMINFO((int)Slot::SLOTTYPE::BODY,100);
 	AddItem(info);
 }
 
@@ -105,7 +109,7 @@ void StoreWnd::AddItem(INVENITEMINFO* item)
 		vPos.y = _vStartPos.y + (32 * cntY);
 
 		pobj->GetTransform()->SetWorldPosition(vPos);
-		//pobj->SetSortOrder(4);
+		pobj->SetSortOrder(4);
 		pobj->SetActive(false);
 		_StoreItem.push_back(std::pair(pobj, item));
 		
@@ -125,62 +129,6 @@ void StoreWnd::AddItem(INVENITEMINFO* item)
 	}
 }
 
-/*
-void StoreWnd::SellItem()
-{
-	POINT pt;
-	GetCursorPos(&pt);
-
-	ScreenToClient(g_hWnd, &pt);
-	LIST_ITEM::iterator iter = _StoreItem.begin();
-	while (iter != _StoreItem.end())
-	{
-		GameObject* obj = iter->first;
-		ItemSlot* itemSlot = static_cast<ItemSlot*>(obj->GetComponent(COMPONENT_ID::BEHAVIOUR));
-		
-		D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
-		RECT rc = itemSlot->GetItemRect();
-		rc.left += vPos.x;
-		rc.right += vPos.x;
-		rc.top += vPos.y;
-		rc.bottom += vPos.y;
-
-	//	RectTransform* rectTransform = static_cast<RectTransform*>((iter->first)->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
-
-	//	RECT rc = rectTransform->GetPickingRect();
-		if (PtInRect(&rc, pt))
-		{
-			//인벤토리로 이동
-			//_pInven->GetItem(iter->second);	
-			//골드 차감 
-			
-			//아이템 제거
-		//	D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
-			int x = (vPos.x-_vStartPos.x) / 46;
-			int y = (vPos.y - _vStartPos.y) / 32;
-			int Index = x + (y * _iCntX);
-
-			SLOTINFO slotInfo = *(itemSlot->GetItemInfo(0));
-			for (int i = 0; i < slotInfo._iSlotCntX; i++)
-			{
-				//가로 칸 
-				_ItemSlot[(Index + i)] = false;
-				for (int j = 0; j < slotInfo._iSlotCntX; j++)
-				{//세로칸 
-					_ItemSlot[(Index + i + (j * _iCntX))] = false;
-				}
-			}
-
-	//		obj->Destroy();
-	//		iter->first = nullptr;
-	//		delete iter->second;
-			_StoreItem.erase(iter);
-			break;
-		}
-	}
-}
-*/
-
 void StoreWnd::Sell(GameObject* obj)
 {
 	LIST_ITEM::iterator iter = _StoreItem.begin();
@@ -188,32 +136,33 @@ void StoreWnd::Sell(GameObject* obj)
 	{
 		if (iter->first == obj)
 		{
-			//인벤토리로 이동
-			_pInven->PickUpItems(iter->second);	
 			//골드 차감 
-
-			//아이템 제거
-			D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
-			int x = (vPos.x - _vStartPos.x) / 46;
-			int y = (vPos.y - _vStartPos.y) / 32;
-			int Index = x + (y * _iCntX);
-
-			StoreItem* itemSlot = static_cast<StoreItem*>(obj->GetComponent(COMPONENT_ID::BEHAVIOUR));
-			SLOTINFO slotInfo = *(itemSlot->GetItemInfo(0));
-			for (int i = 0; i < slotInfo._iSlotCntX; i++)
+			if (_pInven->BuyItem(iter->second->_iGold))
 			{
-				//가로 칸 
-				_ItemSlot[(Index + i)] = false;
-				for (int j = 0; j < slotInfo._iSlotCntX; j++)
-				{//세로칸 
-					_ItemSlot[(Index + i + (j * _iCntX))] = false;
-				}
-			}
+				//인벤토리로 이동
+				_pInven->PickUpItems(iter->second);
 
-			obj->Destroy();
-			//		iter->first = nullptr;
-			//		delete iter->second;
-			iter = _StoreItem.erase(iter);
+				//아이템 제거
+				D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
+				int x = (vPos.x - _vStartPos.x) / 46;
+				int y = (vPos.y - _vStartPos.y) / 32;
+				int Index = x + (y * _iCntX);
+
+				StoreItem* itemSlot = static_cast<StoreItem*>(obj->GetComponent(COMPONENT_ID::BEHAVIOUR));
+				SLOTINFO slotInfo = *(itemSlot->GetItemInfo(0));
+				for (int i = 0; i < slotInfo._iSlotCntX; i++)
+				{
+					//가로 칸 
+					_ItemSlot[(Index + i)] = false;
+					for (int j = 0; j < slotInfo._iSlotCntX; j++)
+					{//세로칸 
+						_ItemSlot[(Index + i + (j * _iCntX))] = false;
+					}
+				}
+
+				obj->Destroy();
+				iter = _StoreItem.erase(iter);
+			}
 			break;
 		}
 		iter++;

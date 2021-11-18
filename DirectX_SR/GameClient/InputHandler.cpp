@@ -71,6 +71,17 @@ void InputHandler::Update(float fElapsedTime) noexcept
 		{
 			if (INPUT->GetKeyDown(KEY_LBUTTON))
 			{
+				if (_bInven)
+				{
+					POINT pt;
+					GetCursorPos(&pt);
+					ScreenToClient(g_hWnd, &pt);
+
+					if (pt.x > WINCX * 0.5)
+					{
+						return;
+					}
+				}
 				//마우스 피킹 
 				Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
 				RaycastHit hit;
@@ -86,8 +97,13 @@ void InputHandler::Update(float fElapsedTime) noexcept
 						//아이템 정보 
 						INVENITEMINFO* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
 						//인벤토리에 아이템 추가 
-						_pPlayer->GetInventory()->PickUpItems(ivenItem);
-
+						if(_pPlayer->GetInventory()->PickUpItems(ivenItem))
+							hit.collider->GetGameObject()->Destroy();
+					}
+					else if (hit.collider->GetGameObject()->GetName() == "Gold")
+					{
+						INVENITEMINFO* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
+						_pPlayer->GetInventory()->PickUpGold(ivenItem->_iGold);
 						hit.collider->GetGameObject()->Destroy();
 					}
 					else if (hit.collider->GetGameObject()->GetName() == "StoreNPC")
@@ -115,6 +131,25 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			}
 			else if (INPUT->GetKeyDown(KEY_RBUTTON))
 			{
+				if (_bInven)
+				{
+					POINT pt;
+					GetCursorPos(&pt);
+					ScreenToClient(g_hWnd, &pt);
+
+					if (pt.x > WINCX * 0.5)
+					{
+						INVENITEMINFO* potion = nullptr;
+						potion = _pPlayer->GetInventory()->UsingItem(pt);
+						if (potion->_eSlotType == (int) Slot::SLOTTYPE::POTION)
+						{
+							//플레이어 회복
+							_pPlayer->DrinkPotion(potion->_iValue);
+						}
+
+						return;
+					}
+				}
 				Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
 				RaycastHit hit;
 				if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
