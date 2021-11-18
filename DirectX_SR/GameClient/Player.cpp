@@ -78,9 +78,9 @@ void Player::Start(void) noexcept
 	gameObject->AddComponent(_pCollider);
 	gameObject->AddComponent(new Rigidbody());
 
-	_pAttCollider = new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.3f), D3DXVECTOR3(0, 0, 1), "Attack");
+	/*_pAttCollider = new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.3f), D3DXVECTOR3(0, 0, 1), "Attack");
 	gameObject->AddComponent(_pAttCollider);
-	_pAttCollider->SetEnable(false);
+	_pAttCollider->SetEnable(false);*/
 
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Player.png"),false);
 	gameObject->AddComponent(sr);
@@ -167,14 +167,14 @@ void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 			_bCollWithObstacle = true;
 		}
 	}
-	else if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
-	{
-		if (mine->GetTag() == "Attack")
-		{
-			//1인칭인 경우 공격 체크 
-			other->GetGameObject();
-		}
-	}
+	//else if (other->GetGameObject()->GetTag() == GameObjectTag::MONSTER)
+	//{
+	//	if (mine->GetTag() == "Attack")
+	//	{
+	//		//1인칭인 경우 공격 체크 
+	//		other->GetGameObject();
+	//	}
+	//}
 }
 
 void Player::OnCollisionStay(Collider* mine, Collider* other) noexcept
@@ -351,9 +351,10 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 
 	if (!_bFPV)
 	{
-		if(newState == PLAYER_MOVE)
+		if (newState == PLAYER_MOVE) {
 			static_cast<PlayerMove*>(_pFSM[newState])->SetAtt(false);
-
+			_pFSM[newState]->SetTargetTrans(nullptr);
+		}
 		_pFSM[newState]->SetDir(eDir);
 
 		_eCurState = newState;
@@ -411,10 +412,10 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 	}
 }
 
-void Player::SetAttCollider(bool b)
-{
-	_pAttCollider->SetEnable(b);
-}
+//void Player::SetAttCollider(bool b)
+//{
+//	_pAttCollider->SetEnable(b);
+//}
 
 void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
 {
