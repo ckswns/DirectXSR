@@ -429,6 +429,15 @@
     <ClInclude Include="StoreItem.h">
       <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClInclude>
+    <ClInclude Include="MonsterHPBar.h">
+      <Filter>99. Default\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>99. Default\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dungeon_01.h">
+      <Filter>00. Game\00. Scene\03.Dungeon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
