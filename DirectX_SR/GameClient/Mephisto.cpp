@@ -30,6 +30,8 @@ void Mephisto::Awake(void) noexcept
 
 void Mephisto::Start(void) noexcept
 {
+	gameObject->SetTag(GameObjectTag::MONSTER);
+
 	_spriteRenderer = static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Mephisto\\Idle\\0.png"))));
 	gameObject->AddComponent(new BillboardObj());
 	_hitBox = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f), D3DXVECTOR3(0, 0, 0), "Monster")));
@@ -38,7 +40,6 @@ void Mephisto::Start(void) noexcept
 	_animator = new Animator(true);
 	InitAnimation();
 	gameObject->AddComponent(_animator);
-	gameObject->SetTag(GameObjectTag::MONSTER);
 
 	GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
 	if (player == nullptr)
@@ -109,18 +110,24 @@ void Mephisto::FixedUpdate(float fElapsedTime) noexcept
 		}
 		break;
 	case Actor::State::HIT:
+		if (_animator->GetCurrentAnimationEnd())
+		{
+			_state = Actor::State::IDLE;
+		}
 		break;
 	case Actor::State::DIE:
 		if (_animator->GetCurrentAnimationEnd())
 		{
-			if (_fDeltaTime < 1)
+			_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Dead")->GetTexture()[0]);
+			_animator->SetAnimation("Dead");
+			/*if (_fDeltaTime < 1)
 			{
 				_fDeltaTime += fElapsedTime;
 				if (_fDeltaTime > 1)
 					gameObject->Destroy();
 			}
 			else
-				gameObject->Destroy();
+				gameObject->Destroy();*/
 		}
 		break;
 	case Actor::State::MOVE:
@@ -240,7 +247,8 @@ void Mephisto::LateUpdate(float fElapsedTime) noexcept
 	}
 	break;
 	case Actor::State::HIT:
-		_animator->Stop();
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("GetHit_0")->GetTexture()[0]);
+		_animator->SetAnimation("GetHit_" + std::to_string(static_cast<int>(_dir)));
 		break;
 	case Actor::State::DIE:
 		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Death_0")->GetTexture()[0]);
@@ -276,7 +284,7 @@ void Mephisto::GetHit(int damage) noexcept
 		_state = Actor::State::DIE;
 		_hitBox->SetEnable(false);
 		_currentHP = 0;
-		_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+	//	_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 		_dirtyState = true;
 		_fDeltaTime = 0;
 
@@ -286,8 +294,8 @@ void Mephisto::GetHit(int damage) noexcept
 	else
 	{
 		_state = Actor::State::HIT;
-		_animator->Stop();
-		_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
+	//	_animator->Stop();
+	//	_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
 		_dirtyState = true;
 		_fDeltaTime = 0;
 
@@ -317,7 +325,7 @@ void Mephisto::UsingSkill()
 
 	if (dis < _fLightningRange)
 	{
-		//번개 공격 
+		//번개 
 		float angle = GetAngle(vDir);
 		_lightning->GetTransform()->SetWorldPosition(transform->GetWorldPosition() + vDir * 0.5f);
 		_lightning->GetTransform()->SetLocalEulerAngle(0, 0, angle);
@@ -325,7 +333,7 @@ void Mephisto::UsingSkill()
 	}
 	else
 	{
-		//스컬 미사일 
+		//미사일 
 		float angle = GetAngle(vDir);
 		GameObject* missile = GameObject::Instantiate();
 		missile->GetTransform()->SetWorldPosition(transform->GetWorldPosition());
@@ -422,8 +430,9 @@ void Mephisto::InitAnimation()
 		//Skill
 		for (int i = 0; i < 17; i++)
 		{
+			int index = i + (folder * 17);
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Actor\\Monster\\Mephisto\\Skill\\%d\\%d.png", folder, i);
+			sprintf_s(str, 256, "Asset\\Actor\\Monster\\Mephisto\\Skill\\%d.png", index);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
@@ -437,11 +446,29 @@ void Mephisto::InitAnimation()
 		TList.clear();
 		FrameTime.clear();
 
-		//Die
-		for (int i = 0; i < 24; i++)
+		//GetHit
+		for (int i = 0; i < 6; i++)
 		{
+			int index = i + (folder * 6);
 			char str[256];
-			sprintf_s(str, 256, "Asset\\Actor\\Monster\\Mephisto\\Death\\%d\\%d.png", folder, i);
+			sprintf_s(str, 256, "Asset\\Actor\\Monster\\Mephisto\\GetHit\\%d.png", index);
+
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
+			FrameTime.push_back(0.1f);
+		}
+		ani = new Animation(FrameTime, TList, false);
+		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
+		_animator->InsertAnimation("GetHit_" + std::to_string(folder), ani);
+
+		TList.clear();
+		FrameTime.clear();
+
+		//Death
+		for (int i = 0; i < 25; i++)
+		{
+			int index = i + (folder * 25);
+			char str[256];
+			sprintf_s(str, 256, "Asset\\Actor\\Monster\\Mephisto\\Death\\%d.png",index);
 
 			TList.push_back(ASSETMANAGER->GetTextureData(str));
 			FrameTime.push_back(0.1f);
@@ -455,6 +482,23 @@ void Mephisto::InitAnimation()
 		FrameTime.clear();
 
 	}
+
+	//Dead
+	for (int i = 0; i < 8; i++)
+	{
+		char str[256];
+		sprintf_s(str, 256, "Asset\\Actor\\Monster\\Mephisto\\Dead\\%d.png", i);
+
+		TList.push_back(ASSETMANAGER->GetTextureData(str));
+		FrameTime.push_back(0.1f);
+	}
+	ani = new Animation(FrameTime, TList, true);
+	ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
+	_animator->InsertAnimation("Dead", ani);
+
+	TList.clear();
+	FrameTime.clear();
+
 	_animator->SetAnimation("Idle_0");
 	_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_0")->GetTexture()[0]);
 
