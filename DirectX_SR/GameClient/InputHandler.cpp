@@ -69,12 +69,24 @@ void InputHandler::Update(float fElapsedTime) noexcept
 
 		if (!_bFPV) //3인칭 조작
 		{
-			if (INPUT->GetKeyDown(KEY_LBUTTON))
+			Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
+			RaycastHit hit;
+
+			bool lbtnDown = false;
+
+			if (INPUT->GetKeyStay(VK_LBUTTON) && _isKeyDown == false)
+			{
+				lbtnDown = true;
+				_isKeyDown = true;
+			}
+			else if(INPUT->GetKeyUp(VK_LBUTTON))
+			{
+				_isKeyDown = false;
+			}
+
+			if (lbtnDown)
 			{
 				//마우스 피킹 
-				Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
-				RaycastHit hit;
-
 				if (Physics::Raycast(ray, hit, GameObjectLayer::ALPHA))
 				{
 					//몬스터인 경우 공격 
@@ -103,6 +115,13 @@ void InputHandler::Update(float fElapsedTime) noexcept
 							_pPlayer->GetInventory()->GetGameObject()->SetActive(true);
 						}
 					}
+					else if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
+					{
+						if (_bLBSkill)	//스킬인 경우
+							_pLBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
+						else
+							_pMoveCommand->Execute(_pPlayerObj, hit.point);
+					}
 				}
 				else if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
 				{
@@ -111,12 +130,17 @@ void InputHandler::Update(float fElapsedTime) noexcept
 					else
 						_pMoveCommand->Execute(_pPlayerObj, hit.point);
 				}
-
 			}
-			else if (INPUT->GetKeyDown(KEY_RBUTTON))
+			//else if (INPUT->GetKeyStay(VK_LBUTTON))
+			//{
+			//	if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
+			//	{
+			//		if (!_bLBSkill)	//스킬인 경우
+			//			_pMoveCommand->Execute(_pPlayerObj, hit.point);
+			//	}
+			//}
+			else if (INPUT->GetKeyDown(VK_RBUTTON))
 			{
-				Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
-				RaycastHit hit;
 				if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
 				{
 					if (_bRBSkill)	//스킬인 경우
@@ -167,12 +191,12 @@ void InputHandler::Update(float fElapsedTime) noexcept
 				_bDown = false;
 
 			//---------------- 공격 (스킬사용) ---------------------//
-			if (INPUT->GetKeyDown(KEY_LBUTTON))
+			if (INPUT->GetKeyDown(VK_LBUTTON))
 			{
 				_bAtt = true;
 				_pLBCommand->Execute(_pPlayerObj, vLook);
 			}
-			else if (INPUT->GetKeyDown(KEY_RBUTTON))
+			else if (INPUT->GetKeyDown(VK_RBUTTON))
 			{
 				_bAtt = true;
 				_pRBCommand->Execute(_pPlayerObj, vLook);

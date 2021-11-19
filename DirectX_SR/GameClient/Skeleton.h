@@ -7,6 +7,7 @@ namespace ce
 	class Animator;
 	class SpriteRenderer;
 	class AudioSource;
+	class SpriteRenderer;
 }
 class FSMState;
 class PathFinding;
@@ -32,7 +33,9 @@ public:		explicit				Skeleton() noexcept;
 public:		virtual					~Skeleton(void) noexcept { __noop; }
 
 public:		virtual void			Start(void) noexcept;
+//public:		virtual void			FixedUpdate(float fElapsedTime) noexcept;
 public:		virtual void			Update(float fElapsedTime) noexcept;
+//public:		virtual void			LateUpdate(float fElapsedTime) noexcept;
 public:		virtual void			OnDestroy(void) noexcept;
 
 public:		void					Create(Transform* trans);
@@ -53,6 +56,8 @@ private:	Animator*				_pAnimator;
 private:	PathFinding*			_pPathFinding;
 private:	AudioSource*			_pRaiseAudio;
 
+private:	SpriteRenderer*			_spriteRenderer;
+
 private:	TargetCamera*			_pCamera;
 
 private:	std::vector<FSMState*>	_pFSM;
@@ -63,4 +68,5 @@ private:	float					_fMaxDist;
 private:	float					_fSpeed;
 
 private:	bool					_bOnce;
+private:	std::string				_prevAniName ="";
 };

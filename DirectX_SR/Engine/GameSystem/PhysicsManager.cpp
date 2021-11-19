@@ -64,7 +64,7 @@ namespace ce
 
 		if (iter == _rigidbodys.end())
 		{
-			CE_ASSERT("ckswns", "Container에 Rigidbody가 이미 존재하지 않습니다.");
+			//CE_ASSERT("ckswns", "Container에 Rigidbody가 이미 존재하지 않습니다.");
 		}
 		else
 			_rigidbodys.erase(iter);
@@ -86,7 +86,7 @@ namespace ce
 
 		if (iter == _colliders.end())
 		{
-			CE_ASSERT("ckswns", "collider가 이미 container에 존재하지 않습니다.");
+			//CE_ASSERT("ckswns", "collider가 이미 container에 존재하지 않습니다.");
 		}
 		else
 			_colliders.erase(iter);

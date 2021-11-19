@@ -53,7 +53,7 @@ public:		float					GetHPPer();
 public:		float					GetMPPer();
 public:		float					GetStaminaPer();
 public:		InputHandler*			GetInpuHandler() { return _pInputHandler; }
-public:		Inventory* GetInventory() { return _pInven; }
+public:		Inventory*				GetInventory() { return _pInven; }
 
 private:	Transform*				_pTrans;
 private:	Animator*				_pAnimator;

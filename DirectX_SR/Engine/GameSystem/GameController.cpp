@@ -72,13 +72,20 @@ namespace ce
 
 		float deltaTime = TIMEMANAGER->GetDeltaTime();
 
-		SCENEMANAGER->FixedUpdate(deltaTime);
-		PhysicsManager::Instance()->Update();
-		SCENEMANAGER->Update(deltaTime);
+		std::thread t1 = std::thread(&PhysicsManager::Update, PhysicsManager::Instance());
+		std::thread t2 = std::thread([&] {
+			SCENEMANAGER->FixedUpdate(deltaTime);
+			SCENEMANAGER->Update(deltaTime);
+			});
+
+		t1.join();
+		t2.join();
+
 		SCENEMANAGER->LateUpdate(deltaTime);
 #ifdef __USE_FMOD__
 		FMODMANAGER->Update();
 #endif
+
 		INPUT->Update();
 	}
 
