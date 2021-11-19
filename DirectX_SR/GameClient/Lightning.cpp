@@ -12,9 +12,9 @@
 #include "AudioSource.h"
 void Lightning::Start(void) noexcept
 {
-	SpriteRenderer* sr= static_cast<SpriteRenderer*>(D3D9DEVICE->GetDevice(),gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Mephisto\\Lightning\\0.png"))));
+	SpriteRenderer* sr= static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Mephisto\\Lightning\\0.png"))));
 //	gameObject->AddComponent(new BillboardObj());
-	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 1, 1)));
+	_collider = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 1, 2))));
 	gameObject->AddComponent(new Rigidbody());
 
 	_pAnimator = new Animator(true);
@@ -52,14 +52,16 @@ void Lightning::Update(float fElapsedTime) noexcept
 	if (_pAnimator->GetCurrentAnimationEnd()) 
 	{
 		_audio->Stop();
+		_collider->SetEnable(false);
 		gameObject->SetActive(false);
 	}
 }
 
-void Lightning::OnEnable(void) noexcept
+void Lightning::Using()
 {
+	_collider->SetEnable(true);
+	gameObject->SetActive(true);
 	_pAnimator->Play();
-//	_pAnimator->SetAnimation("Lightning");
 	_audio->Play();
 }
 
