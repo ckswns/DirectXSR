@@ -38,45 +38,6 @@ namespace ce
 
 	void Scene::FixedUpdateXXX(float fElapsedTime) noexcept
 	{
-		if (_vGameObjWaitForInsert.empty() == false)
-		{
-			for (auto iter = _vGameObjWaitForInsert.begin(); iter != _vGameObjWaitForInsert.end();)
-			{
-				GameObject* obj = (*iter);
-				int layer = static_cast<int>(obj->_eLayer);
-				_vGameObjs[layer].emplace_back(obj);
-				iter = _vGameObjWaitForInsert.erase(iter);
-			}
-		}
-
-		if (_vLayerChangedObj.empty() == false)
-		{
-			for (int i = 0; i < _vLayerChangedObj.size(); i++)
-			{
-				int layer = static_cast<int>(_vLayerChangedObj[i].first);
-				auto iter = std::find(_vGameObjs[layer].begin(), _vGameObjs[layer].end(), _vLayerChangedObj[i].second);
-
-				if (iter != _vGameObjs[layer].end())
-				{
-					_vGameObjs[layer].erase(iter);
-					int newLayer = static_cast<int>(_vLayerChangedObj[i].second->GetLayer());
-					_vGameObjs[newLayer].emplace_back(_vLayerChangedObj[i].second);
-				}
-				else
-				{
-					layer = static_cast<int>(_vLayerChangedObj[i].second->_eLayer);
-					auto iter2 = std::find(_vGameObjs[layer].begin(), _vGameObjs[layer].end(), _vLayerChangedObj[i].second);
-
-					if (iter2 == _vGameObjs[layer].end())
-					{
-						CE_ASSERT("ckswns", "레이어 이동중에 게임오브젝트가 유실되었을 가능성이 있습니다\n개발자에게 문의하세요");
-					}
-				}
-			}
-
-			_vLayerChangedObj.clear();
-		}
-
 		for (int i = 0; i < static_cast<int>(GameObjectLayer::END); i++)
 		{
 			for (auto iter = _vGameObjs[i].begin(); iter != _vGameObjs[i].end();)
@@ -105,16 +66,6 @@ namespace ce
 
 				(*iter)->FixedUpdateXXX(fElapsedTime);
 
-				if ((*iter)->GetWillDestroy())
-				{
-					(*iter)->ReleaseXXX();
-
-					delete (*iter);
-
-					iter = _vGameObjs[i].erase(iter);
-					continue;
-				}
-
 				iter++;
 			}
 		}
@@ -139,15 +90,6 @@ namespace ce
 				}
 
 				(*iter)->UpdateXXX(fElapsedTime);
-
-				if ((*iter)->GetWillDestroy())
-				{
-					(*iter)->ReleaseXXX();
-
-					delete (*iter);
-					iter = _vGameObjs[i].erase(iter);
-					continue;
-				}
 
 				iter++;
 			}
@@ -188,6 +130,45 @@ namespace ce
 		}
 
 		CheckUIPicking();
+
+		if (_vGameObjWaitForInsert.empty() == false)
+		{
+			for (auto iter = _vGameObjWaitForInsert.begin(); iter != _vGameObjWaitForInsert.end();)
+			{
+				GameObject* obj = (*iter);
+				int layer = static_cast<int>(obj->_eLayer);
+				_vGameObjs[layer].emplace_back(obj);
+				iter = _vGameObjWaitForInsert.erase(iter);
+			}
+		}
+
+		if (_vLayerChangedObj.empty() == false)
+		{
+			for (int i = 0; i < _vLayerChangedObj.size(); i++)
+			{
+				int layer = static_cast<int>(_vLayerChangedObj[i].first);
+				auto iter = std::find(_vGameObjs[layer].begin(), _vGameObjs[layer].end(), _vLayerChangedObj[i].second);
+
+				if (iter != _vGameObjs[layer].end())
+				{
+					_vGameObjs[layer].erase(iter);
+					int newLayer = static_cast<int>(_vLayerChangedObj[i].second->GetLayer());
+					_vGameObjs[newLayer].emplace_back(_vLayerChangedObj[i].second);
+				}
+				else
+				{
+					layer = static_cast<int>(_vLayerChangedObj[i].second->_eLayer);
+					auto iter2 = std::find(_vGameObjs[layer].begin(), _vGameObjs[layer].end(), _vLayerChangedObj[i].second);
+
+					if (iter2 == _vGameObjs[layer].end())
+					{
+						CE_ASSERT("ckswns", "레이어 이동중에 게임오브젝트가 유실되었을 가능성이 있습니다\n개발자에게 문의하세요");
+					}
+				}
+			}
+
+			_vLayerChangedObj.clear();
+		}
 	}
 
 	void Scene::RenderXXX(float fElapsedTime) noexcept
