@@ -19,6 +19,7 @@
 #include "Camera.h"
 #include "TargetCamera.h"
 #include "GameObject.h"
+#include "SphereCollider.h"
 
 Skeleton::Skeleton() noexcept
 	:_tStat(70, 10, 5), _eCurState(SK_END), _fSpeed(3.f), _bOnce(false)
@@ -29,20 +30,20 @@ void Skeleton::Start(void) noexcept
 {
 	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
 
-	BoxCollider* trigger = new BoxCollider(D3DXVECTOR3(2, 1, 2),D3DXVECTOR3(0,0,0),"Trigger");
+	SphereCollider* trigger = new SphereCollider(2, "Trigger");
 	gameObject->AddComponent(trigger);
-	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.2f)));
+	//gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.2f)));
 	gameObject->AddComponent(new Rigidbody());
 
 	_pRaiseAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
 	_pRaiseAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\skeletonraise.wav"));
 
-	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skeleton.png"),true,false);
-	gameObject->AddComponent(sr);
+	_spriteRenderer = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skeleton.png"),true,false);
+	gameObject->AddComponent(_spriteRenderer);
 
 	_pAnimator = new Animator(true);
 	gameObject->AddComponent(_pAnimator);
-	InitAnimation(sr);
+	InitAnimation(_spriteRenderer);
 	InitState();
 }
 
@@ -62,6 +63,12 @@ void Skeleton::Update(float fElapsedTime) noexcept
 	}
 
 	_pFSM[_eCurState]->Update(fElapsedTime);
+
+	if (_prevAniName != _pAnimator->GetCurrentAnimationName())
+	{
+		_prevAniName = _pAnimator->GetCurrentAnimationName();
+		_spriteRenderer->SetTexture(_pAnimator->GetAnimationByKey(_prevAniName)->GetTexture()[0]);
+	}
 }
 
 void Skeleton::OnDestroy(void) noexcept

@@ -14,7 +14,7 @@
 #include "TerrainRenderer.h"
 #include "TerrainCollider.h"
 
-#include "CubeObject.h"
+#include "Mephisto.h"
 Game::Game(void) noexcept
 {
 }
@@ -47,11 +47,8 @@ bool Game::Init(void) noexcept
     pPlayerObj->GetTransform()->SetLocalPosition(0, 0.5f, 0);
 
     //TestCube
-    GameObject* obj = GameObject::Instantiate();
-    obj->AddComponent(new CubeObject);
-    obj->SetLayer(GameObjectLayer::OBJECT);
-    obj->SetTag(GameObjectTag::MONSTER);
-    obj->GetTransform()->SetWorldPosition(5,1,5);
+
+    //obj->GetTransform()->SetWorldPosition(5,1,5);
 
     //TargetCamera
     pGameObj = GameObject::Instantiate();

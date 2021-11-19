@@ -13,11 +13,11 @@ class InputHandler //: public Behaviour
 {
 public:		explicit				InputHandler() = delete;
 public:		explicit				InputHandler(Player * player) noexcept;
-public:		virtual					~InputHandler(void) noexcept { __noop; }
+public:								~InputHandler(void) noexcept { __noop; }
 
-public:		virtual void			Start(void) noexcept;
-public:		virtual void			Update(float fElapsedTime) noexcept;
-public:		virtual void			OnDestroy(void) noexcept;
+public:		void					Start(void) noexcept;
+public:		void					Update(float fElapsedTime) noexcept;
+public:		void					OnDestroy(void) noexcept;
 
 public:		void					SetMouseBtn(bool isLeft, SKILL_ID id);
 
@@ -44,6 +44,7 @@ private:	Transform*				_pCameraTrans;
 private:	bool					_bFPV;
 private:	bool					_bDown;
 private:	bool					_bAtt;
+private:	bool					_isKeyDown = false;
 private:	D3DXVECTOR3				_vDir;
 private:	POINT					_ptStart;
 };

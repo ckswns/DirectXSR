@@ -9,7 +9,7 @@
 #include "Slot.h"
 MpPotion::MpPotion() noexcept
 {
-	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION);
+	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION,20);
 	_tInvenItem->_eitemID = (int)ITEM_ID::MP;
 	_tInvenItem->_strName = "MP Potion";
 	_tInvenItem->_strInvenImgPath = "Asset\\UI\\Inventory\\Mp";

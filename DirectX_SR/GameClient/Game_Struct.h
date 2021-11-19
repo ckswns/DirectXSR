@@ -18,6 +18,10 @@ typedef struct tagStat
 		_iDex = 25;
 		_iVitality = 15;
 		_iEnergy = 25;
+
+		_fDamage = _iStr * 0.5f;
+		_fAttRating = _iDex * 5.f;
+		_fDef = _iDex * 0.25f;
 	}
 
 	float		_fMaxHp;
@@ -68,17 +72,19 @@ typedef struct tagInveItemInfo
 {
 	std::string		_strName;
 	std::string		_strInvenImgPath;	//인벤토리에 들어갈 이미지
-	int				_iValue;			//골드의 양이나 회복량?
+	int				_iValue;			//회복량?
 	int				_eitemID;			//ITEM_ID
 	int				_eSlotType;			//Slot::SLOTTYPE
+	int				_iGold;				//가격
 
 	tagInveItemInfo()
 	{
 		_strName = "";
 	}
-	tagInveItemInfo(int eSlotType)
+	tagInveItemInfo(int eSlotType,int gold)
 	{
 		_eSlotType = eSlotType;
+		_iGold = gold;
 	}
 }INVENITEMINFO;
 

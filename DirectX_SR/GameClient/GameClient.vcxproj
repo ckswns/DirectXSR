@@ -172,6 +172,8 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Cow.h" />
     <ClInclude Include="DbgShowFrame.h" />
+    <ClInclude Include="Diablo.h" />
+    <ClInclude Include="Diablo_Chamber.h" />
     <ClInclude Include="Dungeon_01.h" />
     <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
@@ -183,9 +185,13 @@
     <ClInclude Include="Game_Enum.h" />
     <ClInclude Include="Game_Math.h" />
     <ClInclude Include="Game_Struct.h" />
+    <ClInclude Include="Gold.h" />
     <ClInclude Include="HpPotion.h" />
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Lightning.h" />
+    <ClInclude Include="Mephisto.h" />
+    <ClInclude Include="Missile.h" />
     <ClInclude Include="MonsterHPBar.h" />
     <ClInclude Include="MpPotion.h" />
     <ClInclude Include="NPC.h" />
@@ -244,6 +250,8 @@
     <ClCompile Include="BoneSpear.cpp" />
     <ClCompile Include="Cow.cpp" />
     <ClCompile Include="DbgShowFrame.cpp" />
+    <ClCompile Include="Diablo.cpp" />
+    <ClCompile Include="Diablo_Chamber.cpp" />
     <ClCompile Include="Dungeon_01.cpp" />
     <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
@@ -251,9 +259,13 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="GameDataManager.cpp" />
+    <ClCompile Include="Gold.cpp" />
     <ClCompile Include="HpPotion.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
+    <ClCompile Include="Lightning.cpp" />
+    <ClCompile Include="Mephisto.cpp" />
+    <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MonsterHPBar.cpp" />
     <ClCompile Include="MpPotion.cpp" />
     <ClCompile Include="PlateArmor.cpp" />

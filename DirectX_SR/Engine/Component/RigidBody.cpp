@@ -26,8 +26,6 @@ namespace ce
 			if (components[i]->GetID() == COMPONENT_ID::COLLIDER)
 				_colliders.push_back(static_cast<Collider*>(components[i]));
 		}
-
-		PhysicsManager::Instance()->InsertRigidbodyXXX(this);
 	}
 
 	void Rigidbody::FixedUpdate(float) noexcept
@@ -41,6 +39,11 @@ namespace ce
 
 	void Rigidbody::LateUpdate(float) noexcept
 	{
+		if (_bInserted == false)
+		{
+			PhysicsManager::Instance()->InsertRigidbodyXXX(this);
+			_bInserted = true;
+		}
 	}
 
 	void Rigidbody::Render(void) noexcept
@@ -79,6 +82,8 @@ namespace ce
 
 	void Rigidbody::OnCollideWith(Collider* mine, Collider* other) noexcept
 	{
+		std::mutex mtx;
+		std::lock_guard<std::mutex> guard(mtx);
 		auto iter = std::find(_collisionList.begin(), _collisionList.end(), std::make_pair(mine, other));
 
 		if (iter == _collisionList.end())
@@ -91,6 +96,8 @@ namespace ce
 
 	void Rigidbody::OnNotCollideWith(Collider* mine, Collider* other) noexcept
 	{
+		std::mutex mtx;
+		std::lock_guard<std::mutex> guard(mtx);
 		auto iter = std::find(_collisionList.begin(), _collisionList.end(), std::make_pair(mine, other));
 
 		if (iter == _collisionList.end())
