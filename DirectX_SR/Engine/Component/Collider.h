@@ -45,6 +45,8 @@ namespace ce
 	public:		GameObject*			GetGameObject(void) noexcept { return _owner; }
 	public:		void				SetRaycastTarget(bool rhs) noexcept { _enableRaycast = rhs; }
 
+	public:		virtual void		SetEnable(bool enable) noexcept override;
+
 	protected:	bool				_enableRaycast = true;
 	protected:	Collider::Type		_type;
 

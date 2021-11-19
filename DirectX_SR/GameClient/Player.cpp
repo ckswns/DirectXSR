@@ -172,7 +172,10 @@ void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 	if (_pAttCollider->GetEnable()) {
 		if (other->GetTag() == "Monster" && mine->GetTag() == "Attack")
 		{
-			other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR)->GetHit(_tStat->_fDamage);
+			Actor* actor = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
+
+			if(actor != nullptr)
+				actor->GetHit((int)_tStat->_fDamage);
 		}
 	}
 }
@@ -447,7 +450,8 @@ void Player::OnAnimationEvent(std::string str) noexcept
 			if (Target != nullptr) 
 			{
 				Actor* actor = Target->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
-				actor->GetHit(_tStat->_fDamage);
+				if(actor != nullptr)	
+					actor->GetHit((int)_tStat->_fDamage);
 			}
 		}
 	}

@@ -72,8 +72,6 @@ namespace ce
 
 		float deltaTime = TIMEMANAGER->GetDeltaTime();
 
-		INPUT->Update();
-
 		SCENEMANAGER->FixedUpdate(deltaTime);
 		PhysicsManager::Instance()->Update();
 		SCENEMANAGER->Update(deltaTime);
@@ -81,6 +79,7 @@ namespace ce
 #ifdef __USE_FMOD__
 		FMODMANAGER->Update();
 #endif
+		INPUT->Update();
 	}
 
 	void GameController::Render(void) noexcept

@@ -18,6 +18,10 @@ typedef struct tagStat
 		_iDex = 25;
 		_iVitality = 15;
 		_iEnergy = 25;
+
+		_fDamage = _iStr * 0.5f;
+		_fAttRating = _iDex * 5.f;
+		_fDef = _iDex * 0.25f;
 	}
 
 	float		_fMaxHp;

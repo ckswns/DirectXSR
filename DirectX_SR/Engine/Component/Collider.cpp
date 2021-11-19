@@ -27,4 +27,24 @@ namespace ce
 		}
 #endif
 	}
+	void Collider::SetEnable(bool enable) noexcept
+	{
+		_bEnable = false;
+		Rigidbody* rb = static_cast<Rigidbody*>(_owner->GetComponent(COMPONENT_ID::RIGIDBODY));
+		if (rb == nullptr)
+			return;
+
+		Rigidbody::CollisionList& collList = const_cast<Rigidbody::CollisionList&>(rb->GetCollisionList());
+
+		for (auto iter = collList.begin(); iter != collList.end();)
+		{
+			if ((*iter).first == this)
+			{
+				rb->GetGameObject()->OnCollisionExitXXX((*iter).first, (*iter).second);
+				iter = collList.erase(iter);
+			}
+			else
+				iter++;
+		}
+	}
 }
