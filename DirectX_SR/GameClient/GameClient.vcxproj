@@ -185,6 +185,7 @@
     <ClInclude Include="Game_Enum.h" />
     <ClInclude Include="Game_Math.h" />
     <ClInclude Include="Game_Struct.h" />
+    <ClInclude Include="Gold.h" />
     <ClInclude Include="HpPotion.h" />
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Item.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="GameDataManager.cpp" />
+    <ClCompile Include="Gold.cpp" />
     <ClCompile Include="HpPotion.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
