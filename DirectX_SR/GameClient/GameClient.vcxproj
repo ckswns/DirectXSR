@@ -189,6 +189,9 @@
     <ClInclude Include="HpPotion.h" />
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Lightning.h" />
+    <ClInclude Include="Mephisto.h" />
+    <ClInclude Include="Missile.h" />
     <ClInclude Include="MonsterHPBar.h" />
     <ClInclude Include="MpPotion.h" />
     <ClInclude Include="NPC.h" />
@@ -260,6 +263,9 @@
     <ClCompile Include="HpPotion.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
+    <ClCompile Include="Lightning.cpp" />
+    <ClCompile Include="Mephisto.cpp" />
+    <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MonsterHPBar.cpp" />
     <ClCompile Include="MpPotion.cpp" />
     <ClCompile Include="PlateArmor.cpp" />

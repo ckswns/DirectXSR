@@ -232,6 +232,15 @@
     <Filter Include="00. Game\01. GameObject\Item\Gold">
       <UniqueIdentifier>{2a8e3ddf-a14a-4f6b-a0f8-2f695e98b310}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Mephisto">
+      <UniqueIdentifier>{6dd33dfa-8089-4d79-935e-69f2abdcabd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning">
+      <UniqueIdentifier>{36e93ad9-08d3-4ed4-ab0c-26b12834f441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Mephisto\Missile">
+      <UniqueIdentifier>{7a495110-6b67-44e4-951f-0875e9905204}</UniqueIdentifier>
+    </Filter>
     <Filter Include="00. Game\01. GameObject\Actor\Monster\Cow">
       <UniqueIdentifier>{aaa85f59-8aca-4dde-a064-6cfbae5086f8}</UniqueIdentifier>
     </Filter>
@@ -459,12 +468,14 @@
     <ClInclude Include="Gold.h">
       <Filter>00. Game\01. GameObject\Item\Gold</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterHPBar.h">
-      <Filter>99. Default\Header Files</Filter>
+    <ClInclude Include="Mephisto.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto</Filter>
     </ClInclude>
-    <ClInclude Include="Portal.h">
-      <Filter>99. Default\Header Files</Filter>
+    <ClInclude Include="Lightning.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning</Filter>
     </ClInclude>
+    <ClInclude Include="Missile.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Missile</Filter>
     <ClInclude Include="Cow.h">
       <Filter>00. Game\01. GameObject\Actor\Monster\Cow</Filter>
     </ClInclude>
@@ -669,6 +680,15 @@
       <Filter>00. Game\01. GameObject\Item\Gold</Filter>
     <ClCompile Include="Diablo.cpp">
       <Filter>00. Game\01. GameObject\Actor\Monster\Diablo</Filter>
+    </ClCompile>
+    <ClCompile Include="Mephisto.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto</Filter>
+    </ClCompile>
+    <ClCompile Include="Lightning.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning</Filter>
+    </ClCompile>
+    <ClCompile Include="Missile.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Missile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
