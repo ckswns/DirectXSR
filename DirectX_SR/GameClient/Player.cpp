@@ -458,6 +458,40 @@ void Player::OnAnimationEvent(std::string str) noexcept
 	}
 }
 
+void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
+{
+	switch ((Slot::SLOTTYPE)equid->itype)
+	{
+	case NORMAL:
+		break;
+	case	HEAD:
+		break; 
+	case BODY:
+		break;
+	case MAINW:
+		break;
+	case SECONDWP:
+		break;
+	case GLOVES:
+		break;
+	case LEGS:
+		break;
+	case BELT:
+		break;
+	case RING1:
+		break;
+	case RING2:
+		break;
+	case NECKLACE:
+		break;
+	case POTION:
+		break;
+	default:
+		break;
+	}
+
+}
+
 void Player::DrinkPotion(int value)
 {
 	_tStat->_fHp += value;

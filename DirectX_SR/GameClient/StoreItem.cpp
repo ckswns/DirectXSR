@@ -2,7 +2,7 @@
 #include "StoreItem.h"
 #include "StoreWnd.h"
 StoreItem::StoreItem(Slot::SLOTTYPE eType, StoreWnd* store) noexcept
-	:ItemSlot(eType, 0), _pStore(store)
+	:ItemSlot(eType, nullptr), _pStore(store)
 {
 }
 

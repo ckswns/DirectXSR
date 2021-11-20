@@ -68,25 +68,38 @@ typedef struct tagStat
 
 }STAT;
 
-typedef struct tagInveItemInfo
+struct ITEMDATA
 {
-	std::string		_strName;
-	std::string		_strInvenImgPath;	//인벤토리에 들어갈 이미지
-	int				_iValue;			//회복량?
-	int				_eitemID;			//ITEM_ID
-	int				_eSlotType;			//Slot::SLOTTYPE
-	int				_iGold;				//가격
+	char	name[128];
+	int		itype;
+	int		damagemin;
+	int		damagemax;
+	int		needlevel;
+	int		defense;
+	int		sellgold;
+	int		buygold;
+	int		ability;
+};
 
-	tagInveItemInfo()
-	{
-		_strName = "";
-	}
-	tagInveItemInfo(int eSlotType,int gold)
-	{
-		_eSlotType = eSlotType;
-		_iGold = gold;
-	}
-}INVENITEMINFO;
+//typedef struct tagInveItemInfo
+//{
+//	std::string		_strName;
+//	std::string		_strInvenImgPath;	//인벤토리에 들어갈 이미지
+//	int				_iValue;			//회복량?
+//	int				_eitemID;			//ITEM_ID
+//	int				_eSlotType;			//Slot::SLOTTYPE
+//	int				_iGold;				//가격
+//
+//	tagInveItemInfo()
+//	{
+//		_strName = "";
+//	}
+//	tagInveItemInfo(int eSlotType,int gold)
+//	{
+//		_eSlotType = eSlotType;
+//		_iGold = gold;
+//	}
+//}INVENITEMINFO;
 
 typedef struct tagItemInfo
 {
