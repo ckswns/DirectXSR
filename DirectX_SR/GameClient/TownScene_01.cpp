@@ -31,7 +31,7 @@
 #include "StoreNPC.h"
 #include "Diablo.h"
 
-#include "Wraith.h"
+#include "Witch.h"
 TownScene_01::TownScene_01(void) noexcept
 {
 }
@@ -225,7 +225,7 @@ bool TownScene_01::Init(void) noexcept
 		pos.y = 0.7f;
 		pos.z += Random::GetValue(20, 3);
 		pos.z -= Random::GetValue(20, 3);
-		obj->AddComponent(new Wraith(new PathFinding(_pNaviMesh), pos));
+		obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
 	}
 
 	//obj = GameObject::Instantiate();

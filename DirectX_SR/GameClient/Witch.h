@@ -9,10 +9,10 @@ namespace ce
 	class AudioSource;
 	class AudioAsset;
 }
-class Wraith : public Actor
+class Witch : public Actor
 {
-public:		explicit		Wraith(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept;
-public:		virtual			~Wraith(void) noexcept { __noop; }
+public:		explicit		Witch(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept;
+public:		virtual			~Witch(void) noexcept { __noop; }
 
 public:		void			Awake(void) noexcept override;
 public:		void			Start(void) noexcept override;

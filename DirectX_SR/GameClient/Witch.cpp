@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Wraith.h"
+#include "Witch.h"
 #include "Animation.h"
 #include "Animator.h"
 #include "Texture.h"
@@ -17,21 +17,21 @@
 #include "AudioAsset.h"
 #include "MonsterHPBar.h"
 
-Wraith::Wraith(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept :
+Witch::Witch(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept :
 	_pathFinder(pf),
 	_bornPosition(bornPos)
 {
 }
 
-void Wraith::Awake(void) noexcept
+void Witch::Awake(void) noexcept
 {
 	_state = Actor::State::IDLE;
-	memcpy(&_data, &GAMEDATAMANAGER->GetActorData("Wraith"), sizeof(Actor::Data));
+	memcpy(&_data, &GAMEDATAMANAGER->GetActorData("Witch"), sizeof(Actor::Data));
 }
 
-void Wraith::Start(void) noexcept
+void Witch::Start(void) noexcept
 {
-	_spriteRenderer = static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Wraith\\Idle\\0.png"))));
+	_spriteRenderer = static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Idle\\0.png"))));
 	gameObject->AddComponent(new BillboardObj());
 	_hitBox = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f), D3DXVECTOR3(0, 0, 0), "Monster")));
 	gameObject->AddComponent(new Rigidbody());
@@ -48,7 +48,7 @@ void Wraith::Start(void) noexcept
 			int index = i * 8 + j;
 
 			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Wraith\\Idle\\" + std::to_string(index) + ".png"));
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Idle\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, true);
@@ -66,7 +66,7 @@ void Wraith::Start(void) noexcept
 			int index = i * 10 + j ;
 
 			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Wraith\\Walk\\" + std::to_string(index) + ".png"));
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Walk\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, true);
@@ -83,7 +83,7 @@ void Wraith::Start(void) noexcept
 		{
 			int index = i * 14 + j;
 			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Wraith\\Attack\\" + std::to_string(index) + ".png"));
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Attack\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, false);
@@ -101,7 +101,7 @@ void Wraith::Start(void) noexcept
 		{
 			int index = i * 20 + j;
 			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Wraith\\Death\\" + std::to_string(index) + ".png"));
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Death\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, false);
@@ -119,7 +119,7 @@ void Wraith::Start(void) noexcept
 		{
 			int index = i * 4 + j;
 			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Wraith\\Hit\\" + std::to_string(index) + ".png"));
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Hit\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, false);
@@ -182,7 +182,7 @@ void Wraith::Start(void) noexcept
 	_hitEffectAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Effect\\Blunt_GetHit.wav"));
 }
 
-void Wraith::FixedUpdate(float fElapsedTime) noexcept
+void Witch::FixedUpdate(float fElapsedTime) noexcept
 {
 	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
 
@@ -260,7 +260,7 @@ void Wraith::FixedUpdate(float fElapsedTime) noexcept
 	}
 }
 
-void Wraith::Update(float fElapsedTime) noexcept
+void Witch::Update(float fElapsedTime) noexcept
 {
 	switch (_state)
 	{
@@ -321,7 +321,7 @@ void Wraith::Update(float fElapsedTime) noexcept
 	}
 }
 
-void Wraith::LateUpdate(float fElapsedTime) noexcept
+void Witch::LateUpdate(float fElapsedTime) noexcept
 {
 	if (_dirtyState == false)
 		return;
@@ -361,7 +361,7 @@ void Wraith::LateUpdate(float fElapsedTime) noexcept
 	}
 }
 
-void Wraith::OnDestroy(void) noexcept
+void Witch::OnDestroy(void) noexcept
 {
 	if (MonsterHPBar::Instance()->GetMonster() == this)
 	{
@@ -374,22 +374,22 @@ void Wraith::OnDestroy(void) noexcept
 	}
 }
 
-void Wraith::OnCollisionEnter(Collider* mine, Collider* other) noexcept
+void Witch::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 {
 
 }
 
-void Wraith::OnCollisionStay(Collider* mine, Collider* other) noexcept
+void Witch::OnCollisionStay(Collider* mine, Collider* other) noexcept
 {
 
 }
 
-void Wraith::OnCollisionExit(Collider* mine, Collider* other) noexcept
+void Witch::OnCollisionExit(Collider* mine, Collider* other) noexcept
 {
 
 }
 
-void Wraith::GetHit(int damage) noexcept
+void Witch::GetHit(int damage) noexcept
 {
 	if (_state == Actor::State::DIE)
 		return;
@@ -422,7 +422,7 @@ void Wraith::GetHit(int damage) noexcept
 	}
 }
 
-void Wraith::OnAnimationEvent(std::string str) noexcept
+void Witch::OnAnimationEvent(std::string str) noexcept
 {
 	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
 
