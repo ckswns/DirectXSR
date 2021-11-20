@@ -121,7 +121,8 @@ namespace ce
 				|| fileExtension == ".jpg"
 				|| fileExtension == ".jpeg"
 				|| fileExtension == ".dds"
-				|| fileExtension == ".tga")
+				|| fileExtension == ".tga"
+				|| fileExtension == ".gif")
 			{
 				type = AssetType::TEXTURE;
 			}

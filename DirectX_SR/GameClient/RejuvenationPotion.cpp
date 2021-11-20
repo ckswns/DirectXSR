@@ -8,7 +8,7 @@
 #include "Slot.h"
 RejuvenationPotion::RejuvenationPotion() noexcept
 {
-	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION);
+	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION,50);
 	_tInvenItem->_eitemID = (int)ITEM_ID::REJUVENATION;
 	_tInvenItem->_strName = "Rejuvenation Potion";
 	_tInvenItem->_iValue = 20;

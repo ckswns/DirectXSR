@@ -169,10 +169,14 @@ void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 			_bCollWithObstacle = true;
 		}
 	}
-	if (_pAttCollider->GetEnable()) {
+	if (_pAttCollider->GetEnable()) 
+	{
 		if (other->GetTag() == "Monster" && mine->GetTag() == "Attack")
 		{
-			other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR)->GetHit(_tStat->_fDamage);
+			Actor* actor = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
+
+			if(actor != nullptr)
+				actor->GetHit((int)_tStat->_fDamage);
 		}
 	}
 }
@@ -447,10 +451,19 @@ void Player::OnAnimationEvent(std::string str) noexcept
 			if (Target != nullptr) 
 			{
 				Actor* actor = Target->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
-				actor->GetHit(_tStat->_fDamage);
+				if(actor != nullptr)	
+					actor->GetHit((int)_tStat->_fDamage);
 			}
 		}
 	}
+}
+
+void Player::DrinkPotion(int value)
+{
+	_tStat->_fHp += value;
+	_tStat->_fMP += value;
+	if (_tStat->_fHp > _tStat->_fMaxHp)_tStat->_fHp = _tStat->_fMaxHp;
+	if (_tStat->_fMP > _tStat->_fMaxMp)_tStat->_fMP = _tStat->_fMaxMp;
 }
 
 void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)

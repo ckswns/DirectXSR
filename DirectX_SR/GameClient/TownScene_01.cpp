@@ -29,6 +29,7 @@
 #include "Portal.h"
 
 #include "StoreNPC.h"
+#include "Diablo.h"
 
 TownScene_01::TownScene_01(void) noexcept
 {
@@ -163,7 +164,7 @@ bool TownScene_01::Init(void) noexcept
 			if (names[i].find("Portal") != std::string::npos)
 			{
 				obj = GameObject::Instantiate();
-				obj->AddComponent(new Portal("Dungeon_01"));
+				obj->AddComponent(new Portal("Diablo_Chamber"));
 
 				std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldX");
 				std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldY");
@@ -190,7 +191,6 @@ bool TownScene_01::Init(void) noexcept
 	obj->AddComponent(new BillboardObj());
 	//Player
 	GameObject* pPlayerObj = GameObject::Instantiate();
-	pPlayerObj = GameObject::Instantiate();
 	PathFinding* pf = new PathFinding(_pNaviMesh);
 	Player* player = new Player(pf);
 	pPlayerObj->AddComponent(player);
@@ -203,27 +203,33 @@ bool TownScene_01::Init(void) noexcept
 	GameObject* pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
 	pGameObj->GetTransform()->SetLocalPosition(pPlayerObj->GetTransform()->GetLocalPosition());
+	pGameObj->SetDontDestroy(true);
 	//UI
 	pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StatusBar(player));
+	pGameObj->SetDontDestroy(true);
 
 	pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StoreNPC());
 	pGameObj->GetTransform()->SetWorldPosition(10, 0.5, 10);
 
-	for (int i = 0; i < 50; i++)
-	{
-		obj = GameObject::Instantiate();
+	//for (int i = 0; i < 50; i++)
+	//{
+	//	obj = GameObject::Instantiate();
 
-		D3DXVECTOR3 pos = pPlayerObj->GetTransform()->GetWorldPosition();
+	//	D3DXVECTOR3 pos = pPlayerObj->GetTransform()->GetWorldPosition();
 
-		pos.x += Random::GetValue(20, 3);
-		pos.x -= Random::GetValue(20, 3);
-		pos.y = 0.7f;
-		pos.z += Random::GetValue(20, 3);
-		pos.z -= Random::GetValue(20, 3);
-		obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
-	}
+	//	pos.x += Random::GetValue(20, 3);
+	//	pos.x -= Random::GetValue(20, 3);
+	//	pos.y = 0.7f;
+	//	pos.z += Random::GetValue(20, 3);
+	//	pos.z -= Random::GetValue(20, 3);
+	//	obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
+	//}
+
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new Diablo());
+	obj->GetTransform()->SetWorldPosition(40, 0.7f, 40);
 
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\TownBGM.mp3"));
 

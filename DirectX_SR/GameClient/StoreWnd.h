@@ -17,7 +17,6 @@ public:		virtual void		Update(float fElapsedTime) noexcept { __noop; }
 public:		virtual void		OnDestroy(void) noexcept;
 
 public:		void				AddItem(INVENITEMINFO* item);
-//public:		void				SellItem();
 public:		void				Sell(GameObject* obj);
 public:		void				Open(Player* player);
 public:		void				Close();

@@ -33,7 +33,10 @@ namespace ce
 
 	bool Input::GetKeyDown(uint8 key) noexcept
 	{
-		if ((_eState[key] == KeyState::UP || _eState[key] == KeyState::DOWN) && (::GetAsyncKeyState(key) & 0x8000))
+		if (_eState[key] == KeyState::DOWN)
+			return true;
+
+		if ((_eState[key] == KeyState::UP) && (::GetAsyncKeyState(key)))
 		{
 			_eState[key] = KeyState::DOWN;
 			return true;

@@ -44,7 +44,7 @@ namespace ce
 	public:		bool					GetHasDependencyComponent(void) const noexcept { return _bHasDependency; }
 	public:		bool					GetEnable(void) const noexcept { return _bEnable; }
 
-	public:		void					SetEnable(bool enable) noexcept { _bEnable = enable; }
+	public:		virtual void			SetEnable(bool enable) noexcept { _bEnable = enable; }
 	public:		void					RemoveComponent(void) noexcept;
 
 	public:		void					SetGameObjectXXX(GameObject* obj) { _owner = obj; }
@@ -57,7 +57,7 @@ namespace ce
 
 	private:	bool					_isUniq;
 	private:	bool					_bHasDependency;
-	private:	bool					_bEnable = true;
+	protected:	bool					_bEnable = true;
 	};
 }
 

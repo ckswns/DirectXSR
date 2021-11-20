@@ -40,6 +40,8 @@ namespace ce
 	private:	bool					_bFreezeRotationY = false;
 	private:	bool					_bFreezeRotationZ = false;
 
+	private:	bool					_bInserted = false;
+
 	private:	float					_gravity;
 
 	private:	D3DXVECTOR3				_force;

@@ -8,7 +8,7 @@
 #include "Slot.h"
 PlateArmor::PlateArmor() noexcept
 {
-	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::BODY);
+	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::BODY,100);
 	_tInvenItem->_eitemID = (int)ITEM_ID::EQUIP;
 	_tInvenItem->_strName = "Plate Armor";
 	_tInvenItem->_iValue = 500;

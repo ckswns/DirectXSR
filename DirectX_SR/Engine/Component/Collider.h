@@ -28,7 +28,7 @@ namespace ce
 
 	public:		void				FixedUpdate(float) noexcept override final { __noop; }
 	public:		void				Update(float) noexcept override final;
-	public:		void				LateUpdate(float) noexcept override final { __noop; }
+	public:		void				LateUpdate(float) noexcept override final;
 
 	public:		void				SetTag(std::string tag) noexcept { _tag = tag; }
 	public:		const std::string&	GetTag(void) const noexcept { return _tag; }
@@ -45,6 +45,11 @@ namespace ce
 	public:		GameObject*			GetGameObject(void) noexcept { return _owner; }
 	public:		void				SetRaycastTarget(bool rhs) noexcept { _enableRaycast = rhs; }
 
+	public:		virtual void		SetEnable(bool enable) noexcept override;
+
+	private:	bool				_bEnbaleChanged = false;
+	private:	bool				_bDirtEnable = false;
+	private:	bool				_bInserted = false;
 	protected:	bool				_enableRaycast = true;
 	protected:	Collider::Type		_type;
 
