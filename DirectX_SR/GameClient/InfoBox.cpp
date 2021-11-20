@@ -7,6 +7,7 @@
 #include "Transform.h"
 
 using namespace ce::UI;
+using namespace ce::CE_MATH;
 
 InfoBox::InfoBox(Slot::SLOTTYPE eType)
 	: _eType(eType)
@@ -51,6 +52,9 @@ void InfoBox::Awake(void) noexcept
 	case Slot::SLOTTYPE::NECKLACE:
 		memcpy(&_data, &GAMEDATAMANAGER->GetItemData("NokozanRelic"), sizeof(ITEMDATA));
 		break;
+	case Slot::SLOTTYPE::POTION:
+		memcpy(&_data, &GAMEDATAMANAGER->GetItemData("Potion"), sizeof(ITEMDATA));
+		break;
 	}
 
 	gameObject->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\ItemInfoBox.png")));
@@ -62,40 +66,108 @@ void InfoBox::Awake(void) noexcept
 void InfoBox::Start(void) noexcept
 {
 	D3DXVECTOR3 vpos = gameObject->GetTransform()->GetWorldPosition();
-	
 	GameObject* obj = GameObject::Instantiate();
-	_pTex[0] = static_cast<Text*>(obj->AddComponent(new UI::Text(_data.name, D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+	obj->GetTransform()->SetParent(gameObject->GetTransform());
+	if (_eType == Slot::SLOTTYPE::RING1 || _eType == Slot::SLOTTYPE::RING2 || _eType == Slot::SLOTTYPE::NECKLACE)
+		_pTex[0] = static_cast<Text*>(obj->AddComponent(new UI::Text(_data.name, D3DCOLOR_ARGB(255, 50, 50, 255), DT_CENTER)));
+	else
+		_pTex[0] = static_cast<Text*>(obj->AddComponent(new UI::Text(_data.name, D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
 	RectTransform* rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 	rt->SetWidth(200);
 	rt->SetHeight(30);
 	obj->SetSortOrder(300);
-	obj->GetTransform()->SetParent(gameObject->GetTransform());
+	vpos.y += 10.f;
+	obj->GetTransform()->SetWorldPosition(vpos);
 
-	obj = GameObject::Instantiate();
-	obj->GetTransform()->SetParent(gameObject->GetTransform());
-	if (_eType == Slot::SLOTTYPE::MAINWP)
+	if (_eType != Slot::SLOTTYPE::POTION)
 	{
-		std::string strAttak = "공격력 : ";
-		strAttak += std::to_string(_data.damagemin) + "~" + std::to_string(_data.damagemax);
-		_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strAttak.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
-	}
-	else if (_eType == Slot::SLOTTYPE::RING1 || _eType == Slot::SLOTTYPE::RING2)
-	{
-		std::string strAttak = "착용레벨 : ";
-		strAttak += std::to_string(_data.needlevel);
-		_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strAttak.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+		obj = GameObject::Instantiate();
+		obj->GetTransform()->SetParent(gameObject->GetTransform());
+		if (_eType == Slot::SLOTTYPE::MAINWP || _eType == Slot::SLOTTYPE::RING1 || _eType == Slot::SLOTTYPE::RING2 || _eType == Slot::SLOTTYPE::NECKLACE)
+		{
+			std::string strAttak = "공격력 : ";
+			strAttak += std::to_string(_data.damagemin) + "~" + std::to_string(_data.damagemax);
+			_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strAttak.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+		}
+		else
+		{
+			std::string strDef = "방어력 : ";
+			strDef += std::to_string(_data.defense);
+			_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strDef.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+		}
+		rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+		rt->SetWidth(200);
+		rt->SetHeight(30);
+		obj->SetSortOrder(300);
+		vpos.y += 30.f;
+		obj->GetTransform()->SetWorldPosition(vpos);
+
+		obj = GameObject::Instantiate();
+		obj->GetTransform()->SetParent(gameObject->GetTransform());
+		std::string strneed = "착용레벨 : ";
+		strneed += std::to_string(_data.needlevel);
+		_pTex[2] = static_cast<Text*>(obj->AddComponent(new UI::Text(strneed.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+		rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+		rt->SetWidth(200);
+		rt->SetHeight(30);
+		obj->SetSortOrder(300);
+		vpos.y += 30.f;
+		obj->GetTransform()->SetWorldPosition(vpos);
+
+		if (_eType == Slot::SLOTTYPE::RING1 || _eType == Slot::SLOTTYPE::RING2 || _eType == Slot::SLOTTYPE::NECKLACE)
+		{
+			obj = GameObject::Instantiate();
+			obj->GetTransform()->SetParent(gameObject->GetTransform());
+			int i = ce::CE_MATH::Random(0, 3);
+			std::string strability;
+			switch (i)
+			{
+			case 0:
+				strability = "추가 공격력 ";
+				strability += std::to_string(_data.ability);
+				break;
+			case 1:
+				strability = "추가 방어력 ";
+				strability += std::to_string(_data.ability);
+				break;
+			case 2:
+				strability = "모든 저항 ";
+				strability += std::to_string(_data.ability) + "%";
+				break;
+			}
+			_pTex[3] = static_cast<Text*>(obj->AddComponent(new UI::Text(strability.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+			rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+			rt->SetWidth(200);
+			rt->SetHeight(30);
+			obj->SetSortOrder(300);
+			vpos.y += 60.f;
+			obj->GetTransform()->SetWorldPosition(vpos);
+		}
 	}
 	else
 	{
-		std::string strAttak = "방어력 : ";
-		strAttak += std::to_string(_data.defense);
-		_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strAttak.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+		obj = GameObject::Instantiate();
+		obj->GetTransform()->SetParent(gameObject->GetTransform());
+		int i = ce::CE_MATH::Random(0, 3);
+		std::string strability = std::to_string(_data.ability) + "% 즉시회복";
+		_pTex[3] = static_cast<Text*>(obj->AddComponent(new UI::Text(strability.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+		rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+		rt->SetWidth(200);
+		rt->SetHeight(30);
+		obj->SetSortOrder(300);
+		vpos.y += 60.f;
+		obj->GetTransform()->SetWorldPosition(vpos);
 	}
+	obj = GameObject::Instantiate();
+	obj->GetTransform()->SetParent(gameObject->GetTransform());
+	int i = ce::CE_MATH::Random(0, 3);
+	std::string strSellgold = "판매가격: " + std::to_string(_data.sellgold) + 'G';
+	_pTex[4] = static_cast<Text*>(obj->AddComponent(new UI::Text(strSellgold.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
 	rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 	rt->SetWidth(200);
 	rt->SetHeight(30);
 	obj->SetSortOrder(300);
-	vpos.y += 30.f;
+	vpos.y += 60.f;
 	obj->GetTransform()->SetWorldPosition(vpos);
 }
 

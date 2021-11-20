@@ -197,6 +197,8 @@ void ItemSlot::Update(float) noexcept
 void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
 {
 	int Index = 0;
+	if(!_vecSlot.empty())
+	{
 #ifdef _DEBUG
 	for (int i = 0; i < _iSlotCntY; ++i)
 	{
@@ -256,6 +258,7 @@ void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
 
 
 	gameObject->GetTransform()->SetWorldPosition(vtest);
+	}
 }
 
 void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)

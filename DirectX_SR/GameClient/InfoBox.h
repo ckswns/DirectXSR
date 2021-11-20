@@ -18,7 +18,7 @@ public: virtual ~InfoBox();
 public: struct ITEMDATA
 {
 	char	name[128];
-	int		type;
+	int		itype;
 	int		damagemin;
 	int		damagemax;
 	int		needlevel;

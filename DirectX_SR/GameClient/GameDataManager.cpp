@@ -33,6 +33,7 @@ bool GameDataManager::Init(void) noexcept
 		InfoBox::ITEMDATA temp;
 
 		memcpy(&temp.name, name.c_str(), name.size() + 1);
+		temp.itype = std::stoi(((*itemCSVData)[i])[index++]);
 		temp.damagemin = std::stoi(((*itemCSVData)[i])[index++]);
 		temp.damagemax = std::stoi(((*itemCSVData)[i])[index++]);
 		temp.needlevel = std::stoi(((*itemCSVData)[i])[index++]);
