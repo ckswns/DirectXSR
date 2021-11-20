@@ -37,7 +37,7 @@ void Missile::Start(void) noexcept
 	ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 	_pAnimator->InsertAnimation("Missile", ani);
 
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 26; i++)
 	{
 		char str[256];
 		sprintf_s(str, 256, "Asset\\Actor\\Monster\\Mephisto\\MisslieExplosion\\%d.png", i);
