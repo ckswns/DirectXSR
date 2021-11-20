@@ -31,7 +31,9 @@ private:	Lightning*		_lightning;
 
 private:	bool			_dirtyState;
 private:	bool			_usingSkill;
+private:	bool			_bLightningCool;
 private:	float			_fDeltaTime;
+private:	float			_fCoolDown;
 
 private:	float			_fAttackRange;
 private:	float			_fLightningRange;

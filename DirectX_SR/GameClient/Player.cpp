@@ -169,7 +169,8 @@ void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 			_bCollWithObstacle = true;
 		}
 	}
-	if (_pAttCollider->GetEnable()) {
+	if (_pAttCollider->GetEnable()) 
+	{
 		if (other->GetTag() == "Monster" && mine->GetTag() == "Attack")
 		{
 			Actor* actor = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);

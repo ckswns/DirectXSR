@@ -18,7 +18,8 @@
 Mephisto::Mephisto(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept
 	:_pathFinder(pf), _bornPosition(bornPos),
 	_dirtyState(false), _usingSkill(false), _fDeltaTime(0),
-	_fAttackRange(1.5), _fLightningRange(4), _fMisslieRange(7)
+	_fAttackRange(1.5), _fLightningRange(4), _fMisslieRange(7),
+	_fCoolDown(3), _bLightningCool(true)
 {
 }
 
@@ -54,7 +55,7 @@ void Mephisto::Start(void) noexcept
 	_lightning = new Lightning(_data.damageMin, _data.damageMax);
 	lightningObj->AddComponent(_lightning);
 	lightningObj->GetTransform()->SetParent(transform);
-	lightningObj->SetActive(false);
+	//lightningObj->SetActive(false);
 
 	gameObject->GetTransform()->SetWorldPosition(_bornPosition);
 
@@ -74,24 +75,22 @@ void Mephisto::FixedUpdate(float fElapsedTime) noexcept
 			_dirtyState = true;
 			if (dis > _fAttackRange)
 			{
-				_usingSkill = true;
-				//if (dis < 5)
-				//{
-				//	//번개 공격 
-				//	D3DXVec3Normalize(&vDir, &vDir);
-				//	float angle = GetAngle(vDir);
-				//	_lightning->GetTransform()->SetLocalEulerAngle(0, 0, angle);
-				//	_lightning->GetGameObject()->SetActive(true);
-				//}
-				//else
-				//{
-				//	//스컬 미사일 
-				//	D3DXVec3Normalize(&vDir, &vDir);
-				//	float angle = GetAngle(vDir);
-				//	GameObject* missile = GameObject::Instantiate();
-				//	missile->AddComponent(new Missile(_data.damageMin, _data.damageMax, vDir));
-				//	missile->GetTransform()->SetLocalEulerAngle(0, 0, angle);
-				//}
+				if (dis < _fLightningRange)
+				{
+					if (_bLightningCool)
+						_usingSkill = true;
+					else
+					{
+						_usingSkill = false;
+						if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
+						{
+							_state = Actor::State::MOVE;
+							_dirtyState = true;
+						}
+					}
+				}
+				else
+					_usingSkill = true;
 			}
 			else
 				_usingSkill = false;
@@ -132,10 +131,29 @@ void Mephisto::FixedUpdate(float fElapsedTime) noexcept
 	case Actor::State::MOVE:
 		if (dis < _fMisslieRange)
 		{
-			if (dis > _fAttackRange)
-				_usingSkill = true;
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
+			if (dis > _fAttackRange)
+			{
+				if (dis < _fLightningRange)
+				{
+					if (_bLightningCool)
+						_usingSkill = true;
+					else 
+					{
+						_usingSkill = false;
+						if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
+						{
+							_state = Actor::State::MOVE;
+							_dirtyState = true;
+						}
+					}
+				}
+				else
+					_usingSkill = true;
+			}
+			else
+				_usingSkill = false;
 			break;
 		}
 		else if (dis <= _data.aggroDistance)
@@ -155,6 +173,17 @@ void Mephisto::FixedUpdate(float fElapsedTime) noexcept
 
 void Mephisto::Update(float fElapsedTime) noexcept
 {
+	if (!_bLightningCool) 
+	{
+		if (_fDeltaTime >= _fCoolDown)
+		{
+			_fDeltaTime = _fCoolDown;
+			_bLightningCool = true;
+		}
+		else
+			_fDeltaTime += fElapsedTime;
+	}
+
 	switch (_state)
 	{
 	case Actor::State::IDLE:
@@ -285,7 +314,7 @@ void Mephisto::GetHit(int damage) noexcept
 		_currentHP = 0;
 	//	_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 		_dirtyState = true;
-		_fDeltaTime = 0;
+	//	_fDeltaTime = 0;
 
 		if (MonsterHPBar::Instance()->GetMonster() == this)
 			MonsterHPBar::Instance()->SetMonster(nullptr);
@@ -296,7 +325,7 @@ void Mephisto::GetHit(int damage) noexcept
 	//	_animator->Stop();
 	//	_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
 		_dirtyState = true;
-		_fDeltaTime = 0;
+	//	_fDeltaTime = 0;
 
 		MonsterHPBar::Instance()->SetMonster(this);
 	}
@@ -322,13 +351,17 @@ void Mephisto::UsingSkill()
 	vDir.y = 0;
 	float dis = D3DXVec3Length(&vDir);
 	D3DXVec3Normalize(&vDir, &vDir);
-	if (dis < _fLightningRange)
+	if (_bLightningCool && dis < _fLightningRange)
 	{
+		_bLightningCool = false;
+		_fDeltaTime = 0;
+	
+	//	Direction dir = GetDirect(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition());
 		//번개 
 		float angle = GetAngle(vDir);
 		_lightning->GetTransform()->SetWorldPosition(transform->GetWorldPosition() + (vDir*1.2f));
-		_lightning->GetTransform()->SetLocalEulerAngle(0, 0, angle);
-		_lightning->Using();
+		//_lightning->GetTransform()->SetLocalEulerAngle(0, 0, angle);
+		_lightning->Using(_dir, vDir);
 	}
 	else
 	{
