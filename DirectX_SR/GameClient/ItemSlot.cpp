@@ -89,9 +89,6 @@ ItemSlot::~ItemSlot() noexcept
 
 void ItemSlot::Start(void) noexcept
 {
-	if (_pImage == nullptr)
-		return;
-
 	gameObject->AddComponent(_pImage);
 	gameObject->SetSortOrder(2);
 	gameObject->GetTransform()->SetWorldPosition(_vStartPos.x, _vStartPos.y, 0);

@@ -73,7 +73,7 @@ void Inventory::Update(float) noexcept
 		{
 			if (!_vecItem.empty())
 			{
-				_bMovecheck = true;
+				_bMovecheck = false;
 				_bItemCatchCheck = !_bItemCatchCheck;
 				if (_bItemCatchCheck)
 					ItemCatch(pt);
@@ -104,7 +104,8 @@ void Inventory::Update(float) noexcept
 	{
 		ITEMDATA* pInvenInfo = new ITEMDATA();
 
-		int i = ce::CE_MATH::Random(1, 1);
+		/*int i = ce::CE_MATH::Random(1, 12);*/
+		int i = rand() % 11 + 1;
 		pInvenInfo->itype = i;
 
 		PickUpItems(pInvenInfo);
@@ -119,13 +120,11 @@ void Inventory::Update(float) noexcept
 
 bool Inventory::BuyItem(int Gold)
 {
+	if (_iGold < Gold)
+		return false;
+
 	_iGold -= Gold;
 
-	if (_iGold < 0)
-	{
-		_iGold = 0;
-		return false;
-	}
 	return true;
 }
 
