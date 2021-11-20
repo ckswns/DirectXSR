@@ -12,9 +12,10 @@
 #include "AudioSource.h"
 void Lightning::Start(void) noexcept
 {
+	_bHit = false;
 	SpriteRenderer* sr= static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Mephisto\\Lightning\\0.png"))));
 //	gameObject->AddComponent(new BillboardObj());
-	_collider = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 1, 2))));
+	_collider = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(2, 1, 2))));
 	gameObject->AddComponent(new Rigidbody());
 
 	_pAnimator = new Animator(true);
@@ -28,7 +29,7 @@ void Lightning::Start(void) noexcept
 		sprintf_s(str, 256, "Asset\\Actor\\Monster\\Mephisto\\Lightning\\%d.png", i);;
 
 		frameTex.push_back(ASSETMANAGER->GetTextureData(str));
-		frameTime.push_back(0.05f);
+		frameTime.push_back(0.08f);
 	}
 
 	Animation* ani = new Animation(frameTime, frameTex, false);
@@ -54,6 +55,7 @@ void Lightning::Update(float fElapsedTime) noexcept
 		_audio->Stop();
 		_collider->SetEnable(false);
 		gameObject->SetActive(false);
+		//_bHit = false;
 	}
 }
 
@@ -70,5 +72,18 @@ void Lightning::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 	if (other->GetGameObject()->GetTag() == GameObjectTag::PLAYER && other->GetTag() == "hitbox")
 	{
 		other->GetGameObject()->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->GetHit(Random::GetValue(_fMinDamage, _fMaxDamage), GetTransform()->GetWorldPosition());
+		//_bHit = true;
 	}
 }
+
+//void Lightning::OnCollisionStay(Collider* mine, Collider* other) noexcept
+//{
+//	if (other->GetGameObject()->GetTag() == GameObjectTag::PLAYER && other->GetTag() == "hitbox")
+//	{
+//		if (!_bHit)
+//		{
+//			_bHit = true;
+//			other->GetGameObject()->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->GetHit(Random::GetValue(_fMinDamage, _fMaxDamage), GetTransform()->GetWorldPosition());
+//		}
+//	}
+//}

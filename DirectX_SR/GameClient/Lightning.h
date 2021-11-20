@@ -19,11 +19,13 @@ public:		virtual void			Update(float fElapsedTime) noexcept override;
 public:		void					Using();
 
 public:		virtual void			OnCollisionEnter(Collider* mine, Collider* other) noexcept override;
+// public:		void					OnCollisionStay(Collider* mine, Collider* other) noexcept override;
 
 private:	float			_fMinDamage;
 private:	float			_fMaxDamage;
 private:	Animator*		_pAnimator;
 private:	AudioSource*	_audio;
 private:	BoxCollider*	_collider;
+private:	bool			_bHit;
 };
 
