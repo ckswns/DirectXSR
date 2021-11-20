@@ -145,7 +145,7 @@ void Diablo::Start(void) noexcept
 				+ std::to_string(index) + ".png"));
 		}
 
-		Animation* ani = new Animation(vFrame, vTex, true);
+		Animation* ani = new Animation(vFrame, vTex, false);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 		_animator->InsertAnimation("Attack_" + std::to_string(i), ani);
 
@@ -164,7 +164,7 @@ void Diablo::Start(void) noexcept
 				+ std::to_string(index) + ".png"));
 		}
 
-		Animation* ani = new Animation(vFrame, vTex, true);
+		Animation* ani = new Animation(vFrame, vTex, false);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 		_animator->InsertAnimation("Attack2_" + std::to_string(i), ani);
 
@@ -183,7 +183,7 @@ void Diablo::Start(void) noexcept
 				+ std::to_string(index) + ".png"));
 		}
 
-		Animation* ani = new Animation(vFrame, vTex, true);
+		Animation* ani = new Animation(vFrame, vTex, false);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 		_animator->InsertAnimation("Breath_" + std::to_string(i), ani);
 
@@ -202,7 +202,7 @@ void Diablo::Start(void) noexcept
 				+ std::to_string(index) + ".png"));
 		}
 
-		Animation* ani = new Animation(vFrame, vTex, true);
+		Animation* ani = new Animation(vFrame, vTex, false);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 		_animator->InsertAnimation("Breath2_" + std::to_string(i), ani);
 
@@ -222,7 +222,7 @@ void Diablo::Start(void) noexcept
 				+ std::to_string(index) + ".png"));
 		}
 
-		Animation* ani = new Animation(vFrame, vTex, true);
+		Animation* ani = new Animation(vFrame, vTex, false);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 		_animator->InsertAnimation("Cast_" + std::to_string(i), ani);
 
@@ -251,7 +251,7 @@ void Diablo::Start(void) noexcept
 			+ std::to_string(i) + ".png"));
 	}
 
-	Animation* ani = new Animation(vFrame, vTex, true);
+	Animation* ani = new Animation(vFrame, vTex, false);
 	ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 	_animator->InsertAnimation("Death", ani);
 
@@ -269,6 +269,17 @@ void Diablo::Start(void) noexcept
 
 void Diablo::FixedUpdate(float fElapsedTime) noexcept
 {
+	if (_bIntro)
+	{
+		if (_animator->GetCurrentAnimationEnd())
+		{
+			D3DXVECTOR3 pos = transform->GetWorldPosition();
+			transform->SetWorldPosition(pos.x, 0.4f, pos.z);
+			_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_0")->GetTexture()[0]);
+			_animator->SetAnimation("Idle_0");
+			_bIntro = false;
+		}
+	}
 }
 
 void Diablo::Update(float fElapsedTime) noexcept
@@ -301,4 +312,13 @@ void Diablo::GetHit(int damage) noexcept
 
 void Diablo::OnAnimationEvent(std::string str) noexcept
 {
+}
+
+void Diablo::Intro(void) noexcept
+{
+	_animator->Play("Attack_0");
+	D3DXVECTOR3 pos = transform->GetWorldPosition();
+	transform->SetWorldPosition(pos.x, 1, pos.z);
+	_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Attack_0")->GetTexture()[0]);
+	_bIntro = true;
 }

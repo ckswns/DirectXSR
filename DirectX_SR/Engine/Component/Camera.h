@@ -49,7 +49,7 @@ namespace ce
 	private:	LPDIRECT3DDEVICE9	_pDevice;
 
 	private:	SkyBox*				_skybox;
-
+	public:		static void			SetMainCamera(Camera* cam) noexcept { mainCamera = cam; }
 	public:		static Camera*		GetMainCamera(void) noexcept { return mainCamera; }
 	private:	static Camera*		mainCamera;
 	};

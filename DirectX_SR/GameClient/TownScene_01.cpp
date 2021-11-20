@@ -191,7 +191,6 @@ bool TownScene_01::Init(void) noexcept
 	obj->AddComponent(new BillboardObj());
 	//Player
 	GameObject* pPlayerObj = GameObject::Instantiate();
-	pPlayerObj = GameObject::Instantiate();
 	PathFinding* pf = new PathFinding(_pNaviMesh);
 	Player* player = new Player(pf);
 	pPlayerObj->AddComponent(player);

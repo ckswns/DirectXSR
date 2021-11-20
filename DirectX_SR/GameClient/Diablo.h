@@ -30,6 +30,7 @@ public:		void				OnCollisionExit(Collider* mine, Collider* other) noexcept overr
 public:		void				GetHit(int damage) noexcept override;
 
 public:		void				OnAnimationEvent(std::string str) noexcept override;
+public:		void				Intro(void) noexcept;
 
 private:	SpriteRenderer*		_spriteRenderer;
 private:	Player*				_player;
@@ -45,6 +46,7 @@ private:	AudioSource*		_getHitAudio;
 private:	AudioSource*		_deadAudio;
 private:	AudioSource*		_hitEffectAudio;
 
+private:	bool				_bIntro = false;
 private:	bool				_dirtyState = false;
 private:	float				_fDeltaTime = 0;
 };

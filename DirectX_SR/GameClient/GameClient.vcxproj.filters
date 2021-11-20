@@ -199,12 +199,6 @@
     <Filter Include="00. Game\01. GameObject\Item\Potion">
       <UniqueIdentifier>{624b121a-e926-4a15-b148-8620917dde78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\Item\Potion\Mp">
-      <UniqueIdentifier>{203ad5e7-ecb9-46a4-b8e8-0d111442f34a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Game\01. GameObject\Item\Potion\Hp Potion">
-      <UniqueIdentifier>{1cf40e32-e04d-49ab-9adb-c9e78d83b26d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Game\01. GameObject\Item\Potion\RejuvenationPotion">
       <UniqueIdentifier>{69c56144-27a1-43ce-b05f-b2b21073fd66}</UniqueIdentifier>
     </Filter>
@@ -235,15 +229,33 @@
     <Filter Include="00. Game\01. GameObject\Actor\Monster\Diablo">
       <UniqueIdentifier>{f6b21be0-42ad-451e-90e2-d3d7844763c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Mephisto">
+      <UniqueIdentifier>{2c1ef3fd-251c-49c8-80c0-e7f2d1e63599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning">
+      <UniqueIdentifier>{ec6ad0bb-8562-4092-872c-231a141c4b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Mephisto\Missile">
+      <UniqueIdentifier>{c83c4b54-616c-4d1c-ae0f-d66af499cc14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Item\Gold">
+      <UniqueIdentifier>{b42badf2-fe58-4155-89e6-89c63510ae3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Item\Potion\MpXXX">
+      <UniqueIdentifier>{203ad5e7-ecb9-46a4-b8e8-0d111442f34a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Item\Potion\Hp Potion XXX">
+      <UniqueIdentifier>{1cf40e32-e04d-49ab-9adb-c9e78d83b26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\BossCamera">
+      <UniqueIdentifier>{61b54335-d9cc-4c42-862e-6932fd121cd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
       <Filter>99. Default\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>99. Default\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
       <Filter>99. Default\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
@@ -406,10 +418,10 @@
       <Filter>00. Game\01. GameObject\Inventory\Inventory\ItemSlot</Filter>
     </ClInclude>
     <ClInclude Include="HpPotion.h">
-      <Filter>00. Game\01. GameObject\Item\Potion\Hp Potion</Filter>
+      <Filter>00. Game\01. GameObject\Item\Potion\Hp Potion XXX</Filter>
     </ClInclude>
     <ClInclude Include="MpPotion.h">
-      <Filter>00. Game\01. GameObject\Item\Potion\Mp</Filter>
+      <Filter>00. Game\01. GameObject\Item\Potion\MpXXX</Filter>
     </ClInclude>
     <ClInclude Include="PlayerDamaged.h">
       <Filter>00. Game\01. GameObject\00. Player\01. State\Player\04. Damaged</Filter>
@@ -438,12 +450,6 @@
     <ClInclude Include="StoreItem.h">
       <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterHPBar.h">
-      <Filter>99. Default\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Portal.h">
-      <Filter>99. Default\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Cow.h">
       <Filter>00. Game\01. GameObject\Actor\Monster\Cow</Filter>
     </ClInclude>
@@ -455,6 +461,30 @@
     </ClInclude>
     <ClInclude Include="Diablo.h">
       <Filter>00. Game\01. GameObject\Actor\Monster\Diablo</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>00. Game\01. GameObject\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="Mephisto.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto</Filter>
+    </ClInclude>
+    <ClInclude Include="Lightning.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning</Filter>
+    </ClInclude>
+    <ClInclude Include="Missile.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Gold.h">
+      <Filter>00. Game\01. GameObject\Item\Gold</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>00. Game\01. GameObject\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterHPBar.h">
+      <Filter>00. Game\01. GameObject\MonsterHPBar</Filter>
+    </ClInclude>
+    <ClInclude Include="BossCamera.h">
+      <Filter>00. Game\01. GameObject\BossCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -594,10 +624,10 @@
       <Filter>00. Game\01. GameObject\Inventory\Inventory\ItemSlot</Filter>
     </ClCompile>
     <ClCompile Include="HpPotion.cpp">
-      <Filter>00. Game\01. GameObject\Item\Potion\Hp Potion</Filter>
+      <Filter>00. Game\01. GameObject\Item\Potion\Hp Potion XXX</Filter>
     </ClCompile>
     <ClCompile Include="MpPotion.cpp">
-      <Filter>00. Game\01. GameObject\Item\Potion\Mp</Filter>
+      <Filter>00. Game\01. GameObject\Item\Potion\MpXXX</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>00. Game\01. GameObject\Item</Filter>
@@ -643,6 +673,21 @@
     </ClCompile>
     <ClCompile Include="Diablo.cpp">
       <Filter>00. Game\01. GameObject\Actor\Monster\Diablo</Filter>
+    </ClCompile>
+    <ClCompile Include="Mephisto.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto</Filter>
+    </ClCompile>
+    <ClCompile Include="Lightning.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning</Filter>
+    </ClCompile>
+    <ClCompile Include="Missile.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="Gold.cpp">
+      <Filter>00. Game\01. GameObject\Item\Gold</Filter>
+    </ClCompile>
+    <ClCompile Include="BossCamera.cpp">
+      <Filter>00. Game\01. GameObject\BossCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

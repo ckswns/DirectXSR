@@ -34,11 +34,13 @@ namespace ce
 			_bInserted = true;
 		}
 
-		if (_bDirtEnable)
+		if (_bEnbaleChanged)
 		{
-			_bDirtEnable = false;
+			_bEnbaleChanged = false;
 
-			if (_bEnable == true)
+			_bEnable = _bDirtEnable;
+
+			if (_bDirtEnable == true)
 				return;
 
 			Rigidbody* rb = static_cast<Rigidbody*>(_owner->GetComponent(COMPONENT_ID::RIGIDBODY));
@@ -65,7 +67,7 @@ namespace ce
 		if (_bEnable == enable)
 			return;
 
-		_bEnable = false;
-		_bDirtEnable = true;
+		_bEnbaleChanged = true;
+		_bDirtEnable = enable;
 	}
 }
