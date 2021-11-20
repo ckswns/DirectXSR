@@ -55,7 +55,7 @@ void Mephisto::Start(void) noexcept
 	_lightning = new Lightning(_data.damageMin, _data.damageMax);
 	lightningObj->AddComponent(_lightning);
 	lightningObj->GetTransform()->SetParent(transform);
-	lightningObj->SetActive(false);
+	//lightningObj->SetActive(false);
 
 	gameObject->GetTransform()->SetWorldPosition(_bornPosition);
 
@@ -355,11 +355,13 @@ void Mephisto::UsingSkill()
 	{
 		_bLightningCool = false;
 		_fDeltaTime = 0;
+	
+	//	Direction dir = GetDirect(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition());
 		//¹ø°³ 
 		float angle = GetAngle(vDir);
 		_lightning->GetTransform()->SetWorldPosition(transform->GetWorldPosition() + (vDir*1.2f));
-		_lightning->GetTransform()->SetLocalEulerAngle(0, 0, angle);
-		_lightning->Using();
+		//_lightning->GetTransform()->SetLocalEulerAngle(0, 0, angle);
+		_lightning->Using(_dir, vDir);
 	}
 	else
 	{

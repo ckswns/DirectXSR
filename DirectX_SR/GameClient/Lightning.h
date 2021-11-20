@@ -5,8 +5,9 @@ namespace ce
 {
 	class Animator;
 	class AudioSource;
-	class BoxCollider;
+	class SpriteRenderer;
 }
+class LightningCollider;
 class Lightning : public Behaviour
 {
 public:		explicit		Lightning(float minDamage,float maxDamage) noexcept
@@ -16,16 +17,13 @@ public:		virtual			~Lightning(void) noexcept { __noop; }
 public:		virtual void			Start(void) noexcept override;
 public:		virtual void			Update(float fElapsedTime) noexcept override;
 
-public:		void					Using();
+public:		void					Using(Actor::Direction dir, D3DXVECTOR3 vDir);
 
-public:		virtual void			OnCollisionEnter(Collider* mine, Collider* other) noexcept override;
-// public:		void					OnCollisionStay(Collider* mine, Collider* other) noexcept override;
-
-private:	float			_fMinDamage;
-private:	float			_fMaxDamage;
-private:	Animator*		_pAnimator;
-private:	AudioSource*	_audio;
-private:	BoxCollider*	_collider;
-private:	bool			_bHit;
+private:	float				_fMinDamage;
+private:	float				_fMaxDamage;
+private:	Animator*			_pAnimator;
+private:	AudioSource*		_audio;
+private:	SpriteRenderer*		_spriteRenderer;
+private:	LightningCollider*	_lCollider;
 };
 

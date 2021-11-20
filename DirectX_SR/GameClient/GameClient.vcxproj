@@ -191,6 +191,7 @@
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Lightning.h" />
+    <ClInclude Include="LightningCollider.h" />
     <ClInclude Include="Mephisto.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="MonsterHPBar.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
     <ClCompile Include="Lightning.cpp" />
+    <ClCompile Include="LightningCollider.cpp" />
     <ClCompile Include="Mephisto.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MonsterHPBar.cpp" />

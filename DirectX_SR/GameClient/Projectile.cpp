@@ -21,8 +21,8 @@ void Projectile::Start(void) noexcept
 {
 	_pTrans = gameObject->GetTransform();
 
-	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.2f, 0.5f, 0.3)));
-	gameObject->AddComponent(new Rigidbody());
+	//gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.2f, 0.5f, 0.3)));
+	//gameObject->AddComponent(new Rigidbody());
 
 	AudioSource* audio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
 	audio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\bonespear.wav"));
