@@ -12,10 +12,10 @@ namespace ce
 		class Text;
 	}
 }
-
+class Player;
 class Inventory : public Behaviour
 {
-public: explicit Inventory() noexcept;
+public: explicit Inventory(Player* player) noexcept;
 public: virtual ~Inventory() noexcept;
 
 public:	void Start(void) noexcept override;
@@ -70,4 +70,7 @@ private: int													_iGold;
 private: UI::Text* _pTexGold;
 private: ITEMDATA* _pItemInfo;
 private: bool													_bMovecheck = false;
+private: Player*	_pPlayer;
+//private: ITEMDATA* _pItemData;
+//private: ITEMDATA* _pPriveItemData;
 };
