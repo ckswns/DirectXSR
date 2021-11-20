@@ -9,9 +9,9 @@ public:		virtual						~Item(void) noexcept { __noop; }
 public:		virtual void				Start(void) noexcept;
 public:		virtual void				Update(float) noexcept;
 
-public:		INVENITEMINFO*				GetItem() { return _tInvenItem; }
+public:		ITEMDATA*				GetItem() { return _tInvenItem; }
 
-protected: 	INVENITEMINFO*				_tInvenItem;
+protected: 	ITEMDATA*				_tInvenItem;
 private:	GameObject*					_pTxtName;
 private:	bool						_bLook;
 };
