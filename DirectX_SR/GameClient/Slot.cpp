@@ -81,24 +81,15 @@ Slot::Slot(SLOTTYPE etype)
 		_iFlag |= 0x00000200;
 		break;
 	}
-
-	Start();
 }
 
 Slot::~Slot()
 {
-	for (auto& iter : _vecSlot)
-	{
-		if (iter)
-		{
-			delete iter;
-			iter = nullptr;
-		}
-	}
 }
 
 void Slot::Start(void) noexcept
 {
+	gameObject->SetDontDestroy(true);
 	_vecSlot.reserve((size_t)_iSlotCntX * (size_t)_iSlotCntY);
 
 	SLOTINFO* pSlot = nullptr;
@@ -147,10 +138,8 @@ void Slot::Update(float) noexcept
 {
 }
 
-void Slot::RemoveItem(int Index)
+void Slot::RemoveSlot()
 {
-	if (!_vecSlot.empty())
-	{
-		_vecSlot.erase(_vecSlot.begin() + Index);
-	}
+	gameObject->SetDontDestroy(false);
+	gameObject->Destroy();
 }
