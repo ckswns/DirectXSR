@@ -170,12 +170,15 @@ void InputHandler::Update(float fElapsedTime) noexcept
 					{
 						INVENITEMINFO* potion = nullptr;
 						potion = _pPlayer->GetInventory()->UsingItem(pt);
-						if (potion->_eSlotType == (int)Slot::SLOTTYPE::POTION)
-						{
-							//플레이어 회복
-							_pPlayer->DrinkPotion(potion->_iValue);
-						}
 
+						if (potion != nullptr)
+						{
+							if (potion->_eSlotType == (int)Slot::SLOTTYPE::POTION)
+							{
+								//플레이어 회복
+								_pPlayer->DrinkPotion(potion->_iValue);
+							}
+						}
 						return;
 					}
 				}

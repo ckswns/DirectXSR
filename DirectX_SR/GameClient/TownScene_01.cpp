@@ -31,6 +31,7 @@
 #include "StoreNPC.h"
 #include "Diablo.h"
 
+#include "Wraith.h"
 TownScene_01::TownScene_01(void) noexcept
 {
 }
@@ -211,25 +212,25 @@ bool TownScene_01::Init(void) noexcept
 
 	pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StoreNPC());
-	pGameObj->GetTransform()->SetWorldPosition(10, 0.5, 10);
+	pGameObj->GetTransform()->SetWorldPosition(40, 0.5, 40);
 
-	//for (int i = 0; i < 50; i++)
-	//{
-	//	obj = GameObject::Instantiate();
+	for (int i = 0; i < 10; i++)
+	{
+		obj = GameObject::Instantiate();
 
-	//	D3DXVECTOR3 pos = pPlayerObj->GetTransform()->GetWorldPosition();
+		D3DXVECTOR3 pos = pPlayerObj->GetTransform()->GetWorldPosition();
 
-	//	pos.x += Random::GetValue(20, 3);
-	//	pos.x -= Random::GetValue(20, 3);
-	//	pos.y = 0.7f;
-	//	pos.z += Random::GetValue(20, 3);
-	//	pos.z -= Random::GetValue(20, 3);
-	//	obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
-	//}
+		pos.x += Random::GetValue(20, 3);
+		pos.x -= Random::GetValue(20, 3);
+		pos.y = 0.7f;
+		pos.z += Random::GetValue(20, 3);
+		pos.z -= Random::GetValue(20, 3);
+		obj->AddComponent(new Wraith(new PathFinding(_pNaviMesh), pos));
+	}
 
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new Diablo());
-	obj->GetTransform()->SetWorldPosition(40, 0.7f, 40);
+	//obj = GameObject::Instantiate();
+	//obj->AddComponent(new Diablo());
+	//obj->GetTransform()->SetWorldPosition(40, 0.7f, 40);
 
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\TownBGM.mp3"));
 

@@ -331,28 +331,28 @@ void Wraith::LateUpdate(float fElapsedTime) noexcept
 	switch (_state)
 	{
 	case Actor::State::IDLE:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_0")->GetTexture()[0]);
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
 		_animator->SetAnimation("Idle_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;
 	case Actor::State::MOVE:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Walk_0")->GetTexture()[0]);
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Walk_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
 		_animator->SetAnimation("Walk_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;
 	case Actor::State::ATTAK:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Attack_0")->GetTexture()[0]);
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Attack_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
 		_animator->SetAnimation("Attack_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		_attackAudio->Play();
 		break;
 	case Actor::State::HIT:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Hit_0")->GetTexture()[0]);
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Hit_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
 		_animator->SetAnimation("Hit_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;
 	case Actor::State::DIE:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Death_0")->GetTexture()[0]);
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Death_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
 		_animator->SetAnimation("Death_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;

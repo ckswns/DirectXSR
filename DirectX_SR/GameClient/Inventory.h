@@ -69,4 +69,5 @@ private: bool													_bDropCheck = false;
 private: int													_iGold;
 private: UI::Text* _pTexGold;
 private: INVENITEMINFO* _pItemInfo;
+private: bool													_bMovecheck = false;
 };

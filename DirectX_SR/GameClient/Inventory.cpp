@@ -67,19 +67,28 @@ void Inventory::Update(float) noexcept
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	if (INPUT->GetKeyDown(VK_LBUTTON) || INPUT->GetKeyDown(VK_LBUTTON))
+	if (INPUT->GetKeyDown(VK_LBUTTON))
 	{
-		if (!_vecItem.empty())
+		if (pt.x >= WINCX >> 1)
 		{
-			_bItemCatchCheck = !_bItemCatchCheck;
+			if (!_vecItem.empty())
+			{
+				_bMovecheck = true;
+				_bItemCatchCheck = !_bItemCatchCheck;
+				if (_bItemCatchCheck)
+					ItemCatch(pt);
+				else
+					_bDropCheck = ItemDropAtMouse(pt);
+			}
+		}
+		else
+		{
 			if (_bItemCatchCheck)
-				ItemCatch(pt);
-			else
 				_bDropCheck = ItemDropAtMouse(pt);
 		}
 	}
-	else if (INPUT->GetKeyDown(VK_RBUTTON) && !_bItemCatchCheck) // 커밋하기전 주석 처리
-		INVENITEMINFO* pItemInfo = UsingItem(pt);
+	//else if (INPUT->GetKeyDown(VK_RBUTTON) && !_bItemCatchCheck) // 커밋하기전 주석 처리
+	//	INVENITEMINFO* pItemInfo = UsingItem(pt);
 
 	if (_bItemCatchCheck)
 		ItemMove();
@@ -95,7 +104,7 @@ void Inventory::Update(float) noexcept
 	{
 		INVENITEMINFO* pInvenInfo = new INVENITEMINFO();
 
-		int i = ce::CE_MATH::Random(1, 12);
+		int i = ce::CE_MATH::Random(1, 1);
 		pInvenInfo->_eSlotType = i;
 
 		PickUpItems(pInvenInfo);
@@ -125,7 +134,7 @@ void Inventory::ItemInfoBoxCheck(POINT pt)
 	for (size_t t = 0; t < _vecItem.size(); ++t)
 	{
 		RECT rc = _vecItem[t].second->GetItemRect();
-		if (PtInRect(&rc, pt) && !_bItemCatchCheck)
+		if (PtInRect(&rc, pt) && !_bMovecheck)
 			_vecItem[t].second->SetInfoBoxCheck(true);
 		else
 			_vecItem[t].second->SetInfoBoxCheck(false);
@@ -225,6 +234,7 @@ void Inventory::ItemCatch(POINT pt)
 
 		if (PtInRect(&rc, pt))
 		{
+			_bItemCatchCheck = true;
 			_pItem = _vecItem[t].second;
 #ifdef _DEBUG
 			_pItemSlotInfo = _vecItemslot[0].second;
@@ -234,6 +244,8 @@ void Inventory::ItemCatch(POINT pt)
 			ItemCatchExamine(pt);
 			return;
 		}
+		else
+			_bItemCatchCheck = false;
 	}
 }
 
@@ -359,6 +371,7 @@ bool Inventory::PickUpItems(INVENITEMINFO* pInvenInfo)
 	float fy = UnsignedRandomf(700.f);
 	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->_eSlotType, gameObject->GetTransform(), fx, fy);
 	pobj->AddComponent(pSlot);
+	pobj->SetDontDestroy(true);
 	_vecItem.emplace_back(pInvenInfo, pSlot);
 	_pItem = pSlot;
 #ifdef _DEBUG
@@ -547,7 +560,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 	_bItemCatchCheck = false;
 
 	RECT rc = {};
-	rc.left = WINCX - static_cast<Image*>(gameObject->GetComponent(COMPONENT_ID::IMAGE))->GetTexture()->Width();
+	rc.left = WINCX >> 1;
 	rc.top = 0;
 	rc.right = WINCX;
 	rc.bottom = static_cast<Image*>(gameObject->GetComponent(COMPONENT_ID::IMAGE))->GetTexture()->Height();
@@ -597,8 +610,8 @@ void Inventory::ItemMove()
 
 	if (_pItem != nullptr)
 	{
+		_bMovecheck = true;
 		_pItem->setMousePosition(D3DXVECTOR3(pt.x, pt.y, 0));
-		return;
 	}
 }
 
