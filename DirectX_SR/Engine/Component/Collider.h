@@ -47,6 +47,7 @@ namespace ce
 
 	public:		virtual void		SetEnable(bool enable) noexcept override;
 
+	private:	bool				_bEnbaleChanged = false;
 	private:	bool				_bDirtEnable = false;
 	private:	bool				_bInserted = false;
 	protected:	bool				_enableRaycast = true;

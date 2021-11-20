@@ -13,10 +13,10 @@ namespace ce
 {
 	namespace Random
 	{
-		static int GetValue(int maxValue, int minValue = 0) noexcept
-		{
-			static bool isInit = false;
+		static bool isInit = false;
 
+		static int GetValue(int minValue, int maxValue) noexcept
+		{
 			if (!isInit)
 			{
 				std::srand(static_cast<unsigned int>(std::time(NULL)));
@@ -24,6 +24,17 @@ namespace ce
 			}
 
 			return (std::rand() % (maxValue - minValue)) + minValue;
+		}
+
+		static float GetValueF(float minValue, float maxValue) noexcept
+		{
+			if (!isInit)
+			{
+				std::srand(static_cast<unsigned int>(std::time(NULL)));
+				isInit = true;
+			}
+
+			return ((float(rand()) / float(RAND_MAX)) * (maxValue - minValue)) + minValue;
 		}
 	}
 
