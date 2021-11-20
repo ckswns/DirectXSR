@@ -8,13 +8,14 @@ namespace ce
 	{
 		class Image;
 	}
+	class Transform;
 }
 
-using namespace ce::UI;
+class InfoBox;
 
 class ItemSlot : public Behaviour
 {
-public: explicit ItemSlot( Slot::SLOTTYPE eType,int iIndex, float fx = 0, float fy = 0) noexcept;
+public: explicit ItemSlot(Slot::SLOTTYPE eType, Transform* pParent, float fx = 0, float fy = 0) noexcept;
 public: virtual ~ItemSlot() noexcept;
 
 public:	virtual	void Start(void) noexcept override;
@@ -23,10 +24,13 @@ public:	void OnMouseDown(void) noexcept override;
 
 public: void											setMousePosition(D3DXVECTOR3 vtest);
 public: void											SetInvenPosition(D3DXVECTOR3 vpos);
+public: void											ChagneActive(bool bChange) { gameObject->SetActive(bChange); }
+public: void											DropItemSlot();
+
+public: void											SetInfoBoxCheck(bool Check) { _InfoBoxCheck = Check; }
 
 public: Slot::SLOTTYPE									GetSlotType() { return _eType; }
 public: RECT											GetItemRect() { return _SlotMaxRect; }
-public: int												GetItemIndex() { return _iIndex; }
 
 #ifdef _DEBUG
 public: std::vector<std::pair<GameObject*, SLOTINFO*>>	GetItemSlot() { return _vecSlot; }
@@ -43,17 +47,16 @@ private: int				_iSlotCntX;
 private: int				_iSlotCntY;
 private: int				_iFlag;
 private: D3DXVECTOR3		_vStartPos;
-private: GameObject*		_pOwner;
 private: RECT				_SlotMaxRect;
-private: Image*				_pImage;
-private: int				_iIndex;
+private: UI::Image*			_pImage;
+private: Transform*			_pParent;
+private: InfoBox*			_pInfoBox;
+private: bool				_InfoBoxCheck = false;
 
 #ifdef _DEBUG
 private: std::vector<std::pair<GameObject*, SLOTINFO*>> _vecSlot; // Debug¿ë
 #else
 private: std::vector<SLOTINFO*>	_vecSlot;
 #endif // _DEBUG
-
-
 };
 

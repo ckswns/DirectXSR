@@ -250,6 +250,9 @@
     <Filter Include="00. Game\01. GameObject\BossCamera">
       <UniqueIdentifier>{61b54335-d9cc-4c42-862e-6932fd121cd5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Inventory\Inventory\InfoBox">
+      <UniqueIdentifier>{3ec64ec7-a0ed-4e28-9992-21e17a7a929a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -462,6 +465,9 @@
     <ClInclude Include="Diablo.h">
       <Filter>00. Game\01. GameObject\Actor\Monster\Diablo</Filter>
     </ClInclude>
+    <ClInclude Include="InfoBox.h">
+      <Filter>00. Game\01. GameObject\Inventory\Inventory\InfoBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -649,6 +655,9 @@
     </ClCompile>
     <ClCompile Include="Diablo.cpp">
       <Filter>00. Game\01. GameObject\Actor\Monster\Diablo</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoBox.cpp">
+      <Filter>00. Game\01. GameObject\Inventory\Inventory\InfoBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

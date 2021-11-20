@@ -188,6 +188,7 @@
     <ClInclude Include="Game_Struct.h" />
     <ClInclude Include="Gold.h" />
     <ClInclude Include="HpPotion.h" />
+    <ClInclude Include="InfoBox.h" />
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Lightning.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="GameDataManager.cpp" />
     <ClCompile Include="Gold.cpp" />
     <ClCompile Include="HpPotion.cpp" />
+    <ClCompile Include="InfoBox.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
     <ClCompile Include="Lightning.cpp" />

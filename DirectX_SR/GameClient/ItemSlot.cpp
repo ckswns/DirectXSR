@@ -3,12 +3,15 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Image.h"
+#include "InfoBox.h"
 
-ItemSlot::ItemSlot(Slot::SLOTTYPE eType,int Index, float fx, float fy) noexcept
-	:  _eType(eType), _iIndex(Index)
+using namespace ce::UI;
+
+ItemSlot::ItemSlot(Slot::SLOTTYPE eType, Transform* pParent, float fx, float fy) noexcept
+	: _eType(eType)
 {
 	_vStartPos = D3DXVECTOR3(fx, fy, 0);
-
+	_pParent = pParent;
 	switch (_eType)
 	{
 	case Slot::SLOTTYPE::HEAD:
@@ -25,7 +28,7 @@ ItemSlot::ItemSlot(Slot::SLOTTYPE eType,int Index, float fx, float fy) noexcept
 		break;
 	case Slot::SLOTTYPE::MAINWP:
 		_iSlotCntX = 1;
-		_iSlotCntY = 3;
+		_iSlotCntY = 2;
 		_iFlag |= 0x00000008;
 		_pImage = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\MainWp.png"));
 		break;
@@ -89,10 +92,14 @@ void ItemSlot::Start(void) noexcept
 	gameObject->AddComponent(_pImage);
 	gameObject->SetSortOrder(2);
 	gameObject->GetTransform()->SetWorldPosition(_vStartPos.x, _vStartPos.y, 0);
-	gameObject->SetActive(true);
+	gameObject->GetTransform()->SetParent(_pParent);
+
+	if (_eType != Slot::SLOTTYPE::POTION)
+		gameObject->SetDontDestroy(true);
 
 	_vecSlot.reserve((size_t)_iSlotCntX * (size_t)_iSlotCntY);
-	int iIndex = 01;
+	int iIndex = 0;
+
 	SLOTINFO* pSlot = nullptr;
 #ifdef _DEBUG
 	for (int i = 0; i < _iSlotCntY; ++i)
@@ -162,16 +169,36 @@ void ItemSlot::Start(void) noexcept
 		_SlotMaxRect.bottom = _vecSlot[iIndex]->_tRect.bottom;;
 	}
 #endif // _DEBUG
+	
+	GameObject* pobj = GameObject::Instantiate();
+	_pInfoBox = new InfoBox(_eType);
+	pobj->AddComponent(_pInfoBox);
 
 }
 
 void ItemSlot::Update(float) noexcept
 {
+	POINT pt = {};
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+
+	if (_InfoBoxCheck)
+	{
+		_pInfoBox->ShowInfoBox(true);
+		_pInfoBox->SetPosition(pt.x, pt.y);
+	}
+	else
+	{
+		_pInfoBox->ShowInfoBox(false);
+	}
+		
 }
 
 void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
 {
 	int Index = 0;
+	if(!_vecSlot.empty())
+	{
 #ifdef _DEBUG
 	for (int i = 0; i < _iSlotCntY; ++i)
 	{
@@ -186,7 +213,7 @@ void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
 			_vecSlot[Index].second->_tRect.bottom = LONG(_vecSlot[Index].second->_vPos.y + (_vecSlot[Index].second->_iSlotSizeY * 0.5f));
 			_vecSlot[Index].first->GetTransform()->SetWorldPosition(float(_vecSlot[Index].second->_tRect.left), float(_vecSlot[Index].second->_tRect.top + (_vecSlot[Index].second->_iSlotSizeY >> 1)), 0);
 		}
-}
+	}
 
 	if (!_vecSlot.empty())
 	{
@@ -196,7 +223,7 @@ void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
 		_SlotMaxRect.bottom = _vecSlot[Index].second->_tRect.bottom;;
 	}
 
-	if (_iSlotCntX == 1 && _iSlotCntY == 1)
+	if (_iSlotCntX == 1 && _iSlotCntY == 1 || _eType == Slot::SLOTTYPE::MAINWP)
 		vtest.x -= float(_vecSlot[0].second->_iSlotSizeX >> 2);
 	else
 		vtest.x -= float(_vecSlot[0].second->_iSlotSizeX >> 1);
@@ -223,7 +250,7 @@ void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
 		_SlotMaxRect.bottom = _vecSlot[Index]->_tRect.bottom;;
 	}
 
-	if (_iSlotCntX == 1 && _iSlotCntY == 1)
+	if (_iSlotCntX == 1 && _iSlotCntY == 1 || _eType == Slot::SLOTTYPE::MAINWP)
 		vtest.x -= float(_vecSlot[0]->_iSlotSizeX >> 2);
 	else
 		vtest.x -= float(_vecSlot[0]->_iSlotSizeX >> 1);
@@ -231,6 +258,7 @@ void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
 
 
 	gameObject->GetTransform()->SetWorldPosition(vtest);
+	}
 }
 
 void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)
@@ -260,7 +288,7 @@ void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)
 		_SlotMaxRect.bottom = _vecSlot[Index].second->_tRect.bottom;;
 	}
 
-	if (_iSlotCntX == 1 && _iSlotCntY == 1)
+	if (_iSlotCntX == 1 && _iSlotCntY == 1 || _eType == Slot::SLOTTYPE::MAINWP)
 	{
 		vpos.x += float(_vecSlot[0].second->_iSlotSizeX >> 2);
 	}
@@ -289,7 +317,7 @@ void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)
 		_SlotMaxRect.bottom = _vecSlot[Index]->_tRect.bottom;;
 	}
 
-	if (_iSlotCntX == 1 && _iSlotCntY == 1)
+	if (_iSlotCntX == 1 && _iSlotCntY == 1 || _eType == Slot::SLOTTYPE::MAINWP)
 	{
 		vpos.x += float(_vecSlot[0]->_iSlotSizeX >> 2);
 	}
@@ -301,8 +329,19 @@ void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)
 	gameObject->GetTransform()->SetWorldPosition(vpos);
 }
 
+void ItemSlot::DropItemSlot()
+{
+	_vecSlot.clear();
+	gameObject->SetDontDestroy(false);
+	gameObject->Destroy();
+}
+
 void ItemSlot::OnMouseDown(void) noexcept
 {
-	if(INPUT->GetKeyDown(KEY_RBUTTON))
+	if (INPUT->GetKeyDown(VK_RBUTTON) && _eType == Slot::SLOTTYPE::POTION)
+	{
+		_vecSlot.clear();
+		_pInfoBox->MissingItem();
 		gameObject->Destroy();
+	}
 }

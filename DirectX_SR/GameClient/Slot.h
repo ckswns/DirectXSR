@@ -19,7 +19,7 @@ public: SLOTTYPE				GetSlotType() { return _eType; }
 public: RECT					GetRect() { return _SlotMaxRect; }
 
 public: void					AddItem(ItemSlot* pItem) { _vecItemslot.emplace_back(pItem); }
-public: void					RemoveItem(int Index);
+public: void					RemoveSlot();
 public: std::vector<ItemSlot*>	GetItemSlot() { return _vecItemslot; }
 
 private: std::vector<SLOTINFO*>	_vecSlot;
