@@ -59,7 +59,7 @@ void Player::Start(void) noexcept
 	_pInputHandler->Start();
 
 	//인벤토리 
-	_pInven = new Inventory();
+	_pInven = new Inventory(this);
 	_pInvenObj = GameObject::Instantiate();
 	_pInvenObj->AddComponent(_pInven);
 	_pInven->GetGameObject()->SetActive(false);
@@ -461,36 +461,13 @@ void Player::OnAnimationEvent(std::string str) noexcept
 
 void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
 {
-	switch ((Slot::SLOTTYPE)equid->itype)
-	{
-	case Slot::SLOTTYPE::NORMAL:
-		break;
-	case  Slot::SLOTTYPE::HEAD:
-		break; 
-	case  Slot::SLOTTYPE::BODY:
-		break;
-	case Slot::SLOTTYPE::MAINWP:
-		break;
-	case  Slot::SLOTTYPE::SECONDWP:
-		break;
-	case  Slot::SLOTTYPE::GLOVES:
-		break;
-	case  Slot::SLOTTYPE::LEGS:
-		break;
-	case  Slot::SLOTTYPE::BELT:
-		break;
-	case  Slot::SLOTTYPE::RING1:
-		break;
-	case  Slot::SLOTTYPE::RING2:
-		break;
-	case  Slot::SLOTTYPE::NECKLACE:
-		break;
-	case  Slot::SLOTTYPE::POTION:
-		break;
-	default:
-		break;
-	}
+	if(unEquid != nullptr)
+		_tStat->_fDef -= unEquid->defense;
+	_tStat->_fDef += equid->defense;
 
+	if (unEquid != nullptr)
+		_tStat->_fDamage -= unEquid->damagemin;
+	_tStat->_fDamage += equid->damagemin;
 }
 
 void Player::DrinkPotion(int value)

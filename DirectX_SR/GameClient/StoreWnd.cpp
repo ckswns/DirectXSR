@@ -185,7 +185,6 @@ void StoreWnd::Sell(GameObject* obj)
 						_ItemSlot[(Index + i + (j * _iCntX))] = false;
 					}
 				}
-				obj->SetDontDestroy(false);	//추후 삭제 
 				obj->Destroy();
 				_StoreItem.erase(iter);
 			}

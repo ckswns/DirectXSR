@@ -9,11 +9,13 @@
 #include "SpriteRenderer.h"
 #include "RectTransform.h"
 #include "Text.h"
+#include "Player.h"
 
 using namespace ce::UI;
 using namespace ce::CE_MATH;
 
-Inventory::Inventory() noexcept
+Inventory::Inventory(Player* player) noexcept
+	:_pPlayer(player)
 {
 }
 
@@ -153,10 +155,12 @@ ITEMDATA* Inventory::UsingItem(POINT pt)
 			{
 #ifdef _DEBUG
 				_pItemSlotInfo = _vecItem[t].second->GetItemSlot()[0].second;
+			//	_pItemData = _vecItem[t].first;
 				_pItem = _vecItem[t].second;
 				ReCatchtoExamine(_vecSlotGroup[0][0]->GetSlot(), _vecItem[t].second->GetItemSlot()[0].second->_vPos, true);
 #else 
 				_pItemSlotInfo = _vecItem[t].second->GetItemSlot()[0];
+			//	_pItemData = _vecItem[t].first;
 				_pItem = _vecItem[t].second;
 				ReCatchtoExamine(_vecSlotGroup[0][0]->GetSlot(), _vecItem[t].second->GetItemSlot()[0]->_vPos, true);
 #endif // _DEBUG
@@ -170,8 +174,10 @@ ITEMDATA* Inventory::UsingItem(POINT pt)
 			{
 #ifdef _DEBUG
 				_pItemSlotInfo = _vecItem[t].second->GetItemSlot()[0].second;
+			//	_pItemData = _vecItem[t].first;
 #else
 				_pItemSlotInfo = _vecItem[t].second->GetItemSlot()[0];
+			//	_pItemData = _vecItem[t].first;
 #endif // _DEBUG
 				_pItem = _vecItem[t].second;
 				for (int i = 1; i < (int)Slot::SLOTTYPE::POTION; ++i)
@@ -225,6 +231,7 @@ void Inventory::ItemCatch(POINT pt)
 {
 	_pItem = nullptr;
 	_pItemSlotInfo = nullptr;
+//	_pItemData = nullptr;
 
 	for (size_t t = 0; t < _vecItem.size(); ++t)
 	{
@@ -237,8 +244,10 @@ void Inventory::ItemCatch(POINT pt)
 			_pItem = _vecItem[t].second;
 #ifdef _DEBUG
 			_pItemSlotInfo = _vecItemslot[0].second;
+//			_pItemData = _vecItem[0].first;
 #else
 			_pItemSlotInfo = _vecItemslot[0];
+//			_pItemData = _vecItem[t].first;
 #endif // _DEBUG
 			ItemCatchExamine(pt);
 			return;
@@ -375,8 +384,10 @@ bool Inventory::PickUpItems(ITEMDATA* pInvenInfo)
 	_pItem = pSlot;
 #ifdef _DEBUG
 	_pItemSlotInfo = pSlot->GetItemSlot()[0].second;
+//	_pItemData = pInvenInfo;
 #else
 	_pItemSlotInfo = pSlot->GetItemInfo(0);
+//	_pItemData = pInvenInfo;
 #endif // _DEBUG
 
 	return ItemEating();
@@ -489,6 +500,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItem = _pPriveItem;
 							_bItemCatchCheck = true;
 							_pItemSlotInfo = _pPriveSlotInfo;
+						//	_pItemData = _pPriveItemData;
 							_bSwitchingcheck = false;
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
 							return false;
@@ -528,6 +540,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItem->SetInvenPosition(vpos);
 							_pItem = _pPriveItem;
 							_pItemSlotInfo = _pPriveSlotInfo;
+						//	_pItemData = _pPriveItemData;
 							_bItemCatchCheck = true;
 							_bSwitchingcheck = false;
 							return false;
@@ -634,6 +647,7 @@ SLOTINFO* Inventory::ItemSwitching(std::vector<SLOTINFO*> InvenSlot, POINT pt)
 					{
 						_pPriveItem = _vecItem[t].second;
 						_pPriveSlotInfo = _vecItem[t].second->GetItemSlot()[0].second;
+						//_pPriveItemData = _vecItem[t].first;
 						ReCatchtoExamine(InvenSlot, _pPriveSlotInfo->_vPos, false);
 						_bSwitchingcheck = true;
 						return _vecItem[t].second->GetItemSlot()[0].second;
@@ -643,6 +657,7 @@ SLOTINFO* Inventory::ItemSwitching(std::vector<SLOTINFO*> InvenSlot, POINT pt)
 					{
 						_pPriveItem = _vecItem[t].second;
 						_pPriveSlotInfo = _vecItem[t].second->GetItemSlot()[0];
+						//_pPriveItemData = _vecItem[t].first;
 						ReCatchtoExamine(InvenSlot, _pPriveSlotInfo->_vPos, false);
 						_bSwitchingcheck = true;
 						return _vecItem[t].second->GetItemSlot()[0];
@@ -662,10 +677,16 @@ ITEMDATA* Inventory::EquipItemCheck(std::vector<std::pair<ITEMDATA*, ItemSlot*>>
 	{
 #ifdef _DEBUG
 		if (iter.second->GetItemSlot()[0].second->_vPos == vslotinfo->_vPos)
+		{
+		//	_pPlayer->EquidItem(iter.first, _pItemData);
 			return iter.first;
+		}
 #else
-		if (iter.second->GetItemSlot()[0]->_vPos == vslotinfo->_vPos)
+		if (iter.second->GetItemSlot()[0]->_vPos == vslotinfo->_vPos) 
+		{
+			//	_pPlayer->EquidItem(iter.first, _pItemData);
 			return iter.first;
+		}
 #endif // _DEBUG
 	}
 	return nullptr;
