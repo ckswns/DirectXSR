@@ -465,15 +465,6 @@
     <ClInclude Include="Diablo.h">
       <Filter>00. Game\01. GameObject\Actor\Monster\Diablo</Filter>
     </ClInclude>
-    <ClInclude Include="BossCamera.h">
-      <Filter>99. Default\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterHPBar.h">
-      <Filter>99. Default\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Portal.h">
-      <Filter>99. Default\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>99. Default\Header Files</Filter>
     </ClInclude>
@@ -489,8 +480,20 @@
     <ClInclude Include="Gold.h">
       <Filter>00. Game\01. GameObject\Item\Gold</Filter>
     </ClInclude>
-    <ClInclude Include="LightningCollider.h">
+    <ClInclude Include="InfoBox.h">
       <Filter>99. Default\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BossCamera.h">
+      <Filter>00. Game\01. GameObject\BossCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="LightningCollider.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning\LightningCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>00. Game\01. GameObject\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterHPBar.h">
+      <Filter>00. Game\01. GameObject\MonsterHPBar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -680,9 +683,6 @@
     <ClCompile Include="Diablo.cpp">
       <Filter>00. Game\01. GameObject\Actor\Monster\Diablo</Filter>
     </ClCompile>
-    <ClCompile Include="BossCamera.cpp">
-      <Filter>99. Default\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mephisto.cpp">
       <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto</Filter>
     </ClCompile>
@@ -695,8 +695,14 @@
     <ClCompile Include="Gold.cpp">
       <Filter>00. Game\01. GameObject\Item\Gold</Filter>
     </ClCompile>
-    <ClCompile Include="LightningCollider.cpp">
+    <ClCompile Include="InfoBox.cpp">
       <Filter>99. Default\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BossCamera.cpp">
+      <Filter>00. Game\01. GameObject\BossCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="LightningCollider.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning\LightningCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
