@@ -15,18 +15,6 @@ class InfoBox : public Behaviour
 public: explicit InfoBox(Slot::SLOTTYPE eType);
 public: virtual ~InfoBox();
 
-public: struct ITEMDATA
-{
-	char	name[128];
-	int		itype;
-	int		damagemin;
-	int		damagemax;
-	int		needlevel;
-	int		defense;
-	int		sellgold;
-	int		buygold;
-	int		ability;
-};
 public:	virtual void	Awake(void) noexcept override;
 public: virtual void	Start(void) noexcept override;
 public: virtual void	Update(float) noexcept override;

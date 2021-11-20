@@ -31,7 +31,7 @@ bool GameDataManager::Init(void) noexcept
 
 		std::string name = ((*itemCSVData)[i])[index++];
 
-		InfoBox::ITEMDATA temp;
+		ITEMDATA temp;
 
 		memcpy(&temp.name, name.c_str(), name.size() + 1);
 		temp.itype = std::stoi(((*itemCSVData)[i])[index++]);
@@ -77,7 +77,7 @@ const Actor::Data& GameDataManager::GetActorData(std::string key) noexcept
 	return iter->second;
 }
 
-const InfoBox::ITEMDATA& GameDataManager::GetItemData(std::string key) noexcept
+const ITEMDATA& GameDataManager::GetItemData(std::string key) noexcept
 {
 	auto iter = _itemData.find(key);
 

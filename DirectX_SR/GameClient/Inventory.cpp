@@ -88,7 +88,7 @@ void Inventory::Update(float) noexcept
 		}
 	}
 	//else if (INPUT->GetKeyDown(VK_RBUTTON) && !_bItemCatchCheck) // 커밋하기전 주석 처리
-	//	INVENITEMINFO* pItemInfo = UsingItem(pt);
+	//	ITEMDATA* pItemInfo = UsingItem(pt);
 
 	if (_bItemCatchCheck)
 		ItemMove();
@@ -102,10 +102,10 @@ void Inventory::Update(float) noexcept
 #ifdef _DEBUG
 	if (INPUT->GetKeyDown('l') || INPUT->GetKeyDown('L'))
 	{
-		INVENITEMINFO* pInvenInfo = new INVENITEMINFO();
+		ITEMDATA* pInvenInfo = new ITEMDATA();
 
 		int i = ce::CE_MATH::Random(1, 1);
-		pInvenInfo->_eSlotType = i;
+		pInvenInfo->itype = i;
 
 		PickUpItems(pInvenInfo);
 	}
@@ -141,13 +141,13 @@ void Inventory::ItemInfoBoxCheck(POINT pt)
 	}
 }
 
-INVENITEMINFO* Inventory::UsingItem(POINT pt)
+ITEMDATA* Inventory::UsingItem(POINT pt)
 {
 	for (size_t t = 0; t < _vecItem.size(); ++t)
 	{
 		RECT rc = _vecItem[t].second->GetItemRect();
 		Slot::SLOTTYPE eType = _vecItem[t].second->GetSlotType();
-		INVENITEMINFO* pItemInfo = nullptr;
+		ITEMDATA* pItemInfo = nullptr;
 		if (PtInRect(&rc, pt))
 		{
 			if (eType == Slot::SLOTTYPE::POTION)
@@ -206,14 +206,14 @@ INVENITEMINFO* Inventory::UsingItem(POINT pt)
 	return nullptr;
 }
 
-INVENITEMINFO* Inventory::Dropitem()
+ITEMDATA* Inventory::Dropitem()
 {
 	for (size_t t = 0; t < _vecItem.size(); ++t)
 	{
 		if (_vecItem[t].second == _pItem)
 		{
 			_vecItem[t].second->DropItemSlot();
-			INVENITEMINFO* ItemInfo = _vecItem[t].first;
+			ITEMDATA* ItemInfo = _vecItem[t].first;
 			_vecItem.erase(_vecItem.begin() + (int)t);
 			_bDropCheck = false;
 			return ItemInfo;
@@ -364,12 +364,12 @@ void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 v
 	}
 }
 
-bool Inventory::PickUpItems(INVENITEMINFO* pInvenInfo)
+bool Inventory::PickUpItems(ITEMDATA* pInvenInfo)
 {
 	GameObject* pobj = GameObject::Instantiate();
 	float fx = UnsignedRandomf(400.f);
 	float fy = UnsignedRandomf(700.f);
-	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->_eSlotType, gameObject->GetTransform(), fx, fy);
+	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->itype, gameObject->GetTransform(), fx, fy);
 	pobj->AddComponent(pSlot);
 	pobj->SetDontDestroy(true);
 	_vecItem.emplace_back(pInvenInfo, pSlot);
@@ -657,7 +657,7 @@ SLOTINFO* Inventory::ItemSwitching(std::vector<SLOTINFO*> InvenSlot, POINT pt)
 	return nullptr;
 }
 
-INVENITEMINFO* Inventory::EquipItemCheck(std::vector<std::pair<INVENITEMINFO*, ItemSlot*>> vItem, SLOTINFO* vslotinfo)
+ITEMDATA* Inventory::EquipItemCheck(std::vector<std::pair<ITEMDATA*, ItemSlot*>> vItem, SLOTINFO* vslotinfo)
 {
 	for (auto& iter : _vecItem)
 	{

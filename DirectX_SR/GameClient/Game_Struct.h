@@ -81,41 +81,6 @@ struct ITEMDATA
 	int		ability;
 };
 
-//typedef struct tagInveItemInfo
-//{
-//	std::string		_strName;
-//	std::string		_strInvenImgPath;	//인벤토리에 들어갈 이미지
-//	int				_iValue;			//회복량?
-//	int				_eitemID;			//ITEM_ID
-//	int				_eSlotType;			//Slot::SLOTTYPE
-//	int				_iGold;				//가격
-//
-//	tagInveItemInfo()
-//	{
-//		_strName = "";
-//	}
-//	tagInveItemInfo(int eSlotType,int gold)
-//	{
-//		_eSlotType = eSlotType;
-//		_iGold = gold;
-//	}
-//}INVENITEMINFO;
-
-typedef struct tagItemInfo
-{
-	int	_iItemID;
-	int _iWidth;
-	int _iHeight;
-
-	tagItemInfo(int iID, int iWidth, int iHeight)
-	{
-		_iItemID = iID;
-		_iWidth = iWidth;
-		_iHeight = iHeight;
-	}
-
-}ITEMINFO;
-
 typedef struct tagSlot
 {
 	D3DXVECTOR3 _vPos;

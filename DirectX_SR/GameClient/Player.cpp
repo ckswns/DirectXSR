@@ -30,6 +30,7 @@
 #include "Light.h"
 #include "Inventory.h"
 #include "Actor.h"
+#include "Slot.h"
 
 Player::Player(PathFinding* pf) noexcept
 	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
@@ -462,29 +463,29 @@ void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
 {
 	switch ((Slot::SLOTTYPE)equid->itype)
 	{
-	case NORMAL:
+	case Slot::SLOTTYPE::NORMAL:
 		break;
-	case	HEAD:
+	case  Slot::SLOTTYPE::HEAD:
 		break; 
-	case BODY:
+	case  Slot::SLOTTYPE::BODY:
 		break;
-	case MAINW:
+	case Slot::SLOTTYPE::MAINWP:
 		break;
-	case SECONDWP:
+	case  Slot::SLOTTYPE::SECONDWP:
 		break;
-	case GLOVES:
+	case  Slot::SLOTTYPE::GLOVES:
 		break;
-	case LEGS:
+	case  Slot::SLOTTYPE::LEGS:
 		break;
-	case BELT:
+	case  Slot::SLOTTYPE::BELT:
 		break;
-	case RING1:
+	case  Slot::SLOTTYPE::RING1:
 		break;
-	case RING2:
+	case  Slot::SLOTTYPE::RING2:
 		break;
-	case NECKLACE:
+	case  Slot::SLOTTYPE::NECKLACE:
 		break;
-	case POTION:
+	case  Slot::SLOTTYPE::POTION:
 		break;
 	default:
 		break;
