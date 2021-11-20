@@ -237,7 +237,7 @@ void Wraith::FixedUpdate(float fElapsedTime) noexcept
 		}
 		break;
 	case Actor::State::MOVE:
-		if (dis.Length() < 0.5f)
+		if (dis.Length() < 0.3f)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;

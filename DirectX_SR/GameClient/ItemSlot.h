@@ -41,8 +41,9 @@ public: SLOTINFO*										GetItemInfo(int iIndex) { return _vecSlot[iIndex]; }
 #endif // _DEBUG
 
 
-private: Slot::SLOTTYPE		_eType;
+protected: InfoBox*			_pInfoBox;
 
+private: Slot::SLOTTYPE		_eType;
 private: int				_iSlotCntX;
 private: int				_iSlotCntY;
 private: int				_iFlag;
@@ -50,7 +51,6 @@ private: D3DXVECTOR3		_vStartPos;
 private: RECT				_SlotMaxRect;
 private: UI::Image*			_pImage;
 private: Transform*			_pParent;
-protected: InfoBox*			_pInfoBox;
 private: bool				_InfoBoxCheck = false;
 
 #ifdef _DEBUG
