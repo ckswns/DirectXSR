@@ -163,7 +163,7 @@ bool Diablo_Chamber::Init(void) noexcept
 	GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
 
 	player->GetTransform()->SetWorldPosition(20, 0.5f, 5);
-
+	player->GetTransform()->SetWorldEulerAngle(0, D3DXToRadian(180), 0);
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new BossCamera(boss->GetComponent<Diablo>(COMPONENT_ID::BEHAVIOUR)));
 

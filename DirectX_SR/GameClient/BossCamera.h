@@ -19,7 +19,9 @@ public:		void			Update(float fElapsedTime) noexcept override;
 
 private:	Diablo*			_boss;
 private:	Transform*		_target;
+private:	Transform*		_player;
 private:	Camera*			_camera;
+private:	D3DXVECTOR3		_tempPos;
 
 private:	int				_actionIndex = 0;
 private:	bool			_shake = false;

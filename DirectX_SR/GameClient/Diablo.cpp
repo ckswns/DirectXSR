@@ -45,16 +45,6 @@ void Diablo::Start(void) noexcept
 	_deadAudio->Init();
 	_hitEffectAudio->Init();
 
-	_fireAudio->SetSoundWorld(true);
-	_breathAudio->SetSoundWorld(true);
-	_castAudio->SetSoundWorld(true);
-	_initAudio->SetSoundWorld(true);
-	_laughAudio->SetSoundWorld(true);
-	_attackAudio->SetSoundWorld(true);
-	_getHitAudio->SetSoundWorld(true);
-	_deadAudio->SetSoundWorld(true);
-	_hitEffectAudio->SetSoundWorld(true);
-
 	_fireAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Diablo\\DiabloSkill1.wav"));
 	_breathAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Diablo\\DiabloBreath.wav"));
 	_castAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Diablo\\DiabloCast.wav"));
@@ -64,6 +54,16 @@ void Diablo::Start(void) noexcept
 	_getHitAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Diablo\\DiabloHit.wav"));
 	_deadAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Diablo\\DiabloDead.wav"));
 	_hitEffectAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Effect\\Blunt_GetHit.wav"));
+
+	_fireAudio->SetSoundWorld(true);
+	_breathAudio->SetSoundWorld(true);
+	_castAudio->SetSoundWorld(true);
+	_initAudio->SetSoundWorld(false);
+	_laughAudio->SetSoundWorld(true);
+	_attackAudio->SetSoundWorld(true);
+	_getHitAudio->SetSoundWorld(true);
+	_deadAudio->SetSoundWorld(true);
+	_hitEffectAudio->SetSoundWorld(true);
 
 	_spriteRenderer = new SpriteRenderer(D3D9DEVICE->GetDevice(),
 		ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Diablo\\Idle\\1.png"));
@@ -321,4 +321,5 @@ void Diablo::Intro(void) noexcept
 	transform->SetWorldPosition(pos.x, 1, pos.z);
 	_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Attack_0")->GetTexture()[0]);
 	_bIntro = true;
+	_initAudio->Play();
 }

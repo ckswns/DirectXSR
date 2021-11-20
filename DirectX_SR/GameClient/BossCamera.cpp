@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "CETween.h"
 #include "Diablo.h"
+#include "TargetCamera.h"
 
 BossCamera::BossCamera(Diablo* target) noexcept :
 	_boss(target)
@@ -15,9 +16,11 @@ void BossCamera::Start(void) noexcept
 	_target = _boss->GetTransform();
 	_camera = Camera::GetMainCamera();
 	Camera::SetMainCamera(nullptr);
+	Camera::SetMainCamera(static_cast<Camera*>(gameObject->AddComponent(new Camera(D3D9DEVICE->GetDevice()))));
+	_player = GameObject::FindObjectByTag(GameObjectTag::PLAYER)->GetTransform();
 
 	_camera->GetGameObject()->SetActive(false);
-	gameObject->AddComponent(new Camera(D3D9DEVICE->GetDevice()));
+
 	transform->SetParent(_target);
 }
 
@@ -69,10 +72,29 @@ void BossCamera::Update(float fElapsedTime) noexcept
 
 		transform->SetLocalPosition(pos.x, pos.y, pos.z);
 
-		if (_time > 4)
+		if (_time > 2.5f)
 		{
 			_time = 0;
-			_actionIndex = 0;
+			_actionIndex = 3;
+			_tempPos = transform->GetWorldPosition();
+			_camera->GetGameObject()->SetActive(true);
+		}
+	}
+	else if (_actionIndex == 3)
+	{
+		_time += fElapsedTime;
+		D3DXVECTOR3 pos = _player->GetWorldPosition();
+
+		float x = CETween::Lerp(_tempPos.x, pos.x, _time * 0.5f, CETween::EaseType::easeLiner);
+		float y = CETween::Lerp(_tempPos.y, pos.y, _time * 0.5f, CETween::EaseType::easeLiner);
+		float z = CETween::Lerp(_tempPos.z, pos.z, _time * 0.5f, CETween::EaseType::easeOutBack);
+
+		transform->SetWorldPosition(x, y, z);
+
+		if (_time > 2)
+		{
+			Camera::SetMainCamera(_camera);
+			gameObject->Destroy();
 		}
 	}
 }

@@ -53,6 +53,9 @@ namespace ce
 
 	void Camera::LateUpdate(float fElapsedTime) noexcept
 	{
+		if (mainCamera != this)
+			return;
+
 		Transform* transform = GetTransform();
 		const D3DXVECTOR3& pos = transform->GetWorldPosition();
 
@@ -69,7 +72,8 @@ namespace ce
 
 	void Camera::Release(void) noexcept
 	{
-		mainCamera = nullptr;
+		if(mainCamera == this)
+			mainCamera = nullptr;
 
 		if (_skybox)
 		{
