@@ -8,9 +8,7 @@
 #include "Slot.h"
 Gold::Gold() noexcept
 {
-	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::END, CE_MATH::Random(100, 300));
-	_tInvenItem->_eitemID = (int)ITEM_ID::EQUIP;
-	_tInvenItem->_strName = "Gold";
+	_tInvenItem = new ITEMDATA();
 }
 
 void Gold::Start(void) noexcept
@@ -40,7 +38,7 @@ void Gold::Start(void) noexcept
 
 	Animation* ani = new Animation(FrameTime, TList, false);
 	ani->SetMaterial(material);
-	pAnimator->InsertAnimation(_tInvenItem->_strName, ani);
+	pAnimator->InsertAnimation(_tInvenItem->name, ani);
 
 	TList.clear();
 	FrameTime.clear();

@@ -50,7 +50,7 @@ private: D3DXVECTOR3		_vStartPos;
 private: RECT				_SlotMaxRect;
 private: UI::Image*			_pImage;
 private: Transform*			_pParent;
-private: InfoBox*			_pInfoBox;
+protected: InfoBox*			_pInfoBox;
 private: bool				_InfoBoxCheck = false;
 
 #ifdef _DEBUG
