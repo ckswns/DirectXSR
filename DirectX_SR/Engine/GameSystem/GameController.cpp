@@ -21,7 +21,7 @@ namespace ce
 
 		INPUT->Init(_hWnd);
 
-		if (D3D9DEVICE->Init(hWnd, winX, winY, D3DCOLOR_ARGB(255, 50, 50, 50), fontFilePath, fontFaceName) == false)
+		if (D3D9DEVICE->Init(hWnd, winX, winY, D3DCOLOR_ARGB(255, 0, 0, 0), fontFilePath, fontFaceName) == false)
 		{
 			CE_ASSERT("ckswns", "D3D9Device의 초기화에 실패하였습니다.");
 			return false;

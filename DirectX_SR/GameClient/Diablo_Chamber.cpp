@@ -198,7 +198,7 @@ void Diablo_Chamber::LateUpdate(float fElapsedTime) noexcept
 
 void Diablo_Chamber::Render(float fElapsedTime) noexcept
 {
-
+	D3D9DEVICE->GetDevice()->SetRenderState(D3DRS_FOGENABLE, false);
 }
 
 void Diablo_Chamber::Release(void) noexcept
