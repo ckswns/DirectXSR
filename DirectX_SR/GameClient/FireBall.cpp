@@ -1,78 +1,93 @@
 #include "pch.h"
 #include "FireBall.h"
-#include "SpriteRenderer.h"
+#include "Collider.h"
+#include "Player.h"
 #include "Animation.h"
 #include "Animator.h"
-#include "BillboardObj.h"
-#include "BoxCollider.h"
-#include "Texture.h"
+#include "SpriteRenderer.h"
+#include "EffectRenderer.h"
 #include "Transform.h"
-//#include "R"
+#include "SphereCollider.h"
+#include "BillboardObj.h"
+#include "RigidBody.h"
 
-FireBall::FireBall(Actor::Direction tDir, D3DXVECTOR3 vdir, D3DXVECTOR3 vpos) noexcept
-	: _fSpeed(3.f) ,_tdir(tDir), _fangle(0), _fDeltaTime(0), _vdir(vdir),_vpos(vpos)
+FireBall::FireBall(D3DXVECTOR3 pos, D3DXVECTOR3 vDir, int dir) :
+	_startPos(pos),
+	_dir(dir),
+	_vDir(vDir)
 {
+}
+
+void FireBall::Awake(void) noexcept
+{
+	transform->SetWorldPosition(_startPos);
+	transform->SetLocalScale(0.5f, 0.5f, 0.5f);
+
+	gameObject->AddComponent(new BillboardObj());
+	gameObject->AddComponent(new SphereCollider(0.1f));
+	gameObject->AddComponent(new Rigidbody());
+
+	EffectRenderer* er = static_cast<EffectRenderer*>(gameObject->AddComponent(new EffectRenderer()));
+	er->SetTexture(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\FireBall\\" + std::to_string(_dir) + "\\0.png"));
+
+	_animator = new Animator(true);
+
+	std::vector<float> vFrame;
+	std::vector<Texture*> vTex;
+
+	for (int i = 0; i < 14; i++)
+	{
+		vFrame.push_back(0.05f);
+		vTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\FireBall\\"
+			+ std::to_string(_dir) + "\\" + std::to_string(i) + ".png"));
+	}
+
+	Animation* ani = new Animation(vFrame, vTex, true);
+	ani->SetMaterial(er->GetMaterialPTR());
+	_animator->InsertAnimation("Idle", ani);
+
+	gameObject->AddComponent(_animator);
+	_animator->SetAnimation("Idle");
+	_animator->Play();
+
+	_player = GameObject::FindObjectByTag(GameObjectTag::PLAYER)->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR);
+	gameObject->SetLayer(GameObjectLayer::EFFECT);
 }
 
 void FireBall::Start(void) noexcept
 {
-	transform->SetWorldPosition(_vpos);
-	_spriteRenderer = static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\FireBall\\0.png"))));
-	gameObject->AddComponent(new BillboardObj());
-	_hitBox = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f), D3DXVECTOR3(0, 0, 0), "FireBall")));
-	/*gameObject->AddComponent(new Rigidbody());*/
-
-	_animator = new Animator(true);
-
-	std::vector<float> frameTime;
-	std::vector<Texture*> frameTex;
-	
-	_vdir.y = 0;
-
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 14; j++)
-		{
-			int index = i * 14 + j;
-
-			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\FireBall\\" + std::to_string(index) + ".png"));
-		}
-
-		Animation* ani = new Animation(frameTime, frameTex, true);
-		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
-		_animator->InsertAnimation("Fire_" + std::to_string(i), ani);
-
-		frameTime.clear();
-		frameTex.clear();
-	}
-
-	_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Fire_" + std::to_string(static_cast<int>(_tdir)))->GetTexture()[0]);
-	_animator->SetAnimation("Fire_" + std::to_string(static_cast<int>(_tdir)));
-
-	gameObject->AddComponent(_animator);
-	gameObject->SetTag(GameObjectTag::OBJECT);
-
-	_animator->Play();
 }
 
 void FireBall::Update(float fElapsedTime) noexcept
 {
-	transform->Translate(_vdir * fElapsedTime * _fSpeed);
+	_lastElapsedTime = fElapsedTime;
+	transform->Translate(_vDir * _speed * fElapsedTime);
 
-	if (_fDeltaTime < 3)
-	{
-		_fDeltaTime += fElapsedTime;
+	_deltaTime += fElapsedTime;
 
-		if (_fDeltaTime > 3)
-			gameObject->Destroy();
-	}
-	else
-	{
+	if (_deltaTime > 3)
 		gameObject->Destroy();
-	}
+}
+
+void FireBall::OnDestroy(void) noexcept
+{
 }
 
 void FireBall::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 {
+
 }
+
+void FireBall::OnCollisionStay(Collider* mine, Collider* other) noexcept
+{
+	if (other->GetTag() == "hitbox" && other->GetGameObject()->GetTag() == GameObjectTag::PLAYER)
+	{
+		_player->GetHit(5 * _lastElapsedTime, transform->GetWorldPosition());
+		gameObject->Destroy();
+	}
+}
+
+void FireBall::OnCollisionExit(Collider* mine, Collider* other) noexcept
+{
+}
+

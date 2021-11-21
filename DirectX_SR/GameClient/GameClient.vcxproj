@@ -181,6 +181,7 @@
     <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
     <ClInclude Include="FadeController.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="FireWall.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FSMState.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
     <ClCompile Include="FadeController.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FireWall.cpp" />
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />

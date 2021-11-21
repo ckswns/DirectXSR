@@ -29,6 +29,8 @@ public:		void			GetHit(int damage) noexcept override;
 
 public:		void			OnAnimationEvent(std::string str) noexcept override;
 
+private:	D3DXVECTOR3			CaculateDir(Actor::Direction dir) const noexcept;
+
 private:	D3DXVECTOR3			_bornPosition;
 private:	Player*				_player;
 private:	PathFinding*		_pathFinder;

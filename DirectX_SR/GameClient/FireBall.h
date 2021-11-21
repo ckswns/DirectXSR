@@ -4,32 +4,34 @@
 
 namespace ce
 {
-	class SpriteRenderer;
 	class Animator;
 }
 
+class Player;
+
 class FireBall : public Behaviour
 {
-public: explicit FireBall() = delete;
-public: explicit FireBall(Actor::Direction tDir, D3DXVECTOR3 vdir , D3DXVECTOR3 vpos) noexcept;
-public: virtual ~FireBall() noexcept { __noop; };
+public:		explicit		FireBall(void) = delete;
+public:		explicit		FireBall(D3DXVECTOR3 pos, D3DXVECTOR3 vDir, int dir);
 
-public:	void Start(void) noexcept override;
-public: void Update(float fElapsedTime) noexcept override;
-public: void OnCollisionEnter(Collider* mine, Collider* other) noexcept override;
+public:		void			Awake(void) noexcept override;
+public:		void			Start(void) noexcept override;
+public:		void			Update(float) noexcept override;
+public:		void			OnDestroy(void) noexcept override;
 
-private: Collider* _hitBox;
-private: float				_fSpeed;
-private: Actor::Direction	_tdir;
+public:		void			OnCollisionEnter(Collider* mine, Collider* other) noexcept override;
+public:		void			OnCollisionStay(Collider* mine, Collider* other) noexcept override;
+public:		void			OnCollisionExit(Collider* mine, Collider* other) noexcept override;
 
-private: D3DXVECTOR3		_vTargetpos;
-private: D3DXVECTOR3		_vpos;
-private: D3DXVECTOR3		_vdir;
+private:	D3DXVECTOR3		_startPos;
+private:	D3DXVECTOR3		_vDir;
+private:	int				_dir;
 
-private: SpriteRenderer*	_spriteRenderer;
-private: Animator*			_animator;
-private: float				_fDeltaTime = 0;
-private: float				_fangle;
+private:	float			_speed = 3;
+private:	float			_deltaTime = 0;
+private:	float			_lastElapsedTime = 0;
 
+private:	Animator* _animator;
+private:	Player* _player;
 };
 

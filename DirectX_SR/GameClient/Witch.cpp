@@ -218,33 +218,25 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 			if (_SkillCheck)
 			{
 				// FireBall »ý¼º
-				Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
+				D3DXVECTOR3 firedir;
+				firedir = CaculateDir(_dir);
 
-				if (dis.Length() > _data.aggroDistance)
+				GameObject* temp = GameObject::Instantiate();
+				temp->AddComponent(new FireBall(transform->GetWorldPosition() + (firedir * 0.05f), firedir, static_cast<int>(_dir)));
+				_fDeltaTime = 0;
+				/*if (_fDeltaTime >= 0.1f)
 				{
-					_pathFinder->FindPath(transform->GetWorldPosition(), _bornPosition);
+					D3DXVECTOR3 firedir;
+					firedir = CaculateDir(_dir);
+
+					GameObject* temp = GameObject::Instantiate();
+					temp->AddComponent(new FireBall(transform->GetWorldPosition() + (firedir * 0.05f), firedir, static_cast<int>(_dir)));
+					_fDeltaTime = 0;
 				}
-
-				std::list<Node*>& path = const_cast<std::list<Node*>&>(_pathFinder->GetPath());
-
-				if (path.begin() == path.end())
-					return;
-
-				std::list<Node*>::iterator iter = path.begin();
-
-				D3DXVECTOR3 vDir = (*iter)->GetPos() - transform->GetWorldPosition();
-				vDir.y = 0;
-
-				Direction dir = GetDirect(transform->GetWorldPosition(), (*iter)->GetPos());
-				int iDir = static_cast<int>(dir);
-
-				//if (_dir != dir)
-				//	_animator->SetAnimation("Walk_" + std::to_string(iDir));
-
-				_dir = dir;
-
-				GameObject* obj = GameObject::Instantiate();
-				obj->AddComponent(new FireBall(_dir, _direction, transform->GetWorldPosition()));
+				else
+				{
+					_fDeltaTime += fElapsedTime;
+				}*/
 			}
 			_state = Actor::State::IDLE;
 			_SkillCheck = false;
@@ -391,9 +383,6 @@ void Witch::LateUpdate(float fElapsedTime) noexcept
 		{
 			_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Skill_0")->GetTexture()[0]);
 			_animator->SetAnimation("Skill_" + std::to_string(static_cast<int>(_dir)));
-			_vPirvPlayerPos = _player->GetTransform()->GetWorldPosition();
-			_direction = _vPirvPlayerPos - transform->GetWorldPosition();
-			D3DXVec3Normalize(&_direction, &_direction);
 		}
 		else
 		{
@@ -486,5 +475,45 @@ void Witch::OnAnimationEvent(std::string str) noexcept
 		_player->GetHit(Random::GetValue(_data.damageMax, _data.damageMin), transform->GetWorldPosition());
 		_hitEffectAudio->Play();
 	}
+}
+
+D3DXVECTOR3 Witch::CaculateDir(Actor::Direction dir) const noexcept
+{
+	D3DXVECTOR3 result;
+
+	switch (dir)
+	{
+	case Actor::Direction::DOWN:
+		result = { 0, 0, -1 };
+		break;
+	case Actor::Direction::LEFT_DOWN:
+		result = { -1, 0, -1 };
+		break;
+	case Actor::Direction::LEFT:
+		result = { -1, 0, 0 };
+		break;
+	case Actor::Direction::LEFT_UP:
+		result = { -1, 0, 1 };
+		break;
+	case Actor::Direction::UP:
+		result = { 0, 0, 1 };
+		break;
+	case Actor::Direction::RIGHT_UP:
+		result = { 1, 0, 1 };
+		break;
+	case Actor::Direction::RIGHT:
+		result = { 1, 0, 0 };
+		break;
+	case Actor::Direction::RIGHT_DOWN:
+		result = { 1, 0, -1 };
+		break;
+	default:
+		result = { 0, 0, 0 };
+		break;
+	}
+
+	D3DXVec3Normalize(&result, &result);
+
+	return result;
 }
 
