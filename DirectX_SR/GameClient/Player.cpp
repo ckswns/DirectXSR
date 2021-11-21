@@ -45,6 +45,16 @@ Player::Player(PathFinding* pf) noexcept
 	_pInputHandler = new InputHandler(this);
 }
 
+void Player::SetMap(PathFinding* pf) noexcept
+{
+	if (_pPathFinding)
+	{
+		delete _pPathFinding;
+	}
+
+	_pPathFinding = pf;
+}
+
 void Player::Start(void) noexcept
 {
 	_fRecovery = 1.f;
@@ -63,7 +73,7 @@ void Player::Start(void) noexcept
 	_pInvenObj = GameObject::Instantiate();
 	_pInvenObj->AddComponent(_pInven);
 	_pInven->GetGameObject()->SetActive(false);
-
+	_pInvenObj->SetDontDestroy(true);
 	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding);
 
 	gameObject->AddComponent(new AudioListener());

@@ -154,25 +154,36 @@ bool Diablo_Chamber::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-	GameObject* boss = GameObject::Instantiate();
-	boss->AddComponent(new ::Diablo());
-	boss->GetTransform()->SetWorldPosition(20, 0.4f, 20);
-
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Diablo_BGM.mp3"));
 
 	GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
 
 	player->GetTransform()->SetWorldPosition(20, 0.5f, 5);
 	player->GetTransform()->SetWorldEulerAngle(0, D3DXToRadian(180), 0);
+	player->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->SetMap(new PathFinding(_pNaviMesh));
+
+	GameObject* boss = GameObject::Instantiate();
+	_pBoss = new ::Diablo(new PathFinding(_pNaviMesh), player->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR));
+	boss->AddComponent(_pBoss);
+	boss->GetTransform()->SetWorldPosition(20, 0.4f, 20);
+
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new BossCamera(boss->GetComponent<Diablo>(COMPONENT_ID::BEHAVIOUR)));
+
+	_portalObj = GameObject::Instantiate();
+	_portalObj->AddComponent(new Portal("Town_01"));
+	_portalObj->SetActive(false);
 
 	return true;
 }
 
 void Diablo_Chamber::FixedUpdate(float fElapsedTime) noexcept
 {
-
+	if (_pBoss->GetDead() && _portalObj->GetActive() == false)
+	{
+		_portalObj->SetActive(true);
+		_portalObj->GetTransform()->SetWorldPosition(_pBoss->GetTransform()->GetWorldPosition());
+	}
 }
 
 void Diablo_Chamber::Update(float fElapsedTime) noexcept
@@ -187,7 +198,7 @@ void Diablo_Chamber::LateUpdate(float fElapsedTime) noexcept
 
 void Diablo_Chamber::Render(float fElapsedTime) noexcept
 {
-
+	D3D9DEVICE->GetDevice()->SetRenderState(D3DRS_FOGENABLE, false);
 }
 
 void Diablo_Chamber::Release(void) noexcept

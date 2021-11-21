@@ -39,6 +39,7 @@ void StatusBar::InitUI() noexcept
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(435, 118, 0);
     pObj->SetSortOrder(1);
+    pObj->SetDontDestroy(true);
 
     _imgHP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\HPBall.png"));
     _imgHP->SetFillType(Image::FillType::VERTICAL);
@@ -47,6 +48,7 @@ void StatusBar::InitUI() noexcept
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(50, 12, 0);    
     pObj->SetSortOrder(1);
+    pObj->SetDontDestroy(true);
 
     _imgMP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\MPBall.png"));
     _imgMP->SetFillType(Image::FillType::VERTICAL);
@@ -55,16 +57,19 @@ void StatusBar::InitUI() noexcept
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(1115, 12, 0);
     pObj->SetSortOrder(1);
+    pObj->SetDontDestroy(true);
 
     //LB
     pObj = GameObject::Instantiate();
     pObj->AddComponent(new MouseBtnUI(_pInputHandler, true));
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(190, 90, 0);
+    pObj->SetDontDestroy(true);
 
     //RB
     pObj = GameObject::Instantiate();
     pObj->AddComponent(new MouseBtnUI(_pInputHandler, false));
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(1020, 90, 0);
+    pObj->SetDontDestroy(true);
 }

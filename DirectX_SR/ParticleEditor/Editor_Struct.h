@@ -2,21 +2,21 @@
 #ifndef __EDITOR_STRUCT__
 #define __EDITOR_STRUCT__
 
-typedef struct tagParticle
-{
-	D3DXVECTOR3	 vPosition;
-	float					 fSize;
-	unsigned long			 dwColor;
-}PARTICLE;
-const unsigned long FVF_PARTICLE = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_PSIZE;
+//typedef struct tagParticle
+//{
+//	D3DXVECTOR3	 vPosition;
+//	float					 fSize;
+//	unsigned long			 dwColor;
+//}PARTICLE;
+//const unsigned long FVF_PARTICLE = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_PSIZE;
 
-typedef struct tagVertexTexture
-{
-	D3DXVECTOR3		vPosition;
-	unsigned long			dwColor;   	 
-	D3DXVECTOR2		vTexUV;
-}VTXCOLTEX;
-const unsigned long FVF_VTXCOLTEX = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
+//typedef struct tagVertexTexture
+//{
+//	D3DXVECTOR3		vPosition;
+//	unsigned long			dwColor;   	 
+//	D3DXVECTOR2		vTexUV;
+//}VTXCOLTEX;
+//const unsigned long FVF_VTXCOLTEX = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
 
 typedef struct tagParticleAttribute
 {

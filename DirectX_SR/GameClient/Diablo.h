@@ -13,7 +13,15 @@ namespace ce
 
 class Diablo : public Actor
 {
-public:		explicit			Diablo(void) noexcept { __noop; }
+private:	enum class			AttackState
+			{
+				Default,
+				Skill1,
+				Skill2,
+				Skill3
+			};
+
+public:		explicit			Diablo(PathFinding* pf, Player* player) noexcept;
 public:		virtual				~Diablo(void) noexcept { __noop; }
 
 public:		void				Awake(void) noexcept override;
@@ -31,6 +39,12 @@ public:		void				GetHit(int damage) noexcept override;
 
 public:		void				OnAnimationEvent(std::string str) noexcept override;
 public:		void				Intro(void) noexcept;
+public:		void				IntroDone(void) noexcept { _bIntroDone = true; }
+
+public:		void				DoSkill3(void) noexcept;
+public:		bool				GetDead(void) const noexcept { return _bDeadAniDone; }
+
+private:	D3DXVECTOR3			CaculateDir(Actor::Direction dir) const noexcept;
 
 private:	SpriteRenderer*		_spriteRenderer;
 private:	Player*				_player;
@@ -46,8 +60,24 @@ private:	AudioSource*		_getHitAudio;
 private:	AudioSource*		_deadAudio;
 private:	AudioSource*		_hitEffectAudio;
 
+private:	AttackState			_eAttackState = AttackState::Default;
+private:	Direction			_prevDirection = Actor::Direction::DOWN;
+
+private:	bool				_bIntroDone = false;
 private:	bool				_bIntro = false;
 private:	bool				_dirtyState = false;
+private:	bool				_bColorChanged = false;
+private:	bool				_bDeadAniDone = false;
+
+private:	float				_fColorChageTime = 0;
 private:	float				_fDeltaTime = 0;
+
+private:	float				_currentSkill1CoolTime = 2;
+private:	float				_currentSkill2CoolTime = 1;
+private:	float				_currentSkill3CoolTime = 0;
+
+private:	const float			_skill1CoolTime = 15;
+private:	const float			_skill2CoolTime = 10;
+private:	const float			_skill3CoolTime = 20;
 };
 

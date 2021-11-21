@@ -28,6 +28,9 @@ namespace ce
 
 	public:		bool			GetCurrentAnimationEnd(void) noexcept;
 	public:		std::string		GetCurrentAnimationName(void) const noexcept;
+	public:		int				GetCurrentFrame(void) const noexcept;
+
+	public:		void			SetFrame(int frame) noexcept;
 
 	public:		Animation*		GetAnimationByKey(std::string key) noexcept;
 

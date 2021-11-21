@@ -5,6 +5,7 @@
 #include "Collider.h"
 #include "Transform.h"
 #include "Scene.h"
+#include "Input.h"
 
 namespace ce
 {
@@ -12,6 +13,8 @@ namespace ce
 	{
 		bool Raycast(Ray ray, OUT RaycastHit& hit, GameObjectLayer layer)
 		{
+			if (Input::Instance()->GetInputBlockState())
+				return false;
 			std::vector<GameObject*>& objs = const_cast<std::vector<GameObject*>&>(SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(layer));
 
 			std::sort(objs.begin(), objs.end(), [&ray](GameObject* lhs, GameObject* rhs) {
@@ -49,6 +52,8 @@ namespace ce
 
 		bool Raycast(D3DXVECTOR3 origin, D3DXVECTOR3 direction, OUT RaycastHit& hit, float length, GameObjectLayer layer)
 		{
+			if (Input::Instance()->GetInputBlockState())
+				return false;
 			std::vector<GameObject*>& objs = const_cast<std::vector<GameObject*>&>(SceneManager::Instance()->GetActiveScene()->GetSceneGameObjectXXXXXXXXXXXX(layer));
 			Ray ray;
 			ray._length = length;

@@ -35,6 +35,7 @@ namespace ce
 		BACKGROUND,
 		OBJECT,
 		ALPHA,
+		EFFECT,
 		UI,
 		END
 	};

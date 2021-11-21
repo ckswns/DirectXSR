@@ -25,10 +25,13 @@ namespace ce
 	public:		D3DXVECTOR3		GetMousePosition(void) const noexcept;
 
 	public:		void			GetWndMsgXXX(UINT message, WPARAM wParam, LPARAM lParam) noexcept;
+	public:		void			SetInputBlockState(bool b) noexcept { _block = b; }
+	public:		bool			GetInputBlockState(void) const noexcept { return _block; }
 
 	private:	KeyState		_eState[255] = {};
 	private:	HWND			_hWnd;
 
+	private:	bool			_block = false;
 	private:	friend			SingletonBase<Input>;
 	};
 }

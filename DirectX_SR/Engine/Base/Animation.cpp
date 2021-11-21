@@ -124,4 +124,11 @@ namespace ce
 
 		return true;
 	}
+	void Animation::SetFrame(int frame) noexcept
+	{
+		if (frame >= _vFrameTime.size())
+			_iFrame = _vFrameTime.size() - 1;
+		else
+			_iFrame = frame;
+	}
 }

@@ -16,6 +16,8 @@ namespace ce
 {
 	AssetManager::AssetManager(void) noexcept
 	{
+		_bWhileLoading = true;
+		_fLoadProgress = 0;
 	}
 
 	AssetManager::~AssetManager(void) noexcept

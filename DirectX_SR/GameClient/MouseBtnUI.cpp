@@ -15,6 +15,7 @@ void MouseBtnUI::Start(void) noexcept
 	Button<MouseBtnUI>* btn = static_cast<Button<MouseBtnUI>*>(gameObject->AddComponent(new Button<MouseBtnUI>(this)));
 	btn->onMouseDown += &MouseBtnUI::BtnClick;
     gameObject->SetSortOrder(1);
+    gameObject->SetDontDestroy(true);
 
     _pBtnAttack = GameObject::Instantiate();
     Image* img = static_cast<Image*>(_pBtnAttack->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\30.png"))));
@@ -23,6 +24,7 @@ void MouseBtnUI::Start(void) noexcept
     btn->onMouseDown += &MouseBtnUI::SetAttack;
     _pBtnAttack->SetActive(false);
     _pBtnAttack->SetSortOrder(2);
+    _pBtnAttack->SetDontDestroy(true);
 
     _pBtnRaise = GameObject::Instantiate();
     img = static_cast<Image*>(_pBtnRaise->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\21.png"))));
@@ -31,6 +33,7 @@ void MouseBtnUI::Start(void) noexcept
     btn->onMouseUp += &MouseBtnUI::SetRaise;
     _pBtnRaise->SetActive(false);
     _pBtnRaise->SetSortOrder(2);
+    _pBtnRaise->SetDontDestroy(true);
 
     _pBtnSpear = GameObject::Instantiate();
     img = static_cast<Image*>(_pBtnSpear->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\6.png"))));
@@ -39,6 +42,7 @@ void MouseBtnUI::Start(void) noexcept
     btn->onMouseUp += &MouseBtnUI::SetSpear;
     _pBtnSpear->SetActive(false);
     _pBtnSpear->SetSortOrder(2);
+    _pBtnSpear->SetDontDestroy(true);
 
     _pBtnPoison = GameObject::Instantiate();
     img = static_cast<Image*>(_pBtnPoison->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\8.png"))));
@@ -47,6 +51,7 @@ void MouseBtnUI::Start(void) noexcept
     btn->onMouseUp += &MouseBtnUI::SetPoison;
     _pBtnPoison->SetActive(false);
     _pBtnPoison->SetSortOrder(2);
+    _pBtnPoison->SetDontDestroy(true);
 
     if (!_bLeft)
     {

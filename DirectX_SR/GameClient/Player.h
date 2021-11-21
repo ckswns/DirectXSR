@@ -25,6 +25,8 @@ public:		explicit				Player() noexcept = delete;
 public:		explicit				Player(PathFinding* pf) noexcept;
 public:		virtual					~Player(void) noexcept { __noop; }
 
+public:		void					SetMap(PathFinding* pf) noexcept;
+
 public:		virtual void			Start(void) noexcept;
 public:		virtual void			FixedUpdate(float fElapsedTime) noexcept;
 public:		virtual void			Update(float fElapsedTime) noexcept;

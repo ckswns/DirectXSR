@@ -175,7 +175,7 @@ namespace ce
 	{
 		//SortObjByCamera(GameObjectLayer::OBJECT);
 		SortObjByCamera(GameObjectLayer::ALPHA);
-
+		SortObjByCamera(GameObjectLayer::EFFECT);
 		for (int i = 0; i < static_cast<int>(GameObjectLayer::UI); i++)
 		{
 			for (size_t j = 0; j < _vGameObjs[i].size(); j++)
@@ -273,7 +273,7 @@ namespace ce
 			Vector3 a = (position - lhs->GetTransform()->GetWorldPosition());
 			Vector3 b = (position - rhs->GetTransform()->GetWorldPosition());
 
-			return (a.SqrLength() > b.SqrLength());
+			return (a.Length() > b.Length());
 			});
 	}
 
@@ -287,6 +287,7 @@ namespace ce
 
 		GetCursorPos(&cursor);
 		ScreenToClient(GameController::GetHandle(), &cursor);
+		Input::Instance()->SetInputBlockState(false);
 
 		if (INPUT->GetKeyUp(VK_LBUTTON))
 			mouseState = MOUSE_STATE::UP;
@@ -392,6 +393,8 @@ namespace ce
 				iter++;
 			}
 		}
+
+		Input::Instance()->SetInputBlockState(picked);
 	}
 
 	GameObject* Scene::InsertGameObject(GameObject* obj) noexcept

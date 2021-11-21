@@ -56,7 +56,7 @@ namespace ce
 	protected:	Transform*			_transform;
 	protected:	std::string			_tag;
 #ifdef _DEBUG
-	protected:	bool				_showDbg = false;
+	protected:	static bool			_showDbg;
 	protected:	D3DMATERIAL9		_material;
 #endif
 	};
