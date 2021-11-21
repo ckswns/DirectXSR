@@ -248,6 +248,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TopBar.h" />
     <ClInclude Include="TownScene_01.h" />
+    <ClInclude Include="Wraith.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
@@ -329,6 +330,7 @@
     <ClCompile Include="TargetCamera.cpp" />
     <ClCompile Include="TopBar.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
+    <ClCompile Include="Wraith.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameClient.rc" />

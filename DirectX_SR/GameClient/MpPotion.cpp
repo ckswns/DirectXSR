@@ -9,11 +9,7 @@
 #include "Slot.h"
 MpPotion::MpPotion() noexcept
 {
-	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION,20);
-	_tInvenItem->_eitemID = (int)ITEM_ID::MP;
-	_tInvenItem->_strName = "MP Potion";
-	_tInvenItem->_strInvenImgPath = "Asset\\UI\\Inventory\\Mp";
-	_tInvenItem->_iValue = 20;
+	_tInvenItem = new ITEMDATA();
 }
 
 void MpPotion::Start(void) noexcept
@@ -43,7 +39,7 @@ void MpPotion::Start(void) noexcept
 
 	Animation* ani = new Animation(FrameTime, TList, false);
 	ani->SetMaterial(material);
-	pAnimator->InsertAnimation(_tInvenItem->_strName, ani);
+	pAnimator->InsertAnimation(_tInvenItem->name, ani);
 
 	TList.clear();
 	FrameTime.clear();

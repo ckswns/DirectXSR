@@ -94,8 +94,8 @@ void ItemSlot::Start(void) noexcept
 	gameObject->GetTransform()->SetWorldPosition(_vStartPos.x, _vStartPos.y, 0);
 	gameObject->GetTransform()->SetParent(_pParent);
 
-	if (_eType != Slot::SLOTTYPE::POTION)
-		gameObject->SetDontDestroy(true);
+	//if (_eType != Slot::SLOTTYPE::POTION)
+	//	gameObject->SetDontDestroy(true);
 
 	_vecSlot.reserve((size_t)_iSlotCntX * (size_t)_iSlotCntY);
 	int iIndex = 0;
@@ -332,6 +332,7 @@ void ItemSlot::SetInvenPosition(D3DXVECTOR3 vpos)
 void ItemSlot::DropItemSlot()
 {
 	_vecSlot.clear();
+	_vecSlot.shrink_to_fit();
 	gameObject->SetDontDestroy(false);
 	gameObject->Destroy();
 }
@@ -341,7 +342,9 @@ void ItemSlot::OnMouseDown(void) noexcept
 	if (INPUT->GetKeyDown(VK_RBUTTON) && _eType == Slot::SLOTTYPE::POTION)
 	{
 		_vecSlot.clear();
+		_vecSlot.shrink_to_fit();
 		_pInfoBox->MissingItem();
+		gameObject->SetDontDestroy(false);
 		gameObject->Destroy();
 	}
 }
