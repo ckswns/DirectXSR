@@ -175,9 +175,13 @@
     <ClInclude Include="DbgShowFrame.h" />
     <ClInclude Include="Diablo.h" />
     <ClInclude Include="Diablo_Chamber.h" />
+    <ClInclude Include="Diablo_Clone.h" />
     <ClInclude Include="Dungeon_01.h" />
+    <ClInclude Include="EffectRenderer.h" />
     <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
+    <ClInclude Include="FadeController.h" />
+    <ClInclude Include="FireWall.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FSMState.h" />
     <ClInclude Include="Game.h" />
@@ -192,6 +196,7 @@
     <ClInclude Include="ItemSlot.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Lightning.h" />
+    <ClInclude Include="LightningBreath.h" />
     <ClInclude Include="LightningCollider.h" />
     <ClInclude Include="Mephisto.h" />
     <ClInclude Include="Missile.h" />
@@ -256,9 +261,13 @@
     <ClCompile Include="DbgShowFrame.cpp" />
     <ClCompile Include="Diablo.cpp" />
     <ClCompile Include="Diablo_Chamber.cpp" />
+    <ClCompile Include="Diablo_Clone.cpp" />
     <ClCompile Include="Dungeon_01.cpp" />
+    <ClCompile Include="EffectRenderer.cpp" />
     <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
+    <ClCompile Include="FadeController.cpp" />
+    <ClCompile Include="FireWall.cpp" />
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />
@@ -269,6 +278,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSlot.cpp" />
     <ClCompile Include="Lightning.cpp" />
+    <ClCompile Include="LightningBreath.cpp" />
     <ClCompile Include="LightningCollider.cpp" />
     <ClCompile Include="Mephisto.cpp" />
     <ClCompile Include="Missile.cpp" />

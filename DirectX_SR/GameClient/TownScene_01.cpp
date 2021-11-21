@@ -30,6 +30,7 @@
 
 #include "StoreNPC.h"
 #include "Diablo.h"
+#include "FadeController.h"
 
 TownScene_01::TownScene_01(void) noexcept
 {
@@ -38,6 +39,7 @@ TownScene_01::TownScene_01(void) noexcept
 bool TownScene_01::Init(void) noexcept
 {
 	NaviMesh* _pNaviMesh;
+	FadeController::FadeIn(5);
 
 	Terrain* terrain = new Terrain(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth") + 1,
 		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapHeight") + 1, 1);
@@ -163,8 +165,9 @@ bool TownScene_01::Init(void) noexcept
 
 			if (names[i].find("Portal") != std::string::npos)
 			{
-				obj = GameObject::Instantiate();
-				obj->AddComponent(new Portal("Diablo_Chamber"));
+				std::string sceneKey = Util::Split(names[i], '@')[1];
+				GameObject* obj = GameObject::Instantiate();
+				obj->AddComponent(new Portal(sceneKey.c_str()));
 
 				std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldX");
 				std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldY");
@@ -185,34 +188,47 @@ bool TownScene_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
-	obj->GetTransform()->SetWorldPosition(40, 0, 40);
-	obj->AddComponent(new BillboardObj());
+	//obj = GameObject::Instantiate();
+	//obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
+	//obj->GetTransform()->SetWorldPosition(40, 0, 40);
+	//obj->AddComponent(new BillboardObj());
 	//Player
-	GameObject* pPlayerObj = GameObject::Instantiate();
 	PathFinding* pf = new PathFinding(_pNaviMesh);
-	Player* player = new Player(pf);
-	pPlayerObj->AddComponent(player);
-	pPlayerObj->GetTransform()->SetLocalPosition(
-		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldX"),
-		0.5f,
-		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldZ"));
 
-	//TargetCamera
+	GameObject* playerObj = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
+	if (playerObj == nullptr)
+	{
+		playerObj = GameObject::Instantiate();
+		Player* player = new Player(pf);
+		playerObj->AddComponent(player);
+		playerObj->GetTransform()->SetLocalPosition(
+			INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldX"),
+			0.5f,
+			INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldZ"));
+
+		//TargetCamera
+		GameObject* pGameObj = GameObject::Instantiate();
+		pGameObj->AddComponent(new TargetCamera(playerObj->GetTransform()));
+		pGameObj->GetTransform()->SetLocalPosition(playerObj->GetTransform()->GetLocalPosition());
+		pGameObj->SetDontDestroy(true);
+		//UI
+		pGameObj = GameObject::Instantiate();
+		pGameObj->AddComponent(new StatusBar(player));
+		pGameObj->SetDontDestroy(true);
+	}
+	else
+	{
+		playerObj->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->SetMap(pf);
+		playerObj->GetTransform()->SetLocalPosition(
+			INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldX"),
+			0.5f,
+			INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldZ"));
+	}
+
+
 	GameObject* pGameObj = GameObject::Instantiate();
-	pGameObj->AddComponent(new TargetCamera(pPlayerObj->GetTransform()));
-	pGameObj->GetTransform()->SetLocalPosition(pPlayerObj->GetTransform()->GetLocalPosition());
-	pGameObj->SetDontDestroy(true);
-	//UI
-	pGameObj = GameObject::Instantiate();
-	pGameObj->AddComponent(new StatusBar(player));
-	pGameObj->SetDontDestroy(true);
-
-	pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StoreNPC());
 	pGameObj->GetTransform()->SetWorldPosition(10, 0.5, 10);
-
 	//for (int i = 0; i < 50; i++)
 	//{
 	//	obj = GameObject::Instantiate();
@@ -227,10 +243,10 @@ bool TownScene_01::Init(void) noexcept
 	//	obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
 	//}
 
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new Diablo());
-	obj->GetTransform()->SetWorldPosition(40, 0.7f, 40);
-
+	//obj = GameObject::Instantiate();
+	//obj->AddComponent(new Diablo(new PathFinding(_pNaviMesh), player));
+	//obj->GetTransform()->SetWorldPosition(40, 0.5f, 40);
+	//obj->GetComponent<Diablo>(COMPONENT_ID::BEHAVIOUR)->IntroDone();
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\TownBGM.mp3"));
 
 	return true;

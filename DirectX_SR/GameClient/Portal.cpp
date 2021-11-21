@@ -8,6 +8,8 @@
 #include "SphereCollider.h"
 #include "Ray.h"
 #include "Camera.h"
+#include "ParticleRenderer.h"
+#include "FadeController.h"
 
 Portal::Portal(const char* key) noexcept :
 	_sceneKey(key)
@@ -37,12 +39,45 @@ void Portal::Start(void) noexcept
 	gameObject->AddComponent(new BillboardObj());
 	anim->Play();
 	gameObject->AddComponent(new SphereCollider(0.5f, "portal"));
+
+	GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
+	if(player != nullptr)
+		_player = player->GetTransform();
+	//gameObject->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\portal.dat"));
 }
 
 void Portal::Update(float) noexcept
 {
-	if (INPUT->GetKeyDown(VK_LBUTTON))
+	if (_player == nullptr)
 	{
+		GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
+		if (player != nullptr)
+			_player = player->GetTransform();
+		else
+			return;
+	}
+
+	if (_changeScene)
+	{
+		if (FadeController::IsEnd())
+			SCENEMANAGER->LoadScene(_sceneKey);
+	}
+	else if (INPUT->GetKeyDown(VK_LBUTTON))
+	{
+		D3DXVECTOR3 player = _player->GetWorldPosition();
+		D3DXVECTOR3 mine = transform->GetWorldPosition();
+		
+		player.y = 0;
+		mine.y = 0;
+
+		D3DXVECTOR3 temp = (player - mine);
+		float dis = D3DXVec3Length(&temp);
+
+		if (dis > 1.f)
+		{
+			return;
+		}
+
 		Ray ray = Camera::GetMainCamera()->ScreenPointToRay(INPUT->GetMousePosition());
 		RaycastHit hit;
 
@@ -50,7 +85,8 @@ void Portal::Update(float) noexcept
 		{
 			if (hit.collider->GetTag() == "portal")
 			{
-				SCENEMANAGER->LoadScene(_sceneKey);
+				_changeScene = true;
+				FadeController::FadeOut(3);
 			}
 		}
 	}

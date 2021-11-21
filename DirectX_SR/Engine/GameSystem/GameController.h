@@ -19,6 +19,7 @@ namespace ce
 
 	public:		static HWND		GetHandle(void) noexcept { return _hWnd; }
 	private:	static HWND		_hWnd;
+	private:	bool			_bAssetLoaded = false;
 	};
 }
 

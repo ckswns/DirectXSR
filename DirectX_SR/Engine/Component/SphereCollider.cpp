@@ -129,9 +129,11 @@ namespace ce
 			device->GetRenderState(D3DRS_FILLMODE, &state);
 			device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+			device->SetRenderState(D3DRS_LIGHTING, false);
 			device->SetTransform(D3DTS_WORLD, &_transform->GetWorldMatrix());
 			device->SetMaterial(&_material);
 			_dbgMesh->DrawSubset(0);
+			device->SetRenderState(D3DRS_LIGHTING, true);
 			device->SetRenderState(D3DRS_FILLMODE, state);
 			device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 		}

@@ -50,7 +50,7 @@ namespace ce
 
 	public:		D3DXVECTOR3				ConvertD3DXVec3(void) const noexcept;
 
-	public:		static float			Distance(const Vector3& lhs, const Vector3& rhs) noexcept;
+	public:		static float			Distance(const D3DXVECTOR3& lhs, const D3DXVECTOR3& rhs) noexcept;
 	public:		static float			Angle(const Vector3& lhs, const Vector3& rhs) noexcept;
 	public:		static float			Dot(const Vector3& lhs, const Vector3& rhs) noexcept;
 

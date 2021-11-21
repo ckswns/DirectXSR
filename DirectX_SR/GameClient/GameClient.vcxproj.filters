@@ -253,6 +253,15 @@
     <Filter Include="00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning\LightningCollider">
       <UniqueIdentifier>{b3cd5ec1-ff0d-43ed-aa08-60cfeef3e882}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Diablo\bullet">
+      <UniqueIdentifier>{9a63d6a8-b4f6-4179-93bd-acded29a363f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\EffectRenderer">
+      <UniqueIdentifier>{33074340-e035-4a7b-a43f-d86a1c7b4312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\02. UI\System\Fade">
+      <UniqueIdentifier>{f62fec32-aa11-4e49-b2b7-289dffa7fa08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -495,6 +504,21 @@
     <ClInclude Include="MonsterHPBar.h">
       <Filter>00. Game\01. GameObject\MonsterHPBar</Filter>
     </ClInclude>
+    <ClInclude Include="Diablo_Clone.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Diablo</Filter>
+    </ClInclude>
+    <ClInclude Include="LightningBreath.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Diablo\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectRenderer.h">
+      <Filter>00. Game\EffectRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="FireWall.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Diablo\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeController.h">
+      <Filter>00. Game\01. GameObject\02. UI\System\Fade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -703,6 +727,21 @@
     </ClCompile>
     <ClCompile Include="LightningCollider.cpp">
       <Filter>00. Game\01. GameObject\Actor\Monster\Mephisto\Lightning\LightningCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="Diablo_Clone.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Diablo</Filter>
+    </ClCompile>
+    <ClCompile Include="LightningBreath.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Diablo\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectRenderer.cpp">
+      <Filter>00. Game\EffectRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="FireWall.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Diablo\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeController.cpp">
+      <Filter>00. Game\01. GameObject\02. UI\System\Fade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

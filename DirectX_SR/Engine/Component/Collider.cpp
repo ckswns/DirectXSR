@@ -5,6 +5,8 @@
 
 namespace ce
 {
+	bool Collider::_showDbg = false;
+
 	void Collider::Init(void) noexcept
 	{
 		_transform = _owner->GetTransform();

@@ -72,14 +72,26 @@ namespace ce
 
 		float deltaTime = TIMEMANAGER->GetDeltaTime();
 
-		std::thread t1 = std::thread(&PhysicsManager::Update, PhysicsManager::Instance());
-		std::thread t2 = std::thread([&] {
+		SCENEMANAGER->FixedUpdate(deltaTime);
+
+		if (_bAssetLoaded)
+		{
+			std::thread t1 = std::thread(&PhysicsManager::Update, PhysicsManager::Instance());
+			std::thread t2 = std::thread([&] {
+				SCENEMANAGER->Update(deltaTime);
+				});
+
+			t1.join();
+			t2.join();
+		}
+		else
+		{
+			if (ASSETMANAGER->GetLoadingState() == false)
+				_bAssetLoaded = true;
+
 			SCENEMANAGER->FixedUpdate(deltaTime);
 			SCENEMANAGER->Update(deltaTime);
-			});
-
-		t1.join();
-		t2.join();
+		}
 
 		SCENEMANAGER->LateUpdate(deltaTime);
 #ifdef __USE_FMOD__

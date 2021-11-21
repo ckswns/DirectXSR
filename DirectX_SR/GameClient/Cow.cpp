@@ -167,19 +167,25 @@ void Cow::Start(void) noexcept
 
 void Cow::FixedUpdate(float fElapsedTime) noexcept
 {
-	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
+	D3DXVECTOR3 target = _player->GetTransform()->GetWorldPosition();
+	D3DXVECTOR3 mine = transform->GetWorldPosition();
+
+	target.y = 0;
+	mine.y = 0;
+
+	float dis = Vector3::Distance(target, mine);
 
 	switch (_state)
 	{
 	case Actor::State::IDLE:
 
-		if (dis.Length() < 0.5f)
+		if (dis < 1.f)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
 			return;
 		}
-		else if (dis.Length() <= _data.aggroDistance)
+		else if (dis <= _data.aggroDistance)
 		{
 			if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
 			{
@@ -220,14 +226,14 @@ void Cow::FixedUpdate(float fElapsedTime) noexcept
 		}
 		break;
 	case Actor::State::MOVE:
-		if (dis.Length() < 0.5f)
+		if (dis < 1)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
 
 			return;
 		}
-		else if (dis.Length() <= _data.aggroDistance)
+		else if (dis <= _data.aggroDistance)
 		{
 			if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
 			{
@@ -252,9 +258,15 @@ void Cow::Update(float fElapsedTime) noexcept
 	case Actor::State::MOVE:
 		if (!_pathFinder->GetPath().empty())
 		{
-			Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
+			D3DXVECTOR3 target = _player->GetTransform()->GetWorldPosition();
+			D3DXVECTOR3 mine = transform->GetWorldPosition();
 
-			if (dis.Length() > _data.aggroDistance)
+			target.y = 0;
+			mine.y = 0;
+
+			float dis = Vector3::Distance(target, mine);
+
+			if (dis > _data.aggroDistance)
 			{
 				_pathFinder->FindPath(transform->GetWorldPosition(), _bornPosition);
 			}
@@ -405,9 +417,15 @@ void Cow::GetHit(int damage) noexcept
 
 void Cow::OnAnimationEvent(std::string str) noexcept
 {
-	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
+	D3DXVECTOR3 target = _player->GetTransform()->GetWorldPosition();
+	D3DXVECTOR3 mine = transform->GetWorldPosition();
 
-	if (dis.Length() < 0.7f)
+	target.y = 0;
+	mine.y = 0;
+
+	float dis = Vector3::Distance(target, mine);
+
+	if (dis < 1)
 	{
 		_player->GetHit(Random::GetValue(_data.damageMax, _data.damageMin), transform->GetWorldPosition());
 		_hitEffectAudio->Play();

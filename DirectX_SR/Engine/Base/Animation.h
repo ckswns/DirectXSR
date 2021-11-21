@@ -69,6 +69,7 @@ namespace ce
 	public:		bool			AddEvent(EventData data) noexcept;
 
 	public:		void			SetMaterial(Material* mat) noexcept { _material = mat; }
+	public:		void			SetFrame(int frame) noexcept;
 
 	private:	int				_iFrame;
 

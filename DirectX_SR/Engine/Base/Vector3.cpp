@@ -150,9 +150,10 @@ namespace ce
 		return ((_x * _x) + (_y * _y) * (_z * _z));
 	}
 
-	float Vector3::Distance(const Vector3& lhs, const Vector3& rhs) noexcept
+	float Vector3::Distance(const D3DXVECTOR3& lhs, const D3DXVECTOR3& rhs) noexcept
 	{
-		return Vector3(lhs._x - rhs._x, lhs._y - rhs._y, lhs._z - rhs._z).Length();
+		D3DXVECTOR3 temp = (lhs - rhs);
+		return D3DXVec3Length(&temp);
 	}
 
 	float Vector3::Angle(const Vector3& lhs, const Vector3& rhs) noexcept

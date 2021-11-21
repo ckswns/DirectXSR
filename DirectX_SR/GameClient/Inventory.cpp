@@ -44,11 +44,13 @@ void Inventory::Start(void) noexcept
 		Slot* pSlot = new Slot((Slot::SLOTTYPE)i);
 		obj->AddComponent(pSlot);
 		_vecSlotGroup[i].emplace_back(pSlot);
+		obj->SetDontDestroy(true);
 	}
 
 	_iGold = 1000;
 
 	obj = GameObject::Instantiate();
+	obj->SetDontDestroy(true);
 	_pTexGold = new UI::Text(std::to_string(_iGold).c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_RIGHT);
 	obj->AddComponent(_pTexGold);
 	RectTransform* rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));

@@ -87,7 +87,7 @@ void BossCamera::Update(float fElapsedTime) noexcept
 
 		float x = CETween::Lerp(_tempPos.x, pos.x, _time * 0.5f, CETween::EaseType::easeLiner);
 		float y = CETween::Lerp(_tempPos.y, pos.y, _time * 0.5f, CETween::EaseType::easeLiner);
-		float z = CETween::Lerp(_tempPos.z, pos.z, _time * 0.5f, CETween::EaseType::easeOutBack);
+		float z = CETween::Lerp(_tempPos.z, pos.z, _time * 0.5f, CETween::EaseType::easeInCubic);
 
 		transform->SetWorldPosition(x, y, z);
 
@@ -95,6 +95,7 @@ void BossCamera::Update(float fElapsedTime) noexcept
 		{
 			Camera::SetMainCamera(_camera);
 			gameObject->Destroy();
+			_boss->IntroDone();
 		}
 	}
 }

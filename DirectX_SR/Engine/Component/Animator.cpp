@@ -148,6 +148,22 @@ namespace ce
 		return _currentAniName;
 	}
 
+	int Animator::GetCurrentFrame(void) const noexcept
+	{
+		if (_currentAni == nullptr)
+			return 0;
+
+		return _currentAni->GetCurrentFrame();
+	}
+
+	void Animator::SetFrame(int frame) noexcept
+	{
+		if (_currentAni == nullptr)
+			return;
+
+		_currentAni->SetFrame(frame);
+	}
+
 	Animation* Animator::GetAnimationByKey(std::string key) noexcept
 	{
 		auto iter = _mapAnim.find(key);

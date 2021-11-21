@@ -20,9 +20,9 @@ namespace ce
 	public:		void		SetTexture(Texture* texture) noexcept;
 	public:		void		SetColor(D3DXCOLOR c) noexcept;
 
-	private:	bool		_lightEnable = true;
-	private:	Quad*		_quad;
-	private:	Transform*	_transform;
-	private:	DWORD		_cullOption;
+	protected:	bool		_lightEnable = true;
+	protected:	Quad*		_quad;
+	protected:	Transform*	_transform;
+	protected:	DWORD		_cullOption;
 	};
 }
