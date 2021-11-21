@@ -7,7 +7,7 @@ class Player;
 class StoreWnd : public Behaviour
 {
 public:		using VEC_STORE = std::vector<bool>;
-public:		using LIST_ITEM = std::list<std::pair<GameObject*, ITEMDATA*>>;
+public:		using LIST_ITEM = std::list<std::pair<GameObject*, INVENITEMINFO*>>;
 
 public:		explicit			StoreWnd() noexcept { __noop; }
 public:		virtual				~StoreWnd(void) noexcept { __noop; }
@@ -15,9 +15,8 @@ public:		virtual				~StoreWnd(void) noexcept { __noop; }
 public:		virtual void		Start(void) noexcept;
 public:		virtual void		Update(float fElapsedTime) noexcept { __noop; }
 public:		virtual void		OnDestroy(void) noexcept;
-private:	void				InitItem();
 
-public:		void				AddItem(ITEMDATA* item);
+public:		void				AddItem(INVENITEMINFO* item);
 public:		void				Sell(GameObject* obj);
 public:		void				Open(Player* player);
 public:		void				Close();

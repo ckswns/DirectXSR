@@ -97,8 +97,9 @@ void InputHandler::Update(float fElapsedTime) noexcept
 					{
 						return;
 					}
-					
 				}
+
+
 				//마우스 피킹 
 				if (Physics::Raycast(ray, hit, GameObjectLayer::ALPHA))
 				{
@@ -109,15 +110,15 @@ void InputHandler::Update(float fElapsedTime) noexcept
 					{
 						//아이템인 경우 줍기 
 						//아이템 정보 
-						ITEMDATA* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
+						INVENITEMINFO* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
 						//인벤토리에 아이템 추가 
 						if (_pPlayer->GetInventory()->PickUpItems(ivenItem))
 							hit.collider->GetGameObject()->Destroy();
 					}
 					else if (hit.collider->GetGameObject()->GetName() == "Gold")
 					{
-						ITEMDATA* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
-						_pPlayer->GetInventory()->PickUpGold(ivenItem->sellgold);
+						INVENITEMINFO* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
+						_pPlayer->GetInventory()->PickUpGold(ivenItem->_iGold);
 						hit.collider->GetGameObject()->Destroy();
 					}
 					else if (hit.collider->GetGameObject()->GetName() == "StoreNPC")
@@ -167,16 +168,14 @@ void InputHandler::Update(float fElapsedTime) noexcept
 
 					if (pt.x > WINCX * 0.5)
 					{
-						ITEMDATA* potion = nullptr;
+						INVENITEMINFO* potion = nullptr;
 						potion = _pPlayer->GetInventory()->UsingItem(pt);
-						if (potion != nullptr) 
+						if (potion->_eSlotType == (int)Slot::SLOTTYPE::POTION)
 						{
-							if (potion->itype == (int)Slot::SLOTTYPE::POTION)
-							{
-								//플레이어 회복
-								_pPlayer->DrinkPotion(potion->ability);
-							}
+							//플레이어 회복
+							_pPlayer->DrinkPotion(potion->_iValue);
 						}
+
 						return;
 					}
 				}

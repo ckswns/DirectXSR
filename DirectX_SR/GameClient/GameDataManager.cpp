@@ -5,7 +5,6 @@ bool GameDataManager::Init(void) noexcept
 {
 	AssetManager::CONST_PTR_CSVDATA actorCSVData = ASSETMANAGER->GetCSVData("Asset\\Data\\MonsterData.csv");
 	AssetManager::CONST_PTR_CSVDATA itemCSVData = ASSETMANAGER->GetCSVData("Asset\\Data\\ItemData.csv");
-//	AssetManager::CONST_PTR_CSVDATA storeCSVData = ASSETMANAGER->GetCSVData("Asset\\Data\\StoreData.csv");
 
 	for (int i = 1; i < (*actorCSVData).size(); i++)
 	{
@@ -31,7 +30,7 @@ bool GameDataManager::Init(void) noexcept
 
 		std::string name = ((*itemCSVData)[i])[index++];
 
-		ITEMDATA temp;
+		InfoBox::ITEMDATA temp;
 
 		memcpy(&temp.name, name.c_str(), name.size() + 1);
 		temp.itype = std::stoi(((*itemCSVData)[i])[index++]);
@@ -46,24 +45,6 @@ bool GameDataManager::Init(void) noexcept
 		_itemData.insert(std::make_pair(name, temp));
 	}
 
-	//for (int i = 1; i < (*storeCSVData).size(); i++)
-	//{
-	//	int index = 0;
-
-	//	std::string name = ((*storeCSVData)[i])[index++];
-
-	//	INVENITEMINFO temp;
-
-	//	temp._strName = name;
-	//	//memcpy(&temp._strName, name.c_str(), name.size() + 1);
-	//	temp._eitemID = std::stoi(((*storeCSVData)[i])[index++]);
-	//	temp._eSlotType = std::stoi(((*storeCSVData)[i])[index++]);
-	//	temp._iValue = std::stoi(((*storeCSVData)[i])[index++]);
-	//	temp._iGold = std::stoi(((*storeCSVData)[i])[index++]);
-
-	//	_storeData.insert(std::make_pair(name, temp));
-	//}
-
 	return true;
 }
 
@@ -77,7 +58,7 @@ const Actor::Data& GameDataManager::GetActorData(std::string key) noexcept
 	return iter->second;
 }
 
-const ITEMDATA& GameDataManager::GetItemData(std::string key) noexcept
+const InfoBox::ITEMDATA& GameDataManager::GetItemData(std::string key) noexcept
 {
 	auto iter = _itemData.find(key);
 
@@ -86,13 +67,3 @@ const ITEMDATA& GameDataManager::GetItemData(std::string key) noexcept
 
 	return iter->second;
 }
-
-//const INVENITEMINFO& GameDataManager::GetStoreData(std::string key) noexcept
-//{
-//	auto iter = _storeData.find(key);
-//
-//	if (iter == _storeData.end())
-//		CE_ASSERT("ckswns", "Key에 해당하는 값이 존재하지 않습니다");
-//
-//	return iter->second;
-//}

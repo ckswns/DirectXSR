@@ -31,7 +31,14 @@ void StoreWnd::Start(void) noexcept
 	CloseBtn->SetSortOrder(4);
 	CloseBtn->GetTransform()->SetLocalPosition(565,520,0);
 
-	InitItem();
+	INVENITEMINFO* info = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION,20);
+	info->_iValue = 50;
+	AddItem(info);
+	info = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION, 20);
+	info->_iValue = 50;
+	AddItem(info);
+	info = new INVENITEMINFO((int)Slot::SLOTTYPE::BODY,100);
+	AddItem(info);
 }
 
 void StoreWnd::OnDestroy(void) noexcept
@@ -40,39 +47,10 @@ void StoreWnd::OnDestroy(void) noexcept
 	_StoreItem.clear();
 }
 
-void StoreWnd::InitItem()
-{
-	int iPotionCnt = CE_MATH::Random(5);
-	ITEMDATA* item = new ITEMDATA();
-	memcpy(item, &GAMEDATAMANAGER->GetItemData("Potion"), sizeof(ITEMDATA));
-	for (int i = 0; i < iPotionCnt; i++)
-	{
-		AddItem(item);
-	}
-	//delete item;
-	item = new ITEMDATA();
-	memcpy(item, &GAMEDATAMANAGER->GetItemData("HardArmor"), sizeof(ITEMDATA));
-	AddItem(item);
-
-	item = new ITEMDATA();
-	memcpy(item, &GAMEDATAMANAGER->GetItemData("BoneHelm"), sizeof(ITEMDATA));
-	AddItem(item);
-	item = new ITEMDATA();
-	memcpy(item, &GAMEDATAMANAGER->GetItemData("TowerShield"), sizeof(ITEMDATA));
-	AddItem(item);
-	item = new ITEMDATA();
-	memcpy(item, &GAMEDATAMANAGER->GetItemData("LightGauntlets"), sizeof(ITEMDATA));
-	AddItem(item);
-	item = new ITEMDATA();
-	memcpy(item, &GAMEDATAMANAGER->GetItemData("PlatedBelt"), sizeof(ITEMDATA));
-	AddItem(item);
-
-}
-
-void StoreWnd::AddItem(ITEMDATA* item)
+void StoreWnd::AddItem(INVENITEMINFO* item)
 {
 	GameObject* pobj = GameObject::Instantiate();
-	StoreItem* pSlot = new StoreItem((Slot::SLOTTYPE)item->itype,this);
+	StoreItem* pSlot = new StoreItem((Slot::SLOTTYPE)item->_eSlotType,this);
 	pobj->AddComponent(pSlot);
 
 	int Index = -1;
@@ -132,8 +110,7 @@ void StoreWnd::AddItem(ITEMDATA* item)
 
 		pobj->GetTransform()->SetWorldPosition(vPos);
 		pobj->SetSortOrder(4);
-		pobj->GetTransform()->SetParent(GetTransform());
-		//	pobj->SetActive(false);
+		pobj->SetActive(false);
 		_StoreItem.push_back(std::pair(pobj, item));
 		
 		for (int i = 0; i <pSlot->GetItemInfo(0)->_iSlotCntX; i++)
@@ -160,14 +137,11 @@ void StoreWnd::Sell(GameObject* obj)
 		if (iter->first == obj)
 		{
 			//골드 차감 
-			if (_pInven->BuyItem(iter->second->buygold))
+			if (_pInven->BuyItem(iter->second->_iGold))
 			{
-				//인벤토리로 자리 확인
-				if (!_pInven->PickUpItems(iter->second))
-				{
-					_pInven->PickUpGold(iter->second->buygold);
-					return;
-				}
+				//인벤토리로 이동
+				_pInven->PickUpItems(iter->second);
+
 				//아이템 제거
 				D3DXVECTOR3 vPos = obj->GetTransform()->GetWorldPosition();
 				int x = (vPos.x - _vStartPos.x) / 46;
@@ -185,10 +159,11 @@ void StoreWnd::Sell(GameObject* obj)
 						_ItemSlot[(Index + i + (j * _iCntX))] = false;
 					}
 				}
+
 				obj->Destroy();
-				_StoreItem.erase(iter);
+				iter = _StoreItem.erase(iter);
 			}
-			return;
+			break;
 		}
 		iter++;
 	}
@@ -201,24 +176,24 @@ void StoreWnd::Open(Player* player)
 
 	gameObject->SetActive(true);
 
-	/*LIST_ITEM::iterator iter = _StoreItem.begin();
+	LIST_ITEM::iterator iter = _StoreItem.begin();
 	while (iter != _StoreItem.end())
 	{
 		iter->first->SetActive(true);
 		iter++;
-	}*/
+	}
 }
 
 void StoreWnd::Close()
 {
 	gameObject->SetActive(false);
 
-	/*LIST_ITEM::iterator iter = _StoreItem.begin();
+	LIST_ITEM::iterator iter = _StoreItem.begin();
 	while (iter != _StoreItem.end())
 	{
 		iter->first->SetActive(false);
 		iter++;
-	}*/
+	}
 
 	_pPlayer->GetInpuHandler()->ClosedStore();
 }

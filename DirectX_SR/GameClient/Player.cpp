@@ -30,7 +30,6 @@
 #include "Light.h"
 #include "Inventory.h"
 #include "Actor.h"
-#include "Slot.h"
 
 Player::Player(PathFinding* pf) noexcept
 	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
@@ -69,7 +68,7 @@ void Player::Start(void) noexcept
 	_pInputHandler->Start();
 
 	//인벤토리 
-	_pInven = new Inventory(this);
+	_pInven = new Inventory();
 	_pInvenObj = GameObject::Instantiate();
 	_pInvenObj->AddComponent(_pInven);
 	_pInven->GetGameObject()->SetActive(false);
@@ -467,17 +466,6 @@ void Player::OnAnimationEvent(std::string str) noexcept
 			}
 		}
 	}
-}
-
-void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
-{
-	if(unEquid != nullptr)
-		_tStat->_fDef -= unEquid->defense;
-	_tStat->_fDef += equid->defense;
-
-	if (unEquid != nullptr)
-		_tStat->_fDamage -= unEquid->damagemin;
-	_tStat->_fDamage += equid->damagemin;
 }
 
 void Player::DrinkPotion(int value)

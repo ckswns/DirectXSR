@@ -8,7 +8,10 @@
 #include "Slot.h"
 RejuvenationPotion::RejuvenationPotion() noexcept
 {
-	_tInvenItem = new ITEMDATA();
+	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::POTION,50);
+	_tInvenItem->_eitemID = (int)ITEM_ID::REJUVENATION;
+	_tInvenItem->_strName = "Rejuvenation Potion";
+	_tInvenItem->_iValue = 20;
 }
 
 void RejuvenationPotion::Start(void) noexcept
@@ -38,7 +41,7 @@ void RejuvenationPotion::Start(void) noexcept
 
 	Animation* ani = new Animation(FrameTime, TList, false);
 	ani->SetMaterial(material);
-	pAnimator->InsertAnimation(_tInvenItem->name, ani);
+	pAnimator->InsertAnimation(_tInvenItem->_strName, ani);
 
 	TList.clear();
 	FrameTime.clear();

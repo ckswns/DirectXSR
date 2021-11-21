@@ -8,7 +8,10 @@
 #include "Slot.h"
 PlateArmor::PlateArmor() noexcept
 {
-	_tInvenItem = new ITEMDATA();
+	_tInvenItem = new INVENITEMINFO((int)Slot::SLOTTYPE::BODY,100);
+	_tInvenItem->_eitemID = (int)ITEM_ID::EQUIP;
+	_tInvenItem->_strName = "Plate Armor";
+	_tInvenItem->_iValue = 500;
 }
 
 void PlateArmor::Start(void) noexcept
@@ -38,7 +41,7 @@ void PlateArmor::Start(void) noexcept
 
 	Animation* ani = new Animation(FrameTime, TList, false);
 	ani->SetMaterial(material);
-	pAnimator->InsertAnimation(_tInvenItem->name, ani);
+	pAnimator->InsertAnimation(_tInvenItem->_strName, ani);
 
 	TList.clear();
 	FrameTime.clear();

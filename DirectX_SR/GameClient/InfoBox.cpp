@@ -9,8 +9,8 @@
 using namespace ce::UI;
 using namespace ce::CE_MATH;
 
-InfoBox::InfoBox(Slot::SLOTTYPE eType, bool isStoreItem)
-	: _eType(eType), _bStore(isStoreItem)
+InfoBox::InfoBox(Slot::SLOTTYPE eType)
+	: _eType(eType)
 {
 }
 
@@ -161,16 +161,8 @@ void InfoBox::Start(void) noexcept
 	obj = GameObject::Instantiate();
 	obj->GetTransform()->SetParent(gameObject->GetTransform());
 	int i = ce::CE_MATH::Random(0, 3);
-	std::string strGold;
-	if (_bStore)
-	{
-		strGold = "구매가격: " + std::to_string(_data.buygold) + 'G';
-	}
-	else
-	{
-		strGold = "판매가격: " + std::to_string(_data.sellgold) + 'G';
-	}
-	_pTex[4] = static_cast<Text*>(obj->AddComponent(new UI::Text(strGold.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+	std::string strSellgold = "판매가격: " + std::to_string(_data.sellgold) + 'G';
+	_pTex[4] = static_cast<Text*>(obj->AddComponent(new UI::Text(strSellgold.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
 	rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 	rt->SetWidth(200);
 	rt->SetHeight(30);
@@ -194,19 +186,3 @@ void InfoBox::MissingItem()
 	gameObject->Destroy();
 }
 
-void InfoBox::SetStoreItem(bool b)
-{
-	if (_bStore == b) return;
-
-	_bStore = b;
-	std::string strGold;
-	if (_bStore)
-	{
-		strGold = "구매가격: " + std::to_string(_data.buygold) + 'G';
-	}
-	else
-	{
-		strGold = "판매가격: " + std::to_string(_data.sellgold) + 'G';
-	}
-	_pTex[4]->SetText(strGold.c_str());
-}

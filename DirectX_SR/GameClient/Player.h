@@ -47,7 +47,6 @@ public:		void					UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 public:		void					SetAttCollider(bool b);
 public:		void					OnAnimationEvent(std::string str) noexcept override;
 
-public:		void					EquidItem(ITEMDATA* equid, ITEMDATA* unEquid = nullptr);
 public:		void					DrinkPotion(int value);
 
 public:		float					GetAtt() { return _tStat->_fDamage; } //아이템 장착하면 아이템값까지 

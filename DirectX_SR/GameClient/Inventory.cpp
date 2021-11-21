@@ -9,13 +9,11 @@
 #include "SpriteRenderer.h"
 #include "RectTransform.h"
 #include "Text.h"
-#include "Player.h"
 
 using namespace ce::UI;
 using namespace ce::CE_MATH;
 
-Inventory::Inventory(Player* player) noexcept
-	:_pPlayer(player)
+Inventory::Inventory() noexcept
 {
 }
 
@@ -71,28 +69,19 @@ void Inventory::Update(float) noexcept
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	if (INPUT->GetKeyDown(VK_LBUTTON))
+	if (INPUT->GetKeyDown(VK_LBUTTON) || INPUT->GetKeyDown(VK_LBUTTON))
 	{
-		if (pt.x >= WINCX >> 1)
+		if (!_vecItem.empty())
 		{
-			if (!_vecItem.empty())
-			{
-				_bMovecheck = false;
-				_bItemCatchCheck = !_bItemCatchCheck;
-				if (_bItemCatchCheck)
-					ItemCatch(pt);
-				else
-					_bDropCheck = ItemDropAtMouse(pt);
-			}
-		}
-		else
-		{
+			_bItemCatchCheck = !_bItemCatchCheck;
 			if (_bItemCatchCheck)
+				ItemCatch(pt);
+			else
 				_bDropCheck = ItemDropAtMouse(pt);
 		}
 	}
-	//else if (INPUT->GetKeyDown(VK_RBUTTON) && !_bItemCatchCheck) // 커밋하기전 주석 처리
-	//	ITEMDATA* pItemInfo = UsingItem(pt);
+	else if (INPUT->GetKeyDown(VK_RBUTTON) && !_bItemCatchCheck) // 커밋하기전 주석 처리
+		INVENITEMINFO* pItemInfo = UsingItem(pt);
 
 	if (_bItemCatchCheck)
 		ItemMove();
@@ -106,11 +95,10 @@ void Inventory::Update(float) noexcept
 #ifdef _DEBUG
 	if (INPUT->GetKeyDown('l') || INPUT->GetKeyDown('L'))
 	{
-		ITEMDATA* pInvenInfo = new ITEMDATA();
+		INVENITEMINFO* pInvenInfo = new INVENITEMINFO();
 
-		/*int i = ce::CE_MATH::Random(1, 12);*/
-		int i = rand() % 11 + 1;
-		pInvenInfo->itype = i;
+		int i = ce::CE_MATH::Random(1, 12);
+		pInvenInfo->_eSlotType = i;
 
 		PickUpItems(pInvenInfo);
 	}
@@ -124,11 +112,13 @@ void Inventory::Update(float) noexcept
 
 bool Inventory::BuyItem(int Gold)
 {
-	if (_iGold < Gold)
-		return false;
-
 	_iGold -= Gold;
 
+	if (_iGold < 0)
+	{
+		_iGold = 0;
+		return false;
+	}
 	return true;
 }
 
@@ -137,32 +127,30 @@ void Inventory::ItemInfoBoxCheck(POINT pt)
 	for (size_t t = 0; t < _vecItem.size(); ++t)
 	{
 		RECT rc = _vecItem[t].second->GetItemRect();
-		if (PtInRect(&rc, pt) && !_bMovecheck)
+		if (PtInRect(&rc, pt) && !_bItemCatchCheck)
 			_vecItem[t].second->SetInfoBoxCheck(true);
 		else
 			_vecItem[t].second->SetInfoBoxCheck(false);
 	}
 }
 
-ITEMDATA* Inventory::UsingItem(POINT pt)
+INVENITEMINFO* Inventory::UsingItem(POINT pt)
 {
 	for (size_t t = 0; t < _vecItem.size(); ++t)
 	{
 		RECT rc = _vecItem[t].second->GetItemRect();
 		Slot::SLOTTYPE eType = _vecItem[t].second->GetSlotType();
-		ITEMDATA* pItemInfo = nullptr;
+		INVENITEMINFO* pItemInfo = nullptr;
 		if (PtInRect(&rc, pt))
 		{
 			if (eType == Slot::SLOTTYPE::POTION)
 			{
 #ifdef _DEBUG
 				_pItemSlotInfo = _vecItem[t].second->GetItemSlot()[0].second;
-			//	_pItemData = _vecItem[t].first;
 				_pItem = _vecItem[t].second;
 				ReCatchtoExamine(_vecSlotGroup[0][0]->GetSlot(), _vecItem[t].second->GetItemSlot()[0].second->_vPos, true);
 #else 
 				_pItemSlotInfo = _vecItem[t].second->GetItemSlot()[0];
-			//	_pItemData = _vecItem[t].first;
 				_pItem = _vecItem[t].second;
 				ReCatchtoExamine(_vecSlotGroup[0][0]->GetSlot(), _vecItem[t].second->GetItemSlot()[0]->_vPos, true);
 #endif // _DEBUG
@@ -176,10 +164,8 @@ ITEMDATA* Inventory::UsingItem(POINT pt)
 			{
 #ifdef _DEBUG
 				_pItemSlotInfo = _vecItem[t].second->GetItemSlot()[0].second;
-			//	_pItemData = _vecItem[t].first;
 #else
 				_pItemSlotInfo = _vecItem[t].second->GetItemSlot()[0];
-			//	_pItemData = _vecItem[t].first;
 #endif // _DEBUG
 				_pItem = _vecItem[t].second;
 				for (int i = 1; i < (int)Slot::SLOTTYPE::POTION; ++i)
@@ -213,14 +199,14 @@ ITEMDATA* Inventory::UsingItem(POINT pt)
 	return nullptr;
 }
 
-ITEMDATA* Inventory::Dropitem()
+INVENITEMINFO* Inventory::Dropitem()
 {
 	for (size_t t = 0; t < _vecItem.size(); ++t)
 	{
 		if (_vecItem[t].second == _pItem)
 		{
 			_vecItem[t].second->DropItemSlot();
-			ITEMDATA* ItemInfo = _vecItem[t].first;
+			INVENITEMINFO* ItemInfo = _vecItem[t].first;
 			_vecItem.erase(_vecItem.begin() + (int)t);
 			_bDropCheck = false;
 			return ItemInfo;
@@ -233,7 +219,6 @@ void Inventory::ItemCatch(POINT pt)
 {
 	_pItem = nullptr;
 	_pItemSlotInfo = nullptr;
-//	_pItemData = nullptr;
 
 	for (size_t t = 0; t < _vecItem.size(); ++t)
 	{
@@ -242,20 +227,15 @@ void Inventory::ItemCatch(POINT pt)
 
 		if (PtInRect(&rc, pt))
 		{
-			_bItemCatchCheck = true;
 			_pItem = _vecItem[t].second;
 #ifdef _DEBUG
 			_pItemSlotInfo = _vecItemslot[0].second;
-//			_pItemData = _vecItem[0].first;
 #else
 			_pItemSlotInfo = _vecItemslot[0];
-//			_pItemData = _vecItem[t].first;
 #endif // _DEBUG
 			ItemCatchExamine(pt);
 			return;
 		}
-		else
-			_bItemCatchCheck = false;
 	}
 }
 
@@ -374,22 +354,19 @@ void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 v
 	}
 }
 
-bool Inventory::PickUpItems(ITEMDATA* pInvenInfo)
+bool Inventory::PickUpItems(INVENITEMINFO* pInvenInfo)
 {
 	GameObject* pobj = GameObject::Instantiate();
 	float fx = UnsignedRandomf(400.f);
 	float fy = UnsignedRandomf(700.f);
-	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->itype, gameObject->GetTransform(), fx, fy);
+	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->_eSlotType, gameObject->GetTransform(), fx, fy);
 	pobj->AddComponent(pSlot);
-	pobj->SetDontDestroy(true);
 	_vecItem.emplace_back(pInvenInfo, pSlot);
 	_pItem = pSlot;
 #ifdef _DEBUG
 	_pItemSlotInfo = pSlot->GetItemSlot()[0].second;
-//	_pItemData = pInvenInfo;
 #else
 	_pItemSlotInfo = pSlot->GetItemInfo(0);
-//	_pItemData = pInvenInfo;
 #endif // _DEBUG
 
 	return ItemEating();
@@ -502,7 +479,6 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItem = _pPriveItem;
 							_bItemCatchCheck = true;
 							_pItemSlotInfo = _pPriveSlotInfo;
-						//	_pItemData = _pPriveItemData;
 							_bSwitchingcheck = false;
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
 							return false;
@@ -542,7 +518,6 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItem->SetInvenPosition(vpos);
 							_pItem = _pPriveItem;
 							_pItemSlotInfo = _pPriveSlotInfo;
-						//	_pItemData = _pPriveItemData;
 							_bItemCatchCheck = true;
 							_bSwitchingcheck = false;
 							return false;
@@ -574,7 +549,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 	_bItemCatchCheck = false;
 
 	RECT rc = {};
-	rc.left = WINCX >> 1;
+	rc.left = WINCX - static_cast<Image*>(gameObject->GetComponent(COMPONENT_ID::IMAGE))->GetTexture()->Width();
 	rc.top = 0;
 	rc.right = WINCX;
 	rc.bottom = static_cast<Image*>(gameObject->GetComponent(COMPONENT_ID::IMAGE))->GetTexture()->Height();
@@ -624,8 +599,8 @@ void Inventory::ItemMove()
 
 	if (_pItem != nullptr)
 	{
-		_bMovecheck = true;
 		_pItem->setMousePosition(D3DXVECTOR3(pt.x, pt.y, 0));
+		return;
 	}
 }
 
@@ -649,7 +624,6 @@ SLOTINFO* Inventory::ItemSwitching(std::vector<SLOTINFO*> InvenSlot, POINT pt)
 					{
 						_pPriveItem = _vecItem[t].second;
 						_pPriveSlotInfo = _vecItem[t].second->GetItemSlot()[0].second;
-						//_pPriveItemData = _vecItem[t].first;
 						ReCatchtoExamine(InvenSlot, _pPriveSlotInfo->_vPos, false);
 						_bSwitchingcheck = true;
 						return _vecItem[t].second->GetItemSlot()[0].second;
@@ -659,7 +633,6 @@ SLOTINFO* Inventory::ItemSwitching(std::vector<SLOTINFO*> InvenSlot, POINT pt)
 					{
 						_pPriveItem = _vecItem[t].second;
 						_pPriveSlotInfo = _vecItem[t].second->GetItemSlot()[0];
-						//_pPriveItemData = _vecItem[t].first;
 						ReCatchtoExamine(InvenSlot, _pPriveSlotInfo->_vPos, false);
 						_bSwitchingcheck = true;
 						return _vecItem[t].second->GetItemSlot()[0];
@@ -673,22 +646,16 @@ SLOTINFO* Inventory::ItemSwitching(std::vector<SLOTINFO*> InvenSlot, POINT pt)
 	return nullptr;
 }
 
-ITEMDATA* Inventory::EquipItemCheck(std::vector<std::pair<ITEMDATA*, ItemSlot*>> vItem, SLOTINFO* vslotinfo)
+INVENITEMINFO* Inventory::EquipItemCheck(std::vector<std::pair<INVENITEMINFO*, ItemSlot*>> vItem, SLOTINFO* vslotinfo)
 {
 	for (auto& iter : _vecItem)
 	{
 #ifdef _DEBUG
 		if (iter.second->GetItemSlot()[0].second->_vPos == vslotinfo->_vPos)
-		{
-		//	_pPlayer->EquidItem(iter.first, _pItemData);
 			return iter.first;
-		}
 #else
-		if (iter.second->GetItemSlot()[0]->_vPos == vslotinfo->_vPos) 
-		{
-			//	_pPlayer->EquidItem(iter.first, _pItemData);
+		if (iter.second->GetItemSlot()[0]->_vPos == vslotinfo->_vPos)
 			return iter.first;
-		}
 #endif // _DEBUG
 	}
 	return nullptr;
