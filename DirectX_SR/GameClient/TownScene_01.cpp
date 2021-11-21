@@ -32,7 +32,6 @@
 #include "Diablo.h"
 #include "FadeController.h"
 
-#include "Wraith.h"
 TownScene_01::TownScene_01(void) noexcept
 {
 }
@@ -44,7 +43,7 @@ bool TownScene_01::Init(void) noexcept
 
 	Terrain* terrain = new Terrain(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth") + 1,
 		INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapHeight") + 1, 1);
-	{	
+	{
 		terrain->Open(D3D9DEVICE->GetDevice());
 
 		GameObject* obj;
@@ -65,7 +64,7 @@ bool TownScene_01::Init(void) noexcept
 
 		mat->SetTextures(vt);
 		vt.clear();
-		
+
 		mat = tr->GetMaterialPTR();
 
 		for (int i = 1; i <= 5; i++)
@@ -103,7 +102,7 @@ bool TownScene_01::Init(void) noexcept
 				continue;
 
 			//obj->AddComponent(new CubeObject(ASSETMANAGER->GetTextureData(filePath.c_str())));
-			
+
 			if (stof(sz) < stof(sx))
 			{
 				obj->AddComponent(new PlaneRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Terrain\\barricade.png"), stof(sx), 1));
@@ -119,7 +118,7 @@ bool TownScene_01::Init(void) noexcept
 			tr->SetWorldPosition(stof(px), stof(py), stof(pz));
 			if (stof(sz) > stof(sx))
 			{
-				if(INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth") / 2 < stof(px))
+				if (INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Terrain", "Terrain", "MapWidth") / 2 < stof(px))
 					tr->SetLocalEulerAngle(0, D3DXToRadian(90), 0);
 				else
 					tr->SetLocalEulerAngle(0, D3DXToRadian(-90), 0);
@@ -230,25 +229,24 @@ bool TownScene_01::Init(void) noexcept
 	GameObject* pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StoreNPC());
 	pGameObj->GetTransform()->SetWorldPosition(10, 0.5, 10);
-
 	//for (int i = 0; i < 50; i++)
 	//{
 	//	obj = GameObject::Instantiate();
 
-		D3DXVECTOR3 pos = pPlayerObj->GetTransform()->GetWorldPosition();
+	//	D3DXVECTOR3 pos = pPlayerObj->GetTransform()->GetWorldPosition();
 
-		pos.x += Random::GetValue(20, 3);
-		pos.x -= Random::GetValue(20, 3);
-		pos.y = 0.7f;
-		pos.z += Random::GetValue(20, 3);
-		pos.z -= Random::GetValue(20, 3);
-		obj->AddComponent(new Wraith(new PathFinding(_pNaviMesh), pos));
-	}
+	//	pos.x += Random::GetValue(20, 3);
+	//	pos.x -= Random::GetValue(20, 3);
+	//	pos.y = 0.7f;
+	//	pos.z += Random::GetValue(20, 3);
+	//	pos.z -= Random::GetValue(20, 3);
+	//	obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
+	//}
 
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new Diablo());
-	obj->GetTransform()->SetWorldPosition(40, 0.7f, 40);
-
+	//obj = GameObject::Instantiate();
+	//obj->AddComponent(new Diablo(new PathFinding(_pNaviMesh), player));
+	//obj->GetTransform()->SetWorldPosition(40, 0.5f, 40);
+	//obj->GetComponent<Diablo>(COMPONENT_ID::BEHAVIOUR)->IntroDone();
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\TownBGM.mp3"));
 
 	return true;
