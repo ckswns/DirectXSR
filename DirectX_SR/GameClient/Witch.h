@@ -29,15 +29,18 @@ public:		void			GetHit(int damage) noexcept override;
 
 public:		void			OnAnimationEvent(std::string str) noexcept override;
 
-private:	D3DXVECTOR3		_bornPosition;
-private:	Player* _player;
-private:	PathFinding* _pathFinder;
+private:	D3DXVECTOR3			_bornPosition;
+private:	Player*				_player;
+private:	PathFinding*		_pathFinder;
+		
+private:	AudioSource*		_attackAudio;
+private:	AudioSource*		_getHitAudio;
+private:	AudioSource*		_deadAudio;
+private:	AudioSource*		_hitEffectAudio;
 
-private:	AudioSource* _attackAudio;
-private:	AudioSource* _getHitAudio;
-private:	AudioSource* _deadAudio;
-private:	AudioSource* _hitEffectAudio;
-
-private:	bool			_dirtyState = false;
-private:	float			_fDeltaTime = 0;
+private:	bool				_dirtyState = false;
+private:	float				_fDeltaTime = 0;
+private:	bool				_SkillCheck = false;
+private:	D3DXVECTOR3			_vPirvPlayerPos;
+private:	D3DXVECTOR3			_direction;
 };

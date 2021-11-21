@@ -178,6 +178,7 @@
     <ClInclude Include="Dungeon_01.h" />
     <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FSMState.h" />
     <ClInclude Include="Game.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="Dungeon_01.cpp" />
     <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClient.cpp" />

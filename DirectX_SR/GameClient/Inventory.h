@@ -20,6 +20,7 @@ public: virtual ~Inventory() noexcept;
 
 public:	void Start(void) noexcept override;
 public: void Update(float) noexcept override;
+public: void Close();
 
 public: bool				PickUpItems(ITEMDATA* pInvenInfo); // 아이템 먹는 함수. 가방에 자리 없으면 fase 반환
 public: void				PickUpGold(int Gold) { _iGold += Gold; } // 골드 줍는 함수
@@ -59,11 +60,11 @@ private: std::vector<std::pair<GameObject*, SLOTINFO*>>			_vecItemslot;
 private: std::vector<SLOTINFO*>									_vecItemslot;
 #endif // _DEBUG
 
-private: SLOTINFO* _pItemSlotInfo;
-private: ItemSlot* _pItem;
-private: Examine* _pExamine;
-private: SLOTINFO* _pPriveSlotInfo;
-private: ItemSlot* _pPriveItem;
+private: SLOTINFO*												_pItemSlotInfo;
+private: ItemSlot*												_pItem;
+private: Examine*												_pExamine;
+private: SLOTINFO*												_pPriveSlotInfo;
+private: ItemSlot*												_pPriveItem;
 private: bool													_bSwitchingcheck = false;
 private: bool													_bDropCheck = false;
 private: int													_iGold;

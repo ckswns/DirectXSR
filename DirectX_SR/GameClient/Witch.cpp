@@ -8,7 +8,6 @@
 #include "BoxCollider.h"
 #include "SphereCollider.h"
 #include "Transform.h"
-#include "Camera.h"
 #include "RigidBody.h"
 #include "Player.h"
 #include "Vector3.h"
@@ -16,6 +15,7 @@
 #include "AudioSource.h"
 #include "AudioAsset.h"
 #include "MonsterHPBar.h"
+#include "FireBall.h"
 
 Witch::Witch(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept :
 	_pathFinder(pf),
@@ -43,9 +43,9 @@ void Witch::Start(void) noexcept
 
 	for (int i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 9; j++)
 		{
-			int index = i * 8 + j;
+			int index = i * 9 + j;
 
 			frameTime.push_back(0.1f);
 			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Idle\\" + std::to_string(index) + ".png"));
@@ -61,9 +61,9 @@ void Witch::Start(void) noexcept
 
 	for (int i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 9; j++)
 		{
-			int index = i * 10 + j ;
+			int index = i * 9 + j ;
 
 			frameTime.push_back(0.1f);
 			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Walk\\" + std::to_string(index) + ".png"));
@@ -79,9 +79,9 @@ void Witch::Start(void) noexcept
 
 	for (int i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 14; j++)
+		for (int j = 0; j < 8; j++)
 		{
-			int index = i * 14 + j;
+			int index = i * 8 + j;
 			frameTime.push_back(0.1f);
 			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Attack\\" + std::to_string(index) + ".png"));
 		}
@@ -89,7 +89,7 @@ void Witch::Start(void) noexcept
 		Animation* ani = new Animation(frameTime, frameTex, false);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 		_animator->InsertAnimation("Attack_" + std::to_string(i), ani);
-		ani->AddEvent(Animation::EventData(9, "attack", this->gameObject));
+		ani->AddEvent(Animation::EventData(6, "attack", this->gameObject));
 
 		frameTime.clear();
 		frameTex.clear();
@@ -97,9 +97,9 @@ void Witch::Start(void) noexcept
 
 	for (int i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 20; j++)
+		for (int j = 0; j < 17; j++)
 		{
-			int index = i * 20 + j;
+			int index = i * 17 + j;
 			frameTime.push_back(0.1f);
 			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Death\\" + std::to_string(index) + ".png"));
 		}
@@ -115,17 +115,17 @@ void Witch::Start(void) noexcept
 
 	for (int i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < 5; j++)
 		{
-			int index = i * 4 + j;
-			frameTime.push_back(0.1f);
-			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Hit\\" + std::to_string(index) + ".png"));
+			int index = i * 5 + j;
+			frameTime.push_back(0.2f);
+			frameTex.push_back(ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Witch\\Skill\\" + std::to_string(index) + ".png"));
 		}
 
 		Animation* ani = new Animation(frameTime, frameTex, false);
 		ani->SetMaterial(_spriteRenderer->GetMaterialPTR());
 
-		_animator->InsertAnimation("Hit_" + std::to_string(i), ani);
+		_animator->InsertAnimation("Skill_" + std::to_string(i), ani);
 
 		frameTime.clear();
 		frameTex.clear();
@@ -190,7 +190,14 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 	{
 	case Actor::State::IDLE:
 
-		if (dis.Length() < 0.5f)
+		if (dis.Length() < 0.8f && dis.Length() > 0.6f && !_SkillCheck)
+		{
+			 _state = Actor::State::ATTAK;
+			 _dirtyState = true;
+			 _SkillCheck = true;
+			 return;
+		}
+		else if (dis.Length() < 0.4f)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
@@ -207,8 +214,41 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 		break;
 	case Actor::State::ATTAK:
 		if (_animator->GetCurrentAnimationEnd())
-			_state = Actor::State::IDLE;
+		{
+			if (_SkillCheck)
+			{
+				// FireBall »ý¼º
+				Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
 
+				if (dis.Length() > _data.aggroDistance)
+				{
+					_pathFinder->FindPath(transform->GetWorldPosition(), _bornPosition);
+				}
+
+				std::list<Node*>& path = const_cast<std::list<Node*>&>(_pathFinder->GetPath());
+
+				if (path.begin() == path.end())
+					return;
+
+				std::list<Node*>::iterator iter = path.begin();
+
+				D3DXVECTOR3 vDir = (*iter)->GetPos() - transform->GetWorldPosition();
+				vDir.y = 0;
+
+				Direction dir = GetDirect(transform->GetWorldPosition(), (*iter)->GetPos());
+				int iDir = static_cast<int>(dir);
+
+				//if (_dir != dir)
+				//	_animator->SetAnimation("Walk_" + std::to_string(iDir));
+
+				_dir = dir;
+
+				GameObject* obj = GameObject::Instantiate();
+				obj->AddComponent(new FireBall(_dir, _direction, transform->GetWorldPosition()));
+			}
+			_state = Actor::State::IDLE;
+			_SkillCheck = false;
+		}
 		break;
 	case Actor::State::HIT:
 		_fDeltaTime += fElapsedTime;
@@ -237,11 +277,17 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 		}
 		break;
 	case Actor::State::MOVE:
-		if (dis.Length() < 0.3f)
+		if (dis.Length() > 0.8f && dis.Length() < 1.f && !_SkillCheck)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
-
+			_SkillCheck = true;
+			return;
+		}
+		else if (dis.Length() < 0.4f)
+		{
+			_state = Actor::State::ATTAK;
+			_dirtyState = true;
 			return;
 		}
 		else if (dis.Length() <= _data.aggroDistance)
@@ -331,28 +377,37 @@ void Witch::LateUpdate(float fElapsedTime) noexcept
 	switch (_state)
 	{
 	case Actor::State::IDLE:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_0")->GetTexture()[0]);
 		_animator->SetAnimation("Idle_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;
 	case Actor::State::MOVE:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Walk_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Walk_0")->GetTexture()[0]);
 		_animator->SetAnimation("Walk_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;
 	case Actor::State::ATTAK:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Attack_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
-		_animator->SetAnimation("Attack_" + std::to_string(static_cast<int>(_dir)));
+		if (_SkillCheck)
+		{
+			_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Skill_0")->GetTexture()[0]);
+			_animator->SetAnimation("Skill_" + std::to_string(static_cast<int>(_dir)));
+			_vPirvPlayerPos = _player->GetTransform()->GetWorldPosition();
+			_direction = _vPirvPlayerPos - transform->GetWorldPosition();
+			D3DXVec3Normalize(&_direction, &_direction);
+		}
+		else
+		{
+			_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Attack_0")->GetTexture()[0]);
+			_animator->SetAnimation("Attack_" + std::to_string(static_cast<int>(_dir)));
+		}
 		_animator->Play();
 		_attackAudio->Play();
 		break;
 	case Actor::State::HIT:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Hit_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
-		_animator->SetAnimation("Hit_" + std::to_string(static_cast<int>(_dir)));
-		_animator->Play();
+		_animator->Stop();
 		break;
 	case Actor::State::DIE:
-		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Death_" + std::to_string(static_cast<int>(_dir)))->GetTexture()[0]);
+		_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Death_0")->GetTexture()[0]);
 		_animator->SetAnimation("Death_" + std::to_string(static_cast<int>(_dir)));
 		_animator->Play();
 		break;
@@ -426,7 +481,7 @@ void Witch::OnAnimationEvent(std::string str) noexcept
 {
 	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
 
-	if (dis.Length() < 0.7f)
+	if (dis.Length() < 0.4f)
 	{
 		_player->GetHit(Random::GetValue(_data.damageMax, _data.damageMin), transform->GetWorldPosition());
 		_hitEffectAudio->Play();

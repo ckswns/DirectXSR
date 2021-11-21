@@ -259,6 +259,9 @@
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory\InfoBox">
       <UniqueIdentifier>{625cf245-3dab-44bd-ac96-ec9a20475b93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Wraith\FireBall">
+      <UniqueIdentifier>{6970a1ee-bda6-4611-9946-0751f616f846}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -504,6 +507,9 @@
     <ClInclude Include="InfoBox.h">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\InfoBox</Filter>
     </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Wraith\FireBall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -715,6 +721,9 @@
     </ClCompile>
     <ClCompile Include="InfoBox.cpp">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\InfoBox</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Wraith\FireBall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
