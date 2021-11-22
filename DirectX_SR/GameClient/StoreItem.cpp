@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "StoreItem.h"
 #include "StoreWnd.h"
+
 StoreItem::StoreItem(Slot::SLOTTYPE eType, StoreWnd* store) noexcept
 	:ItemSlot(eType, nullptr), _pStore(store), _InfoVisible(false)
 {
@@ -9,8 +10,7 @@ StoreItem::StoreItem(Slot::SLOTTYPE eType, StoreWnd* store) noexcept
 void StoreItem::Start(void) noexcept
 {
 	ItemSlot::Start();
-	_pInfoBox->SetStoreItem(true);
-	
+	_pInfoBox->SetStoreItem(true);	
 }
 
 void StoreItem::OnMouseDown(void) noexcept

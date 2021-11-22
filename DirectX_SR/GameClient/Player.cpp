@@ -86,12 +86,12 @@ void Player::Start(void) noexcept
 	_pDamagedSound[1] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Damaged2.wav");
 	_pDamagedSound[2] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Damaged3.wav");
 
-	_pCollider = new SphereCollider(0.3f, "hitbox");
+	_pCollider = new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.3f), D3DXVECTOR3(0, 0.3f, 0), "hitbox");
 	gameObject->AddComponent(_pCollider);
 
 	_pAttCollider = new SphereCollider(1, "Attack");
 	gameObject->AddComponent(_pAttCollider);
-	_pAttCollider->SetEnable(false);
+	//_pAttCollider->SetEnable(false);
 
 	gameObject->AddComponent(new Rigidbody());
 
@@ -129,6 +129,12 @@ void Player::Update(float fElapsedTime) noexcept
 	_pFSM[_eCurState]->Update(fElapsedTime);
 
 	_tStat->Recovery(_fRecovery * fElapsedTime);
+}
+
+void Player::LateUpdate(float fElapsedTime) noexcept
+{
+	if (_bAttack == true)
+		_bAttack = false;
 }
 
 void Player::OnDestroy(void) noexcept
@@ -180,16 +186,16 @@ void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
 			_bCollWithObstacle = true;
 		}
 	}
-	if (_pAttCollider->GetEnable()) 
-	{
-		if (other->GetTag() == "Monster" && mine->GetTag() == "Attack")
-		{
-			Actor* actor = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
+	//if (_pAttCollider->GetEnable()) 
+	//{
+	//	if (other->GetTag() == "Monster" && mine->GetTag() == "Attack")
+	//	{
+	//		Actor* actor = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
 
-			if(actor != nullptr)
-				actor->GetHit((int)_tStat->_fDamage);
-		}
-	}
+	//		if(actor != nullptr)
+	//			actor->GetHit((int)_tStat->_fDamage);
+	//	}
+	//}
 }
 
 void Player::OnCollisionStay(Collider* mine, Collider* other) noexcept
@@ -202,13 +208,18 @@ void Player::OnCollisionStay(Collider* mine, Collider* other) noexcept
 			_bCollWithObstacle = true;
 		}
 	}
-	//if (_pAttCollider->GetEnable()) {
-	//	if (other->GetTag() == "Monster" && mine->GetTag() == "Attack")
-	//	{
-	//		other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR)->GetHit(_tStat->_fDamage);
-	//	}
-	//}
 
+	if (_bAttack)
+	{
+		if (other->GetTag() == "Monster" && mine->GetTag() == "Attack")
+		{
+			_bAttack = false;
+			Actor* actor = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
+
+			if (actor != nullptr)
+				actor->GetHit((int)_tStat->_fDamage);
+		}
+	}
 }
 
 void Player::OnCollisionExit(Collider* mine, Collider* other) noexcept
@@ -223,8 +234,8 @@ void Player::InitAnimation(SpriteRenderer* sr)
 	Material* material = sr->GetMaterialPTR();
 	Animation* ani;
 
-	for (int folder = 0; folder < 15; folder += 2) {
-
+	for (int folder = 0; folder < 15; folder += 2) 
+	{
 		//Stand
 		for (int i = 0; i < 8; i++)
 		{
@@ -447,22 +458,24 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 
 void Player::SetAttCollider(bool b)
 {
-	_pAttCollider->SetEnable(b);
+	//_pAttCollider->SetEnable(b);
 }
 
 void Player::OnAnimationEvent(std::string str) noexcept
 {
-	if(_bFPV)
-		_pAttCollider->SetEnable(true);
+	if (_bFPV)
+	{
+		_bAttack = true;
+	}
 	else
 	{
-		if (_eCurState == PLAYER_ATTACK) 
+		if (_eCurState == PLAYER_ATTACK)
 		{
 			Transform* Target = _pFSM[_eCurState]->GetTargetTrans();
-			if (Target != nullptr) 
+			if (Target != nullptr)
 			{
 				Actor* actor = Target->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
-				if(actor != nullptr)	
+				if (actor != nullptr)
 					actor->GetHit((int)_tStat->_fDamage);
 			}
 		}
