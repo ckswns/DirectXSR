@@ -274,6 +274,12 @@
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory\InfoBox">
       <UniqueIdentifier>{625cf245-3dab-44bd-ac96-ec9a20475b93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\00. Scene\03.Dungeon\Dungeon_02">
+      <UniqueIdentifier>{a783f9c7-d50a-45d8-9ac2-d4abb3952201}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\00. Scene\03.Dungeon\Mephisto_Chamber">
+      <UniqueIdentifier>{f6e0e11c-76fd-4b03-a599-91ecddb9d6ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -534,6 +540,12 @@
     <ClInclude Include="InfoBox.h">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\InfoBox</Filter>
     </ClInclude>
+    <ClInclude Include="Dungeon_02.h">
+      <Filter>00. Game\00. Scene\03.Dungeon\Dungeon_02</Filter>
+    </ClInclude>
+    <ClInclude Include="Mephisto_Chamber.h">
+      <Filter>00. Game\00. Scene\03.Dungeon\Mephisto_Chamber</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -760,6 +772,12 @@
     </ClCompile>
     <ClCompile Include="InfoBox.cpp">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\InfoBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Dungeon_02.cpp">
+      <Filter>00. Game\00. Scene\03.Dungeon\Dungeon_02</Filter>
+    </ClCompile>
+    <ClCompile Include="Mephisto_Chamber.cpp">
+      <Filter>00. Game\00. Scene\03.Dungeon\Mephisto_Chamber</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
