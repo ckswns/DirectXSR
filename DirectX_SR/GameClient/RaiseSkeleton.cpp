@@ -12,6 +12,7 @@ RaiseSkeleton::RaiseSkeleton() noexcept
         GameObject* pSkeleton = GameObject::Instantiate();
         Skeleton* sk = new Skeleton();
         pSkeleton->AddComponent(sk);
+        pSkeleton->SetDontDestroy(true);
         pSkeleton->SetActive(false);
         _Skeletones.push_back(sk);
    }

@@ -30,11 +30,9 @@ void Item::Start(void) noexcept
 
 	for (int i = 0; i < 17; i++)
 	{
-		char str[256];
-		strPath += ("% d.png", i);
-		sprintf_s(str, 256, strPath.c_str());
+		std::string aniPath = strPath + std::to_string(i) + ".png";
 
-		TList.push_back(ASSETMANAGER->GetTextureData(str));
+		TList.push_back(ASSETMANAGER->GetTextureData(aniPath));
 		FrameTime.push_back(0.05f);
 	}
 
@@ -44,7 +42,7 @@ void Item::Start(void) noexcept
 
 	D3DXVECTOR3 pos;
 	pos.x = CE_MATH::Random(_vPlayerPos.x - 1, _vPlayerPos.x + 1);
-	pos.y =3;
+	pos.y = 1;
 	pos.z = CE_MATH::Random(_vPlayerPos.z - 1, _vPlayerPos.z + 1);
 
 	GetTransform()->SetWorldPosition(pos);
