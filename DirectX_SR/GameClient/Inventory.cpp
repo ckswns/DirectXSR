@@ -290,7 +290,10 @@ void Inventory::ItemCatchExamine(POINT pt)
 		{
 			SLOTINFO* pItem = _pItem->GetItemInfo(0);
 			ReCatchtoExamine(vSlot, pItem->_vPos, true);
-			_pPlayer->EquidItem(nullptr, _pItem->GetItemData());
+
+			if(iter[0]->GetSlotType() != Slot::SLOTTYPE::NORMAL)
+				_pPlayer->EquidItem(nullptr, _pItem->GetItemData());
+
 			return;
 		}
 	}
