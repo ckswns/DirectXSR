@@ -6,14 +6,14 @@
 #include "Animator.h"
 #include "Transform.h"
 
-Item::Item(ITEMDATA* item, D3DXVECTOR3 vPos) noexcept
-	:_tInvenItem(item), _vPos(vPos)
+Item::Item(ITEMDATA* item, D3DXVECTOR3 vPlayerPos) noexcept
+	:_tInvenItem(item), _vPlayerPos(vPlayerPos)
 {
 }
 void Item::Start(void) noexcept
 {
 	gameObject->SetTag(GameObjectTag::OBJECT);
-	gameObject->SetName(_tInvenItem->name);
+	gameObject->SetName("Item");
 
 	gameObject->AddComponent(new SphereCollider(0.5f));
 	
@@ -42,7 +42,12 @@ void Item::Start(void) noexcept
 	ani->SetMaterial(material);
 	pAnimator->InsertAnimation(_tInvenItem->name, ani);
 
-	GetTransform()->SetWorldPosition(_vPos);
+	D3DXVECTOR3 pos;
+	pos.x = CE_MATH::Random(_vPlayerPos.x - 1, _vPlayerPos.x + 1);
+	pos.y =3;
+	pos.z = CE_MATH::Random(_vPlayerPos.z - 1, _vPlayerPos.z + 1);
+
+	GetTransform()->SetWorldPosition(pos);
 
 	TList.clear();
 	FrameTime.clear();
