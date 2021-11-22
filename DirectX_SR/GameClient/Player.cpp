@@ -53,6 +53,8 @@ void Player::SetMap(PathFinding* pf) noexcept
 	}
 
 	_pPathFinding = pf;
+
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding,_pTrans->GetWorldPosition());
 }
 
 void Player::Start(void) noexcept
@@ -65,7 +67,7 @@ void Player::Start(void) noexcept
 	gameObject->SetDontDestroy(true);
 	gameObject->SetTag(GameObjectTag::PLAYER);
 
-	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
+	_pTrans = GetTransform();
 	_pInputHandler->Start();
 
 	//인벤토리 
@@ -74,7 +76,8 @@ void Player::Start(void) noexcept
 	_pInvenObj->AddComponent(_pInven);
 	_pInven->GetGameObject()->SetActive(false);
 	_pInvenObj->SetDontDestroy(true);
-	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding);
+
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding, _pTrans->GetWorldPosition());
 
 	gameObject->AddComponent(new AudioListener());
 	_pAudioSource = new AudioSource();
