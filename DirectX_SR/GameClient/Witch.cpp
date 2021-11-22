@@ -194,7 +194,7 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 	{
 	case Actor::State::IDLE:
 
-		if (dis.Length() < 0.8f && dis.Length() > 0.6f && !_SkillCheck)
+		if (dis.Length() < 0.7f && dis.Length() > 0.6f && !_SkillCheck)
 		{
 			 _state = Actor::State::ATTAK;
 			 _dirtyState = true;
@@ -260,7 +260,7 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 		}
 		break;
 	case Actor::State::MOVE:
-		if (dis.Length() > 0.8f && dis.Length() < 1.f && !_SkillCheck)
+		if (dis.Length() < 0.7f && dis.Length() > 0.6f && !_SkillCheck)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
