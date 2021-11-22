@@ -14,7 +14,7 @@ void MouseBtnUI::Start(void) noexcept
 	_pImg = static_cast<Image*>(gameObject->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Skill\\30.png"))));
 	Button<MouseBtnUI>* btn = static_cast<Button<MouseBtnUI>*>(gameObject->AddComponent(new Button<MouseBtnUI>(this)));
 	btn->onMouseDown += &MouseBtnUI::BtnClick;
-    gameObject->SetSortOrder(1);
+    gameObject->SetSortOrder(3);
     gameObject->SetDontDestroy(true);
 
     _pBtnAttack = GameObject::Instantiate();
@@ -23,7 +23,7 @@ void MouseBtnUI::Start(void) noexcept
     btn = static_cast<Button<MouseBtnUI>*>(_pBtnAttack->AddComponent(new Button<MouseBtnUI>(this)));
     btn->onMouseDown += &MouseBtnUI::SetAttack;
     _pBtnAttack->SetActive(false);
-    _pBtnAttack->SetSortOrder(2);
+    _pBtnAttack->SetSortOrder(4);
     _pBtnAttack->SetDontDestroy(true);
 
     _pBtnRaise = GameObject::Instantiate();
@@ -32,7 +32,7 @@ void MouseBtnUI::Start(void) noexcept
     btn = static_cast<Button<MouseBtnUI>*>(_pBtnRaise->AddComponent(new Button<MouseBtnUI>(this)));
     btn->onMouseUp += &MouseBtnUI::SetRaise;
     _pBtnRaise->SetActive(false);
-    _pBtnRaise->SetSortOrder(2);
+    _pBtnRaise->SetSortOrder(4);
     _pBtnRaise->SetDontDestroy(true);
 
     _pBtnSpear = GameObject::Instantiate();
@@ -41,7 +41,7 @@ void MouseBtnUI::Start(void) noexcept
     btn = static_cast<Button<MouseBtnUI>*>(_pBtnSpear->AddComponent(new Button<MouseBtnUI>(this)));
     btn->onMouseUp += &MouseBtnUI::SetSpear;
     _pBtnSpear->SetActive(false);
-    _pBtnSpear->SetSortOrder(2);
+    _pBtnSpear->SetSortOrder(4);
     _pBtnSpear->SetDontDestroy(true);
 
     _pBtnPoison = GameObject::Instantiate();
@@ -50,7 +50,7 @@ void MouseBtnUI::Start(void) noexcept
     btn = static_cast<Button<MouseBtnUI>*>(_pBtnPoison->AddComponent(new Button<MouseBtnUI>(this)));
     btn->onMouseUp += &MouseBtnUI::SetPoison;
     _pBtnPoison->SetActive(false);
-    _pBtnPoison->SetSortOrder(2);
+    _pBtnPoison->SetSortOrder(4);
     _pBtnPoison->SetDontDestroy(true);
 
     if (!_bLeft)
