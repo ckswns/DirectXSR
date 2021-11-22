@@ -138,6 +138,17 @@ void Slot::Update(float) noexcept
 {
 }
 
+void Slot::AddItem(ItemSlot* pItem)
+{
+	if (_vecItemslot.empty())
+		_vecItemslot.emplace_back(pItem);
+	else
+	{
+		_vecItemslot.pop_back();
+		_vecItemslot.emplace_back(pItem);
+	}
+}
+
 void Slot::RemoveSlot()
 {
 	gameObject->SetDontDestroy(false);

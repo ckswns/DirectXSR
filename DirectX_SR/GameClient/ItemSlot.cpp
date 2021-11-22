@@ -7,11 +7,12 @@
 
 using namespace ce::UI;
 
-ItemSlot::ItemSlot(Slot::SLOTTYPE eType, Transform* pParent, float fx, float fy) noexcept
-	: _eType(eType)
+ItemSlot::ItemSlot(ITEMDATA* data, Transform* pParent, float fx, float fy) noexcept
 {
 	_vStartPos = D3DXVECTOR3(fx, fy, 0);
 	_pParent = pParent;
+	_ItemData = data;
+	_eType = (Slot::SLOTTYPE)_ItemData->itype;
 	switch (_eType)
 	{
 	case Slot::SLOTTYPE::HEAD:

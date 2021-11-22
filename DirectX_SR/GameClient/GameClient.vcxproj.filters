@@ -268,11 +268,14 @@
     <Filter Include="00. Game\01. GameObject\NPC\Store\StoreWnd">
       <UniqueIdentifier>{cac9928a-e6da-4f20-89be-a50985209d5d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Game\01. GameObject\Actor\Monster\Wraith">
-      <UniqueIdentifier>{37a17932-2658-450a-a33d-820805d1c16f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Game\01. GameObject\Inventory\Inventory\InfoBox">
       <UniqueIdentifier>{625cf245-3dab-44bd-ac96-ec9a20475b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Witch">
+      <UniqueIdentifier>{37a17932-2658-450a-a33d-820805d1c16f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Witch\FireBall">
+      <UniqueIdentifier>{6970a1ee-bda6-4611-9946-0751f616f846}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -456,6 +459,9 @@
     <ClInclude Include="StoreNPC.h">
       <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClInclude>
+    <ClInclude Include="StoreWnd.h">
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
+    </ClInclude>
     <ClInclude Include="Examine.h">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\Examine</Filter>
     </ClInclude>
@@ -467,6 +473,9 @@
     </ClInclude>
     <ClInclude Include="BGMPlayer.h">
       <Filter>00. Game\01. GameObject\BGMPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="StoreItem.h">
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClInclude>
     <ClInclude Include="Cow.h">
       <Filter>00. Game\01. GameObject\Actor\Monster\Cow</Filter>
@@ -528,11 +537,14 @@
     <ClInclude Include="StoreWnd.h">
       <Filter>00. Game\01. GameObject\NPC\Store\StoreWnd</Filter>
     </ClInclude>
-    <ClInclude Include="Wraith.h">
-      <Filter>00. Game\01. GameObject\Actor\Monster\Wraith</Filter>
-    </ClInclude>
     <ClInclude Include="InfoBox.h">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\InfoBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Witch.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Witch</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Witch\FireBall</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -686,6 +698,9 @@
     <ClCompile Include="StoreNPC.cpp">
       <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClCompile>
+    <ClCompile Include="StoreWnd.cpp">
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
+    </ClCompile>
     <ClCompile Include="Examine.cpp">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\Examine</Filter>
     </ClCompile>
@@ -703,6 +718,9 @@
     </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>00. Game\01. GameObject\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreItem.cpp">
+      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClCompile>
     <ClCompile Include="Cow.cpp">
       <Filter>00. Game\01. GameObject\Actor\Monster\Cow</Filter>
@@ -755,11 +773,14 @@
     <ClCompile Include="StoreWnd.cpp">
       <Filter>00. Game\01. GameObject\NPC\Store\StoreWnd</Filter>
     </ClCompile>
-    <ClCompile Include="Wraith.cpp">
-      <Filter>00. Game\01. GameObject\Actor\Monster\Wraith</Filter>
-    </ClCompile>
     <ClCompile Include="InfoBox.cpp">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\InfoBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Witch.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Witch</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Witch\FireBall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

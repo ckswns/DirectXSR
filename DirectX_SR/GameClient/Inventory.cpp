@@ -10,6 +10,7 @@
 #include "RectTransform.h"
 #include "Text.h"
 #include "Player.h"
+#include "Button.h"
 
 using namespace ce::UI;
 using namespace ce::CE_MATH;
@@ -61,6 +62,15 @@ void Inventory::Start(void) noexcept
 	obj->SetSortOrder(1);
 	obj->GetTransform()->SetParent(gameObject->GetTransform());
 	obj->GetTransform()->SetWorldPosition(885, 525, 0);
+
+	GameObject* CloseBtn = GameObject::Instantiate();
+	CloseBtn->GetTransform()->SetParent(gameObject->GetTransform());
+	CloseBtn->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Close_0.png")));
+	Button<Inventory>* btn = static_cast<Button<Inventory>*>(CloseBtn->AddComponent(new Button<Inventory>(this)));
+	btn->onMouseDown += &Inventory::Close;
+	btn->SetTexture(nullptr, nullptr, ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Close_1.png"), nullptr);
+	CloseBtn->SetSortOrder(50);
+	CloseBtn->GetTransform()->SetWorldPosition(670, 520, 0);
 }
 
 void Inventory::Update(float) noexcept
@@ -120,6 +130,11 @@ void Inventory::Update(float) noexcept
 		PickUpGold(10);
 
 #endif // _DEBUG
+}
+
+void Inventory::Close()
+{
+	gameObject->SetActive(false);
 }
 
 bool Inventory::BuyItem(int Gold)
@@ -379,7 +394,7 @@ bool Inventory::PickUpItems(ITEMDATA* pInvenInfo)
 	GameObject* pobj = GameObject::Instantiate();
 	float fx = UnsignedRandomf(400.f);
 	float fy = UnsignedRandomf(700.f);
-	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->itype, gameObject->GetTransform(), fx, fy);
+	ItemSlot* pSlot = new ItemSlot(pInvenInfo, gameObject->GetTransform(), fx, fy);
 	pobj->AddComponent(pSlot);
 	pobj->SetDontDestroy(true);
 	_vecItem.emplace_back(pInvenInfo, pSlot);
@@ -502,7 +517,6 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItem = _pPriveItem;
 							_bItemCatchCheck = true;
 							_pItemSlotInfo = _pPriveSlotInfo;
-						//	_pItemData = _pPriveItemData;
 							_bSwitchingcheck = false;
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
 							return false;
@@ -512,6 +526,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
 							_pItem->SetInvenPosition(vpos);
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
+							iter[0]->AddItem(_pItem);
 							return false;
 						}
 					}

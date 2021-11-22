@@ -181,6 +181,7 @@
     <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
     <ClInclude Include="FadeController.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="FireWall.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FSMState.h" />
@@ -248,7 +249,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TopBar.h" />
     <ClInclude Include="TownScene_01.h" />
-    <ClInclude Include="Wraith.h" />
+    <ClInclude Include="Witch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
@@ -268,6 +269,7 @@
     <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
     <ClCompile Include="FadeController.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FireWall.cpp" />
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -330,7 +332,7 @@
     <ClCompile Include="TargetCamera.cpp" />
     <ClCompile Include="TopBar.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
-    <ClCompile Include="Wraith.cpp" />
+    <ClCompile Include="Witch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameClient.rc" />

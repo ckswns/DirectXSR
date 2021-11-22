@@ -15,7 +15,7 @@ class InfoBox;
 
 class ItemSlot : public Behaviour
 {
-public: explicit ItemSlot(Slot::SLOTTYPE eType, Transform* pParent, float fx = 0, float fy = 0) noexcept;
+public: explicit ItemSlot(ITEMDATA* data, Transform* pParent, float fx = 0, float fy = 0) noexcept;
 public: virtual ~ItemSlot() noexcept;
 
 public:	virtual	void Start(void) noexcept override;
@@ -41,8 +41,9 @@ public: SLOTINFO*										GetItemInfo(int iIndex) { return _vecSlot[iIndex]; }
 #endif // _DEBUG
 
 
-private: Slot::SLOTTYPE		_eType;
+protected: InfoBox*			_pInfoBox;
 
+private: Slot::SLOTTYPE		_eType;
 private: int				_iSlotCntX;
 private: int				_iSlotCntY;
 private: int				_iFlag;
@@ -50,8 +51,8 @@ private: D3DXVECTOR3		_vStartPos;
 private: RECT				_SlotMaxRect;
 private: UI::Image*			_pImage;
 private: Transform*			_pParent;
-protected: InfoBox*			_pInfoBox;
 private: bool				_InfoBoxCheck = false;
+private: ITEMDATA*			_ItemData;
 
 #ifdef _DEBUG
 private: std::vector<std::pair<GameObject*, SLOTINFO*>> _vecSlot; // Debug¿ë
