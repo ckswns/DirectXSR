@@ -15,6 +15,8 @@
 #include "MonsterHPBar.h"
 #include "Lightning.h"
 #include "Missile.h"
+#include "AudioSource.h"
+
 Mephisto::Mephisto(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept
 	:_pathFinder(pf), _bornPosition(bornPos),
 	_dirtyState(false), _usingSkill(false), _fDeltaTime(0),
@@ -55,14 +57,38 @@ void Mephisto::Start(void) noexcept
 	_lightning = new Lightning(_data.damageMin, _data.damageMax);
 	lightningObj->AddComponent(_lightning);
 	lightningObj->GetTransform()->SetParent(transform);
-	//lightningObj->SetActive(false);
+	lightningObj->SetActive(false);
 
 	gameObject->GetTransform()->SetWorldPosition(_bornPosition);
 
+	_pAudioSource = new AudioSource();
+	gameObject->AddComponent(_pAudioSource);
+	_pInitSound = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Mephisto\\Init.wav");
+	_pDeathSound = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Mephisto\\death.wav");
+	for (int i = 0; i < 4; i++) 
+	{
+		_pAttackSound[i] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Mephisto\\attack"+ std::to_string(i+1) +".wav");
+		_pDamagedSound[i] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Mephisto\\gethit" + std::to_string(i+1) + ".wav");
+	}
 }
 
 void Mephisto::FixedUpdate(float fElapsedTime) noexcept
 {
+	if (_bIntro)
+	{
+		if (_animator->GetCurrentAnimationEnd())
+		{
+			D3DXVECTOR3 pos = transform->GetWorldPosition();
+			transform->SetWorldPosition(pos.x, 0.4f, pos.z);
+			_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_0")->GetTexture()[0]);
+			_animator->SetAnimation("Idle_0");
+			_bIntro = false;
+		}
+	}
+
+	if (_bIntroDone == false)
+		return;
+
 	D3DXVECTOR3 vDir = _player->GetTransform()->GetWorldPosition() - transform->GetWorldPosition();
 	float dis = D3DXVec3Length(&vDir);
 	switch (_state)
@@ -173,6 +199,9 @@ void Mephisto::FixedUpdate(float fElapsedTime) noexcept
 
 void Mephisto::Update(float fElapsedTime) noexcept
 {
+	if (_bIntroDone == false)
+		return;
+
 	if (!_bLightningCool) 
 	{
 		if (_fDeltaTime >= _fCoolDown)
@@ -242,6 +271,9 @@ void Mephisto::Update(float fElapsedTime) noexcept
 
 void Mephisto::LateUpdate(float fElapsedTime) noexcept
 {
+	if (_bIntroDone == false)
+		return;
+
 	if (_dirtyState == false)
 		return;
 
@@ -309,23 +341,23 @@ void Mephisto::GetHit(int damage) noexcept
 
 	if (_currentHP <= 0)
 	{
+		_pAudioSource->LoadAudio(_pDeathSound);
+		_pAudioSource->Play();
 		_state = Actor::State::DIE;
 		_hitBox->SetEnable(false);
 		_currentHP = 0;
-	//	_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 		_dirtyState = true;
-	//	_fDeltaTime = 0;
 
 		if (MonsterHPBar::Instance()->GetMonster() == this)
 			MonsterHPBar::Instance()->SetMonster(nullptr);
 	}
 	else
 	{
+		int num = CE_MATH::Random(4);
+		_pAudioSource->LoadAudio(_pDamagedSound[num]);
+		_pAudioSource->Play();
 		_state = Actor::State::HIT;
-	//	_animator->Stop();
-	//	_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
 		_dirtyState = true;
-	//	_fDeltaTime = 0;
 
 		MonsterHPBar::Instance()->SetMonster(this);
 	}
@@ -339,6 +371,9 @@ void Mephisto::OnAnimationEvent(std::string str) noexcept
 	}
 	else if (_animator->GetCurrentAnimationName().find("Attack") != std::string::npos)
 	{
+		int num = CE_MATH::Random(4);
+		_pAudioSource->LoadAudio(_pAttackSound[num]);
+		_pAudioSource->Play();
 		_player->GetHit(CE_MATH::Random(_data.damageMin, _data.damageMax), transform->GetWorldPosition());
 	}
 }
@@ -356,11 +391,9 @@ void Mephisto::UsingSkill()
 		_bLightningCool = false;
 		_fDeltaTime = 0;
 	
-	//	Direction dir = GetDirect(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition());
 		//¹ø°³ 
 		float angle = GetAngle(vDir);
 		_lightning->GetTransform()->SetWorldPosition(transform->GetWorldPosition() + (vDir*1.2f));
-		//_lightning->GetTransform()->SetLocalEulerAngle(0, 0, angle);
 		_lightning->Using(_dir, vDir);
 	}
 	else
@@ -373,6 +406,17 @@ void Mephisto::UsingSkill()
 		missile->AddComponent(new Missile(_data.damageMin, _data.damageMax, vDir));
 	}
 	_usingSkill = false;
+}
+
+void Mephisto::Intro(void) noexcept
+{
+	_animator->Play("Attack_0");
+	D3DXVECTOR3 pos = transform->GetWorldPosition();
+	transform->SetWorldPosition(pos.x, 1, pos.z);
+	_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Attack_0")->GetTexture()[0]);
+	_bIntro = true;
+	_pAudioSource->LoadAudio(_pInitSound);
+	_pAudioSource->Play();
 }
 
 float Mephisto::GetAngle(D3DXVECTOR3 vDir)

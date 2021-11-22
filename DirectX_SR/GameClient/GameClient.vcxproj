@@ -200,6 +200,7 @@
     <ClInclude Include="LightningBreath.h" />
     <ClInclude Include="LightningCollider.h" />
     <ClInclude Include="Mephisto.h" />
+    <ClInclude Include="MephistoCamera.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="MonsterHPBar.h" />
     <ClInclude Include="MpPotion.h" />
@@ -284,6 +285,7 @@
     <ClCompile Include="LightningBreath.cpp" />
     <ClCompile Include="LightningCollider.cpp" />
     <ClCompile Include="Mephisto.cpp" />
+    <ClCompile Include="MephistoCamera.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MonsterHPBar.cpp" />
     <ClCompile Include="MpPotion.cpp" />
