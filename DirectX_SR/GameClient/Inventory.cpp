@@ -519,6 +519,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItemSlotInfo = _pPriveSlotInfo;
 							_bSwitchingcheck = false;
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
+							iter[0]->AddItem(_pItem);
 							return false;
 						}
 						else
