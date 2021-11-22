@@ -112,6 +112,7 @@ void Skeleton::SetState(SK_STATE newState, DIR eDir, D3DXVECTOR3 vTarget)
 	if (newState == SK_MOVE)
 	{
 		static_cast<SkeletonMove*>(_pFSM[_eCurState])->SetAtt(false);
+		_pFSM[_eCurState]->SetTargetTrans(nullptr);
 	}
 
 	if (eDir != DIR_END)

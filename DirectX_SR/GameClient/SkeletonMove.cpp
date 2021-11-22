@@ -13,18 +13,15 @@ SkeletonMove::SkeletonMove(Animator* pAnim, Transform* trans, Transform* playerT
 
 void SkeletonMove::Start() noexcept
 {
-	if (_vTarget.y == 5)
+	if (_pTargetTrans != nullptr)
 	{
-		if (_pTargetTrans != nullptr)
-		{
-			_vTarget = _pTargetTrans->GetWorldPosition();
-		}
-		else 
-		{
-			_vTarget.x = _pTrans->GetWorldPosition().x + SignedRandomf(2);
-			_vTarget.y = _pTrans->GetWorldPosition().y;
-			_vTarget.z = _pTrans->GetWorldPosition().z + SignedRandomf(2);
-		}
+		_vTarget = _pTargetTrans->GetWorldPosition();
+	}
+	else if (_vTarget.y == 5)
+	{
+		_vTarget.x = _pTrans->GetWorldPosition().x + SignedRandomf(2);
+		_vTarget.y = _pTrans->GetWorldPosition().y;
+		_vTarget.z = _pTrans->GetWorldPosition().z + SignedRandomf(2);
 	}
 
 	_eDir = GetDirect(_pTrans->GetWorldPosition(), _vTarget);
@@ -105,7 +102,7 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 				{
 					_bAtt = false;
 					_pSk->SetState(SK_ATTACK,_pTargetTrans);
-				//	_pTargetTrans = nullptr;
+					_pTargetTrans = nullptr;
 				}
 				else
 					_pSk->SetState(SK_STAND, _eDir);
