@@ -394,7 +394,7 @@ bool Inventory::PickUpItems(ITEMDATA* pInvenInfo)
 	GameObject* pobj = GameObject::Instantiate();
 	float fx = UnsignedRandomf(400.f);
 	float fy = UnsignedRandomf(700.f);
-	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->itype, gameObject->GetTransform(), fx, fy);
+	ItemSlot* pSlot = new ItemSlot(pInvenInfo, gameObject->GetTransform(), fx, fy);
 	pobj->AddComponent(pSlot);
 	pobj->SetDontDestroy(true);
 	_vecItem.emplace_back(pInvenInfo, pSlot);
@@ -517,7 +517,6 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItem = _pPriveItem;
 							_bItemCatchCheck = true;
 							_pItemSlotInfo = _pPriveSlotInfo;
-						//	_pItemData = _pPriveItemData;
 							_bSwitchingcheck = false;
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
 							return false;
@@ -527,6 +526,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
 							_pItem->SetInvenPosition(vpos);
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
+							iter[0]->AddItem(_pItem);
 							return false;
 						}
 					}

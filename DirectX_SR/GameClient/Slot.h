@@ -18,7 +18,7 @@ public: std::vector<SLOTINFO*>	GetSlot() { return _vecSlot; }
 public: SLOTTYPE				GetSlotType() { return _eType; }
 public: RECT					GetRect() { return _SlotMaxRect; }
 
-public: void					AddItem(ItemSlot* pItem) { _vecItemslot.emplace_back(pItem); }
+public: void					AddItem(ItemSlot* pItem);
 public: void					RemoveSlot();
 public: std::vector<ItemSlot*>	GetItemSlot() { return _vecItemslot; }
 

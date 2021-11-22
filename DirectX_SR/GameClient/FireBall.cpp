@@ -82,7 +82,7 @@ void FireBall::OnCollisionStay(Collider* mine, Collider* other) noexcept
 {
 	if (other->GetTag() == "hitbox" && other->GetGameObject()->GetTag() == GameObjectTag::PLAYER)
 	{
-		_player->GetHit(5 * _lastElapsedTime, transform->GetWorldPosition());
+		_player->GetHit(5, transform->GetWorldPosition());
 		gameObject->Destroy();
 	}
 }

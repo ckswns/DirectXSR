@@ -52,7 +52,7 @@ private: bool													_bItemCatchCheck = false;
 
 private: std::vector<Slot*>										_vecSlotGroup[(int)Slot::SLOTTYPE::END];
 
-private: std::vector<std::pair<ITEMDATA*, ItemSlot*>>		_vecItem;
+private: std::vector<std::pair<ITEMDATA*, ItemSlot*>>			_vecItem;
 
 #ifdef _DEBUG
 private: std::vector<std::pair<GameObject*, SLOTINFO*>>			_vecItemslot;
@@ -68,10 +68,10 @@ private: ItemSlot*												_pPriveItem;
 private: bool													_bSwitchingcheck = false;
 private: bool													_bDropCheck = false;
 private: int													_iGold;
-private: UI::Text* _pTexGold;
-private: ITEMDATA* _pItemInfo;
+private: UI::Text*												_pTexGold;
+private: ITEMDATA*												_pItemInfo;
 private: bool													_bMovecheck = false;
-private: Player*	_pPlayer;
+private: Player*												_pPlayer;
 //private: ITEMDATA* _pItemData;
 //private: ITEMDATA* _pPriveItemData;
 };
