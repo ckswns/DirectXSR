@@ -72,7 +72,7 @@ void StoreWnd::InitItem()
 void StoreWnd::AddItem(ITEMDATA* item)
 {
 	GameObject* pobj = GameObject::Instantiate();
-	StoreItem* pSlot = new StoreItem((Slot::SLOTTYPE)item->itype,this);
+	StoreItem* pSlot = new StoreItem(item,this);
 	pobj->AddComponent(pSlot);
 
 	int Index = -1;
