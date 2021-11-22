@@ -201,7 +201,7 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 			 _SkillCheck = true;
 			 return;
 		}
-		else if (dis.Length() < 0.4f)
+		else if (dis.Length() < 0.2f)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
@@ -267,7 +267,7 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 			_SkillCheck = true;
 			return;
 		}
-		else if (dis.Length() < 0.4f)
+		else if (dis.Length() < 0.2f)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
@@ -462,7 +462,7 @@ void Witch::OnAnimationEvent(std::string str) noexcept
 {
 	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
 
-	if (dis.Length() < 0.4f)
+	if (dis.Length() < 0.2f)
 	{
 		_player->GetHit(Random::GetValue(_data.damageMax, _data.damageMin), transform->GetWorldPosition());
 		_hitEffectAudio->Play();
