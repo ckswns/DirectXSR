@@ -9,4 +9,4 @@ PlatedBelt,7,0,0,1,12,100,300,0,Asset\Item\PlatedBelt\,20,te
 JordanRing,8,10,10,1,0,100,300,10,Asset\Item\Ring\,0,te
 NagelRing,9,0,0,1,15,100,300,15,Asset\Item\Ring\,0,te
 NokozanRelic,10,10,10,1,0,100,300,10,Asset\Item\NokozanRelic\,0,te
-Potion,11,0,0,0,0,100,300,35,Asset\Item\Rejuvenation\,,0te
+Potion,11,0,0,0,0,100,300,35,Asset\Item\Rejuvenation\,0,te

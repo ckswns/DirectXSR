@@ -41,16 +41,27 @@ void MonsterHPBar::Start(void) noexcept
 	obj->SetDontDestroy(true);
 }
 
-void MonsterHPBar::Update(float) noexcept
+void MonsterHPBar::Update(float fElapsedTime) noexcept
 {
+	_deltaTime += fElapsedTime;
+
 	if (_monster != nullptr)
 	{
 		_hpBar->SetFillAmount(_monster->GetCurrentHp() / (float)_monster->GetData().maxHP);
+	}
+
+	if (_monster != nullptr && _deltaTime > 3)
+	{
+		_monster = nullptr;
+		_hpBar->GetGameObject()->SetActive(false);
+		_frame->GetGameObject()->SetActive(false);
+		_text->GetGameObject()->SetActive(false);
 	}
 }
 
 void MonsterHPBar::SetMonster(Actor* monster) noexcept
 {
+	_deltaTime = 0;
 	_monster = monster;
 
 	if (_monster == nullptr)

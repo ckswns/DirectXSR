@@ -47,11 +47,13 @@ bool RaiseSkeleton::Using(D3DXVECTOR3 vPos, Transform* pTrans, bool isDir) noexc
     return true;
 }
 
-void RaiseSkeleton::SetPathFinding(PathFinding* pf)
+void RaiseSkeleton::SetPathFinding(PathFinding* pf, D3DXVECTOR3 vPlayerPos)
 {
     for (size_t i= 0; i < _Skeletones.size(); i++)
     {
         _Skeletones[i]->SetPathFinding(pf);
+        _Skeletones[i]->GetTransform()->SetWorldPosition(vPlayerPos);
+        _Skeletones[i]->SetState(SK_STAND,DIR::FRONT);
     }
 }
 

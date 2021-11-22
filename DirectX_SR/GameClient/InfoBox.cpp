@@ -61,6 +61,8 @@ void InfoBox::Awake(void) noexcept
 	gameObject->SetSortOrder(200);
 	gameObject->SetActive(false);
 	gameObject->SetDontDestroy(true);
+	RectTransform* rt = static_cast<RectTransform*>(gameObject->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+	rt->SetInteractive(false);
 }
 
 void InfoBox::Start(void) noexcept
@@ -180,6 +182,7 @@ void InfoBox::Start(void) noexcept
 	obj->SetSortOrder(300);
 	vpos.y += 60.f;
 	obj->GetTransform()->SetWorldPosition(vpos);
+	rt->SetInteractive(false);
 }
 
 void InfoBox::Update(float) noexcept

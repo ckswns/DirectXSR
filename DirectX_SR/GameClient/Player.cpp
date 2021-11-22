@@ -53,6 +53,8 @@ void Player::SetMap(PathFinding* pf) noexcept
 	}
 
 	_pPathFinding = pf;
+
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding,_pTrans->GetWorldPosition());
 }
 
 void Player::Start(void) noexcept
@@ -65,7 +67,7 @@ void Player::Start(void) noexcept
 	gameObject->SetDontDestroy(true);
 	gameObject->SetTag(GameObjectTag::PLAYER);
 
-	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
+	_pTrans = GetTransform();
 	_pInputHandler->Start();
 
 	//인벤토리 
@@ -74,7 +76,8 @@ void Player::Start(void) noexcept
 	_pInvenObj->AddComponent(_pInven);
 	_pInven->GetGameObject()->SetActive(false);
 	_pInvenObj->SetDontDestroy(true);
-	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding);
+
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding, _pTrans->GetWorldPosition());
 
 	gameObject->AddComponent(new AudioListener());
 	_pAudioSource = new AudioSource();
@@ -89,7 +92,7 @@ void Player::Start(void) noexcept
 	_pCollider = new SphereCollider(0.3f, "hitbox");
 	gameObject->AddComponent(_pCollider);
 
-	_pAttCollider = new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f), D3DXVECTOR3(0, 0, 0), "Attack");
+	_pAttCollider = new SphereCollider(1, "Attack");
 	gameObject->AddComponent(_pAttCollider);
 	_pAttCollider->SetEnable(false);
 
@@ -475,13 +478,18 @@ void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
 	{
 		_tStat->_fDef -= unEquid->defense;
 		_tStat->_fDamage -= unEquid->damagemin;
-
+		_tStat->_fMaxHp -= unEquid->iMaxhp;
 	}
 	if (equid != nullptr)
 	{
 		_tStat->_fDef += equid->defense;
 		_tStat->_fDamage += equid->damagemin;
+		_tStat->_fMaxHp += equid->iMaxhp;
+		_tStat->_fHp += equid->iMaxhp;
 	}
+
+	if (_tStat->_fHp > _tStat->_fMaxHp)
+		_tStat->_fHp = _tStat->_fMaxHp;
 }
 
 void Player::DrinkPotion(int value)

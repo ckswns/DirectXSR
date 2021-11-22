@@ -38,6 +38,8 @@ void SkeletonMove::Start() noexcept
 		_pPath = (_pPathFinding->GetPath());
 		_bFinding = true;
 	}
+	else
+		_pSk->SetState(SK_STAND, _eDir);
 }
 
 void SkeletonMove::Update(float fElapsedTime) noexcept

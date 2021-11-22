@@ -63,7 +63,7 @@ public:		Inventory*				GetInventory() { return _pInven; }
 private:	Transform*				_pTrans;
 private:	Animator*				_pAnimator;
 private:	SphereCollider*			_pCollider;
-private:	BoxCollider*			_pAttCollider;
+private:	SphereCollider*			_pAttCollider;
 
 private:	InputHandler*			_pInputHandler;
 

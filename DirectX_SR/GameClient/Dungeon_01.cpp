@@ -166,6 +166,20 @@ bool Dungeon_01::Init(void) noexcept
 			std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Dungeon_01\\Object", names[i].c_str(), "worldZ");
 			obj->GetTransform()->SetWorldPosition(stof(px), 1, stof(pz));
 		}
+
+		if (names[i].find("Player") != std::string::npos)
+		{
+			GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
+
+
+			std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Dungeon_01\\Object", names[i].c_str(), "worldX");
+			std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Dungeon_01\\Object", names[i].c_str(), "worldY");
+			std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Dungeon_01\\Object", names[i].c_str(), "worldZ");
+
+			player->GetTransform()->SetWorldPosition(stof(px), 0.5f, stof(pz));
+			player->GetTransform()->SetWorldEulerAngle(0, D3DXToRadian(180), 0);
+			player->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->SetMap(new PathFinding(_pNaviMesh));
+		}
 	}
 
 	D3DCOLORVALUE c;
@@ -181,11 +195,6 @@ bool Dungeon_01::Init(void) noexcept
 
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Diablo_BGM.mp3"));
 
-	GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
-
-	player->GetTransform()->SetWorldPosition(20, 0.5f, 5);
-	player->GetTransform()->SetWorldEulerAngle(0, D3DXToRadian(180), 0);
-	player->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->SetMap(new PathFinding(_pNaviMesh));
 
 	for (int i = 0; i < 50; i++)
 	{
