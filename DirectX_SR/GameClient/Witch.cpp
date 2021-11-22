@@ -164,21 +164,25 @@ void Witch::Start(void) noexcept
 	_attackAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
 	_getHitAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
 	_deadAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
+	_skillAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
 	_hitEffectAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
 
 	_attackAudio->Init();
 	_getHitAudio->Init();
 	_deadAudio->Init();
+	_skillAudio->Init();
 	_hitEffectAudio->Init();
 
 	_attackAudio->SetSoundWorld(true);
 	_getHitAudio->SetSoundWorld(true);
 	_deadAudio->SetSoundWorld(true);
+	_skillAudio->SetSoundWorld(true);
 	_hitEffectAudio->SetSoundWorld(true);
 
-	_attackAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Cow\\CowAttack.mp3"));
-	_getHitAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Cow\\CowGetHit.mp3"));
-	_deadAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Cow\\CowDead.mp3"));
+	_attackAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Witch\\witchAttack.wav"));
+	_getHitAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Witch\\witchGetHit.wav"));
+	_deadAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Witch\\witchDeath.wav"));
+	_skillAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Witch\\witchSkill.wav"));
 	_hitEffectAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Effect\\Blunt_GetHit.wav"));
 }
 
@@ -224,19 +228,6 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 				GameObject* temp = GameObject::Instantiate();
 				temp->AddComponent(new FireBall(transform->GetWorldPosition() + (firedir * 0.05f), firedir, static_cast<int>(_dir)));
 				_fDeltaTime = 0;
-				/*if (_fDeltaTime >= 0.1f)
-				{
-					D3DXVECTOR3 firedir;
-					firedir = CaculateDir(_dir);
-
-					GameObject* temp = GameObject::Instantiate();
-					temp->AddComponent(new FireBall(transform->GetWorldPosition() + (firedir * 0.05f), firedir, static_cast<int>(_dir)));
-					_fDeltaTime = 0;
-				}
-				else
-				{
-					_fDeltaTime += fElapsedTime;
-				}*/
 			}
 			_state = Actor::State::IDLE;
 			_SkillCheck = false;
@@ -383,14 +374,15 @@ void Witch::LateUpdate(float fElapsedTime) noexcept
 		{
 			_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Skill_0")->GetTexture()[0]);
 			_animator->SetAnimation("Skill_" + std::to_string(static_cast<int>(_dir)));
+			_skillAudio->Play();
 		}
 		else
 		{
 			_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Attack_0")->GetTexture()[0]);
 			_animator->SetAnimation("Attack_" + std::to_string(static_cast<int>(_dir)));
+			_attackAudio->Play();
 		}
 		_animator->Play();
-		_attackAudio->Play();
 		break;
 	case Actor::State::HIT:
 		_animator->Stop();

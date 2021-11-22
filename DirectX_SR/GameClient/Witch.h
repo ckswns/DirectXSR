@@ -39,6 +39,7 @@ private:	AudioSource*		_attackAudio;
 private:	AudioSource*		_getHitAudio;
 private:	AudioSource*		_deadAudio;
 private:	AudioSource*		_hitEffectAudio;
+private:	AudioSource*		_skillAudio;
 
 private:	bool				_dirtyState = false;
 private:	float				_fDeltaTime = 0;
