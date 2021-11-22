@@ -393,6 +393,42 @@ void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 v
 bool Inventory::PickUpItems(ITEMDATA* pInvenInfo)
 {
 	GameObject* pobj = GameObject::Instantiate();
+	switch ((Slot::SLOTTYPE)pInvenInfo->itype)
+	{
+	case Slot::SLOTTYPE::HEAD:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("BoneHelm"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::BODY:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("HardArmor"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::MAINWP:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("GrimWand"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::SECONDWP:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("TowerShield"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::GLOVES:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("LightGauntlets"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::LEGS:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("Greaves"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::BELT:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("PlatedBelt"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::RING1:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("JordanRing"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::RING2:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("NagelRing"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::NECKLACE:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("NokozanRelic"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::POTION:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("Potion"), sizeof(ITEMDATA));
+		break;
+	}
 	float fx = UnsignedRandomf(400.f);
 	float fy = UnsignedRandomf(700.f);
 	ItemSlot* pSlot = new ItemSlot(pInvenInfo, gameObject->GetTransform(), fx, fy);

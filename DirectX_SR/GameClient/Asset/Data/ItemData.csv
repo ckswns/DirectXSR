@@ -6,7 +6,7 @@ TowerShield,4,0,0,1,30,100,300,0,Asset\\Item\\TowerShield\\,te
 LightGauntlets,5,0,0,1,15,100,300,0,Asset\\Item\\LightGauntlets\\,te
 Greaves,6,0,0,1,12,100,300,0,Asset\\Item\\Greaves\\,te
 PlatedBelt,7,0,0,1,12,100,300,0,Asset\\Item\\PlatedBelt\\,te
-JordanRing,8,5,8,1,0,100,300,10,Asset\\Item\\Ring\\,te
-NagelRing,9,9,12,1,0,100,300,20,Asset\\Item\\Ring\\,te
+JordanRing,8,10,10,1,0,100,300,10,Asset\\Item\\Ring\\,te
+NagelRing,9,0,0,1,15,100,300,15,Asset\\Item\\Ring\\,te
 NokozanRelic,10,3,7,1,0,100,300,10,Asset\\Item\\NokozanRelic\\,te
 Potion,11,0,0,0,0,100,300,35,Asset\\Item\\Rejuvenation\\,te
