@@ -15,7 +15,7 @@ void Item::Start(void) noexcept
 	gameObject->SetTag(GameObjectTag::OBJECT);
 	gameObject->SetName("Item");
 
-	gameObject->AddComponent(new SphereCollider(0.3f));
+	gameObject->AddComponent(new SphereCollider(0.5f));
 	
 	std::string strPath(_tInvenItem->imgPath);
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData(strPath +"0.png"));

@@ -89,10 +89,14 @@ Node* NaviMesh::NodeFormPosition(D3DXVECTOR3 Pos) noexcept
 {
 	int x = floor(Pos.x);
 	int z = floor(Pos.z);
-	int idx = (z * (_iSizeX-1)) + x;
 
 	if (x >= _iSizeX || z >= _iSizeY)
 		return nullptr;
+
+	int idx = (z * (_iSizeX-1)) + x;
+	if (idx < 0)
+		return nullptr;
+
 
 	return Grid[idx];
 }
