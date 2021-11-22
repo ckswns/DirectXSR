@@ -48,6 +48,8 @@ private: SLOTINFO*			DropAtMouseExamine(std::vector<SLOTINFO*> InvenSlot, POINT 
 private: SLOTINFO*			ItemSwitching(std::vector<SLOTINFO*> InvenSlot, POINT pt);
 private: ITEMDATA*			EquipItemCheck(std::vector<std::pair<ITEMDATA*, ItemSlot*>> vItem, SLOTINFO* vslotinfo);
 
+private: void				PlayerEquipCheck(Slot* pSlot,ItemSlot* pItem, ITEMDATA* pItemInfo);
+
 private: bool													_bItemCatchCheck = false;
 
 private: std::vector<Slot*>										_vecSlotGroup[(int)Slot::SLOTTYPE::END];

@@ -215,8 +215,9 @@ ITEMDATA* Inventory::UsingItem(POINT pt)
 						else
 						{
 							D3DXVECTOR3 vpos = { (float)pSlot->_tRect.left,(float)pSlot->_tRect.top,0 };
-							pItemInfo = _vecItem[t].first;
+							_pItemInfo = _vecItem[t].first;
 							_pItem->SetInvenPosition(vpos);
+							PlayerEquipCheck(_vecSlotGroup[i][0], _pItem, _pItemInfo);
 							return pItemInfo;
 						}
 					}
@@ -519,7 +520,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItemSlotInfo = _pPriveSlotInfo;
 							_bSwitchingcheck = false;
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
-							iter[0]->AddItem(_pItem);
+							PlayerEquipCheck(iter[0], _pItem, _pItemInfo);
 							return false;
 						}
 						else
@@ -527,7 +528,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
 							_pItem->SetInvenPosition(vpos);
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
-							iter[0]->AddItem(_pItem);
+							PlayerEquipCheck(iter[0], _pItem, _pItemInfo);
 							return false;
 						}
 					}
@@ -708,4 +709,18 @@ ITEMDATA* Inventory::EquipItemCheck(std::vector<std::pair<ITEMDATA*, ItemSlot*>>
 #endif // _DEBUG
 	}
 	return nullptr;
+}
+
+void Inventory::PlayerEquipCheck(Slot* pSlot, ItemSlot* pItem, ITEMDATA* pItemInfo)
+{
+	if (pSlot->GetItemInfo() == nullptr)
+	{
+		pSlot->AddItem(pItem);
+		_pPlayer->EquidItem(pItemInfo);
+	}
+	else
+	{
+		_pPlayer->EquidItem(_pItemInfo, pSlot->GetItemInfo()->GetItemData());
+		pSlot->AddItem(pItem);
+	}
 }

@@ -31,6 +31,7 @@ public: void											SetInfoBoxCheck(bool Check) { _InfoBoxCheck = Check; }
 
 public: Slot::SLOTTYPE									GetSlotType() { return _eType; }
 public: RECT											GetItemRect() { return _SlotMaxRect; }
+public: ITEMDATA*										GetItemData() { return _ItemData; }
 
 #ifdef _DEBUG
 public: std::vector<std::pair<GameObject*, SLOTINFO*>>	GetItemSlot() { return _vecSlot; }
