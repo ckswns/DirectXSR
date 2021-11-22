@@ -170,11 +170,9 @@ void ItemSlot::Start(void) noexcept
 		_SlotMaxRect.bottom = _vecSlot[iIndex]->_tRect.bottom;;
 	}
 #endif // _DEBUG
-	
 	GameObject* pobj = GameObject::Instantiate();
 	_pInfoBox = new InfoBox(_eType);
 	pobj->AddComponent(_pInfoBox);
-
 }
 
 void ItemSlot::Update(float) noexcept
