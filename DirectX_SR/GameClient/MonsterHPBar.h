@@ -30,5 +30,7 @@ private:	UI::Text*		_text;
 
 public:		static MonsterHPBar* const	Instance(void) noexcept;
 private:	static MonsterHPBar*		_instance;
+
+private:	float			_deltaTime = 0;
 };
 

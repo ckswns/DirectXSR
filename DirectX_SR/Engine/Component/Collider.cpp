@@ -5,7 +5,9 @@
 
 namespace ce
 {
+#ifdef _DEBUG
 	bool Collider::_showDbg = false;
+#endif
 
 	void Collider::Init(void) noexcept
 	{
@@ -57,6 +59,7 @@ namespace ce
 				{
 					rb->GetGameObject()->OnCollisionExitXXX((*iter).first, (*iter).second);
 					iter = collList.erase(iter);
+					continue;
 				}
 				else
 					iter++;
