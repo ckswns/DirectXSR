@@ -188,26 +188,31 @@ void Witch::Start(void) noexcept
 
 void Witch::FixedUpdate(float fElapsedTime) noexcept
 {
-	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
+	D3DXVECTOR3 target = _player->GetTransform()->GetWorldPosition();
+	D3DXVECTOR3 mine = transform->GetWorldPosition();
+
+	target.y = 0;
+	mine.y = 0;
+
+	float dis = Vector3::Distance(target, mine);
 
 	switch (_state)
 	{
 	case Actor::State::IDLE:
-
-		if (dis.Length() < 0.7f && dis.Length() > 0.6f && !_SkillCheck)
-		{
-			 _state = Actor::State::ATTAK;
-			 _dirtyState = true;
-			 _SkillCheck = true;
-			 return;
-		}
-		else if (dis.Length() < 0.2f)
+		if (dis < 1.f)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
 			return;
 		}
-		else if (dis.Length() <= _data.aggroDistance)
+		else if (dis < 4.f && dis > 3.f && !_SkillCheck)
+		{
+			_state = Actor::State::ATTAK;
+			_dirtyState = true;
+			_SkillCheck = true;
+			return;
+		}
+		else if (dis <= _data.aggroDistance)
 		{
 			if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
 			{
@@ -224,13 +229,17 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 				// FireBall »ý¼º
 				D3DXVECTOR3 firedir;
 				firedir = CaculateDir(_dir);
-
 				GameObject* temp = GameObject::Instantiate();
 				temp->AddComponent(new FireBall(transform->GetWorldPosition() + (firedir * 0.05f), firedir, static_cast<int>(_dir)));
-				_fDeltaTime = 0;
+				_state = Actor::State::IDLE;
+				_dirtyState = true;
+				_SkillCheck = false;
 			}
-			_state = Actor::State::IDLE;
-			_SkillCheck = false;
+			else
+			{
+				_state = Actor::State::IDLE;
+				_dirtyState = true;
+			}
 		}
 		break;
 	case Actor::State::HIT:
@@ -260,20 +269,20 @@ void Witch::FixedUpdate(float fElapsedTime) noexcept
 		}
 		break;
 	case Actor::State::MOVE:
-		if (dis.Length() < 0.7f && dis.Length() > 0.6f && !_SkillCheck)
+		if (dis < 1.f)
+		{
+			_state = Actor::State::ATTAK;
+			_dirtyState = true;
+			return;
+		}
+		else if (dis < 4.f && dis > 3.f && !_SkillCheck)
 		{
 			_state = Actor::State::ATTAK;
 			_dirtyState = true;
 			_SkillCheck = true;
 			return;
 		}
-		else if (dis.Length() < 0.2f)
-		{
-			_state = Actor::State::ATTAK;
-			_dirtyState = true;
-			return;
-		}
-		else if (dis.Length() <= _data.aggroDistance)
+		else if (dis <= _data.aggroDistance)
 		{
 			if (_pathFinder->FindPath(transform->GetWorldPosition(), _player->GetTransform()->GetWorldPosition()))
 			{
@@ -298,9 +307,15 @@ void Witch::Update(float fElapsedTime) noexcept
 	case Actor::State::MOVE:
 		if (!_pathFinder->GetPath().empty())
 		{
-			Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
+			D3DXVECTOR3 target = _player->GetTransform()->GetWorldPosition();
+			D3DXVECTOR3 mine = transform->GetWorldPosition();
 
-			if (dis.Length() > _data.aggroDistance)
+			target.y = 0;
+			mine.y = 0;
+
+			float dis = Vector3::Distance(target, mine);
+
+			if (dis > _data.aggroDistance)
 			{
 				_pathFinder->FindPath(transform->GetWorldPosition(), _bornPosition);
 			}
@@ -334,9 +349,7 @@ void Witch::Update(float fElapsedTime) noexcept
 				}
 			}
 			else
-			{
 				transform->Translate(vDir * _data.moveSpeed * fElapsedTime);
-			}
 		}
 		break;
 	case Actor::State::ATTAK:
@@ -460,9 +473,15 @@ void Witch::GetHit(int damage) noexcept
 
 void Witch::OnAnimationEvent(std::string str) noexcept
 {
-	Vector3 dis = transform->GetWorldPosition() - _player->GetTransform()->GetWorldPosition();
+	D3DXVECTOR3 target = _player->GetTransform()->GetWorldPosition();
+	D3DXVECTOR3 mine = transform->GetWorldPosition();
 
-	if (dis.Length() < 0.2f)
+	target.y = 0;
+	mine.y = 0;
+
+	float dis = Vector3::Distance(target, mine);
+
+	if (dis < 1)
 	{
 		_player->GetHit(Random::GetValue(_data.damageMax, _data.damageMin), transform->GetWorldPosition());
 		_hitEffectAudio->Play();

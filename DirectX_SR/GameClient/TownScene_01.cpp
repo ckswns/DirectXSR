@@ -231,7 +231,7 @@ bool TownScene_01::Init(void) noexcept
 	pGameObj->AddComponent(new StoreNPC());
 	pGameObj->GetTransform()->SetWorldPosition(10, 0.5, 10);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		obj = GameObject::Instantiate();
 
@@ -243,6 +243,19 @@ bool TownScene_01::Init(void) noexcept
 		pos.z += Random::GetValue(20, 3);
 		pos.z -= Random::GetValue(20, 3);
 		obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		obj = GameObject::Instantiate();
+
+		D3DXVECTOR3 pos = playerObj->GetTransform()->GetWorldPosition();
+
+		pos.x += Random::GetValue(20, 3);
+		pos.x -= Random::GetValue(20, 3);
+		pos.y = 0.7f;
+		pos.z += Random::GetValue(20, 3);
+		pos.z -= Random::GetValue(20, 3);
+		obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
 	}
 
 	//obj = GameObject::Instantiate();
