@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "StoreItem.h"
 #include "StoreWnd.h"
-StoreItem::StoreItem(Slot::SLOTTYPE eType, StoreWnd* store) noexcept
-	:ItemSlot(eType, nullptr), _pStore(store), _InfoVisible(false)
+StoreItem::StoreItem(ITEMDATA* itemData, StoreWnd* store) noexcept
+	:ItemSlot(itemData, nullptr), _pStore(store), _InfoVisible(false)
 {
 }
 
