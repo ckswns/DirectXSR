@@ -9,8 +9,7 @@ StoreItem::StoreItem(ITEMDATA* itemData, StoreWnd* store) noexcept
 void StoreItem::Start(void) noexcept
 {
 	ItemSlot::Start();
-	_pInfoBox->SetStoreItem(true);
-	
+	_pInfoBox->SetStoreItem(true);	
 }
 
 void StoreItem::OnMouseDown(void) noexcept
