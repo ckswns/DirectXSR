@@ -80,6 +80,7 @@ struct ITEMDATA
 	int		buygold;
 	int		ability;
 	char	imgPath[128];
+	int		iMaxhp;
 };
 
 typedef struct tagSlot
