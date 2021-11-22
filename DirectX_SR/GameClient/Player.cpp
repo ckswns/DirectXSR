@@ -478,13 +478,18 @@ void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
 	{
 		_tStat->_fDef -= unEquid->defense;
 		_tStat->_fDamage -= unEquid->damagemin;
-
+		_tStat->_fMaxHp -= unEquid->iMaxhp;
 	}
 	if (equid != nullptr)
 	{
 		_tStat->_fDef += equid->defense;
 		_tStat->_fDamage += equid->damagemin;
+		_tStat->_fMaxHp += equid->iMaxhp;
+		_tStat->_fHp += equid->iMaxhp;
 	}
+
+	if (_tStat->_fHp > _tStat->_fMaxHp)
+		_tStat->_fHp = _tStat->_fMaxHp;
 }
 
 void Player::DrinkPotion(int value)
