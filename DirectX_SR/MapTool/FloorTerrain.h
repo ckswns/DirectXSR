@@ -40,7 +40,7 @@ public:  inline	BOOL					GetClicked()       const { return _blClicked; }
 public: tTex							Get_FloorTerrainTex(int Index) { return _Tex[Index]; }
 
 public: DWORD							Get_Width()		const { return _wWidth; }
-public: DWORD							Get_Height()		const { return _wHeight; }
+public: DWORD							Get_Height()	const { return _wHeight; }
 
 public: std::vector<std::string>		Get_FilePath() { return _vecFilepath; }
 
