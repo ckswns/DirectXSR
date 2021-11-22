@@ -89,7 +89,7 @@ void Player::Start(void) noexcept
 	_pCollider = new SphereCollider(0.3f, "hitbox");
 	gameObject->AddComponent(_pCollider);
 
-	_pAttCollider = new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f), D3DXVECTOR3(0, 0, 0), "Attack");
+	_pAttCollider = new SphereCollider(1, "Attack");
 	gameObject->AddComponent(_pAttCollider);
 	_pAttCollider->SetEnable(false);
 

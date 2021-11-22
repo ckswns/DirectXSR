@@ -361,6 +361,9 @@ namespace ce
 						rectTransform->SetPrevPickingState(PICKING_STATE::OVER);
 						break;
 					}
+
+					iter++;
+					continue;
 				}
 
 				else
@@ -379,6 +382,7 @@ namespace ce
 				continue;
 			}
 
+			else
 			{
 				if (rectTransform->GetPrevPickingState() == PICKING_STATE::UP ||
 					rectTransform->GetPrevPickingState() == PICKING_STATE::DOWN ||
