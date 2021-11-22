@@ -43,5 +43,5 @@ void Gold::Start(void) noexcept
 	TList.clear();
 	FrameTime.clear();
 
-	Item::Start();
+	//Item::Start();
 }
