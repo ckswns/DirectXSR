@@ -20,7 +20,7 @@ void StoreWnd::Start(void) noexcept
 
 	Image* img = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Store.png"));
 	gameObject->AddComponent(img);
-	gameObject->SetSortOrder(3);
+	gameObject->SetSortOrder(0);
 
 	GameObject* CloseBtn = GameObject::Instantiate();
 	CloseBtn->GetTransform()->SetParent(gameObject->GetTransform());
@@ -28,7 +28,7 @@ void StoreWnd::Start(void) noexcept
 	Button<StoreWnd>* btn = static_cast<Button<StoreWnd>*>(CloseBtn->AddComponent(new Button<StoreWnd>(this)));
 	btn->onMouseDown += &StoreWnd::Close;
 	btn->SetTexture(nullptr, nullptr, ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Close_1.png"), nullptr);
-	CloseBtn->SetSortOrder(4);
+	CloseBtn->SetSortOrder(1);
 	CloseBtn->GetTransform()->SetLocalPosition(565,520,0);
 
 	InitItem();

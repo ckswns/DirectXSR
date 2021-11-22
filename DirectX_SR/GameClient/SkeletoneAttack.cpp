@@ -21,8 +21,14 @@ void SkeletoneAttack::Start() noexcept
 		_pAnimator->SetAnimation("Attack_" + std::to_string(_iDir));
 
 		// ¼Ò¸® 
-		
-		_pTargetTrans->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR)->GetHit(2);
+
+		if (_pTargetTrans->GetGameObject() != nullptr)
+			_pTargetTrans->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR)->GetHit(2);
+		else
+		{
+			_pTargetTrans = nullptr;
+			_pSk->SetState(SK_STAND, _eDir);
+		}
 	}
 	else
 	{

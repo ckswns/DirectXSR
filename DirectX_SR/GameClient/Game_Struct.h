@@ -19,7 +19,9 @@ typedef struct tagStat
 		_iVitality = 15;
 		_iEnergy = 25;
 
-		_fDamage = _iStr * 0.5f;
+		_fMaxDamage = _iStr * 0.5f;
+		_fMinDamage = _fMaxDamage * 0.7f;
+
 		_fAttRating = _iDex * 5.f;
 		_fDef = _iDex * 0.25f;
 	}
@@ -37,7 +39,8 @@ typedef struct tagStat
 	int			_iVitality;
 	int			_iEnergy;
 
-	float		_fDamage = _iStr * 0.5f;//0.01f;
+	float		_fMaxDamage; // = _iStr * 0.5f;//0.01f;
+	float		_fMinDamage;
 	float		_fAttRating = _iDex * 5.f;
 	float		_fDef = _iDex * 0.25f;
 

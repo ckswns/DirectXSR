@@ -1,6 +1,12 @@
 #pragma once
 #include "Actor.h"
 
+namespace ce
+{
+	class AudioAsset;
+	class AudioSource;
+}
+
 class Player;
 class PathFinding;
 class NaviMesh;
@@ -18,8 +24,12 @@ public:		void			LateUpdate(float fElapsedTime) noexcept override;
 public:		void			OnDestroy(void) noexcept override;
 
 public:		virtual void	GetHit(int damage) noexcept;
+
 public:		void			OnAnimationEvent(std::string str) noexcept override;
 public:		void			UsingSkill();
+
+public:		void			Intro(void) noexcept;
+public:		void			IntroDone(void) noexcept { _bIntroDone = true; }
 
 private:	float			GetAngle(D3DXVECTOR3 vDir);
 private:	void			InitAnimation();
@@ -28,6 +38,9 @@ private:	D3DXVECTOR3		_bornPosition;
 private:	Player*			_player;
 private:	PathFinding*	_pathFinder;
 private:	Lightning*		_lightning;
+
+private:	bool			_bIntroDone = false;
+private:	bool			_bIntro = false;
 
 private:	bool			_dirtyState;
 private:	bool			_usingSkill;
@@ -38,5 +51,11 @@ private:	float			_fCoolDown;
 private:	float			_fAttackRange;
 private:	float			_fLightningRange;
 private:	float			_fMisslieRange;
+
+private:	AudioSource*	_pAudioSource;
+private:	AudioAsset*		_pInitSound;
+private:	AudioAsset*		_pAttackSound[4];
+private:	AudioAsset*		_pDamagedSound[4];
+private:	AudioAsset*		_pDeathSound;
 };
 

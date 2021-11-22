@@ -177,6 +177,7 @@
     <ClInclude Include="Diablo_Chamber.h" />
     <ClInclude Include="Diablo_Clone.h" />
     <ClInclude Include="Dungeon_01.h" />
+    <ClInclude Include="Dungeon_02.h" />
     <ClInclude Include="EffectRenderer.h" />
     <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
@@ -200,12 +201,15 @@
     <ClInclude Include="LightningBreath.h" />
     <ClInclude Include="LightningCollider.h" />
     <ClInclude Include="Mephisto.h" />
+    <ClInclude Include="Mephisto_Chamber.h" />
+    <ClInclude Include="MephistoCamera.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="MonsterHPBar.h" />
     <ClInclude Include="MpPotion.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="PlateArmor.h" />
     <ClInclude Include="PlayerDamaged.h" />
+    <ClInclude Include="PlayerDeath.h" />
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
     <ClInclude Include="PoisonProjectile.h" />
@@ -265,6 +269,7 @@
     <ClCompile Include="Diablo_Chamber.cpp" />
     <ClCompile Include="Diablo_Clone.cpp" />
     <ClCompile Include="Dungeon_01.cpp" />
+    <ClCompile Include="Dungeon_02.cpp" />
     <ClCompile Include="EffectRenderer.cpp" />
     <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
@@ -284,11 +289,14 @@
     <ClCompile Include="LightningBreath.cpp" />
     <ClCompile Include="LightningCollider.cpp" />
     <ClCompile Include="Mephisto.cpp" />
+    <ClCompile Include="Mephisto_Chamber.cpp" />
+    <ClCompile Include="MephistoCamera.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MonsterHPBar.cpp" />
     <ClCompile Include="MpPotion.cpp" />
     <ClCompile Include="PlateArmor.cpp" />
     <ClCompile Include="PlayerDamaged.cpp" />
+    <ClCompile Include="PlayerDeath.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />
     <ClCompile Include="PoisonProjectile.cpp" />

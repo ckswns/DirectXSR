@@ -64,7 +64,6 @@ void StatusBar::InitUI() noexcept
     pObj->AddComponent(new MouseBtnUI(_pInputHandler, true));
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(190, 90, 0);
-    pObj->SetSortOrder(3);
     pObj->SetDontDestroy(true);
 
     //RB
@@ -72,6 +71,5 @@ void StatusBar::InitUI() noexcept
     pObj->AddComponent(new MouseBtnUI(_pInputHandler, false));
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(1020, 90, 0);
-    pObj->SetSortOrder(3);
     pObj->SetDontDestroy(true);
 }

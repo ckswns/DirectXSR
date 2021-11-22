@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "Animator.h"
 #include "Transform.h"
+#include "BillboardObj.h"
 
 Item::Item(ITEMDATA* item, D3DXVECTOR3 vPlayerPos) noexcept
 	:_tInvenItem(item), _vPlayerPos(vPlayerPos)
@@ -15,6 +16,7 @@ void Item::Start(void) noexcept
 	gameObject->SetTag(GameObjectTag::OBJECT);
 	gameObject->SetName("Item");
 
+	gameObject->AddComponent(new BillboardObj());
 	gameObject->AddComponent(new SphereCollider(0.5f));
 	
 	std::string strPath(_tInvenItem->imgPath);
@@ -41,7 +43,7 @@ void Item::Start(void) noexcept
 	pAnimator->InsertAnimation(_tInvenItem->name, ani);
 
 	D3DXVECTOR3 pos;
-	pos.x = CE_MATH::Random(_vPlayerPos.x - 1, _vPlayerPos.x + 1);
+	pos.x = _vPlayerPos.x + SignedRandomf(1);
 	pos.y = 1;
 	pos.z = CE_MATH::Random(_vPlayerPos.z - 1, _vPlayerPos.z + 1);
 

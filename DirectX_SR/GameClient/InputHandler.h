@@ -20,6 +20,7 @@ public:		void					Update(float fElapsedTime) noexcept;
 public:		void					OnDestroy(void) noexcept;
 
 public:		void					SetMouseBtn(bool isLeft, SKILL_ID id);
+public:		void					SetInvenOpen(bool b) { _bInven = b; }
 
 public:		const D3DXVECTOR3&		GetDir(void) const noexcept { return _vDir; }
 
