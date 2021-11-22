@@ -542,10 +542,12 @@ void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
 	_tStat->_fHp -= (fDamage * (1 - (_tStat->_fDef * 0.01)));
 	if (_tStat->_fHp < 0)
 	{
+		_tStat->_fHp = 0;
 		//죽음
 		SetState(PLAYER_DEATH, DIR_END,vPos);
 		_pAudioSource->LoadAudio(_pDeathSound);
 		_pAudioSource->Play();
+
 		//다시시작 
 	}
 	else

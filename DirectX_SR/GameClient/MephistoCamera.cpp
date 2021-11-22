@@ -5,7 +5,7 @@
 #include "CETween.h"
 #include "Mephisto.h"
 #include "TargetCamera.h"
-
+#include "Light.h"
 MephistoCamera::MephistoCamera(Mephisto* target) noexcept :
 	_boss(target)
 {
@@ -20,6 +20,14 @@ void MephistoCamera::Start(void) noexcept
 	_player = GameObject::FindObjectByTag(GameObjectTag::PLAYER)->GetTransform();
 
 	_camera->GetGameObject()->SetActive(false);
+
+	D3DCOLORVALUE c;
+	c.a = 1;
+	c.r = 1;
+	c.g = 1;
+	c.b = 1;
+	gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 20, 0, 0, 0.02f));
+	gameObject->AddComponent(new Light(Light::Type::POINT, D3D9DEVICE->GetDevice(), c, 100, 2.f));
 
 	transform->SetParent(_target);
 }

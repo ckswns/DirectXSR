@@ -17,6 +17,7 @@
 #include "Missile.h"
 #include "AudioSource.h"
 
+
 Mephisto::Mephisto(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept
 	:_pathFinder(pf), _bornPosition(bornPos),
 	_dirtyState(false), _usingSkill(false), _fDeltaTime(0),
@@ -70,6 +71,8 @@ void Mephisto::Start(void) noexcept
 		_pAttackSound[i] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Mephisto\\attack"+ std::to_string(i+1) +".wav");
 		_pDamagedSound[i] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Mephisto\\gethit" + std::to_string(i+1) + ".wav");
 	}
+
+
 }
 
 void Mephisto::FixedUpdate(float fElapsedTime) noexcept
@@ -79,7 +82,7 @@ void Mephisto::FixedUpdate(float fElapsedTime) noexcept
 		if (_animator->GetCurrentAnimationEnd())
 		{
 			D3DXVECTOR3 pos = transform->GetWorldPosition();
-			transform->SetWorldPosition(pos.x, 0.4f, pos.z);
+			transform->SetWorldPosition(pos.x, 0.7f, pos.z);
 			_spriteRenderer->SetTexture(_animator->GetAnimationByKey("Idle_0")->GetTexture()[0]);
 			_animator->SetAnimation("Idle_0");
 			_bIntro = false;
@@ -365,16 +368,21 @@ void Mephisto::GetHit(int damage) noexcept
 
 void Mephisto::OnAnimationEvent(std::string str) noexcept
 {
+	if (!_bIntroDone) return;
+
 	if (_animator->GetCurrentAnimationName().find("Skill") != std::string::npos)
 	{
 		UsingSkill();
 	}
 	else if (_animator->GetCurrentAnimationName().find("Attack") != std::string::npos)
 	{
-		int num = CE_MATH::Random(4);
-		_pAudioSource->LoadAudio(_pAttackSound[num]);
-		_pAudioSource->Play();
-		_player->GetHit(CE_MATH::Random(_data.damageMin, _data.damageMax), transform->GetWorldPosition());
+		if (!_usingSkill) 
+		{
+			int num = CE_MATH::Random(4);
+			_pAudioSource->LoadAudio(_pAttackSound[num]);
+			_pAudioSource->Play();
+			_player->GetHit(CE_MATH::Random(_data.damageMin, _data.damageMax), transform->GetWorldPosition());
+		}
 	}
 }
 
