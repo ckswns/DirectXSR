@@ -20,7 +20,7 @@ public: RECT					GetRect() { return _SlotMaxRect; }
 
 public: void					AddItem(ItemSlot* pItem);
 public: void					RemoveSlot();
-public: std::vector<ItemSlot*>	GetItemSlot() { return _vecItemslot; }
+public: ItemSlot*				GetItemInfo() { return _pItemInfo; }
 
 private: std::vector<SLOTINFO*>	_vecSlot;
 
@@ -31,6 +31,6 @@ private: D3DXVECTOR3			_vStartPos;
 private: int					_iFlag;
 private: RECT					_SlotMaxRect;
 
-private: std::vector<ItemSlot*>	_vecItemslot;
+private: ItemSlot*				_pItemInfo;
 };
 

@@ -215,8 +215,9 @@ ITEMDATA* Inventory::UsingItem(POINT pt)
 						else
 						{
 							D3DXVECTOR3 vpos = { (float)pSlot->_tRect.left,(float)pSlot->_tRect.top,0 };
-							pItemInfo = _vecItem[t].first;
+							_pItemInfo = _vecItem[t].first;
 							_pItem->SetInvenPosition(vpos);
+							PlayerEquipCheck(_vecSlotGroup[i][0], _pItem, _pItemInfo);
 							return pItemInfo;
 						}
 					}
@@ -392,6 +393,42 @@ void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 v
 bool Inventory::PickUpItems(ITEMDATA* pInvenInfo)
 {
 	GameObject* pobj = GameObject::Instantiate();
+	switch ((Slot::SLOTTYPE)pInvenInfo->itype)
+	{
+	case Slot::SLOTTYPE::HEAD:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("BoneHelm"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::BODY:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("HardArmor"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::MAINWP:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("GrimWand"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::SECONDWP:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("TowerShield"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::GLOVES:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("LightGauntlets"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::LEGS:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("Greaves"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::BELT:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("PlatedBelt"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::RING1:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("JordanRing"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::RING2:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("NagelRing"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::NECKLACE:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("NokozanRelic"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::POTION:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("Potion"), sizeof(ITEMDATA));
+		break;
+	}
 	float fx = UnsignedRandomf(400.f);
 	float fy = UnsignedRandomf(700.f);
 	ItemSlot* pSlot = new ItemSlot(pInvenInfo, gameObject->GetTransform(), fx, fy);
@@ -519,6 +556,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItemSlotInfo = _pPriveSlotInfo;
 							_bSwitchingcheck = false;
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
+							PlayerEquipCheck(iter[0], _pItem, _pItemInfo);
 							return false;
 						}
 						else
@@ -526,7 +564,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
 							_pItem->SetInvenPosition(vpos);
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
-							iter[0]->AddItem(_pItem);
+							PlayerEquipCheck(iter[0], _pItem, _pItemInfo);
 							return false;
 						}
 					}
@@ -707,4 +745,18 @@ ITEMDATA* Inventory::EquipItemCheck(std::vector<std::pair<ITEMDATA*, ItemSlot*>>
 #endif // _DEBUG
 	}
 	return nullptr;
+}
+
+void Inventory::PlayerEquipCheck(Slot* pSlot, ItemSlot* pItem, ITEMDATA* pItemInfo)
+{
+	if (pSlot->GetItemInfo() == nullptr)
+	{
+		pSlot->AddItem(pItem);
+		_pPlayer->EquidItem(pItemInfo);
+	}
+	else
+	{
+		_pPlayer->EquidItem(_pItemInfo, pSlot->GetItemInfo()->GetItemData());
+		pSlot->AddItem(pItem);
+	}
 }
