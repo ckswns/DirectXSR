@@ -43,6 +43,9 @@ bool GameDataManager::Init(void) noexcept
 		temp.buygold = std::stoi(((*itemCSVData)[i])[index++]);
 		temp.ability = std::stoi(((*itemCSVData)[i])[index++]);
 
+		std::string path = ((*itemCSVData)[i])[index++];
+		memcpy(&temp.imgPath, path.c_str(), path.size() + 1);
+
 		_itemData.insert(std::make_pair(name, temp));
 	}
 
