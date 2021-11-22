@@ -220,7 +220,7 @@ void Player::OnCollisionStay(Collider* mine, Collider* other) noexcept
 			Actor* actor = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
 
 			if (actor != nullptr)
-				actor->GetHit((int)_tStat->_fDamage);
+				actor->GetHit(CE_MATH::Random((int)_tStat->_fMinDamage, (int)_tStat->_fMaxDamage));
 		}
 	}
 }
@@ -479,7 +479,7 @@ void Player::OnAnimationEvent(std::string str) noexcept
 			{
 				Actor* actor = Target->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
 				if (actor != nullptr)
-					actor->GetHit((int)_tStat->_fDamage);
+					actor->GetHit(CE_MATH::Random((int)_tStat->_fMinDamage, (int)_tStat->_fMaxDamage));
 			}
 		}
 	}
@@ -490,13 +490,15 @@ void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
 	if (unEquid != nullptr)
 	{
 		_tStat->_fDef -= unEquid->defense;
-		_tStat->_fDamage -= unEquid->damagemin;
+		_tStat->_fMinDamage -= unEquid->damagemin;
+		_tStat->_fMaxDamage -= unEquid->damagemax;
 		_tStat->_fMaxHp -= unEquid->iMaxhp;
 	}
 	if (equid != nullptr)
 	{
 		_tStat->_fDef += equid->defense;
-		_tStat->_fDamage += equid->damagemin;
+		_tStat->_fMinDamage += equid->damagemin;
+		_tStat->_fMaxDamage += unEquid->damagemax;
 		_tStat->_fMaxHp += equid->iMaxhp;
 		_tStat->_fHp += equid->iMaxhp;
 	}

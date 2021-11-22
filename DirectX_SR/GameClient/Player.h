@@ -51,7 +51,6 @@ public:		void					OnAnimationEvent(std::string str) noexcept override;
 public:		void					EquidItem(ITEMDATA* equid, ITEMDATA* unEquid = nullptr);
 public:		void					DrinkPotion(int value);
 
-//public:		float					GetAtt() { return _tStat->_fDamage; } //아이템 장착하면 아이템값까지 
 public:		void					GetHit(float fDamage, D3DXVECTOR3 vPos);
 
 public:		bool					IsRunning(float fElapsedTime);
