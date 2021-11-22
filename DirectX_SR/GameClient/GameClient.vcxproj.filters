@@ -459,9 +459,6 @@
     <ClInclude Include="StoreNPC.h">
       <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClInclude>
-    <ClInclude Include="StoreWnd.h">
-      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
-    </ClInclude>
     <ClInclude Include="Examine.h">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\Examine</Filter>
     </ClInclude>
@@ -473,9 +470,6 @@
     </ClInclude>
     <ClInclude Include="BGMPlayer.h">
       <Filter>00. Game\01. GameObject\BGMPlayer</Filter>
-    </ClInclude>
-    <ClInclude Include="StoreItem.h">
-      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClInclude>
     <ClInclude Include="Cow.h">
       <Filter>00. Game\01. GameObject\Actor\Monster\Cow</Filter>
@@ -545,6 +539,12 @@
     </ClInclude>
     <ClInclude Include="FireBall.h">
       <Filter>00. Game\01. GameObject\Actor\Monster\Witch\FireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="StoreItem.h">
+      <Filter>00. Game\01. GameObject\NPC\Store\SotreItem</Filter>
+    </ClInclude>
+    <ClInclude Include="StoreWnd.h">
+      <Filter>00. Game\01. GameObject\NPC\Store\StoreWnd</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -698,9 +698,6 @@
     <ClCompile Include="StoreNPC.cpp">
       <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClCompile>
-    <ClCompile Include="StoreWnd.cpp">
-      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
-    </ClCompile>
     <ClCompile Include="Examine.cpp">
       <Filter>00. Game\01. GameObject\Inventory\Inventory\Examine</Filter>
     </ClCompile>
@@ -718,9 +715,6 @@
     </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>00. Game\01. GameObject\Portal</Filter>
-    </ClCompile>
-    <ClCompile Include="StoreItem.cpp">
-      <Filter>00. Game\01. GameObject\NPC\Store</Filter>
     </ClCompile>
     <ClCompile Include="Cow.cpp">
       <Filter>00. Game\01. GameObject\Actor\Monster\Cow</Filter>
@@ -781,6 +775,12 @@
     </ClCompile>
     <ClCompile Include="FireBall.cpp">
       <Filter>00. Game\01. GameObject\Actor\Monster\Witch\FireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreItem.cpp">
+      <Filter>00. Game\01. GameObject\NPC\Store\SotreItem</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreWnd.cpp">
+      <Filter>00. Game\01. GameObject\NPC\Store\StoreWnd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

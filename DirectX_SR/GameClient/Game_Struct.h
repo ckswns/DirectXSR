@@ -79,6 +79,7 @@ struct ITEMDATA
 	int		sellgold;
 	int		buygold;
 	int		ability;
+	char	imgPath[128];
 };
 
 typedef struct tagSlot

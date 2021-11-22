@@ -196,17 +196,18 @@ void StoreWnd::Sell(GameObject* obj)
 
 void StoreWnd::Open(Player* player)
 {
-	_pPlayer = player;
-	_pInven = _pPlayer->GetInventory();
+	if (_pPlayer == nullptr) 
+	{
+		_pPlayer = player;
+		_pInven = _pPlayer->GetInventory();
+	}
 
 	gameObject->SetActive(true);
 
-	/*LIST_ITEM::iterator iter = _StoreItem.begin();
-	while (iter != _StoreItem.end())
-	{
-		iter->first->SetActive(true);
-		iter++;
-	}*/
+	//ITEMDATA* item = new ITEMDATA();
+	//memcpy(item, &GAMEDATAMANAGER->GetItemData("BoneHelm"), sizeof(ITEMDATA));
+	//GameObject* obj = GameObject::Instantiate();
+	//obj->AddComponent(new Item(item,_pPlayer->GetTransform()->GetWorldPosition()));
 }
 
 void StoreWnd::Close()
