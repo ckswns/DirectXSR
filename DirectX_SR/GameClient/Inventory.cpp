@@ -11,6 +11,7 @@
 #include "Text.h"
 #include "Player.h"
 #include "Button.h"
+#include "Item.h"
 
 using namespace ce::UI;
 using namespace ce::CE_MATH;
@@ -290,7 +291,9 @@ void Inventory::ItemCatchExamine(POINT pt)
 		{
 			SLOTINFO* pItem = _pItem->GetItemInfo(0);
 			ReCatchtoExamine(vSlot, pItem->_vPos, true);
-			_pPlayer->EquidItem(nullptr, _pItem->GetItemData());
+
+			if(iter[0]->GetSlotType() != Slot::SLOTTYPE::NORMAL)
+				_pPlayer->EquidItem(nullptr, _pItem->GetItemData());
 			return;
 		}
 	}
@@ -507,6 +510,8 @@ SLOTINFO* Inventory::DropAtEtingExamine(std::vector<SLOTINFO*> InvenSlot)
 
 bool Inventory::ItemDropAtMouse(POINT pt)
 {
+	GameObject* obj = GameObject::Instantiate();
+
 	if (_pItemSlotInfo == nullptr || _pItem == nullptr)
 		return false;
 
@@ -636,7 +641,11 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 	if (PtInRect(&rc, pt))
 		ItemEating();
 	else
+	{
+		obj = GameObject::Instantiate();
+		obj->AddComponent(new Item(_pItem->GetItemData(), _pPlayer->GetTransform()->GetWorldPosition()));
 		return true;
+	}
 
 	return false;
 }
