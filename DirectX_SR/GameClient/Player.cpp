@@ -498,7 +498,7 @@ void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
 	{
 		_tStat->_fDef += equid->defense;
 		_tStat->_fMinDamage += equid->damagemin;
-		_tStat->_fMaxDamage += unEquid->damagemax;
+		_tStat->_fMaxDamage += equid->damagemax;
 		_tStat->_fMaxHp += equid->iMaxhp;
 		_tStat->_fHp += equid->iMaxhp;
 	}
@@ -517,7 +517,7 @@ void Player::DrinkPotion(int value)
 
 void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
 {
-	_tStat->_fHp -= fDamage;
+	_tStat->_fHp -= (fDamage * (1 - (_tStat->_fDef * 0.01)));
 	if (_tStat->_fHp < 0)
 	{
 		//죽음
