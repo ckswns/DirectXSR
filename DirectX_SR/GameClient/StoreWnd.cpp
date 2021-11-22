@@ -203,23 +203,10 @@ void StoreWnd::Open(Player* player)
 	}
 
 	gameObject->SetActive(true);
-
-	//ITEMDATA* item = new ITEMDATA();
-	//memcpy(item, &GAMEDATAMANAGER->GetItemData("BoneHelm"), sizeof(ITEMDATA));
-	//GameObject* obj = GameObject::Instantiate();
-	//obj->AddComponent(new Item(item,_pPlayer->GetTransform()->GetWorldPosition()));
 }
 
 void StoreWnd::Close()
 {
 	gameObject->SetActive(false);
-
-	/*LIST_ITEM::iterator iter = _StoreItem.begin();
-	while (iter != _StoreItem.end())
-	{
-		iter->first->SetActive(false);
-		iter++;
-	}*/
-
 	_pPlayer->GetInpuHandler()->ClosedStore();
 }

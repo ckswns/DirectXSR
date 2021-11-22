@@ -471,13 +471,17 @@ void Player::OnAnimationEvent(std::string str) noexcept
 
 void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
 {
-	if(unEquid != nullptr)
-		_tStat->_fDef -= unEquid->defense;
-	_tStat->_fDef += equid->defense;
-
 	if (unEquid != nullptr)
+	{
+		_tStat->_fDef -= unEquid->defense;
 		_tStat->_fDamage -= unEquid->damagemin;
-	_tStat->_fDamage += equid->damagemin;
+
+	}
+	if (equid != nullptr)
+	{
+		_tStat->_fDef += equid->defense;
+		_tStat->_fDamage += equid->damagemin;
+	}
 }
 
 void Player::DrinkPotion(int value)
