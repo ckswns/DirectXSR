@@ -207,6 +207,7 @@
     <ClInclude Include="NPC.h" />
     <ClInclude Include="PlateArmor.h" />
     <ClInclude Include="PlayerDamaged.h" />
+    <ClInclude Include="PlayerDeath.h" />
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
     <ClInclude Include="PoisonProjectile.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="MpPotion.cpp" />
     <ClCompile Include="PlateArmor.cpp" />
     <ClCompile Include="PlayerDamaged.cpp" />
+    <ClCompile Include="PlayerDeath.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />
     <ClCompile Include="PoisonProjectile.cpp" />

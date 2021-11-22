@@ -280,6 +280,9 @@
     <Filter Include="00. Game\01. GameObject\BossCamera\MephistoCamera">
       <UniqueIdentifier>{ae779260-2d29-4785-a594-78422fe4d91f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\01. GameObject\00. Player\01. State\Player\05.Death">
+      <UniqueIdentifier>{fd26c7b8-461b-4b07-8454-7b3e36c1edcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -552,6 +555,9 @@
     <ClInclude Include="MephistoCamera.h">
       <Filter>00. Game\01. GameObject\BossCamera\MephistoCamera</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerDeath.h">
+      <Filter>00. Game\01. GameObject\00. Player\01. State\Player\05.Death</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -790,6 +796,9 @@
     </ClCompile>
     <ClCompile Include="MephistoCamera.cpp">
       <Filter>00. Game\01. GameObject\BossCamera\MephistoCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDeath.cpp">
+      <Filter>00. Game\01. GameObject\00. Player\01. State\Player\05.Death</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
