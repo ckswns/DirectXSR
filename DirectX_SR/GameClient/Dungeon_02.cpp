@@ -27,6 +27,10 @@
 #include "BillboardObj.h"
 #include "BGMPlayer.h"
 #include "Portal.h"
+#include "MasterYi.h"
+#include "FadeController.h"
+#include "Orc.h"
+#include "Witch.h"
 
 Dungeon_02::Dungeon_02(void) noexcept
 {
@@ -218,8 +222,14 @@ bool Dungeon_02::Init(void) noexcept
 		pos.y = 0.7f;
 		pos.z += Random::GetValue(3, 20);
 		pos.z -= Random::GetValue(3, 20);
-		obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
+
+		if (5 < Random::GetValue(0, 10))
+			obj->AddComponent(new Orc(new PathFinding(_pNaviMesh), pos));
+		else
+			obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
 	}
+
+	FadeController::FadeIn(2);
 
 	return true;
 }
@@ -241,7 +251,19 @@ void Dungeon_02::LateUpdate(float fElapsedTime) noexcept
 
 void Dungeon_02::Render(float fElapsedTime) noexcept
 {
+	auto device = D3D9DEVICE->GetDevice();
 
+	float a = 0.f;
+	float b = 30.f;
+
+	device->SetRenderState(D3DRS_FOGENABLE, TRUE);
+	device->SetRenderState(D3DRS_RANGEFOGENABLE, true);
+	device->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR);
+	device->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
+
+	device->SetRenderState(D3DRS_FOGCOLOR, D3DCOLOR_ARGB(0, 50, 50, 50));
+	device->SetRenderState(D3DRS_FOGSTART, *(DWORD*)(&a));
+	device->SetRenderState(D3DRS_FOGEND, *(DWORD*)(&b));
 }
 
 void Dungeon_02::Release(void) noexcept

@@ -26,7 +26,8 @@ public: void			SetStoreItem(bool b);
 
 private: ITEMDATA			_data;
 private: UI::Text*			_pText;
-private: UI::Text*			_pTex[9];
+private: UI::Text*			_pTex[5];
+private: GameObject*		_pTextObject[5];
 private: Transform*			_pPare;
 private: Slot::SLOTTYPE		_eType;
 private: bool				_bStore;

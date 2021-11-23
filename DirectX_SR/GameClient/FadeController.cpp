@@ -50,7 +50,7 @@ void FadeController::Update(float fElapsedTime) noexcept
 
 		if (_deltaTime >= _fadeTime)
 		{
-			gameObject->SetActive(false);
+			//gameObject->SetActive(false);
 			_doing = false;
 		}
 	}

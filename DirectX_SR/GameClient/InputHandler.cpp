@@ -79,12 +79,12 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			if (_bInven)
 			{
 				_bInven = false;
-				_pPlayer->GetInventory()->GetGameObject()->SetActive(false);
+				_pPlayer->GetInventory()->Close();
 			}
 			else
 			{
 				_bInven = true;
-				_pPlayer->GetInventory()->GetGameObject()->SetActive(true);
+				_pPlayer->GetInventory()->Open();
 			}
 		}
 
@@ -148,7 +148,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 						if (D3DXVec3Length(&vDir) < 1)
 						{
 							_bUsingStore = true;
-							static_cast<StoreNPC*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->OnClick(_pPlayer);
+							hit.collider->GetGameObject()->GetComponent<StoreNPC>(COMPONENT_ID::BEHAVIOUR)->OnClick(_pPlayer);
 
 							//인벤토리도 같이 열림 
 							_bInven = true;

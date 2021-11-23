@@ -31,6 +31,7 @@
 #include "StoreNPC.h"
 #include "Diablo.h"
 #include "BossCamera.h"
+#include "FadeController.h"
 
 bool Diablo_Chamber::Init(void) noexcept
 {
@@ -173,6 +174,8 @@ bool Diablo_Chamber::Init(void) noexcept
 	_portalObj = GameObject::Instantiate();
 	_portalObj->AddComponent(new Portal("Town_01"));
 	_portalObj->SetActive(false);
+
+	FadeController::FadeIn(0.5f);
 
 	return true;
 }

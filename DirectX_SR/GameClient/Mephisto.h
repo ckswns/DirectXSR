@@ -23,6 +23,8 @@ public:		void			Update(float fElapsedTime) noexcept override;
 public:		void			LateUpdate(float fElapsedTime) noexcept override;
 public:		void			OnDestroy(void) noexcept override;
 
+public:		bool			GetDead(void) const noexcept { return _bDeadAniDone; }
+
 public:		virtual void	GetHit(int damage) noexcept;
 
 public:		void			OnAnimationEvent(std::string str) noexcept override;
@@ -41,6 +43,7 @@ private:	Lightning*		_lightning;
 
 private:	bool			_bIntroDone = false;
 private:	bool			_bIntro = false;
+private:	bool			_bDeadAniDone = false;
 
 private:	bool			_dirtyState;
 private:	bool			_usingSkill;

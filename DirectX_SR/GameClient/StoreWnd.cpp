@@ -61,7 +61,7 @@ void StoreWnd::InitItem()
 	memcpy(item, &GAMEDATAMANAGER->GetItemData("TowerShield"), sizeof(ITEMDATA));
 	AddItem(item);
 	item = new ITEMDATA();
-	memcpy(item, &GAMEDATAMANAGER->GetItemData("LightGauntlets"), sizeof(ITEMDATA));
+	memcpy(item, &GAMEDATAMANAGER->GetItemData("Gauntlets"), sizeof(ITEMDATA));
 	AddItem(item);
 	item = new ITEMDATA();
 	memcpy(item, &GAMEDATAMANAGER->GetItemData("PlatedBelt"), sizeof(ITEMDATA));

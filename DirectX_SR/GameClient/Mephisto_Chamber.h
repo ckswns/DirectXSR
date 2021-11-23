@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
 
+class Mephisto;
+
 class Mephisto_Chamber : public Scene
 {
 public:		explicit	Mephisto_Chamber(void) noexcept;
@@ -12,5 +14,8 @@ public:		void		Update(float fElapsedTime) noexcept override;
 public:		void		LateUpdate(float fElapsedTime) noexcept override;
 public:		void		Render(float fElapsedTime) noexcept override;
 public:		void		Release(void) noexcept override;
+
+private:	Mephisto*	_pBoss = nullptr;
+private:	GameObject* _portalObj;
 };
 

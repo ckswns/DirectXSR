@@ -27,6 +27,10 @@
 #include "BillboardObj.h"
 #include "BGMPlayer.h"
 #include "Portal.h"
+#include "Orc.h"
+#include "Witch.h"
+#include "FadeController.h"
+#include "MasterYi.h"
 
 bool Dungeon_01::Init(void) noexcept
 {
@@ -193,7 +197,7 @@ bool Dungeon_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Diablo_BGM.mp3"));
+	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\DungeonBGM.mp3"));
 
 
 	for (int i = 0; i < 50; i++)
@@ -207,8 +211,14 @@ bool Dungeon_01::Init(void) noexcept
 		pos.y = 0.7f;
 		pos.z += Random::GetValue(3, 30);
 		pos.z -= Random::GetValue(3, 30);
-		obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
+
+		if (5 < Random::GetValue(0, 10))
+			obj->AddComponent(new MasterYi(new PathFinding(_pNaviMesh), pos));
+		else
+			obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
 	}
+
+	FadeController::FadeIn(2);
 
 	return true;
 }

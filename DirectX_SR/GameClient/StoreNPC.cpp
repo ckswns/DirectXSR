@@ -7,12 +7,13 @@
 #include "StoreWnd.h"
 #include "GameObject.h"
 #include "Player.h"
+#include "BillboardObj.h"
 
 void StoreNPC::Start(void) noexcept
 {
 	gameObject->SetName("StoreNPC");
 	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5, 1, 0.5)));
-
+	gameObject->AddComponent(new BillboardObj());
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\NPC\\8\\0.png"), false);
 	gameObject->AddComponent(sr);
 	Animator* pAnimator = new Animator(true);

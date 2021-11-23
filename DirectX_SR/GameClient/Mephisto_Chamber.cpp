@@ -29,7 +29,8 @@
 #include "Portal.h"
 #include "Mephisto.h"
 #include "MephistoCamera.h"
-
+#include "FadeController.h"
+#include "PlayerPrefs.h"
 
 Mephisto_Chamber::Mephisto_Chamber(void) noexcept
 {
@@ -166,18 +167,6 @@ bool Mephisto_Chamber::Init(void) noexcept
 			_pNaviMesh->SetWalkAbleFromPosition(D3DXVECTOR3(stof(px), 0, stof(pz)), false);
 		}
 
-		if (names[i].find("Portal") != std::string::npos)
-		{
-			std::string sceneKey = Util::Split(names[i], '@')[1];
-			GameObject* obj = GameObject::Instantiate();
-			obj->AddComponent(new Portal(sceneKey.c_str()));
-
-			std::string px = INIMANAGER->LoadDataString("Asset\\Scene\\Mephisto_Chamber\\Object", names[i].c_str(), "worldX");
-			std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Mephisto_Chamber\\Object", names[i].c_str(), "worldY");
-			std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Mephisto_Chamber\\Object", names[i].c_str(), "worldZ");
-			obj->GetTransform()->SetWorldPosition(stof(px), 1, stof(pz));
-		}
-
 		if (names[i].find("Player") != std::string::npos)
 		{
 			GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
@@ -213,12 +202,26 @@ bool Mephisto_Chamber::Init(void) noexcept
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new MephistoCamera(mp));
 
+	FadeController::FadeIn(0.5f);
+
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new Portal("Town_01"));
+	_portalObj = obj;
+	_portalObj->SetActive(false);
+	//obj = GameObject::Instantiate();
+	//obj->AddComponent(new Mephisto(new PathFinding(_pNaviMesh), D3DXVECTOR3(15, 0.5f, 15)));
 	return true;
 }
 
 void Mephisto_Chamber::FixedUpdate(float fElapsedTime) noexcept
 {
-
+	if (_pBoss->GetDead() && _portalObj->GetActive() == false)
+	{
+		_portalObj->SetActive(true);
+		_portalObj->GetTransform()->SetWorldPosition(_pBoss->GetTransform()->GetWorldPosition());
+		//PlayerPrefs::Instance()->SetInt("SlayMephisto", 1);
+		//PlayerPrefs::Instance()->Save();
+	}
 }
 
 void Mephisto_Chamber::Update(float fElapsedTime) noexcept
@@ -233,7 +236,9 @@ void Mephisto_Chamber::LateUpdate(float fElapsedTime) noexcept
 
 void Mephisto_Chamber::Render(float fElapsedTime) noexcept
 {
+	auto device = D3D9DEVICE->GetDevice();
 
+	device->SetRenderState(D3DRS_FOGENABLE, false);
 }
 
 void Mephisto_Chamber::Release(void) noexcept
