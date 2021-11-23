@@ -196,11 +196,11 @@ bool Mephisto_Chamber::Init(void) noexcept
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Diablo_BGM.mp3"));
 
 	obj = GameObject::Instantiate();
-	Mephisto* mp = new Mephisto(new PathFinding(_pNaviMesh), D3DXVECTOR3(15, 0.7f, 15));
-	obj->AddComponent(mp);
+	_pBoss = new Mephisto(new PathFinding(_pNaviMesh), D3DXVECTOR3(15, 0.7f, 15));
+	obj->AddComponent(_pBoss);
 
 	obj = GameObject::Instantiate();
-	obj->AddComponent(new MephistoCamera(mp));
+	obj->AddComponent(new MephistoCamera(_pBoss));
 
 	FadeController::FadeIn(0.5f);
 
