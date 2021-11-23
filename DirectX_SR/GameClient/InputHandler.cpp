@@ -1,20 +1,22 @@
 #include "pch.h"
 #include "InputHandler.h"
-
 #include "AttackCommand.h"
 #include "MoveCommand.h"
 #include "SkillCommand.h"
 
 #include "GameObject.h"
-#include "Player.h"
-#include "Item.h"
-
-#include "Camera.h"
 #include "Transform.h"
 #include "SphereCollider.h"
+#include "Camera.h"
+#include "Image.h"
+
+#include "Player.h"
+#include "Item.h"
 #include "TargetCamera.h"
 #include "Inventory.h"
 #include "StoreNPC.h"
+using namespace ce::UI;
+
 InputHandler::InputHandler(Player* player) noexcept
 	:_pPlayer(player), _vDir(0, 0, 0), _bInven(false),
 	_bFPV(false), _bAtt(false), _bDown(false), _bLBSkill(false), _bRBSkill(false), _bUsingStore(false)
@@ -30,10 +32,29 @@ void InputHandler::Start(void) noexcept
 	_pLBCommand = new AttackCommand();
 	_pRBCommand = new AttackCommand();
 	_pMoveCommand = new MoveCommand();
+
+	_DiedObj = GameObject::Instantiate();
+	_DiedObj->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\youDied.png")));
+	_DiedObj->GetTransform()->SetWorldPosition(WINCX * 0.3f, WINCY * 0.3f , 0);
+	_DiedObj->SetSortOrder(10);
+	_DiedObj->SetDontDestroy(true);
+	_DiedObj->SetActive(false);
+
 }
 
 void InputHandler::Update(float fElapsedTime) noexcept
 {
+	if (_bDead)
+	{
+		if (INPUT->GetKeyDown(VK_ESCAPE))
+		{
+			_bDead = false;
+			_DiedObj->SetActive(false);
+			_pPlayer->SetFull();
+			SCENEMANAGER->LoadScene("Town_01");
+		}
+	}
+
 	if (!_pTargetCamera)
 	{
 		_pCameraTrans = Camera::GetMainCamera()->GetTransform();
@@ -99,6 +120,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 					}
 					
 				}
+
 				//마우스 피킹 
 				if (Physics::Raycast(ray, hit, GameObjectLayer::ALPHA))
 				{
@@ -133,13 +155,6 @@ void InputHandler::Update(float fElapsedTime) noexcept
 							_pPlayer->GetInventory()->GetGameObject()->SetActive(true);
 						}
 					}
-					else if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
-					{
-						if (_bLBSkill)	//스킬인 경우
-							_pLBCommand->Execute(_pPlayerObj, hit.point, hit.transform);
-						else
-							_pMoveCommand->Execute(_pPlayerObj, hit.point);
-					}
 				}
 				else if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
 				{
@@ -149,14 +164,6 @@ void InputHandler::Update(float fElapsedTime) noexcept
 						_pMoveCommand->Execute(_pPlayerObj, hit.point);
 				}
 			}
-			//else if (INPUT->GetKeyStay(VK_LBUTTON))
-			//{
-			//	if (Physics::Raycast(ray, hit, GameObjectLayer::BACKGROUND))
-			//	{
-			//		if (!_bLBSkill)	//스킬인 경우
-			//			_pMoveCommand->Execute(_pPlayerObj, hit.point);
-			//	}
-			//}
 			else if (INPUT->GetKeyDown(VK_RBUTTON))
 			{
 				if (_bInven)
@@ -318,6 +325,12 @@ void InputHandler::SetMouseBtn(bool isLeft, SKILL_ID id)
 			static_cast<SkillCommand*>(_pRBCommand)->SetSkill(id);
 		}
 	}
+}
+
+void InputHandler::SetPlayerDead()
+{
+	_bDead = true;
+	_DiedObj->SetActive(true);
 }
 
 void InputHandler::ClosedStore()

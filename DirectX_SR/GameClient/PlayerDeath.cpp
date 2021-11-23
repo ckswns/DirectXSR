@@ -12,5 +12,12 @@ void PlayerDeath::Start() noexcept
 		_iDir = (int)_eDir * 2;
 	}
 	_pAnimator->SetAnimation("Death_" + std::to_string(_iDir));
-	_pPlayer->SetState(PLAYER_END,DIR_END);
+}
+
+void PlayerDeath::Update(float fElapsedTime) noexcept
+{
+	if (_pAnimator->GetCurrentAnimationEnd())
+	{
+		_pPlayer->SetState(PLAYER_END, _eDir);
+	}
 }

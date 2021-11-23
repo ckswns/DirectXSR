@@ -9,6 +9,7 @@
 Gold::Gold() noexcept
 {
 	_tInvenItem = new ITEMDATA();
+	_tInvenItem->sellgold = CE_MATH::Random(50, 100);
 }
 
 void Gold::Start(void) noexcept

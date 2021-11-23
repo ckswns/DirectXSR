@@ -347,7 +347,7 @@ void Player::InitAnimation(SpriteRenderer* sr)
 		FrameTime.clear();
 
 		//Death
-		for (int i = 0; i < 28; i++)
+		for (int i = 0; i < 27; i++)
 		{
 			char str[256];
 			sprintf_s(str, 256, "Asset\\Player\\death_%d\\%d.png", folder, i);
@@ -360,6 +360,18 @@ void Player::InitAnimation(SpriteRenderer* sr)
 		ani->SetMaterial(material);
 		_pAnimator->InsertAnimation("Death_" + std::to_string(folder), ani);
 
+		TList.clear();
+		FrameTime.clear();
+
+		//Dead
+		char str[256];
+		sprintf_s(str, 256, "Asset\\Player\\dead\\%d.png", folder);
+		TList.push_back(ASSETMANAGER->GetTextureData(str));
+		FrameTime.push_back(10);
+		ani = new Animation(FrameTime, TList,true);
+		ani->SetMaterial(material);
+		_pAnimator->InsertAnimation("Dead_" + std::to_string(folder), ani);
+		
 		TList.clear();
 		FrameTime.clear();
 	}
@@ -404,7 +416,13 @@ void Player::SetFPV()
 //stand,move,skill,Damaged
 void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 {
-	if (newState == PLAYER_END) return;
+	if (newState == PLAYER_END)
+	{
+		_pAnimator->SetAnimation("Dead_" + std::to_string((int)eDir * 2));
+		return;
+	}
+
+	if (_eCurState == PLAYER_END && newState != PLAYER_STAND) return;
 
 	if (_bFPV)
 		SetAttCollider(false);
@@ -434,6 +452,8 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 //attack,move
 void Player::SetState(PLAYER_STATE newState, Transform* targetTrans, bool bAtt)
 {
+	if (_eCurState == PLAYER_END) return;
+
 	if (_bFPV)
 		SetAttCollider(false);
 
@@ -477,6 +497,12 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 			break;
 		}
 	}
+}
+
+void Player::SetFull()
+{
+	_tStat->_fHp = _tStat->_fMaxHp;
+	_tStat->_fMP = _tStat->_fMaxMp;
 }
 
 void Player::SetAttCollider(bool b)
@@ -548,7 +574,7 @@ void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
 		_pAudioSource->LoadAudio(_pDeathSound);
 		_pAudioSource->Play();
 
-		//다시시작 
+		_pInputHandler->SetPlayerDead();
 	}
 	else
 	{

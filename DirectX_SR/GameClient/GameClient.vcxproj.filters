@@ -656,9 +656,6 @@
     <ClCompile Include="SkeletonCreate.cpp">
       <Filter>00. Game\01. GameObject\00. Player\01. State\Skeleton\00. Create</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerFSMState.cpp">
-      <Filter>00. Game\01. GameObject\00. Player\01. State\Player</Filter>
-    </ClCompile>
     <ClCompile Include="MouseBtnUI.cpp">
       <Filter>00. Game\01. GameObject\02. UI\StatusBar\MouseBtnUI</Filter>
     </ClCompile>
