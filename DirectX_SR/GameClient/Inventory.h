@@ -20,6 +20,7 @@ public: virtual ~Inventory() noexcept;
 
 public:	void Start(void) noexcept override;
 public: void Update(float) noexcept override;
+public: void Open();
 public: void Close();
 
 public: bool				PickUpItems(ITEMDATA* pInvenInfo); // 아이템 먹는 함수. 가방에 자리 없으면 fase 반환

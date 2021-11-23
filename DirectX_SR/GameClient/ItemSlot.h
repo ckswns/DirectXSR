@@ -20,7 +20,10 @@ public: virtual ~ItemSlot() noexcept;
 
 public:	virtual	void Start(void) noexcept override;
 public: virtual void Update(float) noexcept override;
+
 public:	void OnMouseDown(void) noexcept override;
+public:	void OnMouseOver(void) noexcept override;
+public:	void OnMouseLeave(void) noexcept override;
 
 public: void											setMousePosition(D3DXVECTOR3 vtest);
 public: void											SetInvenPosition(D3DXVECTOR3 vpos);
@@ -40,7 +43,6 @@ public: SLOTINFO*										GetItemInfo(int iIndex) { return _vecSlot[iIndex].sec
 public: std::vector<SLOTINFO*>							GetItemSlot() { return _vecSlot; }
 public: SLOTINFO*										GetItemInfo(int iIndex) { return _vecSlot[iIndex]; }
 #endif // _DEBUG
-
 
 protected: InfoBox*			_pInfoBox;
 

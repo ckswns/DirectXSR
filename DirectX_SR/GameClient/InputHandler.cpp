@@ -79,12 +79,12 @@ void InputHandler::Update(float fElapsedTime) noexcept
 			if (_bInven)
 			{
 				_bInven = false;
-				_pPlayer->GetInventory()->GetGameObject()->SetActive(false);
+				_pPlayer->GetInventory()->Close();
 			}
 			else
 			{
 				_bInven = true;
-				_pPlayer->GetInventory()->GetGameObject()->SetActive(true);
+				_pPlayer->GetInventory()->Open();
 			}
 		}
 

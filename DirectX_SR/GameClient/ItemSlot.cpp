@@ -90,6 +90,9 @@ ItemSlot::~ItemSlot() noexcept
 
 void ItemSlot::Start(void) noexcept
 {
+	if (_pImage == nullptr)
+		return;
+
 	gameObject->AddComponent(_pImage);
 	gameObject->SetSortOrder(2);
 	gameObject->GetTransform()->SetWorldPosition(_vStartPos.x, _vStartPos.y, 0);
@@ -176,21 +179,7 @@ void ItemSlot::Start(void) noexcept
 }
 
 void ItemSlot::Update(float) noexcept
-{
-	POINT pt = {};
-	GetCursorPos(&pt);
-	ScreenToClient(g_hWnd, &pt);
-
-	if (_InfoBoxCheck)
-	{
-		_pInfoBox->ShowInfoBox(true);
-		_pInfoBox->SetPosition(pt.x, pt.y);
-	}
-	else
-	{
-		_pInfoBox->ShowInfoBox(false);
-	}
-		
+{		
 }
 
 void ItemSlot::setMousePosition(D3DXVECTOR3 vtest)
@@ -336,6 +325,15 @@ void ItemSlot::DropItemSlot()
 	gameObject->Destroy();
 }
 
+void ItemSlot::OnMouseOver(void) noexcept
+{
+	POINT pt = {};
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+	_pInfoBox->ShowInfoBox(true);
+	_pInfoBox->SetPosition(pt.x, pt.y);
+}
+
 void ItemSlot::OnMouseDown(void) noexcept
 {
 	if (INPUT->GetKeyDown(VK_RBUTTON) && _eType == Slot::SLOTTYPE::POTION)
@@ -346,4 +344,8 @@ void ItemSlot::OnMouseDown(void) noexcept
 		gameObject->SetDontDestroy(false);
 		gameObject->Destroy();
 	}
+}
+void ItemSlot::OnMouseLeave(void) noexcept
+{
+	_pInfoBox->ShowInfoBox(false);
 }
