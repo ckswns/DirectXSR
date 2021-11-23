@@ -35,7 +35,7 @@ void InfoBox::Awake(void) noexcept
 		memcpy(&_data, &GAMEDATAMANAGER->GetItemData("TowerShield"), sizeof(ITEMDATA));
 		break;
 	case Slot::SLOTTYPE::GLOVES:
-		memcpy(&_data, &GAMEDATAMANAGER->GetItemData("LightGauntlets"), sizeof(ITEMDATA));
+		memcpy(&_data, &GAMEDATAMANAGER->GetItemData("Gauntlets"), sizeof(ITEMDATA));
 		break;
 	case Slot::SLOTTYPE::LEGS:
 		memcpy(&_data, &GAMEDATAMANAGER->GetItemData("Greaves"), sizeof(ITEMDATA));
