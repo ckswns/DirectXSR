@@ -323,6 +323,7 @@ void ItemSlot::DropItemSlot()
 	_vecSlot.shrink_to_fit();
 	gameObject->SetDontDestroy(false);
 	gameObject->Destroy();
+	_pInfoBox->OnDestroy();
 }
 
 void ItemSlot::OnMouseOver(void) noexcept

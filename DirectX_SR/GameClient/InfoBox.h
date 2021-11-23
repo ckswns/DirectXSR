@@ -18,6 +18,7 @@ public: virtual ~InfoBox();
 public:	virtual void	Awake(void) noexcept override;
 public: virtual void	Start(void) noexcept override;
 public: virtual void	Update(float) noexcept override;
+public:	void OnDestroy(void) noexcept override;
 
 public: void			SetPosition(float x, float y);
 public: void			ShowInfoBox(bool Check) { gameObject->SetActive(Check); }
@@ -26,10 +27,11 @@ public: void			SetStoreItem(bool b);
 
 private: ITEMDATA			_data;
 private: UI::Text*			_pText;
-private: UI::Text*			_pTex[5];
-private: GameObject*		_pTextObject[5];
+private: UI::Text*			_pTex[6];
+private: GameObject*		_pTextObject[6];
 private: Transform*			_pPare;
 private: Slot::SLOTTYPE		_eType;
 private: bool				_bStore;
+
 };
 

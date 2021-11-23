@@ -108,18 +108,18 @@ void InfoBox::Start(void) noexcept
 			vpos.y += 30.f;
 			_pTextObject[1]->GetTransform()->SetWorldPosition(vpos);
 
-			_pTextObject[4] = GameObject::Instantiate();
-			_pTextObject[4]->GetTransform()->SetParent(gameObject->GetTransform());
-			_pTextObject[4]->SetDontDestroy(true);
+			_pTextObject[5] = GameObject::Instantiate();
+			_pTextObject[5]->GetTransform()->SetParent(gameObject->GetTransform());
+			_pTextObject[5]->SetDontDestroy(true);
 			std::string strMaxhp = "최대체력 +";
 			strMaxhp += std::to_string(_data.iMaxhp);
-			_pTex[4] = static_cast<Text*>(_pTextObject[4]->AddComponent(new UI::Text(strMaxhp.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
-			rt = static_cast<RectTransform*>(_pTextObject[4]->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+			_pTex[4] = static_cast<Text*>(_pTextObject[5]->AddComponent(new UI::Text(strMaxhp.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+			rt = static_cast<RectTransform*>(_pTextObject[5]->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 			rt->SetWidth(200);
 			rt->SetHeight(30);
-			_pTextObject[4]->SetSortOrder(300);
+			_pTextObject[5]->SetSortOrder(300);
 			vpos.y += 30.f;
-			_pTextObject[4]->GetTransform()->SetWorldPosition(vpos);
+			_pTextObject[5]->GetTransform()->SetWorldPosition(vpos);
 		}
 
 		_pTextObject[2] = GameObject::Instantiate();
@@ -216,7 +216,7 @@ void InfoBox::MissingItem()
 {
 	gameObject->SetDontDestroy(false);
 	gameObject->Destroy();
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		if (_pTextObject[i] != nullptr)
 		{
@@ -241,4 +241,18 @@ void InfoBox::SetStoreItem(bool b)
 		strGold = "판매가격: " + std::to_string(_data.sellgold) + 'G';
 	}
 	_pTex[4]->SetText(strGold.c_str());
+}
+
+void InfoBox::OnDestroy(void) noexcept
+{
+	gameObject->SetDontDestroy(false);
+	gameObject->Destroy();
+	for (int i = 0; i < 6; ++i)
+	{
+		if (_pTextObject[i] != nullptr)
+		{
+			_pTextObject[i]->SetDontDestroy(false);
+			_pTextObject[i]->Destroy();
+		}
+	}
 }
