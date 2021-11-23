@@ -45,13 +45,13 @@ public:		void					SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget = 
 public:		void					SetState(PLAYER_STATE newState,Transform* targetTrans, bool bAtt =false);
 public:		void					UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 
+public:		void					SetFull();
 public:		void					SetAttCollider(bool b);
 public:		void					OnAnimationEvent(std::string str) noexcept override;
 
 public:		void					EquidItem(ITEMDATA* equid, ITEMDATA* unEquid = nullptr);
 public:		void					DrinkPotion(int value);
 
-public:		float					GetAtt() { return _tStat->_fDamage; } //아이템 장착하면 아이템값까지 
 public:		void					GetHit(float fDamage, D3DXVECTOR3 vPos);
 
 public:		bool					IsRunning(float fElapsedTime);
@@ -74,9 +74,11 @@ private:	PLAYER_STATE			_eCurState;
 private:	GameObject*				_pInvenObj;
 private:	Inventory*				_pInven;
 private:	PathFinding*			_pPathFinding;
+
 private:	AudioSource*			_pAudioSource;
 private:	AudioAsset*				_pManaSound[3];
 private:	AudioAsset*				_pDamagedSound[3];
+private:	AudioAsset*				_pDeathSound;
 
 private:	STAT*					_tStat;
 private:	std::vector<Skill*>		_pSkills;

@@ -20,7 +20,7 @@ void StoreWnd::Start(void) noexcept
 
 	Image* img = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Store.png"));
 	gameObject->AddComponent(img);
-	gameObject->SetSortOrder(3);
+	gameObject->SetSortOrder(0);
 
 	GameObject* CloseBtn = GameObject::Instantiate();
 	CloseBtn->GetTransform()->SetParent(gameObject->GetTransform());
@@ -28,7 +28,7 @@ void StoreWnd::Start(void) noexcept
 	Button<StoreWnd>* btn = static_cast<Button<StoreWnd>*>(CloseBtn->AddComponent(new Button<StoreWnd>(this)));
 	btn->onMouseDown += &StoreWnd::Close;
 	btn->SetTexture(nullptr, nullptr, ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Close_1.png"), nullptr);
-	CloseBtn->SetSortOrder(4);
+	CloseBtn->SetSortOrder(1);
 	CloseBtn->GetTransform()->SetLocalPosition(565,520,0);
 
 	InitItem();
@@ -72,7 +72,7 @@ void StoreWnd::InitItem()
 void StoreWnd::AddItem(ITEMDATA* item)
 {
 	GameObject* pobj = GameObject::Instantiate();
-	StoreItem* pSlot = new StoreItem((Slot::SLOTTYPE)item->itype,this);
+	StoreItem* pSlot = new StoreItem(item,this);
 	pobj->AddComponent(pSlot);
 
 	int Index = -1;
@@ -196,29 +196,17 @@ void StoreWnd::Sell(GameObject* obj)
 
 void StoreWnd::Open(Player* player)
 {
-	_pPlayer = player;
-	_pInven = _pPlayer->GetInventory();
+	if (_pPlayer == nullptr) 
+	{
+		_pPlayer = player;
+		_pInven = _pPlayer->GetInventory();
+	}
 
 	gameObject->SetActive(true);
-
-	/*LIST_ITEM::iterator iter = _StoreItem.begin();
-	while (iter != _StoreItem.end())
-	{
-		iter->first->SetActive(true);
-		iter++;
-	}*/
 }
 
 void StoreWnd::Close()
 {
 	gameObject->SetActive(false);
-
-	/*LIST_ITEM::iterator iter = _StoreItem.begin();
-	while (iter != _StoreItem.end())
-	{
-		iter->first->SetActive(false);
-		iter++;
-	}*/
-
 	_pPlayer->GetInpuHandler()->ClosedStore();
 }

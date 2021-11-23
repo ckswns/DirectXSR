@@ -9,6 +9,7 @@
 Gold::Gold() noexcept
 {
 	_tInvenItem = new ITEMDATA();
+	_tInvenItem->sellgold = CE_MATH::Random(50, 100);
 }
 
 void Gold::Start(void) noexcept
@@ -43,5 +44,5 @@ void Gold::Start(void) noexcept
 	TList.clear();
 	FrameTime.clear();
 
-	Item::Start();
+	//Item::Start();
 }

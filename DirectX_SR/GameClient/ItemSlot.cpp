@@ -7,11 +7,12 @@
 
 using namespace ce::UI;
 
-ItemSlot::ItemSlot(Slot::SLOTTYPE eType, Transform* pParent, float fx, float fy) noexcept
-	: _eType(eType)
+ItemSlot::ItemSlot(ITEMDATA* data, Transform* pParent, float fx, float fy) noexcept
 {
 	_vStartPos = D3DXVECTOR3(fx, fy, 0);
 	_pParent = pParent;
+	_ItemData = data;
+	_eType = (Slot::SLOTTYPE)_ItemData->itype;
 	switch (_eType)
 	{
 	case Slot::SLOTTYPE::HEAD:
@@ -169,11 +170,9 @@ void ItemSlot::Start(void) noexcept
 		_SlotMaxRect.bottom = _vecSlot[iIndex]->_tRect.bottom;;
 	}
 #endif // _DEBUG
-	
 	GameObject* pobj = GameObject::Instantiate();
 	_pInfoBox = new InfoBox(_eType);
 	pobj->AddComponent(_pInfoBox);
-
 }
 
 void ItemSlot::Update(float) noexcept

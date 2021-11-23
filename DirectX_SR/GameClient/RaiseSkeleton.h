@@ -9,7 +9,7 @@ public:		explicit 				RaiseSkeleton() noexcept;
 public:		virtual 				~RaiseSkeleton() noexcept { __noop; }
 
 public:		virtual bool			Using(D3DXVECTOR3 vPos, Transform* pTrans,bool isDir)noexcept;
-public:		void					SetPathFinding(PathFinding* pf);
+public:		void					SetPathFinding(PathFinding* pf, D3DXVECTOR3 vPlayerPos);
 
 private:	int							_iMaxSkeleton;
 private:	int							_iCount;

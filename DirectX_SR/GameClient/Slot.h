@@ -18,9 +18,9 @@ public: std::vector<SLOTINFO*>	GetSlot() { return _vecSlot; }
 public: SLOTTYPE				GetSlotType() { return _eType; }
 public: RECT					GetRect() { return _SlotMaxRect; }
 
-public: void					AddItem(ItemSlot* pItem) { _vecItemslot.emplace_back(pItem); }
+public: void					AddItem(ItemSlot* pItem);
 public: void					RemoveSlot();
-public: std::vector<ItemSlot*>	GetItemSlot() { return _vecItemslot; }
+public: ItemSlot*				GetItemInfo() { return _pItemInfo; }
 
 private: std::vector<SLOTINFO*>	_vecSlot;
 
@@ -31,6 +31,6 @@ private: D3DXVECTOR3			_vStartPos;
 private: int					_iFlag;
 private: RECT					_SlotMaxRect;
 
-private: std::vector<ItemSlot*>	_vecItemslot;
+private: ItemSlot*				_pItemInfo;
 };
 

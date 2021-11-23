@@ -4,7 +4,7 @@
 class StoreWnd;
 class StoreItem : public ItemSlot
 {
-public:		explicit				StoreItem(Slot::SLOTTYPE eType,StoreWnd* store) noexcept;
+public:		explicit				StoreItem(ITEMDATA* itemData , StoreWnd* store) noexcept;
 public:		virtual					~StoreItem() noexcept { __noop; }
 
 

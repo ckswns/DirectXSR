@@ -3,16 +3,16 @@
 
 class Item :public Behaviour
 {
-public:		explicit					Item() noexcept { __noop; }
+public:		explicit					Item() { __noop; }
+public:		explicit					Item(ITEMDATA* item,D3DXVECTOR3 vPlayerPos) noexcept;
 public:		virtual						~Item(void) noexcept { __noop; }
 
 public:		virtual void				Start(void) noexcept;
-public:		virtual void				Update(float) noexcept;
+public:		virtual void				Update(float) noexcept { __noop; }
 
-public:		ITEMDATA*				GetItem() { return _tInvenItem; }
+public:		ITEMDATA*					GetItem() { return _tInvenItem; }
 
-protected: 	ITEMDATA*				_tInvenItem;
-private:	GameObject*					_pTxtName;
-private:	bool						_bLook;
+protected: 	ITEMDATA*					_tInvenItem;
+private:	D3DXVECTOR3					_vPlayerPos;
 };
 

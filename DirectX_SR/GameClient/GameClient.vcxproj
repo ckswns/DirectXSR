@@ -183,6 +183,7 @@
     <ClInclude Include="Examine.h" />
     <ClInclude Include="ExitBtn.h" />
     <ClInclude Include="FadeController.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="FireWall.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FSMState.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="MasterYi.h" />
     <ClInclude Include="Mephisto.h" />
     <ClInclude Include="Mephisto_Chamber.h" />
+    <ClInclude Include="MephistoCamera.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="MonsterHPBar.h" />
     <ClInclude Include="MpPotion.h" />
@@ -210,6 +212,7 @@
     <ClInclude Include="Orc.h" />
     <ClInclude Include="PlateArmor.h" />
     <ClInclude Include="PlayerDamaged.h" />
+    <ClInclude Include="PlayerDeath.h" />
     <ClInclude Include="PlayerSkill.h" />
     <ClInclude Include="PoisonNova.h" />
     <ClInclude Include="PoisonProjectile.h" />
@@ -253,7 +256,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TopBar.h" />
     <ClInclude Include="TownScene_01.h" />
-    <ClInclude Include="Wraith.h" />
+    <ClInclude Include="Witch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
@@ -275,6 +278,7 @@
     <ClCompile Include="Examine.cpp" />
     <ClCompile Include="ExitBtn.cpp" />
     <ClCompile Include="FadeController.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FireWall.cpp" />
     <ClCompile Include="FSMState.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -291,12 +295,14 @@
     <ClCompile Include="MasterYi.cpp" />
     <ClCompile Include="Mephisto.cpp" />
     <ClCompile Include="Mephisto_Chamber.cpp" />
+    <ClCompile Include="MephistoCamera.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MonsterHPBar.cpp" />
     <ClCompile Include="MpPotion.cpp" />
     <ClCompile Include="Orc.cpp" />
     <ClCompile Include="PlateArmor.cpp" />
     <ClCompile Include="PlayerDamaged.cpp" />
+    <ClCompile Include="PlayerDeath.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />
     <ClCompile Include="PoisonNova.cpp" />
     <ClCompile Include="PoisonProjectile.cpp" />
@@ -319,7 +325,6 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAttack.cpp" />
-    <ClCompile Include="PlayerFSMState.cpp" />
     <ClCompile Include="PlayerSelectScene.cpp" />
     <ClCompile Include="PlayerStand.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
@@ -340,7 +345,7 @@
     <ClCompile Include="TargetCamera.cpp" />
     <ClCompile Include="TopBar.cpp" />
     <ClCompile Include="TownScene_01.cpp" />
-    <ClCompile Include="Wraith.cpp" />
+    <ClCompile Include="Witch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameClient.rc" />

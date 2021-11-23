@@ -138,6 +138,11 @@ void Slot::Update(float) noexcept
 {
 }
 
+void Slot::AddItem(ItemSlot* pItem)
+{
+	_pItemInfo = pItem;
+}
+
 void Slot::RemoveSlot()
 {
 	gameObject->SetDontDestroy(false);

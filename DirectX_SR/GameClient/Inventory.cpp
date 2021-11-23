@@ -10,6 +10,8 @@
 #include "RectTransform.h"
 #include "Text.h"
 #include "Player.h"
+#include "Button.h"
+#include "Item.h"
 
 using namespace ce::UI;
 using namespace ce::CE_MATH;
@@ -61,6 +63,15 @@ void Inventory::Start(void) noexcept
 	obj->SetSortOrder(1);
 	obj->GetTransform()->SetParent(gameObject->GetTransform());
 	obj->GetTransform()->SetWorldPosition(885, 525, 0);
+
+	GameObject* CloseBtn = GameObject::Instantiate();
+	CloseBtn->GetTransform()->SetParent(gameObject->GetTransform());
+	CloseBtn->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Close_0.png")));
+	Button<Inventory>* btn = static_cast<Button<Inventory>*>(CloseBtn->AddComponent(new Button<Inventory>(this)));
+	btn->onMouseDown += &Inventory::Close;
+	btn->SetTexture(nullptr, nullptr, ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Close_1.png"), nullptr);
+	CloseBtn->SetSortOrder(50);
+	CloseBtn->GetTransform()->SetWorldPosition(670, 520, 0);
 }
 
 void Inventory::Update(float) noexcept
@@ -120,6 +131,11 @@ void Inventory::Update(float) noexcept
 		PickUpGold(10);
 
 #endif // _DEBUG
+}
+
+void Inventory::Close()
+{
+	gameObject->SetActive(false);
 }
 
 bool Inventory::BuyItem(int Gold)
@@ -200,8 +216,9 @@ ITEMDATA* Inventory::UsingItem(POINT pt)
 						else
 						{
 							D3DXVECTOR3 vpos = { (float)pSlot->_tRect.left,(float)pSlot->_tRect.top,0 };
-							pItemInfo = _vecItem[t].first;
+							_pItemInfo = _vecItem[t].first;
 							_pItem->SetInvenPosition(vpos);
+							PlayerEquipCheck(_vecSlotGroup[i][0], _pItem, _pItemInfo);
 							return pItemInfo;
 						}
 					}
@@ -274,6 +291,9 @@ void Inventory::ItemCatchExamine(POINT pt)
 		{
 			SLOTINFO* pItem = _pItem->GetItemInfo(0);
 			ReCatchtoExamine(vSlot, pItem->_vPos, true);
+
+			if(iter[0]->GetSlotType() != Slot::SLOTTYPE::NORMAL)
+				_pPlayer->EquidItem(nullptr, _pItem->GetItemData());
 			return;
 		}
 	}
@@ -377,9 +397,45 @@ void Inventory::ReCatchtoExamine(std::vector<SLOTINFO*> InvenSlot, D3DXVECTOR3 v
 bool Inventory::PickUpItems(ITEMDATA* pInvenInfo)
 {
 	GameObject* pobj = GameObject::Instantiate();
+	switch ((Slot::SLOTTYPE)pInvenInfo->itype)
+	{
+	case Slot::SLOTTYPE::HEAD:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("BoneHelm"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::BODY:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("HardArmor"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::MAINWP:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("GrimWand"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::SECONDWP:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("TowerShield"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::GLOVES:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("LightGauntlets"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::LEGS:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("Greaves"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::BELT:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("PlatedBelt"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::RING1:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("JordanRing"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::RING2:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("NagelRing"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::NECKLACE:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("NokozanRelic"), sizeof(ITEMDATA));
+		break;
+	case Slot::SLOTTYPE::POTION:
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("Potion"), sizeof(ITEMDATA));
+		break;
+	}
 	float fx = UnsignedRandomf(400.f);
 	float fy = UnsignedRandomf(700.f);
-	ItemSlot* pSlot = new ItemSlot((Slot::SLOTTYPE)pInvenInfo->itype, gameObject->GetTransform(), fx, fy);
+	ItemSlot* pSlot = new ItemSlot(pInvenInfo, gameObject->GetTransform(), fx, fy);
 	pobj->AddComponent(pSlot);
 	pobj->SetDontDestroy(true);
 	_vecItem.emplace_back(pInvenInfo, pSlot);
@@ -454,6 +510,8 @@ SLOTINFO* Inventory::DropAtEtingExamine(std::vector<SLOTINFO*> InvenSlot)
 
 bool Inventory::ItemDropAtMouse(POINT pt)
 {
+	GameObject* obj = GameObject::Instantiate();
+
 	if (_pItemSlotInfo == nullptr || _pItem == nullptr)
 		return false;
 
@@ -502,9 +560,9 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							_pItem = _pPriveItem;
 							_bItemCatchCheck = true;
 							_pItemSlotInfo = _pPriveSlotInfo;
-						//	_pItemData = _pPriveItemData;
 							_bSwitchingcheck = false;
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
+							PlayerEquipCheck(iter[0], _pItem, _pItemInfo);
 							return false;
 						}
 						else
@@ -512,6 +570,7 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 							vpos = { (float)vSlot[0]->_tRect.left, (float)vSlot[0]->_tRect.top, 0 };
 							_pItem->SetInvenPosition(vpos);
 							_pItemInfo = EquipItemCheck(_vecItem, _pItemSlotInfo);
+							PlayerEquipCheck(iter[0], _pItem, _pItemInfo);
 							return false;
 						}
 					}
@@ -582,7 +641,11 @@ bool Inventory::ItemDropAtMouse(POINT pt)
 	if (PtInRect(&rc, pt))
 		ItemEating();
 	else
+	{
+		obj = GameObject::Instantiate();
+		obj->AddComponent(new Item(_pItem->GetItemData(), _pPlayer->GetTransform()->GetWorldPosition()));
 		return true;
+	}
 
 	return false;
 }
@@ -692,4 +755,18 @@ ITEMDATA* Inventory::EquipItemCheck(std::vector<std::pair<ITEMDATA*, ItemSlot*>>
 #endif // _DEBUG
 	}
 	return nullptr;
+}
+
+void Inventory::PlayerEquipCheck(Slot* pSlot, ItemSlot* pItem, ITEMDATA* pItemInfo)
+{
+	if (pSlot->GetItemInfo() == nullptr)
+	{
+		pSlot->AddItem(pItem);
+		_pPlayer->EquidItem(pItemInfo);
+	}
+	else
+	{
+		_pPlayer->EquidItem(_pItemInfo, pSlot->GetItemInfo()->GetItemData());
+		pSlot->AddItem(pItem);
+	}
 }

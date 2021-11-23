@@ -85,24 +85,28 @@ void InfoBox::Start(void) noexcept
 	{
 		obj = GameObject::Instantiate();
 		obj->GetTransform()->SetParent(gameObject->GetTransform());
-		if (_eType == Slot::SLOTTYPE::MAINWP || _eType == Slot::SLOTTYPE::RING1 || _eType == Slot::SLOTTYPE::RING2 || _eType == Slot::SLOTTYPE::NECKLACE)
+
+		if (_eType == Slot::SLOTTYPE::MAINWP)
 		{
 			std::string strAttak = "공격력 : ";
 			strAttak += std::to_string(_data.damagemin) + "~" + std::to_string(_data.damagemax);
 			_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strAttak.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
 		}
-		else
+		else if(_eType == Slot::SLOTTYPE::RING1 && _eType == Slot::SLOTTYPE::RING2 && _eType == Slot::SLOTTYPE::NECKLACE)
 		{
 			std::string strDef = "방어력 : ";
 			strDef += std::to_string(_data.defense);
 			_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strDef.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
 		}
 		rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
-		rt->SetWidth(200);
-		rt->SetHeight(30);
-		obj->SetSortOrder(300);
-		vpos.y += 30.f;
-		obj->GetTransform()->SetWorldPosition(vpos);
+		if (rt != nullptr)
+		{
+			rt->SetWidth(200);
+			rt->SetHeight(30);
+			obj->SetSortOrder(300);
+			vpos.y += 30.f;
+			obj->GetTransform()->SetWorldPosition(vpos);
+		}
 
 		obj = GameObject::Instantiate();
 		obj->GetTransform()->SetParent(gameObject->GetTransform());
@@ -120,19 +124,18 @@ void InfoBox::Start(void) noexcept
 		{
 			obj = GameObject::Instantiate();
 			obj->GetTransform()->SetParent(gameObject->GetTransform());
-			int i = ce::CE_MATH::Random(0, 3);
 			std::string strability;
-			switch (i)
+			switch (_eType)
 			{
-			case 0:
+			case  Slot::SLOTTYPE::RING1:
 				strability = "추가 공격력 ";
 				strability += std::to_string(_data.ability);
 				break;
-			case 1:
+			case Slot::SLOTTYPE::RING2:
 				strability = "추가 방어력 ";
 				strability += std::to_string(_data.ability);
 				break;
-			case 2:
+			case Slot::SLOTTYPE::NECKLACE:
 				strability = "모든 저항 ";
 				strability += std::to_string(_data.ability) + "%";
 				break;

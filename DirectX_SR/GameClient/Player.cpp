@@ -11,9 +11,12 @@
 #include "Rigidbody.h"
 #include "AudioListener.h"
 #include "AudioSource.h"
+#include "Light.h"
 
 #include "PathFinding.h"
 #include "InputHandler.h"
+#include "Inventory.h"
+#include "Actor.h"
 
 #include "PlayerFSMState.h"
 #include "PlayerStand.h"
@@ -21,16 +24,12 @@
 #include "PlayerAttack.h"
 #include "PlayerSkill.h"
 #include "PlayerDamaged.h"
+#include "PlayerDeath.h"
 
 #include "Skill.h"
 #include "RaiseSkeleton.h"
 #include "BoneSpear.h"
 #include "PoisonNova.h"
-
-#include "Light.h"
-#include "Inventory.h"
-#include "Actor.h"
-#include "Slot.h"
 
 Player::Player(PathFinding* pf) noexcept
 	:_pPathFinding(pf), _eCurState(PLAYER_END), _bFPV(false)
@@ -53,6 +52,8 @@ void Player::SetMap(PathFinding* pf) noexcept
 	}
 
 	_pPathFinding = pf;
+
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding,_pTrans->GetWorldPosition());
 }
 
 void Player::Start(void) noexcept
@@ -65,7 +66,7 @@ void Player::Start(void) noexcept
 	gameObject->SetDontDestroy(true);
 	gameObject->SetTag(GameObjectTag::PLAYER);
 
-	_pTrans = static_cast<Transform*>(GetGameObject()->GetTransform());
+	_pTrans = GetTransform();
 	_pInputHandler->Start();
 
 	//인벤토리 
@@ -74,17 +75,18 @@ void Player::Start(void) noexcept
 	_pInvenObj->AddComponent(_pInven);
 	_pInven->GetGameObject()->SetActive(false);
 	_pInvenObj->SetDontDestroy(true);
-	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding);
+
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->SetPathFinding(_pPathFinding, _pTrans->GetWorldPosition());
 
 	gameObject->AddComponent(new AudioListener());
 	_pAudioSource = new AudioSource();
 	gameObject->AddComponent(_pAudioSource);
-	_pManaSound[0] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\INeedMana.mp3");
-	_pManaSound[1] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\MoreMana.mp3");
-	_pManaSound[2] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\LowMana.mp3");
-	_pDamagedSound[0] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Damaged1.wav");
-	_pDamagedSound[1] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Damaged2.wav");
-	_pDamagedSound[2] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Damaged3.wav");
+	for (int i = 0; i < 3; i++)
+	{
+		_pManaSound[i] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Mana"+std::to_string(i+1)+".mp3");
+		_pDamagedSound[i] = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\Damaged" + std::to_string(i + 1) + ".wav");
+	}
+	_pDeathSound = ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Player\\death.wav");
 
 	_pCollider = new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.3f), D3DXVECTOR3(0, 0.3f, 0), "hitbox");
 	gameObject->AddComponent(_pCollider);
@@ -174,6 +176,7 @@ void Player::OnDestroy(void) noexcept
 		_pManaSound[i] = nullptr;
 		_pDamagedSound[i] = nullptr;
 	}
+	_pDeathSound = nullptr;
 }
 
 void Player::OnCollisionEnter(Collider* mine, Collider* other) noexcept
@@ -217,7 +220,7 @@ void Player::OnCollisionStay(Collider* mine, Collider* other) noexcept
 			Actor* actor = other->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
 
 			if (actor != nullptr)
-				actor->GetHit((int)_tStat->_fDamage);
+				actor->GetHit(CE_MATH::Random((int)_tStat->_fMinDamage, (int)_tStat->_fMaxDamage));
 		}
 	}
 }
@@ -342,6 +345,35 @@ void Player::InitAnimation(SpriteRenderer* sr)
 
 		TList.clear();
 		FrameTime.clear();
+
+		//Death
+		for (int i = 0; i < 27; i++)
+		{
+			char str[256];
+			sprintf_s(str, 256, "Asset\\Player\\death_%d\\%d.png", folder, i);
+
+			TList.push_back(ASSETMANAGER->GetTextureData(str));
+			FrameTime.push_back(0.08f);
+		}
+
+		ani = new Animation(FrameTime, TList);
+		ani->SetMaterial(material);
+		_pAnimator->InsertAnimation("Death_" + std::to_string(folder), ani);
+
+		TList.clear();
+		FrameTime.clear();
+
+		//Dead
+		char str[256];
+		sprintf_s(str, 256, "Asset\\Player\\dead\\%d.png", folder);
+		TList.push_back(ASSETMANAGER->GetTextureData(str));
+		FrameTime.push_back(10);
+		ani = new Animation(FrameTime, TList,true);
+		ani->SetMaterial(material);
+		_pAnimator->InsertAnimation("Dead_" + std::to_string(folder), ani);
+		
+		TList.clear();
+		FrameTime.clear();
 	}
 }
 
@@ -353,6 +385,7 @@ void Player::InitState()
 	_pFSM.push_back(new PlayerAttack(this,_pAnimator, _pTrans));
 	_pFSM.push_back(new PlayerSkill(this, _pAnimator, _pTrans));
 	_pFSM.push_back(new PlayerDamaged(this, _pAnimator, _pTrans));
+	_pFSM.push_back(new PlayerDeath(this, _pAnimator, _pTrans));
 }
 
 void Player::SetFPV()
@@ -383,6 +416,14 @@ void Player::SetFPV()
 //stand,move,skill,Damaged
 void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 {
+	if (newState == PLAYER_END)
+	{
+		_pAnimator->SetAnimation("Dead_" + std::to_string((int)eDir * 2));
+		return;
+	}
+
+	if (_eCurState == PLAYER_END && newState != PLAYER_STAND) return;
+
 	if (_bFPV)
 		SetAttCollider(false);
 
@@ -411,6 +452,8 @@ void Player::SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget)
 //attack,move
 void Player::SetState(PLAYER_STATE newState, Transform* targetTrans, bool bAtt)
 {
+	if (_eCurState == PLAYER_END) return;
+
 	if (_bFPV)
 		SetAttCollider(false);
 
@@ -456,6 +499,12 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 	}
 }
 
+void Player::SetFull()
+{
+	_tStat->_fHp = _tStat->_fMaxHp;
+	_tStat->_fMP = _tStat->_fMaxMp;
+}
+
 void Player::SetAttCollider(bool b)
 {
 	//_pAttCollider->SetEnable(b);
@@ -476,7 +525,7 @@ void Player::OnAnimationEvent(std::string str) noexcept
 			{
 				Actor* actor = Target->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR);
 				if (actor != nullptr)
-					actor->GetHit((int)_tStat->_fDamage);
+					actor->GetHit(CE_MATH::Random((int)_tStat->_fMinDamage, (int)_tStat->_fMaxDamage));
 			}
 		}
 	}
@@ -484,13 +533,24 @@ void Player::OnAnimationEvent(std::string str) noexcept
 
 void Player::EquidItem(ITEMDATA* equid, ITEMDATA* unEquid)
 {
-	if(unEquid != nullptr)
-		_tStat->_fDef -= unEquid->defense;
-	_tStat->_fDef += equid->defense;
-
 	if (unEquid != nullptr)
-		_tStat->_fDamage -= unEquid->damagemin;
-	_tStat->_fDamage += equid->damagemin;
+	{
+		_tStat->_fDef -= unEquid->defense;
+		_tStat->_fMinDamage -= unEquid->damagemin;
+		_tStat->_fMaxDamage -= unEquid->damagemax;
+		_tStat->_fMaxHp -= unEquid->iMaxhp;
+	}
+	if (equid != nullptr)
+	{
+		_tStat->_fDef += equid->defense;
+		_tStat->_fMinDamage += equid->damagemin;
+		_tStat->_fMaxDamage += equid->damagemax;
+		_tStat->_fMaxHp += equid->iMaxhp;
+		_tStat->_fHp += equid->iMaxhp;
+	}
+
+	if (_tStat->_fHp > _tStat->_fMaxHp)
+		_tStat->_fHp = _tStat->_fMaxHp;
 }
 
 void Player::DrinkPotion(int value)
@@ -503,12 +563,18 @@ void Player::DrinkPotion(int value)
 
 void Player::GetHit(float fDamage,D3DXVECTOR3 vPos)
 {
-	_tStat->_fHp -= fDamage;
+	if (_eCurState == PLAYER_DEATH) return;
+
+	_tStat->_fHp -= (fDamage * (1 - (_tStat->_fDef * 0.01)));
 	if (_tStat->_fHp < 0)
 	{
+		_tStat->_fHp = 0;
 		//죽음
+		SetState(PLAYER_DEATH, DIR_END,vPos);
+		_pAudioSource->LoadAudio(_pDeathSound);
+		_pAudioSource->Play();
 
-		//다시시작 
+		_pInputHandler->SetPlayerDead();
 	}
 	else
 	{

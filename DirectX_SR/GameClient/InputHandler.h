@@ -20,6 +20,8 @@ public:		void					Update(float fElapsedTime) noexcept;
 public:		void					OnDestroy(void) noexcept;
 
 public:		void					SetMouseBtn(bool isLeft, SKILL_ID id);
+public:		void					SetInvenOpen(bool b) { _bInven = b; }
+public:		void					SetPlayerDead();
 
 public:		const D3DXVECTOR3&		GetDir(void) const noexcept { return _vDir; }
 
@@ -40,6 +42,9 @@ private:	Transform*				_pPlayerTrans;
 
 private:	TargetCamera*			_pTargetCamera;
 private:	Transform*				_pCameraTrans;
+
+private:	bool					_bDead;
+private:	GameObject*				_DiedObj;
 
 private:	bool					_bFPV;
 private:	bool					_bDown;

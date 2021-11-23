@@ -13,10 +13,13 @@ PathFinding::~PathFinding() noexcept
 {
 	Release();
 }
-bool PathFinding::FindPath(D3DXVECTOR3 vStartPos,D3DXVECTOR3 vTargetPos)
+bool PathFinding::FindPath(D3DXVECTOR3 vStartPos, D3DXVECTOR3 vTargetPos)
 {
 	Node* startNode = _pNavi->NodeFormPosition(vStartPos);
 	Node* targetNode = _pNavi->NodeFormPosition(vTargetPos);
+
+	if (startNode == nullptr || targetNode == nullptr)
+		return false;
 
 	PriorityQueue<Node*,std::vector<Node*>, compare> openSet;
 	std::unordered_set<Node*> closedSet;

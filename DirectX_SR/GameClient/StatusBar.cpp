@@ -17,7 +17,7 @@ StatusBar::StatusBar(Player* player) noexcept
 void StatusBar::Start(void) noexcept
 {
     gameObject->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\StatusBar.png")));
-    gameObject->SetSortOrder(0);
+    gameObject->SetSortOrder(2);
     gameObject->GetTransform()->SetWorldPosition(0,557, 0);
 
     InitUI();
@@ -38,7 +38,7 @@ void StatusBar::InitUI() noexcept
     pObj->AddComponent(_imgStamina);
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(435, 118, 0);
-    pObj->SetSortOrder(1);
+    pObj->SetSortOrder(3);
     pObj->SetDontDestroy(true);
 
     _imgHP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\HPBall.png"));
@@ -47,7 +47,7 @@ void StatusBar::InitUI() noexcept
     pObj->AddComponent(_imgHP);
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(50, 12, 0);    
-    pObj->SetSortOrder(1);
+    pObj->SetSortOrder(3);
     pObj->SetDontDestroy(true);
 
     _imgMP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\MPBall.png"));
@@ -56,7 +56,7 @@ void StatusBar::InitUI() noexcept
     pObj->AddComponent(_imgMP);
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(1115, 12, 0);
-    pObj->SetSortOrder(1);
+    pObj->SetSortOrder(3);
     pObj->SetDontDestroy(true);
 
     //LB

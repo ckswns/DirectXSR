@@ -1,31 +1,54 @@
 #include "pch.h"
 #include "Item.h"
-#include "Text.h"
+#include "SphereCollider.h"
+#include "SpriteRenderer.h"
+#include "Animation.h"
+#include "Animator.h"
 #include "Transform.h"
-#include "RectTransform.h"
+#include "BillboardObj.h"
+
+Item::Item(ITEMDATA* item, D3DXVECTOR3 vPlayerPos) noexcept
+	:_tInvenItem(item), _vPlayerPos(vPlayerPos)
+{
+}
 void Item::Start(void) noexcept
 {
-//	_pTxtName = GameObject::Instantiate();
-//	_pTxtName->AddComponent(new UI::Text(_tInvenItem._strName.c_str(), D3DCOLOR_ARGB(255,255,0, 0)));
-////	UI::RectTransform* rt = static_cast<UI::RectTransform*>(_pTxtName->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
-////	rt->SetWidth(100);
-////	rt->SetHeight(100);
-//	_pTxtName->GetTransform()->SetParent(gameObject->GetTransform());
-//	_pTxtName->GetTransform()->SetWorldPosition(2,2,2);
-////	_pTxtName->SetActive(false);
-//	_bLook = false;
-}
-void Item::Update(float) noexcept
-{
-	/*if (INPUT->GetKeyStay('X'))
-	{
-		_bLook = true;
-		_pTxtName->SetActive(true);
-	}
-	else if (_bLook)
-	{
-		_bLook = false;
-		_pTxtName->SetActive(false);
-	}*/
+	gameObject->SetTag(GameObjectTag::OBJECT);
+	gameObject->SetName("Item");
 
+	gameObject->AddComponent(new BillboardObj());
+	gameObject->AddComponent(new SphereCollider(0.5f));
+	
+	std::string strPath(_tInvenItem->imgPath);
+	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData(strPath +"0.png"));
+	gameObject->AddComponent(sr);
+
+	Animator* pAnimator = new Animator(true);
+	gameObject->AddComponent(pAnimator);
+
+	std::vector<Texture*> TList;
+	std::vector<float>	FrameTime;
+	Material* material = sr->GetMaterialPTR();
+
+	for (int i = 0; i < 17; i++)
+	{
+		std::string aniPath = strPath + std::to_string(i) + ".png";
+
+		TList.push_back(ASSETMANAGER->GetTextureData(aniPath));
+		FrameTime.push_back(0.05f);
+	}
+
+	Animation* ani = new Animation(FrameTime, TList, false);
+	ani->SetMaterial(material);
+	pAnimator->InsertAnimation(_tInvenItem->name, ani);
+
+	D3DXVECTOR3 pos;
+	pos.x = _vPlayerPos.x + SignedRandomf(1);
+	pos.y = 1;
+	pos.z = CE_MATH::Random(_vPlayerPos.z - 1, _vPlayerPos.z + 1);
+
+	GetTransform()->SetWorldPosition(pos);
+
+	TList.clear();
+	FrameTime.clear();
 }
