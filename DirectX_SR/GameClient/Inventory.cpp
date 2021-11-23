@@ -429,7 +429,7 @@ bool Inventory::PickUpItems(ITEMDATA* pInvenInfo)
 		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("TowerShield"), sizeof(ITEMDATA));
 		break;
 	case Slot::SLOTTYPE::GLOVES:
-		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("LightGauntlets"), sizeof(ITEMDATA));
+		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("Gauntlets"), sizeof(ITEMDATA));
 		break;
 	case Slot::SLOTTYPE::LEGS:
 		memcpy(pInvenInfo, &GAMEDATAMANAGER->GetItemData("Greaves"), sizeof(ITEMDATA));
