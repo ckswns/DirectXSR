@@ -68,62 +68,78 @@ void InfoBox::Awake(void) noexcept
 void InfoBox::Start(void) noexcept
 {
 	D3DXVECTOR3 vpos = gameObject->GetTransform()->GetWorldPosition();
-	GameObject* obj = GameObject::Instantiate();
-	obj->GetTransform()->SetParent(gameObject->GetTransform());
+	_pTextObject[0] = GameObject::Instantiate();
+	_pTextObject[0]->GetTransform()->SetParent(gameObject->GetTransform());
+	_pTextObject[0]->SetDontDestroy(true);
 	if (_eType == Slot::SLOTTYPE::RING1 || _eType == Slot::SLOTTYPE::RING2 || _eType == Slot::SLOTTYPE::NECKLACE)
-		_pTex[0] = static_cast<Text*>(obj->AddComponent(new UI::Text(_data.name, D3DCOLOR_ARGB(255, 50, 50, 255), DT_CENTER)));
+		_pTex[0] = static_cast<Text*>(_pTextObject[0]->AddComponent(new UI::Text(_data.name, D3DCOLOR_ARGB(255, 50, 50, 255), DT_CENTER)));
 	else
-		_pTex[0] = static_cast<Text*>(obj->AddComponent(new UI::Text(_data.name, D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
-	RectTransform* rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+		_pTex[0] = static_cast<Text*>(_pTextObject[0]->AddComponent(new UI::Text(_data.name, D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+	RectTransform* rt = static_cast<RectTransform*>(_pTextObject[0]->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 	rt->SetWidth(200);
 	rt->SetHeight(30);
-	obj->SetSortOrder(300);
+	_pTextObject[0]->SetSortOrder(300);
 	vpos.y += 10.f;
-	obj->GetTransform()->SetWorldPosition(vpos);
+	_pTextObject[0]->GetTransform()->SetWorldPosition(vpos);
 
 	if (_eType != Slot::SLOTTYPE::POTION)
 	{
-		obj = GameObject::Instantiate();
-		obj->GetTransform()->SetParent(gameObject->GetTransform());
-
+		_pTextObject[1] = GameObject::Instantiate();
+		_pTextObject[1]->GetTransform()->SetParent(gameObject->GetTransform());
+		_pTextObject[1]->SetDontDestroy(true);
 		if (_eType == Slot::SLOTTYPE::MAINWP)
 		{
 			std::string strAttak = "공격력 : ";
 			strAttak += std::to_string(_data.damagemin) + "~" + std::to_string(_data.damagemax);
-			_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strAttak.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+			_pTex[1] = static_cast<Text*>(_pTextObject[1]->AddComponent(new UI::Text(strAttak.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
 		}
-		else if(_eType != Slot::SLOTTYPE::RING1 || _eType != Slot::SLOTTYPE::RING2 || _eType != Slot::SLOTTYPE::NECKLACE)
+		else if(_eType != Slot::SLOTTYPE::RING1 && _eType != Slot::SLOTTYPE::RING2 && _eType != Slot::SLOTTYPE::NECKLACE)
 		{
 			std::string strDef = "방어력 : ";
 			strDef += std::to_string(_data.defense);
-			_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strDef.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+			_pTex[1] = static_cast<Text*>(_pTextObject[1]->AddComponent(new UI::Text(strDef.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
 		}
-		rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+		rt = static_cast<RectTransform*>(_pTextObject[1]->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 		if (rt != nullptr)
 		{
 			rt->SetWidth(200);
 			rt->SetHeight(30);
-			obj->SetSortOrder(300);
+			_pTextObject[1]->SetSortOrder(300);
 			vpos.y += 30.f;
-			obj->GetTransform()->SetWorldPosition(vpos);
+			_pTextObject[1]->GetTransform()->SetWorldPosition(vpos);
+
+			_pTextObject[4] = GameObject::Instantiate();
+			_pTextObject[4]->GetTransform()->SetParent(gameObject->GetTransform());
+			_pTextObject[4]->SetDontDestroy(true);
+			std::string strMaxhp = "최대체력 +";
+			strMaxhp += std::to_string(_data.iMaxhp);
+			_pTex[4] = static_cast<Text*>(_pTextObject[4]->AddComponent(new UI::Text(strMaxhp.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+			rt = static_cast<RectTransform*>(_pTextObject[4]->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+			rt->SetWidth(200);
+			rt->SetHeight(30);
+			_pTextObject[4]->SetSortOrder(300);
+			vpos.y += 30.f;
+			_pTextObject[4]->GetTransform()->SetWorldPosition(vpos);
 		}
 
-		obj = GameObject::Instantiate();
-		obj->GetTransform()->SetParent(gameObject->GetTransform());
+		_pTextObject[2] = GameObject::Instantiate();
+		_pTextObject[2]->GetTransform()->SetParent(gameObject->GetTransform());
+		_pTextObject[2]->SetDontDestroy(true);
 		std::string strneed = "착용레벨 : ";
 		strneed += std::to_string(_data.needlevel);
-		_pTex[2] = static_cast<Text*>(obj->AddComponent(new UI::Text(strneed.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
-		rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+		_pTex[2] = static_cast<Text*>(_pTextObject[2]->AddComponent(new UI::Text(strneed.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+		rt = static_cast<RectTransform*>(_pTextObject[2]->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 		rt->SetWidth(200);
 		rt->SetHeight(30);
-		obj->SetSortOrder(300);
+		_pTextObject[2]->SetSortOrder(300);
 		vpos.y += 30.f;
-		obj->GetTransform()->SetWorldPosition(vpos);
+		_pTextObject[2]->GetTransform()->SetWorldPosition(vpos);
 
 		if (_eType == Slot::SLOTTYPE::RING1 || _eType == Slot::SLOTTYPE::RING2 || _eType == Slot::SLOTTYPE::NECKLACE)
 		{
-			obj = GameObject::Instantiate();
-			obj->GetTransform()->SetParent(gameObject->GetTransform());
+			_pTextObject[3] = GameObject::Instantiate();
+			_pTextObject[3]->GetTransform()->SetParent(gameObject->GetTransform());
+			_pTextObject[3]->SetDontDestroy(true);
 			std::string strability;
 			switch (_eType)
 			{
@@ -140,31 +156,33 @@ void InfoBox::Start(void) noexcept
 				strability += std::to_string(_data.ability) + "%";
 				break;
 			}
-			_pTex[3] = static_cast<Text*>(obj->AddComponent(new UI::Text(strability.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
-			rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+			_pTex[3] = static_cast<Text*>(_pTextObject[3]->AddComponent(new UI::Text(strability.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+			rt = static_cast<RectTransform*>(_pTextObject[3]->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 			rt->SetWidth(200);
 			rt->SetHeight(30);
-			obj->SetSortOrder(300);
+			_pTextObject[3]->SetSortOrder(300);
 			vpos.y += 60.f;
-			obj->GetTransform()->SetWorldPosition(vpos);
+			_pTextObject[3]->GetTransform()->SetWorldPosition(vpos);
 		}
 	}
 	else
 	{
-		obj = GameObject::Instantiate();
-		obj->GetTransform()->SetParent(gameObject->GetTransform());
+		_pTextObject[3] = GameObject::Instantiate();
+		_pTextObject[3]->GetTransform()->SetParent(gameObject->GetTransform());
+		_pTextObject[3]->SetDontDestroy(true);
 		int i = ce::CE_MATH::Random(0, 3);
 		std::string strability = std::to_string(_data.ability) + "% 즉시회복";
-		_pTex[3] = static_cast<Text*>(obj->AddComponent(new UI::Text(strability.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
-		rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+		_pTex[3] = static_cast<Text*>(_pTextObject[3]->AddComponent(new UI::Text(strability.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+		rt = static_cast<RectTransform*>(_pTextObject[3]->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 		rt->SetWidth(200);
 		rt->SetHeight(30);
-		obj->SetSortOrder(300);
+		_pTextObject[3]->SetSortOrder(300);
 		vpos.y += 60.f;
-		obj->GetTransform()->SetWorldPosition(vpos);
+		_pTextObject[3]->GetTransform()->SetWorldPosition(vpos);
 	}
-	obj = GameObject::Instantiate();
-	obj->GetTransform()->SetParent(gameObject->GetTransform());
+	_pTextObject[4] = GameObject::Instantiate();
+	_pTextObject[4]->GetTransform()->SetParent(gameObject->GetTransform());
+	_pTextObject[4]->SetDontDestroy(true);
 	int i = ce::CE_MATH::Random(0, 3);
 	std::string strGold;
 	if (_bStore)
@@ -175,13 +193,13 @@ void InfoBox::Start(void) noexcept
 	{
 		strGold = "판매가격: " + std::to_string(_data.sellgold) + 'G';
 	}
-	_pTex[4] = static_cast<Text*>(obj->AddComponent(new UI::Text(strGold.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
-	rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
+	_pTex[4] = static_cast<Text*>(_pTextObject[4]->AddComponent(new UI::Text(strGold.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
+	rt = static_cast<RectTransform*>(_pTextObject[4]->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
 	rt->SetWidth(200);
 	rt->SetHeight(30);
-	obj->SetSortOrder(300);
+	_pTextObject[4]->SetSortOrder(300);
 	vpos.y += 60.f;
-	obj->GetTransform()->SetWorldPosition(vpos);
+	_pTextObject[4]->GetTransform()->SetWorldPosition(vpos);
 	rt->SetInteractive(false);
 }
 
@@ -196,8 +214,16 @@ void InfoBox::SetPosition(float x, float y)
 
 void InfoBox::MissingItem()
 {
-	gameObject->SetDontDestroy(true);
+	gameObject->SetDontDestroy(false);
 	gameObject->Destroy();
+	for (int i = 0; i < 5; ++i)
+	{
+		if (_pTextObject[i] != nullptr)
+		{
+			_pTextObject[i]->SetDontDestroy(false);
+			_pTextObject[i]->Destroy();
+		}
+	}
 }
 
 void InfoBox::SetStoreItem(bool b)

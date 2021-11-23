@@ -3,7 +3,7 @@ BoneHelm,1,0,0,1,10,100,300,0,Asset\Item\BoneHelm\,20,te
 HardArmor,2,0,0,1,20,100,300,0,Asset\Item\HardArmor\,50,te
 GrimWand,3,10,15,1,0,100,300,0,Asset\Item\GrimWand\,0,te
 TowerShield,4,0,0,1,30,100,300,0,Asset\Item\TowerShield\,100,te
-LightGauntlets,5,0,0,1,15,100,300,0,Asset\Item\LightGauntlets\,10,te
+Gauntlets,5,0,0,1,15,100,300,0,Asset\Item\LightGauntlets\,10,te
 Greaves,6,0,0,1,12,100,300,0,Asset\Item\Greaves\,10,te
 PlatedBelt,7,0,0,1,12,100,300,0,Asset\Item\PlatedBelt\,20,te
 JordanRing,8,10,10,1,0,100,300,10,Asset\Item\Ring\,0,te

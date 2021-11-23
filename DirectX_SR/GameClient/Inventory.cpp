@@ -38,6 +38,7 @@ void Inventory::Start(void) noexcept
 	gameObject->SetSortOrder(0);
 	gameObject->GetTransform()->SetWorldPosition(WINCX >> 1, 0, 0);
 	gameObject->SetDontDestroy(true);
+	gameObject->SetActive(false);
 
 	_pExamine = new Examine();
 
@@ -52,7 +53,7 @@ void Inventory::Start(void) noexcept
 		obj->SetDontDestroy(true);
 	}
 
-	_iGold = 1000;
+	_iGold = 3000;
 
 	obj = GameObject::Instantiate();
 	obj->SetDontDestroy(true);
@@ -77,67 +78,81 @@ void Inventory::Start(void) noexcept
 
 void Inventory::Update(float) noexcept
 {
-	_pTexGold->SetText(std::to_string(_iGold).c_str());
-
-	POINT pt = {};
-	GetCursorPos(&pt);
-	ScreenToClient(g_hWnd, &pt);
-
-	if (INPUT->GetKeyDown(VK_LBUTTON))
+	if (gameObject->GetActive())
 	{
-		if (pt.x >= WINCX >> 1)
+		_pTexGold->SetText(std::to_string(_iGold).c_str());
+
+		POINT pt = {};
+		GetCursorPos(&pt);
+		ScreenToClient(g_hWnd, &pt);
+
+		if (INPUT->GetKeyDown(VK_LBUTTON))
 		{
-			if (!_vecItem.empty())
+			if (pt.x >= WINCX >> 1)
 			{
-				_bMovecheck = false;
-				_bItemCatchCheck = !_bItemCatchCheck;
+				if (!_vecItem.empty())
+				{
+					_bMovecheck = false;
+					_bItemCatchCheck = !_bItemCatchCheck;
+					if (_bItemCatchCheck)
+						ItemCatch(pt);
+					else
+						_bDropCheck = ItemDropAtMouse(pt);
+				}
+			}
+			else
+			{
 				if (_bItemCatchCheck)
-					ItemCatch(pt);
-				else
 					_bDropCheck = ItemDropAtMouse(pt);
 			}
 		}
-		else
-		{
-			if (_bItemCatchCheck)
-				_bDropCheck = ItemDropAtMouse(pt);
-		}
-	}
-	//else if (INPUT->GetKeyDown(VK_RBUTTON) && !_bItemCatchCheck) // 커밋하기전 주석 처리
-	//	ITEMDATA* pItemInfo = UsingItem(pt);
 
-	if (_bItemCatchCheck)
-		ItemMove();
+		if (_bItemCatchCheck)
+			ItemMove();
 
-	if (_bDropCheck)
-		Dropitem();
+		if (_bDropCheck)
+			Dropitem();
 
-	if (!_vecItem.empty())
-		ItemInfoBoxCheck(pt);
+		if (!_vecItem.empty())
+			ItemInfoBoxCheck(pt);
 
 #ifdef _DEBUG
-	if (INPUT->GetKeyDown('l') || INPUT->GetKeyDown('L'))
-	{
-		ITEMDATA* pInvenInfo = new ITEMDATA();
+		if (INPUT->GetKeyDown('l') || INPUT->GetKeyDown('L'))
+		{
+			ITEMDATA* pInvenInfo = new ITEMDATA();
 
-		/*int i = ce::CE_MATH::Random(1, 12);*/
-		int i = rand() % 11 + 1;
-		pInvenInfo->itype = i;
+			/*int i = ce::CE_MATH::Random(1, 12);*/
+			int i = rand() % 11 + 1;
+			pInvenInfo->itype = i;
 
-		PickUpItems(pInvenInfo);
-	}
-	if (INPUT->GetKeyDown('K') || INPUT->GetKeyDown('k'))
-		BuyItem(10);
-	if (INPUT->GetKeyDown('j') || INPUT->GetKeyDown('J'))
-		PickUpGold(10);
+			PickUpItems(pInvenInfo);
+		}
+		if (INPUT->GetKeyDown('K') || INPUT->GetKeyDown('k'))
+			BuyItem(10);
+		if (INPUT->GetKeyDown('j') || INPUT->GetKeyDown('J'))
+			PickUpGold(10);
 
 #endif // _DEBUG
+	}
+}
+
+void Inventory::Open()
+{
+	gameObject->SetActive(true);
+	_pPlayer->GetInpuHandler()->SetInvenOpen(true);
 }
 
 void Inventory::Close()
 {
 	gameObject->SetActive(false);
 	_pPlayer->GetInpuHandler()->SetInvenOpen(false);
+	for (auto& iter : _vecItem)
+	{
+		if (iter.first != nullptr)
+		{
+			iter.second->OnMouseLeave();
+		}
+	}
 }
 
 bool Inventory::BuyItem(int Gold)
