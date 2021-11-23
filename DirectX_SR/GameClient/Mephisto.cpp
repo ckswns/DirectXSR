@@ -267,6 +267,8 @@ void Mephisto::Update(float fElapsedTime) noexcept
 	case Actor::State::ATTAK:
 	case Actor::State::HIT:
 	case Actor::State::DIE:
+		if (_animator->GetCurrentAnimationEnd())
+			_bDeadAniDone = true;
 	default:
 		break;
 	}

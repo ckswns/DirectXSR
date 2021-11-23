@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "Input.h"
 #include "TimeManager.h"
+#include "PlayerPrefs.h"
 
 #define ASSETMANAGER	AssetManager::Instance()
 #ifdef __USE_FMOD__
@@ -18,3 +19,4 @@
 #define SCENEMANAGER	SceneManager::Instance()
 #define INPUT			Input::Instance()
 #define TIMEMANAGER		TimeManager::Instance()
+#define PLAYERPREFS		PlayerPrefs::Instance()

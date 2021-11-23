@@ -30,6 +30,7 @@
 #include "Orc.h"
 #include "Witch.h"
 #include "FadeController.h"
+#include "MasterYi.h"
 
 bool Dungeon_01::Init(void) noexcept
 {
@@ -212,9 +213,9 @@ bool Dungeon_01::Init(void) noexcept
 		pos.z -= Random::GetValue(3, 30);
 
 		if (5 < Random::GetValue(0, 10))
-			obj->AddComponent(new Orc(new PathFinding(_pNaviMesh), pos));
+			obj->AddComponent(new MasterYi(new PathFinding(_pNaviMesh), pos));
 		else
-			obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
+			obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
 	}
 
 	FadeController::FadeIn(2);

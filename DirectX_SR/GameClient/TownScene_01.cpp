@@ -166,6 +166,7 @@ bool TownScene_01::Init(void) noexcept
 			if (names[i].find("Portal") != std::string::npos)
 			{
 				std::string sceneKey = Util::Split(names[i], '@')[1];
+
 				GameObject* obj = GameObject::Instantiate();
 				obj->AddComponent(new Portal(sceneKey.c_str()));
 
