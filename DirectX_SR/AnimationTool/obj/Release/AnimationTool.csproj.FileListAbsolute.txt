@@ -1,0 +1,10 @@
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\bin\Release\NPK_AnimationTool.exe.config
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\bin\Release\NPK_AnimationTool.exe
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\bin\Release\NPK_AnimationTool.pdb
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\obj\Release\AnimationTool.csproj.AssemblyReference.cache
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\obj\Release\NPK_AnimationTool.Form1.resources
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\obj\Release\NPK_AnimationTool.Properties.Resources.resources
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\obj\Release\AnimationTool.csproj.GenerateResource.cache
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\obj\Release\AnimationTool.csproj.CoreCompileInputs.cache
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\obj\Release\NPK_AnimationTool.exe
+C:\Users\jeon\Desktop\DirectXSR\DirectX_SR\AnimationTool\obj\Release\NPK_AnimationTool.pdb
