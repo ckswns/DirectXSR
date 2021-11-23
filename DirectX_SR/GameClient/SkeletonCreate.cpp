@@ -6,7 +6,7 @@
 
 void SkeletonCreate::Start() noexcept
 {
-	_pSk = static_cast<Skeleton*>(_pAnimator->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
+	_pSk = _pAnimator->GetGameObject()->GetComponent<Skeleton>(COMPONENT_ID::BEHAVIOUR);
 	_pAnimator->SetAnimation("Create");
 }
 

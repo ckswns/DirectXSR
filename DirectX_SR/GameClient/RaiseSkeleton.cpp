@@ -10,7 +10,7 @@ RaiseSkeleton::RaiseSkeleton() noexcept
     for (int i = 0; i < (_iMaxSkeleton + 1); i++)
     {
         GameObject* pSkeleton = GameObject::Instantiate();
-        Skeleton* sk = new Skeleton();
+        Skeleton* sk = new Skeleton(this);
         pSkeleton->AddComponent(sk);
         pSkeleton->SetDontDestroy(true);
         pSkeleton->SetActive(false);
@@ -65,5 +65,13 @@ void RaiseSkeleton::ResetSkeleton()
     {
         _Skeletones[i]->GetGameObject()->SetActive(false);
     }
+}
+
+void RaiseSkeleton::DestroySekelton()
+{
+    _iCount--;
+    /*_iIdx++;
+    if (_iIdx == _iMaxSkeleton + 1)
+        _iIdx = 0;*/
 }
 

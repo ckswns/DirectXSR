@@ -12,6 +12,7 @@ namespace ce
 class FSMState;
 class PathFinding;
 class TargetCamera;
+class RaiseSkeleton;
 class Skeleton : public Behaviour
 {
 public:		typedef struct SkeletonStat
@@ -29,7 +30,7 @@ public:		typedef struct SkeletonStat
 				float		_fSpeed;
 			}SK_STAT;
 
-public:		explicit				Skeleton() noexcept;
+public:		explicit				Skeleton(RaiseSkeleton* skill) noexcept;
 public:		virtual					~Skeleton(void) noexcept { __noop; }
 
 public:		virtual void			Start(void) noexcept;
@@ -66,6 +67,10 @@ private:	SK_STATE				_eCurState;
 private:	SK_STAT					_tStat;
 private:	float					_fMaxDist;
 private:	float					_fSpeed;
+private:	float					_fDeltaTime;
+private:	float					_fSpawnTime;
+private:	bool					_bDestroy;
+private:	RaiseSkeleton*			_pSkill;
 
 private:	bool					_bOnce;
 private:	std::string				_prevAniName ="";
