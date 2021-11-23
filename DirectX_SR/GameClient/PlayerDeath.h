@@ -8,6 +8,6 @@ public:		explicit			PlayerDeath(Player* player, Animator* pAnim,Transform* pTran
 public:		virtual				~PlayerDeath() noexcept { __noop; }
 
 public:		virtual void		Start() noexcept;
-public:		virtual void		Update(float fElapsedTime) noexcept { __noop; }
+public:		virtual void		Update(float fElapsedTime) noexcept;
 };
 

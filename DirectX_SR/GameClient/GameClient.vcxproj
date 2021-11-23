@@ -319,7 +319,6 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAttack.cpp" />
-    <ClCompile Include="PlayerFSMState.cpp" />
     <ClCompile Include="PlayerSelectScene.cpp" />
     <ClCompile Include="PlayerStand.cpp" />
     <ClCompile Include="PlayerMove.cpp" />

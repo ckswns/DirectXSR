@@ -29,7 +29,6 @@
 #include "Portal.h"
 
 #include "StoreNPC.h"
-#include "Diablo.h"
 #include "FadeController.h"
 #include "Witch.h"
 
@@ -189,10 +188,10 @@ bool TownScene_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-	//obj = GameObject::Instantiate();
-	//obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
-	//obj->GetTransform()->SetWorldPosition(40, 0, 40);
-	//obj->AddComponent(new BillboardObj());
+	obj = GameObject::Instantiate();
+	obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
+	obj->GetTransform()->SetWorldPosition(10, 0, 10);
+	obj->AddComponent(new BillboardObj());
 	//Player
 	PathFinding* pf = new PathFinding(_pNaviMesh);
 
@@ -219,36 +218,33 @@ bool TownScene_01::Init(void) noexcept
 	}
 	else
 	{
-		playerObj->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->SetMap(pf);
+		Player* player = playerObj->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR);
+		player->SetMap(pf);
+		player->SetState(PLAYER_STAND, FRONT);
 		playerObj->GetTransform()->SetLocalPosition(
 			INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldX"),
 			0.5f,
 			INIMANAGER->LoadDataInteger("Asset\\Scene\\Town_01\\Object", "Player", "worldZ"));
 	}
 
-
 	GameObject* pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StoreNPC());
 	pGameObj->GetTransform()->SetWorldPosition(10, 0.5, 10);
 
-	for (int i = 0; i < 10; i++)
-	{
-		obj = GameObject::Instantiate();
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	obj = GameObject::Instantiate();
 
-		D3DXVECTOR3 pos = playerObj->GetTransform()->GetWorldPosition();
+	//	D3DXVECTOR3 pos = playerObj->GetTransform()->GetWorldPosition();
 
-		pos.x += Random::GetValue(20, 3);
-		pos.x -= Random::GetValue(20, 3);
-		pos.y = 0.7f;
-		pos.z += Random::GetValue(20, 3);
-		pos.z -= Random::GetValue(20, 3);
-		obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
-	}
+	//	pos.x += Random::GetValue(20, 3);
+	//	pos.x -= Random::GetValue(20, 3);
+	//	pos.y = 0.7f;
+	//	pos.z += Random::GetValue(20, 3);
+	//	pos.z -= Random::GetValue(20, 3);
+	//	obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
+	//}
 
-	//obj = GameObject::Instantiate();
-	//obj->AddComponent(new Diablo(new PathFinding(_pNaviMesh), player));
-	//obj->GetTransform()->SetWorldPosition(40, 0.5f, 40);
-	//obj->GetComponent<Diablo>(COMPONENT_ID::BEHAVIOUR)->IntroDone();
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\TownBGM.mp3"));
 
 	return true;
