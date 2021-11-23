@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Vector3.h"
+#include <random>
 namespace ce
 {
 	enum SHAPE { SHAPE_BOX, SHAPE_CONE, SHAPE_SPHERE, SHAPE_END };
@@ -140,5 +141,8 @@ namespace ce
 
 	private:	float								zero = 0.f;
 	private:	float								one = 1.f;
+
+	private:	std::random_device					rd;
+	// private:	   std::mt19937 gen;
 	};
 }
