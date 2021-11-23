@@ -189,10 +189,10 @@ bool TownScene_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
-	obj->GetTransform()->SetWorldPosition(10, 0, 10);
-	obj->AddComponent(new BillboardObj());
+	//obj = GameObject::Instantiate();
+	//obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
+	//obj->GetTransform()->SetWorldPosition(10, 0, 10);
+	//obj->AddComponent(new BillboardObj());
 	//Player
 	PathFinding* pf = new PathFinding(_pNaviMesh);
 
