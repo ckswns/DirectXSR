@@ -32,7 +32,7 @@ void MasterYi::Awake(void) noexcept
 
 void MasterYi::Start(void) noexcept
 {
-	_spriteRenderer = static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\Cow\\Idle\\1.png"))));
+	_spriteRenderer = static_cast<SpriteRenderer*>(gameObject->AddComponent(new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Actor\\Monster\\MasterYi\\Idle\\1.png"))));
 	gameObject->AddComponent(new BillboardObj());
 	_hitBox = static_cast<BoxCollider*>(gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.5f, 1, 0.5f), D3DXVECTOR3(0, 0, 0), "Monster")));
 	gameObject->AddComponent(new Rigidbody());
@@ -160,9 +160,9 @@ void MasterYi::Start(void) noexcept
 	_deadAudio->SetSoundWorld(true);
 	_hitEffectAudio->SetSoundWorld(true);
 
-	_attackAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Cow\\CowAttack.mp3"));
-	_getHitAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Cow\\CowGetHit.mp3"));
-	_deadAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\Cow\\CowDead.mp3"));
+	_attackAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\MasterYi\\Slash.mp3"));
+	_getHitAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\MasterYi\\GetHit.mp3"));
+	_deadAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Monster\\MasterYi\\Death.mp3"));
 	_hitEffectAudio->LoadAudio(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\Effect\\Blunt_GetHit.wav"));
 
 }
