@@ -29,6 +29,8 @@
 #include "Portal.h"
 #include "MasterYi.h"
 #include "FadeController.h"
+#include "Orc.h"
+#include "Witch.h"
 
 Dungeon_02::Dungeon_02(void) noexcept
 {
@@ -222,9 +224,9 @@ bool Dungeon_02::Init(void) noexcept
 		pos.z -= Random::GetValue(3, 20);
 
 		if (5 < Random::GetValue(0, 10))
-			obj->AddComponent(new MasterYi(new PathFinding(_pNaviMesh), pos));
+			obj->AddComponent(new Orc(new PathFinding(_pNaviMesh), pos));
 		else
-			obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
+			obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
 	}
 
 	FadeController::FadeIn(2);
