@@ -172,7 +172,7 @@ bool Diablo_Chamber::Init(void) noexcept
 	obj->AddComponent(new BossCamera(boss->GetComponent<Diablo>(COMPONENT_ID::BEHAVIOUR)));
 
 	_portalObj = GameObject::Instantiate();
-	_portalObj->AddComponent(new Portal("Town_01"));
+	_portalObj->AddComponent(new Portal("Credit"));
 	_portalObj->SetActive(false);
 
 	FadeController::FadeIn(0.5f);

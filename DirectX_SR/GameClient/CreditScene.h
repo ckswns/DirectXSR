@@ -14,6 +14,9 @@ public:		void			Render(float fElapsedTime) noexcept override;
 public:		void			Release(void) noexcept override;
 
 private:	using			CREDIT_SCRIPT = std::vector<std::string>;
+
 private:	CREDIT_SCRIPT	_scripts;
+private:	float			_deltaTime = 0.0f;
+private:	int				_index = 0;
 };
 
