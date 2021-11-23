@@ -285,19 +285,9 @@ void TownScene_01::LateUpdate(float fElapsedTime) noexcept
 
 void TownScene_01::Render(float fElapsedTime) noexcept
 {
-	//auto device = D3D9DEVICE->GetDevice();
+	auto device = D3D9DEVICE->GetDevice();
 
-	//float a = 0.f;
-	//float b = 30.f;
-
-	//device->SetRenderState(D3DRS_FOGENABLE, TRUE);
-	//device->SetRenderState(D3DRS_RANGEFOGENABLE, true);
-	//device->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR);
-	//device->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
-
-	//device->SetRenderState(D3DRS_FOGCOLOR, D3DCOLOR_ARGB(0, 50, 50, 50));
-	//device->SetRenderState(D3DRS_FOGSTART, *(DWORD *)(&a));
-	//device->SetRenderState(D3DRS_FOGEND, *(DWORD*)(&b));
+	device->SetRenderState(D3DRS_FOGENABLE, false);
 }
 
 void TownScene_01::Release(void) noexcept

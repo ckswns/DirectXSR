@@ -29,7 +29,7 @@
 #include "Portal.h"
 #include "Mephisto.h"
 #include "MephistoCamera.h"
-
+#include "FadeController.h"
 
 Mephisto_Chamber::Mephisto_Chamber(void) noexcept
 {
@@ -213,6 +213,9 @@ bool Mephisto_Chamber::Init(void) noexcept
 	obj = GameObject::Instantiate();
 	obj->AddComponent(new MephistoCamera(mp));
 
+	FadeController::FadeIn(0.5f);
+	//obj = GameObject::Instantiate();
+	//obj->AddComponent(new Mephisto(new PathFinding(_pNaviMesh), D3DXVECTOR3(15, 0.5f, 15)));
 	return true;
 }
 
@@ -233,7 +236,9 @@ void Mephisto_Chamber::LateUpdate(float fElapsedTime) noexcept
 
 void Mephisto_Chamber::Render(float fElapsedTime) noexcept
 {
+	auto device = D3D9DEVICE->GetDevice();
 
+	device->SetRenderState(D3DRS_FOGENABLE, false);
 }
 
 void Mephisto_Chamber::Release(void) noexcept
