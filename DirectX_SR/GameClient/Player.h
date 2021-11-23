@@ -45,7 +45,7 @@ public:		void					SetState(PLAYER_STATE newState,DIR eDir,D3DXVECTOR3 vTarget = 
 public:		void					SetState(PLAYER_STATE newState,Transform* targetTrans, bool bAtt =false);
 public:		void					UsingSkill(SKILL_ID id,D3DXVECTOR3 vPos);
 
-public:		void					SetFull();
+public:		void					Reset();
 public:		void					SetAttCollider(bool b);
 public:		void					OnAnimationEvent(std::string str) noexcept override;
 
@@ -55,6 +55,8 @@ public:		void					DrinkPotion(int value);
 public:		void					GetHit(float fDamage, D3DXVECTOR3 vPos);
 
 public:		bool					IsRunning(float fElapsedTime);
+public:		float					GetMaxHP() { return _tStat->_fMaxHp; }
+public:		float					GetMaxMP() { return _tStat->_fMaxMp; }
 public:		float					GetHPPer();
 public:		float					GetMPPer();
 public:		float					GetStaminaPer();

@@ -174,6 +174,11 @@ bool TownScene_01::Init(void) noexcept
 				std::string py = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldY");
 				std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Town_01\\Object", names[i].c_str(), "worldZ");
 				obj->GetTransform()->SetWorldPosition(stof(px), 1, stof(pz));
+
+				obj = GameObject::Instantiate();
+				obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\portal2.dat"));
+				obj->GetTransform()->SetWorldPosition(stof(px), 1, stof(pz));
+				obj->AddComponent(new BillboardObj());
 			}
 		}
 	}
@@ -189,10 +194,7 @@ bool TownScene_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-	//obj = GameObject::Instantiate();
-	//obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
-	//obj->GetTransform()->SetWorldPosition(10, 0, 10);
-	//obj->AddComponent(new BillboardObj());
+
 	//Player
 	PathFinding* pf = new PathFinding(_pNaviMesh);
 
@@ -231,20 +233,6 @@ bool TownScene_01::Init(void) noexcept
 	GameObject* pGameObj = GameObject::Instantiate();
 	pGameObj->AddComponent(new StoreNPC());
 	pGameObj->GetTransform()->SetWorldPosition(10, 0.5, 10);
-
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	obj = GameObject::Instantiate();
-
-	//	D3DXVECTOR3 pos = playerObj->GetTransform()->GetWorldPosition();
-
-	//	pos.x += Random::GetValue(20, 3);
-	//	pos.x -= Random::GetValue(20, 3);
-	//	pos.y = 0.7f;
-	//	pos.z += Random::GetValue(20, 3);
-	//	pos.z -= Random::GetValue(20, 3);
-	//	obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
-	//}
 
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\TownBGM.mp3"));
 

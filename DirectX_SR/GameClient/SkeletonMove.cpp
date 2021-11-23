@@ -28,21 +28,30 @@ void SkeletonMove::Start() noexcept
 	_iDir = (int)_eDir * 2;
 
 	_pSk = static_cast<Skeleton*>(_pTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
-	_pAnimator->SetAnimation("Walk_"+std::to_string(_iDir));
+	_pAnimator->SetAnimation("Walk_" + std::to_string(_iDir));
 
 	if (_pPathFinding->FindPath(_pTrans->GetWorldPosition(), _vTarget))
 	{
 		_pPath = (_pPathFinding->GetPath());
-		_bFinding = true;
+
+		if (_pPath.begin() == _pPath.end())
+		{
+			_pSk->SetState(SK_STAND, _eDir);
+			return;
+		}
+		else _bFinding = true;
 	}
-	else
+	else 
+	{
 		_pSk->SetState(SK_STAND, _eDir);
+	}
 }
 
 void SkeletonMove::Update(float fElapsedTime) noexcept
 {
 	//플레이어와 거리확인
 	D3DXVECTOR3 vDir = _pPlayerTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
+	vDir.y = 0;
 	if (D3DXVec3Length(&vDir) >= 10.f)
 	{
 		//많이 멀어진 경우 주변으로 순간이동 
@@ -52,6 +61,21 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 		_pTrans->SetWorldPosition(fX, _pPlayerTrans->GetWorldPosition().y, fZ);
 		_vTarget.y = 5;
 		_pSk->SetState(SK_STAND, _eDir);
+	}
+
+	if (_bAtt)
+	{
+		D3DXVECTOR3 vDist = _vTarget - _pTrans->GetWorldPosition();
+		float dist = D3DXVec3Length(&vDist);
+		if (dist < 0.5f)
+		{
+			_pPath.clear();
+			_bFinding = false;
+			_vTarget.y = 5;
+			_bAtt = false;
+			_pSk->SetState(SK_ATTACK, _pTargetTrans);
+			_pTargetTrans = nullptr;
+		}
 	}
 
 	// 길찾기 중이 아닐 때 
@@ -87,25 +111,29 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 	{
 		std::list<Node*>::iterator iter = _pPath.begin();
 
-		D3DXVECTOR3 vDir = (*iter)->GetPos() - _pTrans->GetWorldPosition();
+		vDir = (*iter)->GetPos() - _pTrans->GetWorldPosition();
 		vDir.y = 0;
 
-		if (D3DXVec3Length(&vDir) < 0.5f)
+		if (D3DXVec3Length(&vDir) < 0.1f)
 		{
 			_pPath.pop_front();
 
 			if (_pPath.empty())	//A* 종료
 			{
+				_pPath.clear();
 				_bFinding = false;
 				_vTarget.y = 5;
+
 				if (_bAtt)
 				{
 					_bAtt = false;
 					_pSk->SetState(SK_ATTACK,_pTargetTrans);
-					_pTargetTrans = nullptr;
 				}
 				else
 					_pSk->SetState(SK_STAND, _eDir);
+
+				_pTargetTrans = nullptr;
+				return;
 			}
 		}
 		else
@@ -117,5 +145,6 @@ void SkeletonMove::Update(float fElapsedTime) noexcept
 	else
 	{
 		_pSk->SetState(SK_STAND, _eDir);
+		return;
 	}
 }

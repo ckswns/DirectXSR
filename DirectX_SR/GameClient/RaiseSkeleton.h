@@ -10,6 +10,8 @@ public:		virtual 				~RaiseSkeleton() noexcept { __noop; }
 
 public:		virtual bool			Using(D3DXVECTOR3 vPos, Transform* pTrans,bool isDir)noexcept;
 public:		void					SetPathFinding(PathFinding* pf, D3DXVECTOR3 vPlayerPos);
+public:		void					ResetSkeleton();
+public:		void					DestroySekelton();
 
 private:	int							_iMaxSkeleton;
 private:	int							_iCount;

@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "InputHandler.h"
 #include "MouseBtnUI.h"
+#include "StatusBall.h"
 using namespace ce::UI;
 
 StatusBar::StatusBar(Player* player) noexcept
@@ -25,8 +26,6 @@ void StatusBar::Start(void) noexcept
 
 void StatusBar::Update(float fElapsedTime) noexcept
 {
-    _imgHP->SetFillAmount(_pPlayer->GetHPPer());
-    _imgMP->SetFillAmount(_pPlayer->GetMPPer());
 
     _imgStamina->SetFillAmount(_pPlayer->GetStaminaPer());
 }
@@ -41,22 +40,16 @@ void StatusBar::InitUI() noexcept
     pObj->SetSortOrder(3);
     pObj->SetDontDestroy(true);
 
-    _imgHP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\HPBall.png"));
-    _imgHP->SetFillType(Image::FillType::VERTICAL);
     pObj = GameObject::Instantiate();
-    pObj->AddComponent(_imgHP);
+    pObj->AddComponent(new StatusBall(_pPlayer,true));
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
-    pObj->GetTransform()->SetLocalPosition(50, 12, 0);    
-    pObj->SetSortOrder(3);
+    pObj->GetTransform()->SetLocalPosition(50, 12, 0);
     pObj->SetDontDestroy(true);
 
-    _imgMP = new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\MPBall.png"));
-    _imgMP->SetFillType(Image::FillType::VERTICAL);
     pObj = GameObject::Instantiate();
-    pObj->AddComponent(_imgMP);
+    pObj->AddComponent(new StatusBall(_pPlayer, false));
     pObj->GetTransform()->SetParent(gameObject->GetTransform());
     pObj->GetTransform()->SetLocalPosition(1115, 12, 0);
-    pObj->SetSortOrder(3);
     pObj->SetDontDestroy(true);
 
     //LB

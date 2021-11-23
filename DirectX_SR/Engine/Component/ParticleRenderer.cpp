@@ -38,6 +38,7 @@ namespace ce
 		}
 
 		LoadFromData();
+
     }
 
     void ParticleRenderer::FixedUpdate(float) noexcept
@@ -59,8 +60,6 @@ namespace ce
 			if (_fTime >= _fDuration)
 			{
 				_bPlay = false;
-				//	Reset();
-				//	return;
 			}
 		}
 
@@ -77,17 +76,14 @@ namespace ce
 
 		//파티클 이동
 		std::list<Attribute*>::iterator iter;
-		//while (iter != _pParticles.end())
 		for (iter = _pParticles.begin(); iter != _pParticles.end(); iter++)
 		{
 			if ((*iter)->_bIsAlive)
 			{
-				//	(*iter)->_vPosition += (((*iter)->_vVelocity * _fSpeed) + (_vGravity * fElapsedTime)) * fElapsedTime;
 				(*iter)->_vPosition += (*iter)->_vVelocity * _fSpeed * fElapsedTime;
 				if (_fGravity != 0)
 				{
-					//float y = -(0.5f * (0.98f * _fGravity) * (*iter)->_fAge * (*iter)->_fAge); //-(((*iter)->_vVelocity.y * (*iter)->_fAge)
-					float y = -(0.1f * (0.98f * _fGravity * 100) * (*iter)->_fAge * (*iter)->_fAge);
+					float y = -(0.1f * (0.98f * _fGravity) * (*iter)->_fAge * (*iter)->_fAge);
 					(*iter)->_vPosition.y += y;
 				}
 				(*iter)->_fAge += fElapsedTime;
@@ -100,23 +96,22 @@ namespace ce
 						ResetParticle(*iter);
 					}
 				}
-				//++iter;
 			}
 		}
 
 		//빌보드
-		D3DXMATRIX	matWorld, matView, matBill;
-		D3DXMatrixIdentity(&matBill);
+		//D3DXMATRIX	matWorld, matView, matBill;
+		//D3DXMatrixIdentity(&matBill);
 
-		matWorld = _pTrans->GetWorldMatrix();
-		_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+		//matWorld = _pTrans->GetWorldMatrix();
+		//_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
-		matBill._11 = matView._11;
-		matBill._13 = matView._13;
-		matBill._31 = matView._31;
-		matBill._33 = matView._33;
+		//matBill._11 = matView._11;
+		//matBill._13 = matView._13;
+		//matBill._31 = matView._31;
+		//matBill._33 = matView._33;
 
-		D3DXMatrixInverse(&matBill, NULL, &matBill);
+		//D3DXMatrixInverse(&matBill, NULL, &matBill);
     }
 
     void ParticleRenderer::Render(void) noexcept
@@ -284,10 +279,13 @@ namespace ce
 	{
 		if (max < 1) return max;
 
-		float f = ce::CE_MATH::Random(1000);
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> dis(0, 1000);
+		float f = dis(gen);//ce::CE_MATH::Random(1000);
 		f *= 0.001f;
 
-		float value = ce::CE_MATH::Random((max * 2));
+		std::uniform_int_distribution<int> val(-max, max);
+		float value = (float)val(gen); //ce::CE_MATH::Random((max * 2));//std::rand() % (int)(max * 2);
 		if (value >= max)
 		{
 			value -= max;
@@ -356,13 +354,8 @@ namespace ce
 
 			attribute->_vPosition.x += x;
 			attribute->_vPosition.z += z;
-			/*
-			z = r * cos(theta) >> theta = acos(z/r)
-			x = sin(theta) * cos(phi)*r >> phi = acos(x / (sin(theta)*r))
-			y = r*cos(theta)
-			*/
+	
 			float theta = acosf((z / _fRadius));
-
 			float maxY = _fRadius * cosf(theta);
 
 			if (maxY < 0) maxY = 1;
@@ -397,13 +390,6 @@ namespace ce
 
 			iter = _pParticles.erase(iter);
 		}
-
-		//for each (auto pParticle in _pParticles)
-		//{
-		//	delete pParticle;
-		//	pParticle = nullptr;
-		//}
-		//_pParticles.clear();
     }
 
 	void ParticleRenderer::LoadFromData(void) noexcept
@@ -483,6 +469,11 @@ namespace ce
 			SetColor(color);
 
 			free(buffer);
+
+		//	_fEmitRate *= 0.5f;
+		//	_fRadius *= 0.8f;
+			_tOrign._fSize *= 0.5f;
+			_fGravity *= 100;
 		}
 		else
 			CE_ASSERT("ckswns", "ParticleRenderer에서 데이터를 읽어오는데에 실패하였습니다");

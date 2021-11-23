@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Gold.h"
-#include "BoxCollider.h"
+#include "SphereCollider.h"
 #include "SpriteRenderer.h"
 #include "Animation.h"
 #include "Animator.h"
@@ -17,7 +17,7 @@ void Gold::Start(void) noexcept
 	gameObject->SetTag(GameObjectTag::OBJECT);
 	gameObject->SetName("Gold");
 
-	gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 0.5f, 0.3f), D3DXVECTOR3(0, -0.5f, 0)));
+	gameObject->AddComponent(new SphereCollider(0.5f));
 	SpriteRenderer* sr = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Item\\Gold\\0.png"));
 	gameObject->AddComponent(sr);
 

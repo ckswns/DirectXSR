@@ -220,6 +220,7 @@
     <ClInclude Include="Portal.h" />
     <ClInclude Include="RejuvenationPotion.h" />
     <ClInclude Include="Slot.h" />
+    <ClInclude Include="StatusBall.h" />
     <ClInclude Include="StatusBar.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Inventory.h" />
@@ -311,6 +312,7 @@
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="RejuvenationPotion.cpp" />
     <ClCompile Include="Slot.cpp" />
+    <ClCompile Include="StatusBall.cpp" />
     <ClCompile Include="StatusBar.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Inventory.cpp" />

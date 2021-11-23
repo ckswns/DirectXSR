@@ -15,14 +15,16 @@
 #include "SkeletonMove.h"
 #include "SkeletoneAttack.h"
 #include "SkeletonDead.h"
+#include "RaiseSkeleton.h"
 
 #include "Camera.h"
 #include "TargetCamera.h"
 #include "GameObject.h"
 #include "SphereCollider.h"
 
-Skeleton::Skeleton() noexcept
-	:_tStat(70, 10, 5), _eCurState(SK_END), _fSpeed(3.f), _bOnce(false)
+Skeleton::Skeleton(RaiseSkeleton* skill) noexcept
+	:_pSkill(skill), _tStat(70, 10, 5), _eCurState(SK_END), _fSpeed(3.f), _bOnce(false),
+	_fDeltaTime(0), _fSpawnTime(10), _bDestroy(false)
 {
 }
 
@@ -32,7 +34,6 @@ void Skeleton::Start(void) noexcept
 
 	SphereCollider* trigger = new SphereCollider(2, "Trigger");
 	gameObject->AddComponent(trigger);
-	//gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.2f)));
 	gameObject->AddComponent(new Rigidbody());
 
 	_pRaiseAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
@@ -49,6 +50,16 @@ void Skeleton::Start(void) noexcept
 
 void Skeleton::Update(float fElapsedTime) noexcept
 {
+	if (!_bDestroy) 
+	{
+		_fDeltaTime += fElapsedTime;
+		if (_fDeltaTime >= _fSpawnTime)
+		{
+			_bDestroy = true;
+			SetState(SK_DEAD);
+			_pSkill->DestroySekelton();
+		}
+	}
 	if (_pCamera->IsFPV())
 	{
 		_bOnce = true;
@@ -93,6 +104,8 @@ void Skeleton::Create(Transform* trans)
 
 	_pOwnerTrans = trans;
 	gameObject->SetActive(true);
+
+	_fDeltaTime = 0;
 
 	_pFSM[SK_STAND] = new SkeletonStand(_pAnimator, _pTrans, _pOwnerTrans);
 	_pFSM[SK_MOVE] = new SkeletonMove(_pAnimator, _pTrans, _pOwnerTrans, _pPathFinding, _fSpeed);

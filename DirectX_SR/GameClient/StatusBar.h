@@ -24,8 +24,6 @@ public:		virtual void		Update(float fElapsedTime) noexcept;
 private:	void				InitUI() noexcept;
 
 private:	UI::Image*			_imgStamina;
-private:	UI::Image*			_imgHP;
-private:	UI::Image*			_imgMP;
 
 private:	Player*				_pPlayer;
 private:	InputHandler*		_pInputHandler;

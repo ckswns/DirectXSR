@@ -499,10 +499,13 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 	}
 }
 
-void Player::SetFull()
+void Player::Reset()
 {
+	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->ResetSkeleton();
+
 	_tStat->_fHp = _tStat->_fMaxHp;
 	_tStat->_fMP = _tStat->_fMaxMp;
+	_tStat->_fStamina = _tStat->_fMaxStamina;
 }
 
 void Player::SetAttCollider(bool b)

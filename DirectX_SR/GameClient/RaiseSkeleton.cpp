@@ -10,7 +10,7 @@ RaiseSkeleton::RaiseSkeleton() noexcept
     for (int i = 0; i < (_iMaxSkeleton + 1); i++)
     {
         GameObject* pSkeleton = GameObject::Instantiate();
-        Skeleton* sk = new Skeleton();
+        Skeleton* sk = new Skeleton(this);
         pSkeleton->AddComponent(sk);
         pSkeleton->SetDontDestroy(true);
         pSkeleton->SetActive(false);
@@ -55,5 +55,23 @@ void RaiseSkeleton::SetPathFinding(PathFinding* pf, D3DXVECTOR3 vPlayerPos)
         _Skeletones[i]->GetTransform()->SetWorldPosition(vPlayerPos);
         _Skeletones[i]->SetState(SK_STAND,DIR::FRONT);
     }
+}
+
+void RaiseSkeleton::ResetSkeleton()
+{
+    _iCount = 0;
+    _iIdx = 0;
+    for (int i = 0; i < (_iMaxSkeleton + 1); i++)
+    {
+        _Skeletones[i]->GetGameObject()->SetActive(false);
+    }
+}
+
+void RaiseSkeleton::DestroySekelton()
+{
+    _iCount--;
+    /*_iIdx++;
+    if (_iIdx == _iMaxSkeleton + 1)
+        _iIdx = 0;*/
 }
 
