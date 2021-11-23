@@ -181,7 +181,7 @@ bool Dungeon_01::Init(void) noexcept
 			std::string pz = INIMANAGER->LoadDataString("Asset\\Scene\\Dungeon_01\\Object", names[i].c_str(), "worldZ");
 
 			player->GetTransform()->SetWorldPosition(stof(px), 0.5f, stof(pz));
-			player->GetTransform()->SetWorldEulerAngle(0, D3DXToRadian(180), 0);
+		//	player->GetTransform()->SetWorldEulerAngle(0, D3DXToRadian(180), 0);
 			player->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->SetMap(new PathFinding(_pNaviMesh));
 		}
 	}

@@ -499,6 +499,11 @@ void Player::UsingSkill(SKILL_ID id, D3DXVECTOR3 vPos)
 	}
 }
 
+void Player::SetRun()
+{
+	_pAnimator->SetAnimation("Run_0");
+}
+
 void Player::Reset()
 {
 	static_cast<RaiseSkeleton*>(_pSkills[RAISE_SKELETON])->ResetSkeleton();

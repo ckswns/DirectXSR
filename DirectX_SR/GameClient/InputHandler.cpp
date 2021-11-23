@@ -131,7 +131,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 					{
 						//아이템인 경우 줍기 
 						//아이템 정보 
-						ITEMDATA* ivenItem = static_cast<Item*>(hit.collider->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR))->GetItem();
+						ITEMDATA* ivenItem = hit.collider->GetGameObject()->GetComponent<Item>(COMPONENT_ID::BEHAVIOUR)->GetItem();
 						//인벤토리에 아이템 추가 
 						if (_pPlayer->GetInventory()->PickUpItems(ivenItem))
 							hit.collider->GetGameObject()->Destroy();
