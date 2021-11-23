@@ -24,10 +24,10 @@ void StoreWnd::Start(void) noexcept
 
 	GameObject* CloseBtn = GameObject::Instantiate();
 	CloseBtn->GetTransform()->SetParent(gameObject->GetTransform());
-	CloseBtn->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Close_0.png")));
+	CloseBtn->AddComponent(new Image(ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Close_0.png")));
 	Button<StoreWnd>* btn = static_cast<Button<StoreWnd>*>(CloseBtn->AddComponent(new Button<StoreWnd>(this)));
 	btn->onMouseDown += &StoreWnd::Close;
-	btn->SetTexture(nullptr, nullptr, ASSETMANAGER->GetTextureData("Asset\\UI\\Game\\Close_1.png"), nullptr);
+	btn->SetTexture(nullptr, nullptr, ASSETMANAGER->GetTextureData("Asset\\UI\\Inventory\\Close_1.png"), nullptr);
 	CloseBtn->SetSortOrder(1);
 	CloseBtn->GetTransform()->SetLocalPosition(565,520,0);
 
@@ -42,15 +42,7 @@ void StoreWnd::OnDestroy(void) noexcept
 
 void StoreWnd::InitItem()
 {
-	int iPotionCnt = CE_MATH::Random(5);
 	ITEMDATA* item = new ITEMDATA();
-	memcpy(item, &GAMEDATAMANAGER->GetItemData("Potion"), sizeof(ITEMDATA));
-	for (int i = 0; i < iPotionCnt; i++)
-	{
-		AddItem(item);
-	}
-	//delete item;
-	item = new ITEMDATA();
 	memcpy(item, &GAMEDATAMANAGER->GetItemData("HardArmor"), sizeof(ITEMDATA));
 	AddItem(item);
 
@@ -65,6 +57,29 @@ void StoreWnd::InitItem()
 	AddItem(item);
 	item = new ITEMDATA();
 	memcpy(item, &GAMEDATAMANAGER->GetItemData("PlatedBelt"), sizeof(ITEMDATA));
+	AddItem(item);
+	item = new ITEMDATA();
+	memcpy(item, &GAMEDATAMANAGER->GetItemData("Greaves"), sizeof(ITEMDATA));
+	AddItem(item);
+	item = new ITEMDATA();
+	memcpy(item, &GAMEDATAMANAGER->GetItemData("GrimWand"), sizeof(ITEMDATA));
+	AddItem(item);
+	item = new ITEMDATA();
+	memcpy(item, &GAMEDATAMANAGER->GetItemData("NokozanRelic"), sizeof(ITEMDATA));
+	AddItem(item);
+
+	item = new ITEMDATA();
+	int iPotionCnt = CE_MATH::Random(5) + 1;
+	memcpy(item, &GAMEDATAMANAGER->GetItemData("Potion"), sizeof(ITEMDATA));
+	for (int i = 0; i < iPotionCnt; i++)
+	{
+		AddItem(item);
+	}
+	item = new ITEMDATA();
+	memcpy(item, &GAMEDATAMANAGER->GetItemData("JordanRing"), sizeof(ITEMDATA));
+	AddItem(item);
+	item = new ITEMDATA();
+	memcpy(item, &GAMEDATAMANAGER->GetItemData("NagelRing"), sizeof(ITEMDATA));
 	AddItem(item);
 
 }
