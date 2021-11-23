@@ -279,6 +279,16 @@ void Mephisto::LateUpdate(float fElapsedTime) noexcept
 	if (_bIntroDone == false)
 		return;
 
+	if (_bColorChanged)
+	{
+		_fColorChageTime += fElapsedTime;
+		if (_fColorChageTime > 1)
+		{
+			_bColorChanged = false;
+			_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
+	}
+
 	if (_dirtyState == false)
 		return;
 
@@ -346,22 +356,27 @@ void Mephisto::GetHit(int damage) noexcept
 
 	if (_currentHP <= 0)
 	{
-		_pAudioSource->LoadAudio(_pDeathSound);
-		_pAudioSource->Play();
 		_state = Actor::State::DIE;
 		_hitBox->SetEnable(false);
 		_currentHP = 0;
+		_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 		_dirtyState = true;
 
+		_pAudioSource->LoadAudio(_pDeathSound);
+		_pAudioSource->Play();
 		if (MonsterHPBar::Instance()->GetMonster() == this)
 			MonsterHPBar::Instance()->SetMonster(nullptr);
 	}
 	else
 	{
+		_fColorChageTime = 0;
+		_bColorChanged = true;
+		_spriteRenderer->SetColor(D3DCOLOR_ARGB(255, 0, 0, 255));
+
 		int num = CE_MATH::Random(4);
 		_pAudioSource->LoadAudio(_pDamagedSound[num]);
 		_pAudioSource->Play();
-		_state = Actor::State::HIT;
+	//	_state = Actor::State::HIT;
 		_dirtyState = true;
 
 		MonsterHPBar::Instance()->SetMonster(this);
