@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "Button.h"
 #include "Item.h"
+#include "InputHandler.h"
 
 using namespace ce::UI;
 using namespace ce::CE_MATH;
@@ -136,6 +137,7 @@ void Inventory::Update(float) noexcept
 void Inventory::Close()
 {
 	gameObject->SetActive(false);
+	_pPlayer->GetInpuHandler()->SetInvenOpen(false);
 }
 
 bool Inventory::BuyItem(int Gold)

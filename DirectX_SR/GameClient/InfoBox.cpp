@@ -92,7 +92,7 @@ void InfoBox::Start(void) noexcept
 			strAttak += std::to_string(_data.damagemin) + "~" + std::to_string(_data.damagemax);
 			_pTex[1] = static_cast<Text*>(obj->AddComponent(new UI::Text(strAttak.c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_CENTER)));
 		}
-		else if(_eType == Slot::SLOTTYPE::RING1 && _eType == Slot::SLOTTYPE::RING2 && _eType == Slot::SLOTTYPE::NECKLACE)
+		else if(_eType != Slot::SLOTTYPE::RING1 || _eType != Slot::SLOTTYPE::RING2 || _eType != Slot::SLOTTYPE::NECKLACE)
 		{
 			std::string strDef = "¹æ¾î·Â : ";
 			strDef += std::to_string(_data.defense);

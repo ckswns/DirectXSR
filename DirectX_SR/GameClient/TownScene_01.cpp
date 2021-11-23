@@ -188,10 +188,10 @@ bool TownScene_01::Init(void) noexcept
 	obj->GetTransform()->SetLocalEulerAngle(120, 0, 0);
 	obj->AddComponent(new Light(Light::Type::DIRECTIONAL, D3D9DEVICE->GetDevice(), c, 1000));
 
-	obj = GameObject::Instantiate();
-	obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
-	obj->GetTransform()->SetWorldPosition(10, 0, 10);
-	obj->AddComponent(new BillboardObj());
+	//obj = GameObject::Instantiate();
+	//obj->AddComponent(new ParticleRenderer(D3D9DEVICE->GetDevice(), "Asset\\Data\\healing_spot.dat"));
+	//obj->GetTransform()->SetWorldPosition(40, 0, 40);
+	//obj->AddComponent(new BillboardObj());
 	//Player
 	PathFinding* pf = new PathFinding(_pNaviMesh);
 
@@ -231,19 +231,32 @@ bool TownScene_01::Init(void) noexcept
 	pGameObj->AddComponent(new StoreNPC());
 	pGameObj->GetTransform()->SetWorldPosition(10, 0.5, 10);
 
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	obj = GameObject::Instantiate();
+	for (int i = 0; i < 5; i++)
+	{
+		obj = GameObject::Instantiate();
 
-	//	D3DXVECTOR3 pos = playerObj->GetTransform()->GetWorldPosition();
+		D3DXVECTOR3 pos = playerObj->GetTransform()->GetWorldPosition();
 
-	//	pos.x += Random::GetValue(20, 3);
-	//	pos.x -= Random::GetValue(20, 3);
-	//	pos.y = 0.7f;
-	//	pos.z += Random::GetValue(20, 3);
-	//	pos.z -= Random::GetValue(20, 3);
-	//	obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
-	//}
+		pos.x += Random::GetValue(20, 3);
+		pos.x -= Random::GetValue(20, 3);
+		pos.y = 0.7f;
+		pos.z += Random::GetValue(20, 3);
+		pos.z -= Random::GetValue(20, 3);
+		obj->AddComponent(new Witch(new PathFinding(_pNaviMesh), pos));
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		obj = GameObject::Instantiate();
+
+		D3DXVECTOR3 pos = playerObj->GetTransform()->GetWorldPosition();
+
+		pos.x += Random::GetValue(20, 3);
+		pos.x -= Random::GetValue(20, 3);
+		pos.y = 0.7f;
+		pos.z += Random::GetValue(20, 3);
+		pos.z -= Random::GetValue(20, 3);
+		obj->AddComponent(new Cow(new PathFinding(_pNaviMesh), pos));
+	}
 
 	BGMPlayer::Instance()->SetBGM(ASSETMANAGER->GetAudioAsset("Asset\\Audio\\TownBGM.mp3"));
 
