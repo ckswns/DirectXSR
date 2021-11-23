@@ -44,12 +44,15 @@ private:	Lightning*		_lightning;
 private:	bool			_bIntroDone = false;
 private:	bool			_bIntro = false;
 private:	bool			_bDeadAniDone = false;
+private:	bool			_bColorChanged = false;
 
 private:	bool			_dirtyState;
 private:	bool			_usingSkill;
 private:	bool			_bLightningCool;
+
 private:	float			_fDeltaTime;
 private:	float			_fCoolDown;
+private:	float			_fColorChageTime = 0;
 
 private:	float			_fAttackRange;
 private:	float			_fLightningRange;

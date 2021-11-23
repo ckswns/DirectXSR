@@ -160,7 +160,7 @@ bool Diablo_Chamber::Init(void) noexcept
 	GameObject* player = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
 
 	player->GetTransform()->SetWorldPosition(20, 0.5f, 5);
-	player->GetTransform()->SetWorldEulerAngle(0, D3DXToRadian(180), 0);
+//	player->GetTransform()->SetWorldEulerAngle(0, D3DXToRadian(180), 0);
 	player->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->SetMap(new PathFinding(_pNaviMesh));
 
 	GameObject* boss = GameObject::Instantiate();

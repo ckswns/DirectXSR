@@ -8,6 +8,7 @@
 #include "Image.h"
 #include "RectTransform.h"
 #include "FadeController.h"
+#include "Player.h"
 CreditScene::CreditScene(void) noexcept
 {
 	_scripts.reserve(200);
@@ -15,6 +16,9 @@ CreditScene::CreditScene(void) noexcept
 
 bool CreditScene::Init(void) noexcept
 {
+	GameObject* playerObj = GameObject::FindObjectByTag(GameObjectTag::PLAYER);
+	playerObj->GetComponent<Player>(COMPONENT_ID::BEHAVIOUR)->SetRun();
+
 	FadeController::FadeIn(0.5f);
 	GameObject* obj = GameObject::Instantiate();
 	obj->AddComponent(new UI::Image(ASSETMANAGER->GetTextureData("Asset\\UI\\black.png")));
@@ -30,14 +34,16 @@ bool CreditScene::Init(void) noexcept
 	_scripts.push_back("조성혜");
 	_scripts.push_back("");
 	_scripts.push_back("");
-	_scripts.push_back("파티클 렌더러");
-	_scripts.push_back("파티클 툴");
-	_scripts.push_back("Navigation Mesh(A*)");
-	_scripts.push_back("보스(Mephisto)");
-	_scripts.push_back("플레이어(스킬, UI, 조작)");
-	_scripts.push_back("소환수 알고리즘");
-	_scripts.push_back("상점");
-	_scripts.push_back("아이템");
+	_scripts.push_back("--Particle Tool--");
+	_scripts.push_back("--Particle Renderer--");
+	_scripts.push_back("--Game Client--");
+	_scripts.push_back("Navigation Mesh (A*)");
+	_scripts.push_back("Player");
+	_scripts.push_back("(스킬, UI, 조작)");
+	_scripts.push_back("Change View Camera");
+	_scripts.push_back("Creature(Skeleton) Algorithm");
+	_scripts.push_back("Boss Mephisto");
+	_scripts.push_back("Store/Item");
 	_scripts.push_back("기타 버그 수정");
 	_scripts.push_back("");
 	_scripts.push_back("");
@@ -52,6 +58,7 @@ bool CreditScene::Init(void) noexcept
 	_scripts.push_back("--MapTool--");
 	_scripts.push_back("Terrain Texture Splatting");
 	_scripts.push_back("Splatting Brush");
+	_scripts.push_back("INI를 통한 데이터 저장 및 로드");
 	_scripts.push_back("--Game Client--");
 	_scripts.push_back("Inventory (Multi Slot)");
 	_scripts.push_back("Monster (Witch)");
@@ -144,6 +151,17 @@ void CreditScene::FixedUpdate(float fElapsedTime) noexcept
 		obj->GetTransform()->SetWorldPosition(0, 900, 0);
 		obj->SetSortOrder(_index);
 		_index++;
+
+		if (_index >= _scripts.size())
+		{
+			FadeController::FadeOut(12);
+		}
+	}
+
+	else if (_index >= _scripts.size())
+	{
+		if(FadeController::IsEnd())
+			PostMessage(g_hWnd, WM_CLOSE, 0, 0);
 	}
 }
 
