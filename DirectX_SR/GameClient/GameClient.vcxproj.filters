@@ -280,6 +280,15 @@
     <Filter Include="00. Game\00. Scene\03.Dungeon\Mephisto_Chamber">
       <UniqueIdentifier>{f6e0e11c-76fd-4b03-a599-91ecddb9d6ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Game\00. Scene\04.Credit">
+      <UniqueIdentifier>{ae4db60d-176e-403d-a821-33d933bb14f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\Orc">
+      <UniqueIdentifier>{f2235da7-3486-443e-acd4-79249b0cd1d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Game\01. GameObject\Actor\Monster\MasterYi">
+      <UniqueIdentifier>{60e89538-906f-4533-9a8c-9358af1a8f41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -546,6 +555,15 @@
     <ClInclude Include="Mephisto_Chamber.h">
       <Filter>00. Game\00. Scene\03.Dungeon\Mephisto_Chamber</Filter>
     </ClInclude>
+    <ClInclude Include="CreditScene.h">
+      <Filter>00. Game\00. Scene\04.Credit</Filter>
+    </ClInclude>
+    <ClInclude Include="Orc.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Orc</Filter>
+    </ClInclude>
+    <ClInclude Include="MasterYi.h">
+      <Filter>00. Game\01. GameObject\Actor\Monster\MasterYi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -778,6 +796,15 @@
     </ClCompile>
     <ClCompile Include="Mephisto_Chamber.cpp">
       <Filter>00. Game\00. Scene\03.Dungeon\Mephisto_Chamber</Filter>
+    </ClCompile>
+    <ClCompile Include="CreditScene.cpp">
+      <Filter>00. Game\00. Scene\04.Credit</Filter>
+    </ClCompile>
+    <ClCompile Include="Orc.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\Orc</Filter>
+    </ClCompile>
+    <ClCompile Include="MasterYi.cpp">
+      <Filter>00. Game\01. GameObject\Actor\Monster\MasterYi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

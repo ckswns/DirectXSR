@@ -172,6 +172,7 @@
     <ClInclude Include="BossCamera.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Cow.h" />
+    <ClInclude Include="CreditScene.h" />
     <ClInclude Include="DbgShowFrame.h" />
     <ClInclude Include="Diablo.h" />
     <ClInclude Include="Diablo_Chamber.h" />
@@ -199,12 +200,14 @@
     <ClInclude Include="Lightning.h" />
     <ClInclude Include="LightningBreath.h" />
     <ClInclude Include="LightningCollider.h" />
+    <ClInclude Include="MasterYi.h" />
     <ClInclude Include="Mephisto.h" />
     <ClInclude Include="Mephisto_Chamber.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="MonsterHPBar.h" />
     <ClInclude Include="MpPotion.h" />
     <ClInclude Include="NPC.h" />
+    <ClInclude Include="Orc.h" />
     <ClInclude Include="PlateArmor.h" />
     <ClInclude Include="PlayerDamaged.h" />
     <ClInclude Include="PlayerSkill.h" />
@@ -261,6 +264,7 @@
     <ClCompile Include="BoneSpear.cpp" />
     <ClCompile Include="BossCamera.cpp" />
     <ClCompile Include="Cow.cpp" />
+    <ClCompile Include="CreditScene.cpp" />
     <ClCompile Include="DbgShowFrame.cpp" />
     <ClCompile Include="Diablo.cpp" />
     <ClCompile Include="Diablo_Chamber.cpp" />
@@ -284,11 +288,13 @@
     <ClCompile Include="Lightning.cpp" />
     <ClCompile Include="LightningBreath.cpp" />
     <ClCompile Include="LightningCollider.cpp" />
+    <ClCompile Include="MasterYi.cpp" />
     <ClCompile Include="Mephisto.cpp" />
     <ClCompile Include="Mephisto_Chamber.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MonsterHPBar.cpp" />
     <ClCompile Include="MpPotion.cpp" />
+    <ClCompile Include="Orc.cpp" />
     <ClCompile Include="PlateArmor.cpp" />
     <ClCompile Include="PlayerDamaged.cpp" />
     <ClCompile Include="PlayerSkill.cpp" />

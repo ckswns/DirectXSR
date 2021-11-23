@@ -16,11 +16,11 @@ bool GameDataManager::Init(void) noexcept
 		Actor::Data temp;
 
 		memcpy(&temp.name, name.c_str(), name.size() + 1);
-		temp.damageMin		= std::stoi(((*actorCSVData)[i])[index++]);
-		temp.damageMax		= std::stoi(((*actorCSVData)[i])[index++]);
+		temp.damageMin		= std::stof(((*actorCSVData)[i])[index++]);
+		temp.damageMax		= std::stof(((*actorCSVData)[i])[index++]);
 		temp.maxHP			= std::stoi(((*actorCSVData)[i])[index++]);
-		temp.moveSpeed		= std::stoi(((*actorCSVData)[i])[index++]);
-		temp.aggroDistance	= std::stoi(((*actorCSVData)[i])[index++]);
+		temp.moveSpeed		= std::stof(((*actorCSVData)[i])[index++]);
+		temp.aggroDistance	= std::stof(((*actorCSVData)[i])[index++]);
 
 		_actorData.insert(std::make_pair(name, temp));
 	}
