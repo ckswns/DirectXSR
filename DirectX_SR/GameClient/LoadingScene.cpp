@@ -127,7 +127,7 @@ void LoadingScene::Update(float fElapsedTime) noexcept
 	if (!ASSETMANAGER->GetLoadingState())
 	{
 		GAMEDATAMANAGER->Init();
-		SCENEMANAGER->LoadScene("Town_01");
+		SCENEMANAGER->LoadScene("Credit");
 	}
 }
 

@@ -173,6 +173,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Cow.h" />
     <ClInclude Include="CreditScene.h" />
+    <ClInclude Include="CreditScript.h" />
     <ClInclude Include="DbgShowFrame.h" />
     <ClInclude Include="Diablo.h" />
     <ClInclude Include="Diablo_Chamber.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="BossCamera.cpp" />
     <ClCompile Include="Cow.cpp" />
     <ClCompile Include="CreditScene.cpp" />
+    <ClCompile Include="CreditScript.cpp" />
     <ClCompile Include="DbgShowFrame.cpp" />
     <ClCompile Include="Diablo.cpp" />
     <ClCompile Include="Diablo_Chamber.cpp" />

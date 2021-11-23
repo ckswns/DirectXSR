@@ -15,6 +15,7 @@
 
 #include "Diablo_Chamber.h"
 #include "Mephisto_Chamber.h"
+#include "CreditScene.h"
 
 #define MAX_LOADSTRING 100
 
@@ -75,6 +76,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	scenesList.push_back(std::make_pair("Diablo_Chamber", scene));
 	scene = new Mephisto_Chamber();
 	scenesList.push_back(std::make_pair("Mephisto_Chamber", scene));
+	scene = new CreditScene();
+	scenesList.push_back(std::make_pair("Credit", scene));
 
 	pGameController->Init(g_hWnd, scenesList, WINCX, WINCY, "Asset\\Font\\kodia.ttf", "kodia");
  
