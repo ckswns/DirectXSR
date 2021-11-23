@@ -58,6 +58,7 @@ bool CreditScene::Init(void) noexcept
 	_scripts.push_back("--MapTool--");
 	_scripts.push_back("Terrain Texture Splatting");
 	_scripts.push_back("Splatting Brush");
+	_scripts.push_back("INI를 통한 데이터 저장 및 로드");
 	_scripts.push_back("--Game Client--");
 	_scripts.push_back("Inventory (Multi Slot)");
 	_scripts.push_back("Monster (Witch)");
@@ -150,6 +151,17 @@ void CreditScene::FixedUpdate(float fElapsedTime) noexcept
 		obj->GetTransform()->SetWorldPosition(0, 900, 0);
 		obj->SetSortOrder(_index);
 		_index++;
+
+		if (_index >= _scripts.size())
+		{
+			FadeController::FadeOut(12);
+		}
+	}
+
+	else if (_index >= _scripts.size())
+	{
+		if(FadeController::IsEnd())
+			PostMessage(g_hWnd, WM_CLOSE, 0, 0);
 	}
 }
 
