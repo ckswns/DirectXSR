@@ -50,7 +50,7 @@ void InputHandler::Update(float fElapsedTime) noexcept
 		{
 			_bDead = false;
 			_DiedObj->SetActive(false);
-			_pPlayer->SetFull();
+			_pPlayer->Reset();
 			SCENEMANAGER->LoadScene("Town_01");
 		}
 	}

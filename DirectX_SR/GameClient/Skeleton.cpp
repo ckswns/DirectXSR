@@ -21,6 +21,7 @@
 #include "GameObject.h"
 #include "SphereCollider.h"
 
+#include "BillboardObj.h"
 Skeleton::Skeleton() noexcept
 	:_tStat(70, 10, 5), _eCurState(SK_END), _fSpeed(3.f), _bOnce(false)
 {
@@ -32,7 +33,6 @@ void Skeleton::Start(void) noexcept
 
 	SphereCollider* trigger = new SphereCollider(2, "Trigger");
 	gameObject->AddComponent(trigger);
-	//gameObject->AddComponent(new BoxCollider(D3DXVECTOR3(0.3f, 1, 0.2f)));
 	gameObject->AddComponent(new Rigidbody());
 
 	_pRaiseAudio = static_cast<AudioSource*>(gameObject->AddComponent(new AudioSource()));
@@ -40,7 +40,7 @@ void Skeleton::Start(void) noexcept
 
 	_spriteRenderer = new SpriteRenderer(D3D9DEVICE->GetDevice(), ASSETMANAGER->GetTextureData("Asset\\Player\\Skeleton.png"),true,false);
 	gameObject->AddComponent(_spriteRenderer);
-
+	gameObject->AddComponent(new BillboardObj());
 	_pAnimator = new Animator(true);
 	gameObject->AddComponent(_pAnimator);
 	InitAnimation(_spriteRenderer);
@@ -49,18 +49,18 @@ void Skeleton::Start(void) noexcept
 
 void Skeleton::Update(float fElapsedTime) noexcept
 {
-	if (_pCamera->IsFPV())
-	{
-		_bOnce = true;
-		D3DXVECTOR3 Bill = Camera::GetMainCamera()->GetTransform()->GetBillboardEulerAngleY();
-		_pTrans->SetLocalEulerAngle(Bill);
-	}
-	else if (_bOnce)
-	{
-		_bOnce = false;
-		D3DXVECTOR3 Bill = Camera::GetMainCamera()->GetTransform()->GetBillboardEulerAngleY();
-		_pTrans->SetLocalEulerAngle(Bill);
-	}
+	//if (_pCamera->IsFPV())
+	//{
+	//	_bOnce = true;
+	//	D3DXVECTOR3 Bill = Camera::GetMainCamera()->GetTransform()->GetBillboardEulerAngleY();
+	//	_pTrans->SetLocalEulerAngle(Bill);
+	//}
+	//else if (_bOnce)
+	//{
+	//	_bOnce = false;
+	//	D3DXVECTOR3 Bill = Camera::GetMainCamera()->GetTransform()->GetBillboardEulerAngleY();
+	//	_pTrans->SetLocalEulerAngle(Bill);
+	//}
 
 	_pFSM[_eCurState]->Update(fElapsedTime);
 

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "StatusBall.h"
 #include "Transform.h"
+#include "RectTransform.h"
 #include "Image.h"
 #include "Text.h"
 #include "Player.h"
@@ -21,22 +22,17 @@ void StatusBall::Start(void) noexcept
     }
     _img->SetFillType(Image::FillType::VERTICAL);
     gameObject->AddComponent(_img);
-
-   //if (_bHp) 
-   //{
-   //    GetTransform()->SetLocalPosition(50, 12, 0);
-   //}
-   //else
-   //{
-   //    GetTransform()->SetLocalPosition(1115, 12, 0);
-   //}
    gameObject->SetSortOrder(3);
 
-   _text = new Text("/");
+   _text = new Text("/",D3DXCOLOR(0.5f,0.5f,0.5f,1));
    _txtObj = GameObject::Instantiate();
    _txtObj->AddComponent(_text);
+   RectTransform* rt = _txtObj->GetComponent<RectTransform>(COMPONENT_ID::RECT_TRANSFORM);
+   rt->SetPivot(D3DXVECTOR2(0.5f, 0.5f));
+
    _txtObj->GetTransform()->SetParent(GetTransform());
-   _txtObj->GetTransform()->SetLocalPosition(100, 300, 0);
+   _txtObj->GetTransform()->SetLocalPosition(0, -30, 0);
+   _txtObj->SetDontDestroy(true);
    _txtObj->SetSortOrder(5);
    _txtObj->SetActive(false);
 
@@ -46,10 +42,13 @@ void StatusBall::Update(float fElapsedTime) noexcept
 {
     if (_bHp)
     {
-        _img->SetFillAmount(_pPlayer->GetHPPer());
+        _fPer = _pPlayer->GetHPPer();
     }
     else
-        _img->SetFillAmount(_pPlayer->GetMPPer());
+    {
+        _fPer = _pPlayer->GetMPPer();
+    }
+    _img->SetFillAmount(_fPer);
 }
 
 void StatusBall::OnMouseLeave(void) noexcept
@@ -59,5 +58,17 @@ void StatusBall::OnMouseLeave(void) noexcept
 
 void StatusBall::OnMouseOver(void) noexcept
 {
+    float max;
+    if(_bHp)
+        max= _pPlayer->GetMaxHP();
+    else
+        max = _pPlayer->GetMaxMP();
+
+    float cur = max * _fPer;
+
+    char str[256];
+    sprintf_s(str, 256, "%.f/%.f", cur, max);
+
+    _text->SetText(str);
     _txtObj->SetActive(true);
 }

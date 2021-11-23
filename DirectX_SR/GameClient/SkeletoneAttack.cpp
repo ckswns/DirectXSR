@@ -12,15 +12,11 @@ void SkeletoneAttack::Start() noexcept
 
 	D3DXVECTOR3 vDir = _pTargetTrans->GetWorldPosition() - _pTrans->GetWorldPosition();
 	vDir.y = 0;
-	if (D3DXVec3Length(&vDir) < 1)
+	if (D3DXVec3Length(&vDir) < 0.5f)
 	{
-
 		_eDir = GetDirect(_pTrans->GetWorldPosition(), _pTargetTrans->GetWorldPosition());
 		_iDir = (int)_eDir * 2;
-
 		_pAnimator->SetAnimation("Attack_" + std::to_string(_iDir));
-
-		// ¼Ò¸® 
 
 		if (_pTargetTrans->GetGameObject() != nullptr)
 			_pTargetTrans->GetGameObject()->GetComponent<Actor>(COMPONENT_ID::BEHAVIOUR)->GetHit(2);

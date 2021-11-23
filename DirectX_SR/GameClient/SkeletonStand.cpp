@@ -8,7 +8,7 @@
 void SkeletonStand::Start() noexcept
 {
 	_fCurTime = 0;
-	_fStandTime = UnsignedRandomf(1);
+	_fStandTime = UnsignedRandomf(3);
 	_pAnimator->SetAnimation("Stand_" + std::to_string(_iDir));
 	_pSk = static_cast<Skeleton*>(_pTrans->GetGameObject()->GetComponent(COMPONENT_ID::BEHAVIOUR));
 }

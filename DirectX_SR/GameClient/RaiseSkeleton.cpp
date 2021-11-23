@@ -57,3 +57,13 @@ void RaiseSkeleton::SetPathFinding(PathFinding* pf, D3DXVECTOR3 vPlayerPos)
     }
 }
 
+void RaiseSkeleton::ResetSkeleton()
+{
+    _iCount = 0;
+    _iIdx = 0;
+    for (int i = 0; i < (_iMaxSkeleton + 1); i++)
+    {
+        _Skeletones[i]->GetGameObject()->SetActive(false);
+    }
+}
+

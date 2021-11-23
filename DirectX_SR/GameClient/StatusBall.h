@@ -27,5 +27,6 @@ private:	UI::Image*		_img;
 private:	UI::Text*		_text;
 private:	GameObject*		_txtObj;
 private:	Player*			_pPlayer;
+private:	float			_fPer;
 };
 
