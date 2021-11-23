@@ -7,7 +7,7 @@
 #include "Transform.h"
 #include "Image.h"
 #include "RectTransform.h"
-
+#include "FadeController.h"
 CreditScene::CreditScene(void) noexcept
 {
 	_scripts.reserve(200);
@@ -15,6 +15,7 @@ CreditScene::CreditScene(void) noexcept
 
 bool CreditScene::Init(void) noexcept
 {
+	FadeController::FadeIn(0.5f);
 	GameObject* obj = GameObject::Instantiate();
 	obj->AddComponent(new UI::Image(ASSETMANAGER->GetTextureData("Asset\\UI\\black.png")));
 	obj->GetComponent<UI::RectTransform>(COMPONENT_ID::RECT_TRANSFORM)->SetWidth(1280);
@@ -48,10 +49,14 @@ bool CreditScene::Init(void) noexcept
 	_scripts.push_back("임수빈");
 	_scripts.push_back("");
 	_scripts.push_back("");
-	_scripts.push_back("맵툴");
-	_scripts.push_back("터레인 Splating Texture");
-	_scripts.push_back("인벤토리(Multi Slot)");
-	_scripts.push_back("몬스터(마녀)");
+	_scripts.push_back("--MapTool--");
+	_scripts.push_back("Terrain Texture Splatting");
+	_scripts.push_back("Splatting Brush");
+	_scripts.push_back("--Game Client--");
+	_scripts.push_back("Inventory (Multi Slot)");
+	_scripts.push_back("Monster (Witch)");
+	_scripts.push_back("Monster (MasterYi)");
+	_scripts.push_back("Monster (Orc)");
 	_scripts.push_back("");
 	_scripts.push_back("");
 	_scripts.push_back("");

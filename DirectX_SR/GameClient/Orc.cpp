@@ -16,6 +16,7 @@
 #include "AudioSource.h"
 #include "AudioAsset.h"
 #include "MonsterHPBar.h"
+#include "Gold.h"
 
 Orc::Orc(PathFinding* pf, D3DXVECTOR3 bornPos) noexcept :
 	_pathFinder(pf),
@@ -217,10 +218,18 @@ void Orc::FixedUpdate(float fElapsedTime) noexcept
 			{
 				_fDeltaTime += fElapsedTime;
 				if (_fDeltaTime > 1)
+				{
+					GameObject* pobj = GameObject::Instantiate();
+					pobj->AddComponent(new Gold());
+					pobj->GetTransform()->SetWorldPosition(transform->GetWorldPosition());
 					gameObject->Destroy();
+				}
 			}
 			else
 			{
+				GameObject* pobj = GameObject::Instantiate();
+				pobj->AddComponent(new Gold());
+				pobj->GetTransform()->SetWorldPosition(transform->GetWorldPosition());
 				gameObject->Destroy();
 			}
 		}
