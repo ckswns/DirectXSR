@@ -53,14 +53,14 @@ void Inventory::Start(void) noexcept
 		obj->SetDontDestroy(true);
 	}
 
-	_iGold = 3000;
+	_iGold = 1500;
 
 	obj = GameObject::Instantiate();
 	obj->SetDontDestroy(true);
 	_pTexGold = new UI::Text(std::to_string(_iGold).c_str(), D3DCOLOR_ARGB(255, 255, 255, 255), DT_RIGHT);
 	obj->AddComponent(_pTexGold);
 	RectTransform* rt = static_cast<RectTransform*>(obj->GetComponent(COMPONENT_ID::RECT_TRANSFORM));
-	rt->SetWidth(70);
+	rt->SetWidth(75);
 	rt->SetHeight(50);
 	obj->SetSortOrder(1);
 	obj->GetTransform()->SetParent(gameObject->GetTransform());
